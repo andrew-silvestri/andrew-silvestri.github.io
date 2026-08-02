@@ -972,13 +972,50 @@
   if (D.idMap) { for (var k0 in D.idMap) byId[k0] = D.idMap[k0]; }
   else { for (var q = 0; q < N; q++) byId[D.id[q]] = q; }
   var sc = $('scen');
-  Object.keys(D.scenarios).forEach(function (k) {
-    var o = document.createElement('option');
-    o.value = k;
-    o.textContent = k.replace(/_/g, ' ').replace(/^./, function (c) {
-      return c.toUpperCase(); });
-    sc.appendChild(o);
-  });
+  /* The scenario list is grouped. A flat list of nearly sixty prepared
+     changes is a wall; the categories are the first thing a reader needs in
+     order to find the one they came for. Categories come from the payload, so
+     adding a scenario to a category it declares is enough. */
+  (function buildScenarioList() {
+    var cats = D.scenarioCats ||
+      [{ id: null, label: 'Prepared changes' }];
+    var seen = {};
+    cats.forEach(function (c) {
+      var keys = Object.keys(D.scenarios).filter(function (k) {
+        return D.scenarios[k].cat === c.id;
+      });
+      if (!keys.length) return;
+      keys.sort(function (a, b) {
+        return (D.scenarios[a].label || a).localeCompare(
+               D.scenarios[b].label || b);
+      });
+      var g = document.createElement('optgroup');
+      g.label = c.label;
+      keys.forEach(function (k) {
+        seen[k] = 1;
+        var o = document.createElement('option');
+        o.value = k;
+        o.textContent = D.scenarios[k].label || k.replace(/_/g, ' ');
+        g.appendChild(o);
+      });
+      sc.appendChild(g);
+    });
+    /* anything the payload did not file under a category still has to be
+       reachable, or a scenario could be added and silently never appear */
+    var rest = Object.keys(D.scenarios).filter(function (k) { return !seen[k]; });
+    if (rest.length) {
+      var g2 = document.createElement('optgroup');
+      g2.label = 'Other';
+      rest.forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = k;
+        o.textContent = D.scenarios[k].label || k.replace(/_/g, ' ');
+        g2.appendChild(o);
+      });
+      sc.appendChild(g2);
+    }
+  })();
+
   sc.onchange = function () {
     var s = D.scenarios[sc.value];
     if (!s) { $('scendesc').textContent =
@@ -988,7 +1025,8 @@
     Object.keys(s.shocks).forEach(function (id) {
       if (byId[id] != null) shocks[byId[id]] = s.shocks[id];
     });
-    $('scendesc').textContent = s.desc;
+    $('scendesc').innerHTML = esc(s.desc) +
+      (s.basis ? '<span class="basis">' + esc(s.basis) + '</span>' : '');
     renderShocks();
   };
 
