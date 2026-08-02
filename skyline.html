@@ -24,7 +24,7 @@ and the sound will change as you turn around.</p>
 
 <div class="card">
 <div class="tag">Interactive</div>
-<h3 style="margin-top:4px">24 cities</h3>
+<h3 style="margin-top:4px">26 cities</h3>
 <p>Drag to turn on the spot, or press Spin and let it turn for you. The upper
 panel is a wheel of the city's towers &mdash; up to a hundred and twenty of
 them, the far side in a colder colour because it is behind you. The lower panel
@@ -106,6 +106,80 @@ reading, to anybody looking at it, as a statement about Beijing. A city is
 published when it has enough buildings to fill a turn. Padding the list back
 to fifty would have meant putting the original complaint &mdash; too much empty
 space &mdash; back in, on purpose, to hit a number.</p>
+
+<h2>Musical and realistic</h2>
+
+<p>A toggle, because the liberty above is the only interesting question here
+and it should be the reader's to answer rather than mine.</p>
+
+<p><strong>Realistic</strong> puts every tower at its true angular position and
+plays the whole mode across four octaves, fourteen voices. It is closer to what
+the skyline literally says and correspondingly less kind.</p>
+
+<p><strong>Musical</strong> equalises the spacing and forces the sound into a
+chord: only the first, third, fifth and sixth degrees of the mode, over two and
+a half octaves, seven voices at a time. Every subset of those notes is
+consonant, so no bearing in any city can produce a dissonance &mdash; not
+because it is avoided but because the dissonant intervals are not in the
+instrument.</p>
+
+<p>The first attempt at that used the first, third, fifth and <em>seventh</em>,
+which on a seven-note mode puts a major seventh one semitone under the octave
+root. An instrument advertised as incapable of a minor second contained one.
+Building a ladder out of consonant degrees is not the same as proving the
+assembled ladder is consonant, and the assembled ladder is now checked: nothing
+closer than a minor third in musical, nothing closer than a whole tone in
+realistic.</p>
+
+<h2>It cannot be made to hurt</h2>
+
+<p>A bank of sine waves driven by a data set can, at some bearing in some city,
+line up: twenty partials at full tilt in the two-to-four kilohertz band where
+hearing is sharpest and least forgiving. That is the sound of a smoke alarm,
+and no amount of tuning the mapping prevents it, because the mapping does not
+know what the ear finds painful. So it is made structurally impossible instead,
+and then measured across every city at every bearing in both modes:</p>
+
+<table>
+<tr><th>What could go wrong</th><th>What stops it</th><th>Measured worst case</th></tr>
+<tr><td>Too many partials at once</td><td>A voice limit: only the loudest few
+sound</td><td>7 in musical, 14 in realistic</td></tr>
+<tr><td>Shrillness</td><td>Nothing above 1.5 kHz in musical, 1.9 in realistic,
+plus a high shelf and a lowpass</td><td>highest partial 1,397 Hz and 1,865
+Hz</td></tr>
+<tr><td>The 2&ndash;4 kHz band dominating</td><td>The ceiling sits below
+it</td><td>0% of power, in every city, at every bearing</td></tr>
+<tr><td>A painful interval</td><td>The assembled ladder is thinned to a
+minimum spacing</td><td>closest pair 2.9 semitones</td></tr>
+<tr><td>Spinning becoming a volume ride</td><td>Constant-power normalisation,
+computed on the gains actually sent</td><td>loudest bearing 1.0&times; the
+quietest</td></tr>
+<tr><td>Anything else</td><td>A limiter and a fixed ceiling after it</td>
+<td>&mdash;</td></tr>
+</table>
+
+<p>That last row is the only one doing defensive work. The others are
+structural, and the difference matters: a limiter catching a problem means the
+problem was produced.</p>
+
+<p>The normalisation was wrong the first time in a way worth recording. It
+flattened the raw levels and <em>then</em> applied the spectral tilt that makes
+the thing sound like an instrument, which un-did the flattening. A bearing
+lighting only low partials came out fourteen times louder than one lighting
+only high ones. Tilt first, normalise second.</p>
+
+<h2>Two cities entered by hand</h2>
+
+<p>Wikidata has three buildings on record for Austin and fourteen for
+Nashville. Austin has something over forty above a hundred metres. That gap is
+not about the cities; it is about who has been entering data, and coverage of
+mid-size American downtowns is thin in a way that coverage of Manhattan is not.
+Both are therefore supplemented from published records, the supplement lives in
+its own file, and the app says how many of a city's towers were entered by hand
+whenever there are any. Heights are structural; coordinates are block-level
+rather than surveyed, which matters less than it sounds because the wheel
+equalises angular spacing anyway &mdash; a coordinate decides what order
+buildings appear in, not the gap between them.</p>
 
 <h2>The key</h2>
 
