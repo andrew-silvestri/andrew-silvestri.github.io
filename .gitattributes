@@ -1,0 +1,11 @@
+# Serve and store text as LF. Without this, git on Windows rewrites the working
+# copy to CRLF, which is harmless for the served site but makes every file look
+# modified on the next publish and buries real changes in noise.
+* text=auto eol=lf
+
+# Binaries must never be touched.
+*.png binary
+*.ico binary
+*.zip binary
+*.woff binary
+*.woff2 binary

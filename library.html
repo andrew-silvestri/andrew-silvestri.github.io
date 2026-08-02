@@ -2,9 +2,13 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Figures — world energy model</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><a href="atlas.html">Atlas</a><a href="library.html" class="on">Figures</a><a href="model.html">How it works</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html" class="on">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Figures</h1>
@@ -14,55 +18,55 @@ its own description. Nothing is drawn by hand.</p>
 <div class="card">
 <div class="tag">matplotlib, stacked horizontal bar</div>
 <h3 style="margin-top:4px">Electricity fuel mix of the 28 largest power systems</h3>
-<img class="fig" src="assets/01_world_fuel_mix.png" alt="Electricity fuel mix of the 28 largest power systems">
+<img class="fig wide" src="assets/01_world_fuel_mix.png" alt="Electricity fuel mix of the 28 largest power systems">
 <p>Each bar is one country. The bar shows the share of that country&#x27;s electricity that comes from each fuel. The countries are ordered by average demand, with the largest at the top. These shares are not estimates. They come from the Energy Institute Statistical Review and from Our World in Data. In the model, this share sets the strength of the link between a fuel supply and its national grid. A country with a high coal share therefore reacts more to a coal supply problem.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib cumulative curve</div>
 <h3 style="margin-top:4px">How world electricity demand is distributed and concentrated</h3>
-<img class="fig" src="assets/02_demand_distribution.png" alt="How world electricity demand is distributed and concentrated">
+<img class="fig wide" src="assets/02_demand_distribution.png" alt="How world electricity demand is distributed and concentrated">
 <p>The left panel counts countries by their average electricity demand. The scale is logarithmic because the range is very wide. The right panel adds the countries together, starting with the largest. It shows how few countries hold most of the world demand. This concentration is the reason a change in one large system can move the world total.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, small multiples</div>
 <h3 style="margin-top:4px">The four price series that set market inertia in the model</h3>
-<img class="fig" src="assets/03_price_histories.png" alt="The four price series that set market inertia in the model">
+<img class="fig wide" src="assets/03_price_histories.png" alt="The four price series that set market inertia in the model">
 <p>Each panel is one traded price, taken from the Federal Reserve Economic Data service. The model does not use these prices to forecast. It uses their variation. A price that moves a great deal in the record is given a low inertia value, so it reacts quickly in the model. A steady price is given a high inertia value. This is how the real behaviour of each market enters the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn box plot</div>
 <h3 style="margin-top:4px">How strongly each type of node resists change</h3>
-<img class="fig" src="assets/04_inertia_by_type.png" alt="How strongly each type of node resists change">
+<img class="fig wide" src="assets/04_inertia_by_type.png" alt="How strongly each type of node resists change">
 <p>Inertia controls the speed of a node. A recorded event has the lowest inertia because a disaster happens at once. Behaviour channels have the highest inertia because habits change over years. Price benchmarks cover a range, because each one takes its value from its own measured volatility. This single parameter produces the order in which effects arrive across the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib bar</div>
 <h3 style="margin-top:4px">The structure of the links between nodes</h3>
-<img class="fig" src="assets/05_link_structure.png" alt="The structure of the links between nodes">
+<img class="fig wide" src="assets/05_link_structure.png" alt="The structure of the links between nodes">
 <p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 13,826 links in total, of which 1,142 are negative. A negative link carries relief rather than stress.</p>
 
 </div><div class="card">
 <div class="tag">seaborn heat map with annotations</div>
 <h3 style="margin-top:4px">Where each change lands, by node type</h3>
-<img class="fig" src="assets/06_scenario_reach.png" alt="Where each change lands, by node type">
+<img class="fig wide" src="assets/06_scenario_reach.png" alt="Where each change lands, by node type">
 <p>Each row is one change applied to the model. Each column is a type of node. The number is the average effect on the nodes of that type that changed. An empty cell means the change did not reach that type. The climate change reaches the widest set of types, because the climate connects to every country. A single national change stays close to its own country.</p>
 
 </div><div class="card">
 <div class="tag">seaborn strip plot with median markers</div>
 <h3 style="margin-top:4px">Order of arrival after a large oil supply loss</h3>
-<img class="fig" src="assets/07_arrival_order.png" alt="Order of arrival after a large oil supply loss">
+<img class="fig wide" src="assets/07_arrival_order.png" alt="Order of arrival after a large oil supply loss">
 <p>Each dot is one node that changed. Its position shows the step at which it first moved. The black bar marks the middle value for that type. Prices move first, in one step. Fuel supplies follow, then grids, then districts, then consumers. The model therefore reproduces the expected order: a market signal travels before a physical effect.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>
 <h3 style="margin-top:4px">The model saturates rather than growing without limit</h3>
-<img class="fig" src="assets/08_response_curve.png" alt="The model saturates rather than growing without limit">
+<img class="fig wide" src="assets/08_response_curve.png" alt="The model saturates rather than growing without limit">
 <p>The change applied to the oil price is increased in steps from a small value to the maximum. The blue line counts how many nodes changed. The gold line gives the average size of the effect. Both lines bend and flatten. This is the effect of the limit function in the calculation. A real system behaves in the same way: a price cannot rise without end, and a grid cannot fail more than completely.</p>
 
 </div><div class="card">
 <div class="tag">plotnine, grammar of graphics</div>
 <h3 style="margin-top:4px">System size against low carbon share</h3>
-<img class="fig" src="assets/09_size_vs_lowcarbon.png" alt="System size against low carbon share">
+<img class="fig wide" src="assets/09_size_vs_lowcarbon.png" alt="System size against low carbon share">
 <p>Each point is one country. The horizontal position is the size of its power system. The vertical position is the share of its electricity that comes from nuclear, hydro or other renewable sources. The grey line is a smoothed trend. The plot shows that size alone does not decide the low carbon share. Small systems occupy the full range, because a single large hydro station can supply most of a small country.</p>
 
 </div><div class="card">
@@ -74,19 +78,19 @@ its own description. Nothing is drawn by hand.</p>
 </div><div class="card">
 <div class="tag">matplotlib, stacked time series</div>
 <h3 style="margin-top:4px">The two climate series that set the state of the model</h3>
-<img class="fig" src="assets/11_climate_record.png" alt="The two climate series that set the state of the model">
+<img class="fig wide" src="assets/11_climate_record.png" alt="The two climate series that set the state of the model">
 <p>The upper panel is the carbon dioxide record from Mauna Loa. The saw pattern is the growing season of the northern hemisphere. The lower panel is the global temperature anomaly. Both series are read directly into the model. They set the starting state of the two climate nodes. The climate nodes then connect to every national grid, and to the gas and electricity prices, through heating and cooling demand.</p>
 
 </div><div class="card">
 <div class="tag">pandas plotting on matplotlib axes</div>
 <h3 style="margin-top:4px">Recorded disasters that the model contains</h3>
-<img class="fig" src="assets/12_recorded_events.png" alt="Recorded disasters that the model contains">
+<img class="fig wide" src="assets/12_recorded_events.png" alt="Recorded disasters that the model contains">
 <p>The left panel adds the adjusted damage of every energy relevant disaster in each decade, and separates the total by disaster type. The right panel names the twelve costliest single events. These records come from the international disaster database. In the model, each event is a node. The recorded damage sets the strength of the link from that event to the national grid of the country it struck.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, horizontal bar, log scale</div>
 <h3 style="margin-top:4px">Every node names its source</h3>
-<img class="fig" src="assets/13_provenance.png" alt="Every node names its source">
+<img class="fig wide" src="assets/13_provenance.png" alt="Every node names its source">
 <p>The model records where each node came from. This chart counts the nodes by source. The largest group is the plant list from the bulk archive of the Energy Information Administration. The group marked as published studies holds the consumer response values. These values are the only assumed parameters in the model, and they are labelled so that a reader can find them.</p>
 
 </div>

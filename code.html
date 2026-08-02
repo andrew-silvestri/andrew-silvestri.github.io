@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Code — Andrew Silvestri</title>
+<meta name="description" content="Downloadable source for every model on the site.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html" class="on">Code</a></nav>
+<main>
+
+<h1>Code</h1>
+<p class="dim">Every model on this site, as source you can run.</p>
+
+<p>Each archive contains source only: the programs, their ports to other
+languages, and the notes needed to run them. Generated figures and bulk data
+are left out, because every model rebuilds them. Each archive has a
+<code>README.md</code> at its root giving the command to run, the results to
+expect, and the assumptions that produced them.</p>
+
+<table>
+<tr><th>Model</th><th>Contents</th><th>Size</th><th>Download</th></tr>
+<tr><td><a href="heat.html">Industrial heat break-even</a></td><td>Python reference, Julia and Octave ports, formula workbook.</td><td>7 files</td><td><a href="downloads/heat-code.zip">23 KB</a></td></tr>
+<tr><td><a href="dac.html">Direct air capture TEA</a></td><td>Adsorption cycle and cost model in three languages, plus the workbook.</td><td>7 files</td><td><a href="downloads/dac-code.zip">22 KB</a></td></tr>
+<tr><td><a href="storage.html">Battery revenue simulator</a></td><td>Linear-program dispatch; JuMP and HiGHS port included.</td><td>7 files</td><td><a href="downloads/storage-code.zip">216 KB</a></td></tr>
+<tr><td><a href="energy-web.html">World energy web, v3</a></td><td>Units calibration, real plant loader, merit-order dispatch core.</td><td>16 files</td><td><a href="downloads/web-v3-code.zip">41 KB</a></td></tr>
+<tr><td><a href="energy-web.html">World energy web, v4</a></td><td>Cohort builders, behavioural layer, historical replays.</td><td>19 files</td><td><a href="downloads/web-v4-code.zip">51 KB</a></td></tr>
+<tr><td><a href="energy-web.html">World energy web, v5</a></td><td>Taxonomy loader that turns the driver spreadsheet into the graph.</td><td>10 files</td><td><a href="downloads/web-v5-code.zip">35 KB</a></td></tr>
+<tr><td><a href="model.html">The calibrated model</a></td><td>The current 7,192-node model in Julia, with the Python parity check.</td><td>7 files</td><td><a href="downloads/model-code.zip">20 KB</a></td></tr>
+<tr><td><a href="atlas.html">The atlas</a></td><td>Scene exporter and the builder that produces the single-file atlas.</td><td>6 files</td><td><a href="downloads/atlas-code.zip">421 KB</a></td></tr>
+<tr><td><a href="model.html">Charts and terminal application</a></td><td>Figure generators and the interactive terminal client.</td><td>5 files</td><td><a href="downloads/deliverables-code.zip">23 KB</a></td></tr>
+<tr><td><a href="longevity.html">Longevity quotient</a></td><td>Allometric fit, taxonomic aggregation, the 417-species table, and the visualiser template.</td><td>11 files</td><td><a href="downloads/longevity-code.zip">96 KB</a></td></tr>
+</table>
+
+<h2>Running them</h2>
+<p>The Python implementations are the verified references; where a Julia or
+Octave port exists it was written line for line from the Python and is marked in
+the archive as untested in the environment that produced it. The three
+techno-economic models also ship a formula-driven workbook carrying the same
+arithmetic, so the assumptions can be edited without running any code.</p>
+
+<h2>Not published</h2>
+<p>The <a href="holdup.html">pipeline liquid holdup</a> work was done during an
+industrial internship. Its engine, simulation library and source workbook belong
+to the company, so only the method and the result appear on this site.</p>
+
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main></body></html>

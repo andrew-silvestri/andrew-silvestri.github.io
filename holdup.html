@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline liquid holdup — Andrew Silvestri</title>
+<meta name="description" content="Interactive port of a pipeline liquid holdup calculator, and the stale-cache bug it found.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html" class="on">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<main>
+
+<h1>Pipeline liquid holdup calculator</h1>
+<p class="dim">A spreadsheet with 19,653 simulation runs behind it, ported to an
+interactive tool, which then found a bug in the spreadsheet.</p>
+
+<p>Gathering pipelines accumulate liquid. How much sits in a line, how it
+responds to flow rate, and how often the line has to be pigged are planning
+questions with money attached: slug catcher sizing, tank capacity, truck
+schedules. The source workbook answered them by interpolating across a library
+of 19,653 process simulation runs laid out on a Latin hypercube.</p>
+
+<p>The port reproduces that engine exactly. It rebuilds the nine-dimensional
+normalised query space, the inverse-quartic distance kernels with their separate
+feature weightings for holdup, pressure drop and yields, the seasonal ground
+temperature model with damping by burial depth, the frozen-soil rule, and the
+downstream planning arithmetic, formula for formula.</p>
+
+<h2>What the port found</h2>
+<p>The port's kernel weights match the workbook's own cached weight columns cell
+for cell, and the query normalisation matches to machine precision. The
+workbook's <em>displayed</em> results, however, disagree with what its own
+cached kernels imply, by between two and twelve per cent. In the simple profile
+case the sheet displays 8.554 barrels per mile; recomputing from the weights
+the sheet itself has stored gives 8.359, and the port gives 8.361.</p>
+
+<p>The workbook is carrying stale values from a partial recalculation. Forcing a
+full recalculation brings it back into agreement. This is worth knowing before
+anyone quotes a number off that sheet, and it is the kind of error that only
+shows up when an independent implementation is checked against the original
+rather than against its own output.</p>
+
+<hr>
+<h2>Code</h2>
+<p>This work was done during an industrial internship. The engine, the
+simulation library and the source workbook are the company's, so they are not
+published here. The description above covers the method and the finding; the
+implementation stays private.</p>
+
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main></body></html>

@@ -1,43 +1,354 @@
+/* andrewsilvestri.com
+ *
+ * Dark ground, luminous data, quiet type. The rule throughout: the page is
+ * the frame and the work is the picture, so nothing here competes with a
+ * figure or a map. One accent colour, hairline rules, and a lot of air.
+ *
+ * Light mode is a deliberate second-class citizen — it exists so the site is
+ * readable for anyone who insists on it, and it is warm paper rather than a
+ * white box.
+ */
 
-:root{--ink:#1b1b1b;--dim:#6a6f75;--faint:#e6e2db;--bg:#fbfaf8;--acc:#8a6d2f;--card:#fff}
-@media (prefers-color-scheme:dark){
- :root{--ink:#e8e4dd;--dim:#9a958c;--faint:#2b2823;--bg:#141310;--acc:#d9a441;--card:#1b1916}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
- font:17px/1.65 Georgia,"Times New Roman",serif}
-nav.top{max-width:760px;margin:0 auto;padding:22px 24px 0;font-size:14px;
- font-family:system-ui,sans-serif}
-nav.top a{color:var(--dim);margin-right:18px;text-decoration:none}
-nav.top a:hover,nav.top a.on{color:var(--acc)}
-main{max-width:760px;margin:0 auto;padding:34px 24px 96px}
-h1{font-size:28px;font-weight:600;margin:0 0 6px;line-height:1.25}
-h2{font-size:20px;font-weight:600;margin:42px 0 10px}
-h3{font-size:17px;font-weight:600;margin:26px 0 4px}
-p{margin:12px 0}
-a{color:var(--acc);text-decoration:none}
-a:hover{text-decoration:underline}
-.dim{color:var(--dim)}
-.small{font-size:14.5px;color:var(--dim)}
-hr{border:0;border-top:1px solid var(--faint);margin:38px 0}
-ul{padding-left:22px}li{margin:7px 0}
-code{font:14px ui-monospace,Consolas,monospace;background:var(--faint);
- padding:2px 6px;border-radius:4px}
-table{width:100%;border-collapse:collapse;font-size:15px;margin:14px 0;
- font-family:system-ui,sans-serif}
-th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--faint);
- vertical-align:top}
-th{color:var(--dim);font-weight:600;font-size:13px;text-transform:uppercase;
- letter-spacing:.05em}
-img.fig{width:100%;border:1px solid var(--faint);border-radius:6px;margin:10px 0;
- background:#fff}
-.card{border:1px solid var(--faint);border-radius:8px;padding:20px;margin:18px 0;
- background:var(--card)}
-.card .tag{font-size:12px;color:var(--dim);text-transform:uppercase;
- letter-spacing:.08em;font-family:system-ui,sans-serif}
-.btn{display:inline-block;background:var(--acc);color:#fff;padding:9px 18px;
- border-radius:7px;font-family:system-ui,sans-serif;font-size:14.5px;
- font-weight:600;margin:8px 8px 0 0}
-.btn:hover{text-decoration:none;opacity:.9}
-.btn.ghost{background:transparent;border:1px solid var(--faint);color:var(--dim)}
-footer{margin-top:60px;font-size:14px;color:var(--dim)}
-.grid{display:grid;grid-template-columns:1fr;gap:26px}
+:root {
+  --bg:      #08090b;
+  --bg-lift: #0d0f12;
+  --card:    #101215;
+  --ink:     #e8e5dd;
+  --dim:     #8f8d86;
+  --faint:   #1e2126;
+  --rule:    #262a30;
+  --acc:     #d9a441;   /* brass — links, emphasis */
+  --acc-dim: #8a6d2f;
+  --cool:    #7ac4d6;   /* data accent, matches the hero's rim light */
+  --shadow:  0 18px 50px rgba(0, 0, 0, .55);
+  /* Three widths, not one. Prose stays at a readable measure because line
+     length is a legibility constraint, not a stylistic one — past about 80
+     characters the eye loses the return sweep. Everything that is not prose
+     has no such limit, so figures, tables and the hero break out of the text
+     column and use the screen. */
+  --text:    min(72ch, 100%);
+  --wide:    min(1140px, 100%);
+  --shell:   1440px;
+  --serif:   "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+             "Times New Roman", serif;
+  --sans:    ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:    ui-monospace, "SF Mono", "Cascadia Mono", Consolas,
+             "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:      #f7f4ee;
+    --bg-lift: #f1ede5;
+    --card:    #fffdf8;
+    --ink:     #191818;
+    --dim:     #6a675f;
+    --faint:   #e6e0d4;
+    --rule:    #ddd6c8;
+    --acc:     #8a6420;
+    --acc-dim: #b08a3c;
+    --cool:    #2c7183;
+    --shadow:  0 14px 34px rgba(60, 50, 30, .13);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 17.5px/1.72 var(--serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* a barely-there wash so the black is not a void */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1100px 620px at 50% -8%,
+                    rgba(122, 196, 214, .055), transparent 70%),
+    radial-gradient(900px 520px at 88% 8%,
+                    rgba(217, 164, 65, .04), transparent 68%);
+}
+@media (prefers-color-scheme: light) { body::before { opacity: .5; } }
+
+main, nav.top { position: relative; z-index: 1; }
+
+/* ---------------------------------------------------------------- nav --- */
+nav.top {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 26px 34px 0;
+  font: 13px/1 var(--sans);
+  letter-spacing: .02em;
+  position: relative;
+  z-index: 50;
+}
+nav.top a {
+  color: var(--dim);
+  margin-right: 22px;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: color .18s, border-color .18s;
+}
+nav.top a:hover { color: var(--ink); }
+nav.top a.on {
+  color: var(--ink);
+  border-bottom-color: var(--acc);
+}
+
+/* dropdown */
+.dd { position: relative; display: inline-block; margin-right: 22px; }
+.dd > .ddbtn { margin-right: 0; cursor: pointer; }
+.caret { font-size: 9px; opacity: .65; }
+.ddmenu {
+  display: none;
+  position: absolute;
+  left: -16px;
+  top: 100%;
+  padding: 9px 0;
+  min-width: 268px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.dd:hover > .ddmenu, .dd:focus-within > .ddmenu { display: block; }
+.ddmenu a {
+  display: block;
+  margin: 0;
+  padding: 8px 18px;
+  color: var(--dim);
+  font-size: 13.5px;
+  white-space: nowrap;
+  border: 0;
+}
+.ddmenu a:hover { color: var(--acc); background: var(--bg-lift); }
+
+/* --------------------------------------------------------------- text --- */
+/* A content grid with three named tracks. Children default to the text
+   column; anything tagged .wide or .full breaks out sideways without needing
+   to escape the flow. */
+main {
+  display: grid;
+  margin: 0 auto;
+  padding: 40px 0 120px;
+  max-width: var(--shell);
+  grid-template-columns:
+    [full-start] minmax(34px, 1fr)
+    [wide-start] minmax(0, calc((var(--wide) - var(--text)) / 2))
+    [text-start] var(--text) [text-end]
+    minmax(0, calc((var(--wide) - var(--text)) / 2)) [wide-end]
+    minmax(34px, 1fr) [full-end];
+}
+main > * { grid-column: text; min-width: 0; }
+main > .wide, main > table, main > img.fig, main > #hero,
+main > .cardgrid { grid-column: wide; }
+main > .full { grid-column: full; }
+
+h1 {
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -.015em;
+  line-height: 1.16;
+  margin: 0 0 10px;
+}
+h2 {
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 58px 0 16px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--rule);
+}
+h3 {
+  font-size: 19px;
+  font-weight: 500;
+  margin: 26px 0 5px;
+  letter-spacing: -.005em;
+}
+
+p { margin: 15px 0; }
+.dim { color: var(--dim); }
+.small { font-size: 15px; color: var(--dim); }
+
+a {
+  color: var(--acc);
+  text-decoration: none;
+  border-bottom: 1px solid var(--faint);
+}
+a:hover { border-bottom-color: var(--acc); }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: 52px 0; }
+
+ul { padding-left: 22px; }
+li { margin: 8px 0; }
+
+code {
+  font: 14px var(--mono);
+  background: var(--bg-lift);
+  border: 1px solid var(--faint);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--cool);
+}
+
+/* -------------------------------------------------------------- table --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 14.5px/1.5 var(--sans);
+  margin: 20px 0;
+  font-variant-numeric: tabular-nums;
+}
+th, td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--faint);
+  vertical-align: top;
+}
+th {
+  color: var(--dim);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  border-bottom-color: var(--rule);
+}
+tr:hover td { background: var(--bg-lift); }
+
+/* --------------------------------------------------------------- figs --- */
+img.fig {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  margin: 18px 0 8px;
+  background: var(--card);
+  display: block;
+}
+
+/* --------------------------------------------------------------- grid --- */
+/* Cards sit two-up on a wide screen. Each one's prose therefore stays short
+   even though the block is wider than the text column — which is the whole
+   point of widening: more room without longer lines. */
+.cardgrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  margin: 22px 0;
+}
+.cardgrid .card { margin: 0; height: 100%; }
+
+/* -------------------------------------------------------------- cards --- */
+.card {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 26px 28px;
+  margin: 22px 0;
+  background: linear-gradient(180deg, var(--card), var(--bg-lift));
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--acc-dim); }
+.card .tag {
+  font: 10.5px var(--sans);
+  color: var(--acc);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  margin-bottom: 4px;
+}
+.card h3 { margin-top: 4px; }
+.card h3 a { border: 0; color: var(--ink); }
+.card h3 a:hover { color: var(--acc); }
+
+/* --------------------------------------------------------------- btns --- */
+.btn {
+  display: inline-block;
+  background: var(--acc);
+  color: #14100a;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font: 600 14px var(--sans);
+  letter-spacing: .01em;
+  margin: 12px 10px 0 0;
+  border: 1px solid var(--acc);
+  transition: filter .18s;
+}
+.btn:hover { filter: brightness(1.09); border-bottom-color: var(--acc); }
+.btn.ghost {
+  background: transparent;
+  color: var(--dim);
+  border-color: var(--rule);
+}
+.btn.ghost:hover { color: var(--ink); border-color: var(--dim); }
+
+/* --------------------------------------------------------------- hero --- */
+#hero {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 46vh, 560px);
+  margin: 18px 0 6px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 46%, #0b1016 0%, #05070a 72%);
+  border: 1px solid var(--rule);
+}
+.hero-layer { position: absolute; inset: 0; display: block; }
+/* the WebGL canvas fades in over the 2D pair, then they are stopped */
+.hero-gl { z-index: 2; }
+.hero-cap {
+  font: 11.5px var(--sans);
+  color: var(--dim);
+  letter-spacing: .05em;
+  margin: 10px 0 0;
+}
+@media (max-width: 620px) { #hero { height: 300px; } }
+
+/* ------------------------------------------------------------- footer --- */
+footer {
+  margin-top: 74px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  font: 13.5px var(--sans);
+  color: var(--dim);
+}
+
+.grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
+
+/* ------------------------------------------------------------- mobile --- */
+@media (max-width: 760px) {
+  main { grid-template-columns: [full-start wide-start text-start] 1fr
+                                [text-end wide-end full-end];
+         padding-left: 20px; padding-right: 20px; }
+  .cardgrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  body { font-size: 16.5px; }
+  main { padding-top: 30px; padding-bottom: 90px; }
+  nav.top { padding: 20px 20px 0; }
+  h1 { font-size: 27px; }
+  .ddmenu {
+    position: static;
+    display: block;
+    border: 0;
+    box-shadow: none;
+    padding: 4px 0 8px;
+    min-width: 0;
+    background: transparent;
+  }
+  .ddmenu a { padding: 6px 0 6px 15px; }
+  .dd { display: block; margin: 8px 0; }
+  .card { padding: 20px; }
+}

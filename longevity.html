@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Longevity quotient — Andrew Silvestri</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<main>
+
+<h1>Longevity quotient</h1>
+<p class="dim">How long an animal lives, against how long an animal of its
+size should live.</p>
+
+<p>Body mass predicts lifespan. Across the 417 species in this model — from a
+nematode at a microgram to a blue whale at 150 tonnes, twenty orders of
+magnitude of body size — each tenfold increase in mass buys roughly a 1.5-fold
+increase in maximum lifespan. The relationship is strong enough to be worth
+dividing out. What remains when you do is the longevity quotient:</p>
+
+<p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
+lifespan predicted from body mass</code></p>
+
+<p>It is built by analogy with the encephalisation quotient, which does the
+same thing to brain size. A quotient of one means an animal lives exactly as
+long as its size predicts. The interesting animals are the ones far from one.</p>
+
+<div class="card">
+<div class="tag">Interactive</div>
+<h3 style="margin-top:4px">The visualiser</h3>
+<p>Every species is a row with two bars: wild maximum and captive maximum, with
+a tick at the average of the two. Change the sort and the rows animate to their
+new positions, so the ranking rearranges in front of you rather than being
+replaced by a new table. Sort by quotient, lifespan, body mass or name; switch
+which lifespan is used; switch the baseline between a species' own group and a
+single fit across all animals; filter to any taxon at any rank.</p>
+<p>The second view aggregates whole taxa and compares them against each other at
+any rank from phylum down to genus, by mean quotient, median lifespan, longest
+member or species count. Click a group to drop into the species inside it.</p>
+<a class="btn" href="longevity-app.html">Open the visualiser</a>
+<a class="btn ghost" href="downloads/longevity-code.zip">Download code and data</a>
+</div>
+
+<img class="fig wide" src="assets/lq_allometry.png"
+ alt="Maximum lifespan against adult body mass on logarithmic axes, coloured by
+ class, with the fitted global relationship and labelled outliers">
+<p class="small">Lifespan against body mass. The dashed line is the fit across
+every animal in the table. Distance above or below that line, measured within a
+species' own class, is the quotient.</p>
+
+<h2>Fitting the baseline</h2>
+
+<p>An ordinary least squares regression of log lifespan on log body mass, run
+globally and within each group. Fitting inside a group matters a great deal.
+Birds come out about 1.8 times longer-lived than mammals of equal mass, which
+matches what the comparative literature reports, so a single fit across every
+animal charges every bird a bonus it did not earn and every mammal a penalty it
+does not deserve. Fish classes are pooled together, and the many small
+invertebrate classes are pooled into one baseline, because separately they are
+too thin to fit.</p>
+
+<table>
+<tr><th>Baseline</th><th>Species</th><th>Slope b</th><th>r²</th>
+ <th>Predicted at 1 kg</th></tr>
+<tr><td>All animals</td><td>413</td><td>0.182</td><td>0.46</td><td>21.8 yr</td></tr>
+<tr><td>Mammals</td><td>147</td><td>0.146</td><td>0.49</td><td>17.2 yr</td></tr>
+<tr><td>Birds</td><td>89</td><td>0.167</td><td>0.41</td><td>31.0 yr</td></tr>
+<tr><td>Reptiles</td><td>45</td><td>0.158</td><td>0.26</td><td>32.5 yr</td></tr>
+<tr><td>Fish</td><td>46</td><td>0.173</td><td>0.38</td><td>25.3 yr</td></tr>
+<tr><td>Invertebrates</td><td>62</td><td>0.253</td><td>0.43</td><td>23.8 yr</td></tr>
+</table>
+
+<p>A fit is only used if it is worth using. The amphibian regression returns an
+r² of 0.12 across twenty-four species, which is not a relationship. Any group fit
+with a non-positive slope or an r² below 0.15 is rejected, and that group falls
+back to the global baseline. The model reports which groups were rejected and
+why. Amphibians are currently the only one.</p>
+
+<h2>Comparing whole groups</h2>
+
+<p>The group view aggregates every species in a taxon and sets taxa against each
+other. The bar is the geometric mean quotient of the group's members, with a
+faint line spanning its lowest to its highest. The geometric mean is the correct
+average for ratios: a species at four times prediction and one at a quarter of
+it should average to one, not to 2.1.</p>
+
+<p>At order rank the bats of Chiroptera lead at two and a half times prediction,
+followed by the perch-like fishes, the parrots, the primates at 1.8, and the
+albatrosses and petrels. At the bottom sit the shrews, moles and hedgehogs of
+Eulipotyphla at 0.37, and the ground birds of Galliformes at 0.43. At family rank
+the bats of Vespertilionidae reach 3.1 and the rockfishes of Sebastidae 3.5.
+Flight, burrowing, venom, armour and simply being difficult to swallow all
+register as raised quotients. Being a ground bird or a small terrestrial
+insectivore registers as the reverse.</p>
+
+<img class="fig wide" src="assets/lq_orders.png"
+ alt="Bar chart of taxonomic orders ranked by geometric mean longevity quotient">
+<p class="small">Every order holding four or more species, ranked by geometric
+mean quotient. The dashed line is parity with prediction.</p>
+
+<h2>Colonies are not individuals</h2>
+
+<p>Four entries are colonies rather than animals: a black coral aged at 4,265
+years, a boulder star coral, a giant barrel sponge, and a glass sponge whose
+spicule growth rings have been read as eleven thousand years. Those are ages of
+the colony, and the polyps composing them live ordinary short lives. They are
+excluded from every regression, and hidden from the rankings by default, because
+an eleven-thousand-year colony sits at the top of every sort and buries whatever
+the data actually shows.</p>
+
+<h2>What comes out</h2>
+
+<p>The highest quotients against their own group belong to an ocean quahog clam
+at forty-five times its predicted lifespan, a garden ant queen at twenty-seven, a
+cold-seep tubeworm at twenty-two, the freshwater pearl mussel at fifteen, and a
+leafcutter ant queen and the red sea urchin at ten. The lowest belong to the
+silkmoth, a wasp worker, Labord's chameleon, and the squid and octopus at around
+one-twentieth of prediction.</p>
+
+<p>Three of those are the reason the exercise is worth doing at all. The honey
+bee worker and the honey bee queen carry the same genome and sit an order of
+magnitude apart in lifespan, because caste and diet decide the outcome rather
+than genetics. The giant Pacific octopus is large, capable, and dead in five
+years, because it breeds once and then stops eating — while the chambered
+nautilus, a cephalopod that does not breed once and die, lives twenty. And
+Labord's chameleon spends most of its existence inside an egg and then lives
+four or five months as an adult, the shortest life of any four-limbed vertebrate,
+in a body whose size predicts eight years. None of this is visible in a table of
+lifespans sorted by years. All of it is unmissable the moment body mass is
+divided out.</p>
+
+<img class="fig wide" src="assets/lq_wild_captive.png"
+ alt="Dumbbell chart comparing wild and captive maximum lifespan by species">
+<p class="small">Wild against captive, sorted by the size of the gap. Where
+protection helps most, and where it does not help at all.</p>
+
+<h2>What the numbers do not mean</h2>
+
+<p>These are maxima, not averages, and a maximum is sensitive to how many
+individuals were watched and for how long. Captive maxima are better documented
+than wild maxima for nearly every species here, because captive animals get
+counted and wild ones do not, and that asymmetry inflates the apparent captive
+advantage. The advantage is real for small prey animals, which mostly die of
+being eaten. It reverses for large social mammals: elephants and killer whales
+have lower median lifespans in captivity than in the wild, whatever their record
+holders show.</p>
+
+<p>An r² of 0.46 measured on logarithms still permits a factor-of-two error on
+any individual species. The quotient is a lens for finding outliers, not a
+measurement of one. And body mass is one variable among several that carry real
+signal — metabolic rate, age at first reproduction, whether the animal flies,
+whether it lives underground, and whether it breeds once or repeatedly. Flight
+and burrowing between them account for most of the top of the mammal list.
+Adding a predation-risk proxy as a second regressor is the obvious next
+build.</p>
+
+<h2>Data</h2>
+
+<p>417 species spanning 10 phyla, 30 classes, 127 orders, 263 families and 387
+genera, each with full taxonomy, adult body mass, wild maximum, captive maximum,
+a quality grade and a note, compiled from the comparative longevity literature. Grades run
+from documented and verified, through defensible literature estimate, to
+uncertain, and each species carries its grade in the visualiser. Disputed
+records are excluded in favour of verified ones: the 226-year koi and the
+120-year cockatoo are both out. The download includes a loader that rebuilds the
+table from <span class="dim">AnAge</span>, the reference comparative longevity
+database of some 4,200 species, along with the reason to merge it rather than
+replace with it — AnAge carries one longevity figure per species and it is
+nearly always the captive one, so a wholesale rebuild gains breadth and loses
+the wild-against-captive comparison this project is built around.</p>
+
+<hr>
+<p class="small">Python, no dependencies for the model. The visualiser is one
+self-contained HTML file. <a href="downloads/longevity-code.zip">Download the
+code and data</a>.</p>
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main></body></html>

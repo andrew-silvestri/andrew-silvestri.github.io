@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battery revenue simulator — Andrew Silvestri</title>
+<meta name="description" content="Linear-program dispatch of a grid battery and the value of storage duration.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<main>
+
+<h1>Battery revenue simulator</h1>
+<p class="dim">A linear program over a year of hourly prices, and what it says
+about how long a battery should be.</p>
+
+<p>A grid battery makes its living the way a hibernating ground squirrel does:
+by taking in more than it needs when the taking is good, sitting on the surplus,
+and spending it when nothing else is available. The squirrel's constraint is how
+much fat it can carry. The battery's is how many hours of energy it can hold,
+and the interesting question is the same in both cases — at what point does
+carrying more stop paying for itself?</p>
+
+<p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
+linear programming, in monthly blocks with the state of charge carried across
+the joins. Every megawatt hour of throughput is charged a cycling cost, so the
+optimiser cannot trade for free, and round-trip efficiency is split
+symmetrically as the square root per leg.</p>
+
+<h2>Duration value flattens</h2>
+<table>
+<tr><th>Duration</th><th>Net revenue, $/kW-year</th><th>Equivalent cycles</th>
+ <th>Hours at rated output</th></tr>
+<tr><td>2 hours</td><td>98.1</td><td>1,361</td><td>1.85</td></tr>
+<tr><td>4 hours</td><td>107.1</td><td>786</td><td>3.71</td></tr>
+<tr><td>8 hours</td><td>111.0</td><td>424</td><td>7.42</td></tr>
+</table>
+
+<p>Doubling from two hours to four buys about nine per cent more revenue.
+Doubling again from four to eight buys under four. On energy arbitrage alone the
+value of duration flattens hard past four hours, which is the textbook result and
+is now measured rather than asserted. The reason is unglamorous: there are only
+so many hours in a day when the price spread is worth crossing, and a longer
+battery cannot manufacture more of them.</p>
+
+<p>The longer battery also cycles far less, which matters for a warranty
+argument even where it does not matter for revenue. The eight-hour case turns
+over about a third as many equivalent cycles as the two-hour case.</p>
+
+<img class="fig wide" src="assets/storage_fig3_duration_value.png" alt="Revenue against storage duration. The curve bends at about four hours.">
+<p class="small">Revenue against storage duration. The curve bends at about four hours.</p>
+
+<img class="fig wide" src="assets/storage_fig2_dispatch_week.png" alt="A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.">
+<p class="small">A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.</p>
+
+<img class="fig wide" src="assets/storage_fig4_sensitivity.png" alt="Sensitivity to round-trip efficiency and degradation cost.">
+<p class="small">Sensitivity to round-trip efficiency and degradation cost.</p>
+
+<img class="fig wide" src="assets/storage_fig1_prices.png" alt="The price series: duration curve and average daily shape.">
+<p class="small">The price series: duration curve and average daily shape.</p>
+
+
+<h2>Two honest caveats</h2>
+<p>The shipped run uses a documented synthetic price year built to resemble the
+Texas market, with a solar belly, an evening peak, summer scarcity spikes and a
+small fraction of negative hours. It is not real data. The model reads a real
+day-ahead price file automatically as soon as one is placed in its data folder,
+and replacing the series is the first thing to do before quoting any figure.</p>
+
+<p>The dispatch assumes perfect foresight, which is an upper bound rather than
+an estimate. Real bidding into a day-ahead market captures roughly seventy to
+ninety per cent of the perfect-foresight value, so the revenue column above
+should be discounted accordingly.</p>
+
+<p>The Julia port is written with JuMP and HiGHS, which is the stack this class
+of model is actually built on in industry.</p>
+
+<hr>
+<h2>The code</h2>
+<p>Python reference implementation using an open solver, a JuMP and HiGHS port, an Octave port, and the dispatch workbook. The archive holds the source only: no generated figures, no bulk
+data. Each model runs from its own <code>README.md</code>.</p>
+
+<p><a class="btn" href="downloads/storage-code.zip">Download source · 216 KB</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main></body></html>

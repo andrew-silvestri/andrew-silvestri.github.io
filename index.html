@@ -2,17 +2,25 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Andrew Silvestri — energy systems</title>
+<meta name="description" content="Energy systems modelling: techno-economics, optimisation, and a calibrated model of the world energy system.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html" class="on">Home</a><a href="atlas.html">Atlas</a><a href="library.html">Figures</a><a href="model.html">How it works</a></nav>
+<nav class="top"><a href="index.html" class="on">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
+<div id="hero" aria-hidden="true"></div>
+<p class="hero-cap">1,906 of the model's 7,192 nodes, at their recorded
+coordinates.</p>
+
 <h1>Andrew Silvestri</h1>
-<p class="dim">Chemical engineering at UT Austin. Energy systems modelling.
-Currently a general engineering intern at Targa Resources.</p>
+<p class="dim">Chemical engineering at UT Austin. Energy systems modelling.</p>
 
 <p>I build models of energy systems, from the thermodynamics of a single vessel
-up to a model of the world energy system with 7,192 nodes. Everything below ships
+up to a model of the world energy system with 7,192 nodes. Everything here ships
 with its code, its data sources, and its limits written down.</p>
 
 <div class="card">
@@ -25,9 +33,10 @@ record. Apply a change anywhere and watch it move through the system.</p>
 its source.</p>
 <a class="btn" href="atlas.html">Open the atlas</a>
 <a class="btn ghost" href="model.html">How it works</a>
+<a class="btn ghost" href="energy-web.html">How it got there</a>
 </div>
 
-<img class="fig" src="assets/energy_model_chart.png"
+<img class="fig wide" src="assets/energy_model_chart.png"
  alt="Overview chart of the world energy model">
 <p class="small">The model at a glance: what it contains, how it is weighted,
 and how it behaves. <a href="library.html">All figures</a>.</p>
@@ -35,50 +44,72 @@ and how it behaves. <a href="library.html">All figures</a>.</p>
 <hr>
 <h2>Focused models</h2>
 
+<div class="cardgrid">
 <div class="card">
 <div class="tag">Techno-economics</div>
-<h3 style="margin-top:4px">Industrial heat electrification break-even</h3>
+<h3 style="margin-top:4px"><a href="heat.html">Industrial heat electrification
+break-even</a></h3>
 <p>Cost of heat from an electric boiler against a gas boiler in Texas. The gap
 between the fuel prices decides the outcome. Break-even electricity is about
-1.5 cents per kilowatt hour at 3.50 dollar gas. Capital cost moves it very
+1.5 cents per kilowatt hour at $3.50 gas, and capital cost moves it very
 little.</p>
 </div>
-
 <div class="card">
 <div class="tag">Optimisation</div>
-<h3 style="margin-top:4px">Battery revenue simulator</h3>
+<h3 style="margin-top:4px"><a href="storage.html">Battery revenue
+simulator</a></h3>
 <p>Linear program over 8,760 hours. Value flattens above four hours of storage
 duration, which is the expected result, now measured.</p>
 </div>
-
 <div class="card">
 <div class="tag">Chemical engineering</div>
-<h3 style="margin-top:4px">Why our sorbent could not do direct air capture</h3>
+<h3 style="margin-top:4px"><a href="dac.html">Why our sorbent could not do
+direct air capture</a></h3>
 <p>Using the laboratory's own isotherm parameters, the material holds almost
 nothing at 420 parts per million. A negative result, and the reason the project
 changed material.</p>
 </div>
-
 <div class="card">
 <div class="tag">Industry tooling</div>
-<h3 style="margin-top:4px">Pipeline liquid holdup calculator</h3>
+<h3 style="margin-top:4px"><a href="holdup.html">Pipeline liquid holdup
+calculator</a></h3>
 <p>A spreadsheet with 19,653 simulation runs, ported to an interactive tool.
 The port matched the workbook formulas exactly, and showed that the workbook's
 displayed values carried a stale calculation.</p>
 </div>
+<div class="card">
+<div class="tag">Method</div>
+<h3 style="margin-top:4px"><a href="energy-web.html">The world energy web,
+v1 to v5</a></h3>
+<p>Five generations of shock propagation through the global energy system, from
+52,000 nodes to 959,000 and back down to 7,192. The smallest version is the one
+worth trusting, and the page explains why.</p>
+</div>
+</div>
 
 <hr>
-<h2>Earlier generations</h2>
-<p class="small">The world model went through five generations before the
-calibrated build above. The largest ran 959,229 nodes. These explorers are
-self-contained and run in the browser:
-<a href="navigator.html">v4 navigator</a> ·
-<a href="navigator5.html">v5 taxonomy navigator</a> ·
-<a href="zoom_explorer.html">3-D dive explorer</a>.</p>
+<h2>Elsewhere</h2>
+
+<div class="card">
+<div class="tag">Allometry · interactive</div>
+<h3 style="margin-top:4px"><a href="longevity.html">Longevity quotient</a></h3>
+<p>How long an animal lives, against how long an animal of its size should
+live. Body mass predicts lifespan across fourteen orders of magnitude; the
+quotient is what is left once that relationship is divided out. An ocean quahog
+beats its prediction thirty-two-fold, a honey bee worker misses it twentyfold,
+and the queen that shares her genome does not.</p>
+<a class="btn ghost" href="longevity-app.html">Open the visualiser</a>
+</div>
 
 <hr>
-<p class="small">Built with Python, Julia and public data.</p>
+<p class="small">Built with Python, Julia and public data.
+<a href="code.html">All source is downloadable.</a></p>
+
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
-</main></body></html>
+</main>
+<script src="assets/hero-data.js"></script>
+<script src="assets/hero.js"></script>
+<script src="assets/hero-gl.js"></script>
+</body></html>

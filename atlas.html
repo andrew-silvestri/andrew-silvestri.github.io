@@ -2,9 +2,13 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The atlas — world energy model</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#141310">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><a href="atlas.html" class="on">Atlas</a><a href="library.html">Figures</a><a href="model.html">How it works</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html" class="on">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The atlas</h1>
@@ -33,9 +37,26 @@ apply your own change there.</p>
 <tr><td>Demand</td><td>1,142</td><td>Household and industry groups</td></tr>
 <tr><td>Behaviour</td><td>6</td><td>Behaviour channels on Allen Brain Atlas regions</td></tr>
 </table>
-<p class="small">The world layers use a Mercator projection of the country
-polygon set. The climate layer draws the measured series. The behaviour layer is
-a labelled schematic, not a medical image.</p>
+<h2>Why a globe, and why a brain</h2>
+
+<p>Six of the seven layers are drawn on a sphere rather than a flat map, and the
+change is not cosmetic. Mercator inflates Greenland to the size of Africa and
+stretches the high-latitude Russian and Canadian grids into ribbons — which is
+precisely where a good deal of this model's fuel supply lives. On a globe every
+node sits at its true angular position, and a point on the far side is hidden by
+the planet instead of being flung to the edge of a rectangle. The graticule runs
+every thirty degrees so that rotation reads as rotation.</p>
+
+<p>The seventh layer is not a place, so it has no business on a map. Behaviour
+is drawn inside a brain, with the six channels at anatomically defensible
+positions: present bias in the prefrontal cortex, dissonance at the anterior
+cingulate near the midline, the norm channel at the temporo-parietal junction,
+status in the ventral striatum, habit in the basal ganglia, loss aversion in the
+amygdala. The solid itself is generated rather than traced — an ellipsoid given
+a longitudinal fissure and a few folds, with a cerebellum and a stem attached.
+It reads as a brain at a glance and it is not anatomy; the application says so
+on screen. The region names, and which channel sits in which, are the part that
+is real.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
