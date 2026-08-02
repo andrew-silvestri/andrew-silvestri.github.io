@@ -15,7 +15,7 @@
 <p class="dim">How long an animal lives, against how long an animal of its
 size should live.</p>
 
-<p>Body mass predicts lifespan. Across the 417 species in this model — from a
+<p>Body mass predicts lifespan. Across the 7,873 species in this model — from a
 nematode at a microgram to a blue whale at 150 tonnes, twenty orders of
 magnitude of body size — each tenfold increase in mass buys roughly a 1.5-fold
 increase in maximum lifespan. The relationship is strong enough to be worth
@@ -23,6 +23,15 @@ dividing out. What remains when you do is the longevity quotient:</p>
 
 <p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
 lifespan predicted from body mass</code></p>
+
+<img class="fig wide" src="assets/lq_explained.png" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
+<p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out.</p>
+
+<img class="fig wide" src="assets/lq_explained.png" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
+<p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out.</p>
+
+<img class="fig wide" src="assets/lq_explained.png" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
+<p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out.</p>
 
 <p>It is built by analogy with the encephalisation quotient<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, which does the
 same thing to brain size. A quotient of one means an animal lives exactly as
@@ -63,14 +72,14 @@ invertebrate classes are pooled into one baseline, because separately they are
 too thin to fit.</p>
 
 <table>
-<tr><th>Baseline</th><th>Species</th><th>Slope b</th><th>r²</th>
- <th>Predicted at 1 kg</th></tr>
-<tr><td>All animals</td><td>413</td><td>0.182</td><td>0.46</td><td>21.8 yr</td></tr>
-<tr><td>Mammals</td><td>147</td><td>0.146</td><td>0.49</td><td>17.2 yr</td></tr>
-<tr><td>Birds</td><td>89</td><td>0.167</td><td>0.41</td><td>31.0 yr</td></tr>
-<tr><td>Reptiles</td><td>45</td><td>0.158</td><td>0.26</td><td>32.5 yr</td></tr>
-<tr><td>Fish</td><td>46</td><td>0.173</td><td>0.38</td><td>25.3 yr</td></tr>
-<tr><td>Invertebrates</td><td>62</td><td>0.253</td><td>0.43</td><td>23.8 yr</td></tr>
+<tr><th>Baseline</th><th>Species in fit</th><th>Slope b</th><th>r&sup2;</th><th>Predicted at 1 kg</th></tr>
+<tr><td>All animals</td><td>6,398</td><td>0.191</td><td>0.30</td><td>13.8 yr</td></tr>
+<tr><td>Mammals</td><td>2,583</td><td>0.222</td><td>0.37</td><td>9.7 yr</td></tr>
+<tr><td>Birds</td><td>1,883</td><td>0.215</td><td>0.41</td><td>22.3 yr</td></tr>
+<tr><td>Reptiles</td><td>916</td><td>0.214</td><td>0.33</td><td>16.9 yr</td></tr>
+<tr><td>Fish</td><td>876</td><td>0.241</td><td>0.54</td><td>12.7 yr</td></tr>
+<tr><td>Amphibians</td><td colspan="4" class="dim">rejected, falls back to the global baseline</td></tr>
+<tr><td>Invertebrates</td><td>57</td><td>0.256</td><td>0.41</td><td>23.0 yr</td></tr>
 </table>
 
 <p>A fit is only used if it is worth using. The amphibian regression returns an
@@ -159,33 +168,102 @@ build.</p>
 
 <h2>Data</h2>
 
-<p>417 species spanning 10 phyla, 30 classes, 127 orders, 263 families and 387
-genera, each with full taxonomy, adult body mass, wild maximum, captive maximum,
-a quality grade and a note, compiled from the comparative longevity literature<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>. Grades run
-from documented and verified, through defensible literature estimate, to
-uncertain, and each species carries its grade in the visualiser. Disputed
-records are excluded in favour of verified ones: the 226-year koi and the
-120-year cockatoo are both out. The download includes a loader that rebuilds the
-table from <span class="dim">AnAge</span>, the reference comparative longevity
-database of some 4,200 species, along with the reason to merge it rather than
-replace with it — AnAge carries one longevity figure per species and it is
-nearly always the captive one, so a wholesale rebuild gains breadth and loses
-the wild-against-captive comparison this project is built around.</p>
+<p>7,873 species spanning 10 phyla,
+32 classes, 199 orders, 764 families and
+2921 genera. Every record carries full taxonomy, an adult body mass, at
+least one maximum lifespan, a quality grade and its provenance.
+6,387 have a wild maximum, 1,795 a captive maximum, and
+309 have both &mdash; which is the comparison this project was built
+around, and the reason the merge keeps the hand-checked table at the top of the
+precedence order rather than letting a bulk source overwrite it. Most bulk
+sources report a single figure per species without saying which kind it is.</p>
 
-<hr>
-<p class="small">Python, no dependencies for the model. The visualiser is one
-self-contained HTML file. <a href="downloads/longevity-code.zip">Download the
-code and data</a>.</p>
+<p>Disputed records lose to verified ones: the 226-year koi and the 120-year
+cockatoo are both out. Grade C records appear in the table and in the
+visualiser, with their grade shown, but are held out of every regression, so a
+weak record can be looked at without being allowed to move the baseline that
+judges it.</p>
 
+<h2>Where the data comes from</h2>
 
+<p>Six databases carry a maximum lifespan. They overlap heavily and they
+disagree, so a species found in more than one takes its numbers from the best
+source available and records the others as corroboration. Averaging a careful
+record against a careless one produces a number that belongs to neither.</p>
 
+<table>
+<tr><th>Source</th><th>Records with a lifespan</th><th>Used as the record</th>
+ <th>What it is</th></tr>
+<tr><td>Hand-checked seed table</td><td>417</td><td>417</td><td>Records verified one at a time, each with its own citation.</td></tr>
+<tr><td>AnAge build 15<sup class="cite" id="cr5"><a href="#ref5">5</a></sup></td><td>4,141</td><td>3,441</td><td>The curated standard. Carries its own quality grade and a wild versus captive distinction, both of which are honoured rather than overwritten.</td></tr>
+<tr><td>Amniote life-history database<sup class="cite" id="cr6"><a href="#ref6">6</a></sup></td><td>5,500</td><td>2,649</td><td>Birds, mammals and reptiles. A peer-reviewed compilation reporting the median where its own sources disagreed.</td></tr>
+<tr><td>PanTHERIA<sup class="cite" id="cr7"><a href="#ref7">7</a></sup></td><td>1,013</td><td>0</td><td>Mammals. Maximum longevity in months, converted.</td></tr>
+<tr><td>AmphiBIO<sup class="cite" id="cr8"><a href="#ref8">8</a></sup></td><td>359</td><td>116</td><td>Amphibians, which are otherwise almost absent.</td></tr>
+<tr><td>FishBase v25.04<sup class="cite" id="cr9"><a href="#ref9">9</a></sup></td><td>2,088</td><td>1,250</td><td>Fish. Maximum age taken as the largest of three fields that disagree: the curated longevity, the per-population maximum, and the tmax used to fit growth curves. Graded C throughout.</td></tr>
+</table>
 
+<p>Body-mass databases are a separate matter and they are much larger. AVONET<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>
+alone has measured masses for 14,673 species, mostly
+birds. None of them create a record: a species with a mass and no lifespan is
+not an observation of anything this model can use. They only rescue a species
+that has been aged and never weighed, which they did
+524 times.</p>
 
+<p>8,583 distinct species carried a lifespan
+after the merge. 710 of them were dropped for
+having no body mass in any source &mdash; mostly reptiles and amphibians,
+which are routinely measured snout to vent and never put on a scale.
+641 fish were kept with a mass computed
+from maximum length through FishBase's own length&ndash;weight relationship;
+those are modelled, not measured, and are marked and graded accordingly. What
+survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474.</p>
+
+<p class="small">This is the ceiling, and it is worth being clear about why.
+About 2.24 million species have been described. Fewer than nine thousand have
+ever been both aged and weighed, because a maximum lifespan requires somebody
+to have watched an animal until it died. The limit here is not access to data.
+It is that the observations were never made. Wikidata, which is the aggregate
+of individual species pages rather than a compiled table, holds 1,147 taxa with
+a recorded maximum lifespan and 259 with a lifespan and a mass together
+&mdash; less than a twentieth of what the compiled databases give, which is the
+answer to whether scraping species pages one at a time would do better.</p>
+
+<h2>The arithmetic, written out</h2>
+
+<p>One weighted ordinary least squares regression per baseline, of log&#8321;&#8320;
+maximum lifespan in years on log&#8321;&#8320; adult body mass in grams. Weights come
+from the data grade, so a record verified against a named individual counts for
+five times what a compilation estimate counts for. The sample spans
+14.5 orders of magnitude of body mass, from 0 g to
+150,000,000 g.</p>
+
+<pre><code>All animals:    log10 L = +0.565 +0.191 log10 M
+Mammals:        log10 L = +0.320 +0.222 log10 M
+Birds:          log10 L = +0.704 +0.215 log10 M
+Reptiles:       log10 L = +0.585 +0.214 log10 M
+Fish:           log10 L = +0.382 +0.241 log10 M
+Invertebrates:  log10 L = +0.593 +0.256 log10 M
+
+predicted lifespan  =  10 ^ (a + b * log10(mass in grams))
+LQ                  =  observed maximum lifespan / predicted</code></pre>
+
+<p>The sample size quoted for each fit is Kish's effective sample size,
+(&Sigma;w)&sup2; / &Sigma;w&sup2;, not the raw count. A thousand records at a fifth
+weight do not carry the information of a thousand records at full weight, and
+quoting the raw number would overstate the fit's authority by about a
+factor of two.</p>
+
+<p>The slope is the interesting parameter. At 0.191 it says a tenfold
+increase in mass buys a 1.55-fold increase in maximum lifespan
+&mdash; lifespan goes roughly as the 5th root of mass. This is
+why the prediction is so hard to escape by growing: an animal a thousand times
+heavier than another is predicted to live only about
+3.8 times longer.</p>
 
 
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
-<ol class="refs"><li id="ref1"><span class="src">Jerison, <i>Evolution of the Brain and Intelligence</i>, Academic Press, 1973.</span><span class="what">The quotient construction this model borrows.</span></li><li id="ref2"><span class="src">Wilkinson &amp; Adams, <i>Biology Letters</i>, 2019 - recent advances in the biology of bat ageing.</span><span class="what">Why flight and longevity travel together.</span></li><li id="ref3"><span class="src">Nielsen <i>et al.</i>, <i>Science</i> 353:702, 2016 (Greenland shark, eye-lens radiocarbon); Cailliet <i>et al.</i>, <i>Experimental Gerontology</i> 36:739, 2001 (rockfish otolith ageing).</span><span class="what">The extreme fish lifespans, and the dating methods behind them.</span></li><li id="ref4"><span class="src">Butler <i>et al.</i>, <i>Palaeogeography, Palaeoclimatology, Palaeoecology</i>, 2013 - the 507-year <i>Arctica islandica</i>.</span><span class="what">The longest-lived non-colonial animal recorded.</span></li><li id="ref5"><span class="src">Tacutu <i>et al.</i>, <i>Nucleic Acids Research</i> 46:D1083, 2018 - the AnAge database of animal ageing and longevity.</span><span class="what">Maximum lifespan and adult body mass for most species in the table.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">Jerison, <i>Evolution of the Brain and Intelligence</i>, Academic Press, 1973.</span><span class="what">The quotient construction this model borrows.</span></li><li id="ref2"><span class="src">Wilkinson &amp; Adams, <i>Biology Letters</i>, 2019 - recent advances in the biology of bat ageing.</span><span class="what">Why flight and longevity travel together.</span></li><li id="ref3"><span class="src">Nielsen <i>et al.</i>, <i>Science</i> 353:702, 2016 (Greenland shark, eye-lens radiocarbon); Cailliet <i>et al.</i>, <i>Experimental Gerontology</i> 36:739, 2001 (rockfish otolith ageing).</span><span class="what">The extreme fish lifespans, and the dating methods behind them.</span></li><li id="ref4"><span class="src">Butler <i>et al.</i>, <i>Palaeogeography, Palaeoclimatology, Palaeoecology</i>, 2013 - the 507-year <i>Arctica islandica</i>.</span><span class="what">The longest-lived non-colonial animal recorded.</span></li><li id="ref5"><span class="src">Tacutu <i>et al.</i>, <i>Nucleic Acids Research</i> 46:D1083, 2018 - the AnAge database of animal ageing and longevity.</span><span class="what">Maximum lifespan and adult body mass for most species in the table.</span></li><li id="ref6"><span class="src">Myhrvold <i>et al.</i>, <i>Ecology</i> 96:3109, 2015 - an amniote life-history database for comparative analyses with birds, mammals and reptiles.</span><span class="what">Lifespan and body mass for most birds, mammals and reptiles here.</span></li><li id="ref7"><span class="src">Jones <i>et al.</i>, <i>Ecology</i> 90:2648, 2009 - PanTHERIA, a species-level database of life history, ecology and geography of extant and recently extinct mammals.</span><span class="what">Mammalian maximum longevity and adult body mass.</span></li><li id="ref8"><span class="src">Oliveira <i>et al.</i>, <i>Scientific Data</i> 4:170123, 2017 - AmphiBIO, a global database for amphibian ecological traits.</span><span class="what">Amphibian longevity and body mass.</span></li><li id="ref9"><span class="src">Froese &amp; Pauly (eds.), <i>FishBase</i>, v25.04 snapshot, distributed as parquet by rOpenSci. CC BY-NC.</span><span class="what">Maximum age and weight for fish, graded C throughout.</span></li><li id="ref10"><span class="src">Tobias <i>et al.</i>, <i>Ecology Letters</i> 25:581, 2022 - AVONET, morphological, ecological and geographical data for all birds.</span><span class="what">Body mass used only to fill gaps for birds already aged.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
