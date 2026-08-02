@@ -253,8 +253,13 @@
           fpos[w + 3] = jump ? hist[a] : hist[b];
           fpos[w + 4] = jump ? hist[a + 1] : hist[b + 1];
           fpos[w + 5] = jump ? hist[a + 2] : hist[b + 2];
-          var g1 = 0.62 * env * far, g2 = 0.62 * env * far * 0.75;
-          /* sky blue, #65B2CC */
+          /* Sky blue, #65B2CC. Under additive blending the red
+             channel is the first to reach 1 where trails overlap,
+             so a bright sky blue stacks into white exactly where
+             the trails are densest. The brightness is held low
+             enough that the hue survives the overlap; the weight
+             comes from the number of trails, not from each one. */
+          var g1 = 0.34 * env * far, g2 = 0.34 * env * far * 0.75;
           fcol[w] = g1 * 0.396; fcol[w + 1] = g1 * 0.698; fcol[w + 2] = g1 * 0.800;
           fcol[w + 3] = g2 * 0.396; fcol[w + 4] = g2 * 0.698; fcol[w + 5] = g2 * 0.800;
           w += 6;

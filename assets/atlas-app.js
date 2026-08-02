@@ -746,7 +746,7 @@
     var pos = [], col = [];
     var seen = {}, frontier = [[root, 1.0]], HOPS = 3, CAP = 900;
     seen[root] = 1;
-    var acc = new THREE.Color(css('--acc') || '#8b7ff2');
+    var acc = new THREE.Color('#65b2cc');   /* sky blue */
     for (var h = 0; h < HOPS && frontier.length && pos.length < CAP * 6; h++) {
       var next = [];
       for (var f = 0; f < frontier.length; f++) {
@@ -761,8 +761,13 @@
           var pa = onGlobe(a), pb = onGlobe(b);
           if (!pa || !pb) continue;
           pos.push(pa.x, pa.y, pa.z, pb.x, pb.y, pb.z);
-          col.push(acc.r * s2 * 2, acc.g * s2 * 2, acc.b * s2 * 2,
-                   acc.r * s2, acc.g * s2, acc.b * s2);
+          /* the web is read against a dark globe, so it is drawn
+             additively and floored so a weak strand is still a
+             visible strand rather than a smudge */
+          var b1 = Math.min(1, 0.30 + s2 * 2.4);
+          var b2 = Math.min(1, 0.20 + s2 * 1.6);
+          col.push(acc.r * b1, acc.g * b1, acc.b * b1,
+                   acc.r * b2, acc.g * b2, acc.b * b2);
           next.push([b, s2]);
           if (pos.length > CAP * 6) break;
         }
@@ -774,8 +779,8 @@
     g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
     g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
     webLine = new THREE.LineSegments(g, new THREE.LineBasicMaterial({
-      vertexColors: true, transparent: true, opacity: 0.75,
-      depthWrite: false }));
+      vertexColors: true, transparent: true, opacity: 1.0,
+      blending: THREE.AdditiveBlending, depthWrite: false }));
     globeGrp.add(webLine);
   }
 

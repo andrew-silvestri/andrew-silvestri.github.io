@@ -105,19 +105,21 @@ nav.top a {
   transition: color .18s, border-color .18s;
 }
 nav.top a:hover { color: var(--ink); }
-nav.top a.on {
+/* Every item carries the same padding, so the block sits square on its own
+   text and nothing shifts when an item becomes current. The current item is a
+   filled block, never a rule: the underline is removed explicitly rather than
+   left to the transparent border, so no other rule can bring it back. */
+nav.top a { padding: 3px 8px; margin-right: 14px; }
+nav.top a.on,
+nav.top a[aria-current="page"] {
   color: var(--acc-ink);
   background: var(--acc);
-  border-bottom-color: transparent;
   font-weight: 600;
-  /* The block is padded on both sides, so it must not also be pulled left by
-     the padding: that put the highlight 8px off its own text. Every item
-     carries the padding instead, so nothing shifts when one becomes current. */
   border-radius: 2px;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
+  box-shadow: none;
 }
-nav.top a { padding: 3px 8px; margin-right: 14px; }
-/* the row now carries 8px of padding on its first item, so pull the row back
-   by the same amount and the nav text stays flush with the page text */
 nav.top { margin-left: -8px; }
 .ddmenu a.on { color: var(--acc-ink); background: var(--acc); }
 
