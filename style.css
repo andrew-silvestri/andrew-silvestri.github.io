@@ -106,9 +106,20 @@ nav.top a {
 }
 nav.top a:hover { color: var(--ink); }
 nav.top a.on {
-  color: var(--ink);
-  border-bottom-color: var(--acc);
+  color: var(--acc-ink);
+  background: var(--acc);
+  border-bottom-color: transparent;
+  font-weight: 600;
+  /* The block is padded on both sides, so it must not also be pulled left by
+     the padding: that put the highlight 8px off its own text. Every item
+     carries the padding instead, so nothing shifts when one becomes current. */
+  border-radius: 2px;
 }
+nav.top a { padding: 3px 8px; margin-right: 14px; }
+/* the row now carries 8px of padding on its first item, so pull the row back
+   by the same amount and the nav text stays flush with the page text */
+nav.top { margin-left: -8px; }
+.ddmenu a.on { color: var(--acc-ink); background: var(--acc); }
 
 /* a small back link, top right of the nav. It prefers the referrer when that
    was a page on this site, so it returns you where you came from rather than
@@ -318,7 +329,9 @@ img.fig {
   position: relative;
   width: 100%;
   height: clamp(320px, 46vh, 560px);
-  margin: 18px 0 6px;
+  /* The h1 sits directly under the globe and needs air, or the name reads
+     as a caption on the image rather than the top of the page. */
+  margin: 18px 0 30px;
   border-radius: 2px;
   overflow: hidden;
   background: radial-gradient(circle at 50% 46%, #0a1024 0%, #05070f 72%);

@@ -43,19 +43,19 @@ drawn by hand.</p>
 <div class="tag">seaborn histogram and matplotlib bar</div>
 <h3 style="margin-top:4px">The structure of the links between nodes</h3>
 <img class="fig wide" src="assets/05_link_structure.png" alt="The structure of the links between nodes">
-<p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 13,826 links in total, of which 1,142 are negative. A negative link carries relief rather than stress.</p>
+<p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 197,068 links in total, of which 1,144 are negative. A negative link carries relief rather than stress.</p>
 
 </div><div class="card">
 <div class="tag">seaborn heat map with annotations</div>
-<h3 style="margin-top:4px">Where each change lands, by node type</h3>
-<img class="fig wide" src="assets/06_scenario_reach.png" alt="Where each change lands, by node type">
-<p>Each row is one change applied to the model. Each column is a type of node. The number is the average effect on the nodes of that type that changed. An empty cell means the change did not reach that type. The climate change reaches the widest set of types, because the climate connects to every country. A single national change stays close to its own country.</p>
+<h3 style="margin-top:4px">How far one change travels, by the layer it starts in</h3>
+<img class="fig wide" src="assets/06_scenario_reach.png" alt="How far one change travels, by the layer it starts in">
+<p>Each bar is a change applied to the most connected node in one layer, and its length is the number of other nodes that finished more than 0.02 away from where they started. The axis is logarithmic because the answers span five orders of magnitude: a change at the most connected power plant in the world moves one other node, and a change at the climate moves seventy-eight thousand. The climate is the only node in the model that connects to every country. The spread is the evidence that the propagation discriminates rather than floods.</p>
 
 </div><div class="card">
-<div class="tag">seaborn strip plot with median markers</div>
-<h3 style="margin-top:4px">Order of arrival after a large oil supply loss</h3>
-<img class="fig wide" src="assets/07_arrival_order.png" alt="Order of arrival after a large oil supply loss">
-<p>Each dot is one node that changed. Its position shows the step at which it first moved. The black bar marks the middle value for that type. Prices move first, in one step. Fuel supplies follow, then grids, then districts, then consumers. The market signal travels before the physical effect, which is the expected order.</p>
+<div class="tag">matplotlib, logarithmic count axis</div>
+<h3 style="margin-top:4px">When the effect arrives</h3>
+<img class="fig wide" src="assets/07_arrival_order.png" alt="When the effect arrives, by the layer the change starts in">
+<p>One line per starting layer. Each point counts the nodes reached for the first time at that step, so the area under a line is that layer&rsquo;s total reach. A grid delivers almost everything it is going to deliver in the first two steps, because its plants and districts are its immediate neighbours. A price works through the fuel supplies and the grids behind them and is still reaching new nodes twenty steps later. Physical coupling is fast and shallow; market coupling is slow and deep.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>
@@ -88,6 +88,12 @@ drawn by hand.</p>
 <p>The left panel adds the adjusted damage of every energy relevant disaster in each decade, and separates the total by disaster type. The right panel names the twelve costliest single events. These records come from the international disaster database. In the model, each event is a node. The recorded damage sets the strength of the link from that event to the national grid of the country it struck.</p>
 
 </div><div class="card">
+<div class="tag">matplotlib, computed field and measured series</div>
+<h3 style="margin-top:4px">The space layer</h3>
+<img class="fig wide" src="assets/14_space_layer.png" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
+<p>On the left, the annual mean sunlight arriving above the atmosphere at each latitude. This is not data. It is computed from the measured solar constant, the obliquity of 23.44 degrees and the eccentricity of the orbit, integrated over 365 days. The dashed line is the solar constant divided by four, which is what the area-weighted mean of the curve has to equal &mdash; the disc the Earth intercepts over the sphere it radiates from. It agrees to one part in ten thousand, which is the check that the integration is right rather than merely plausible. The equator receives 416 W/m&sup2; and the poles about 174.</p>
+<p>On the right, the measured total solar irradiance, NRLTSI2, with its stated uncertainty as the shaded band. Four solar cycles are visible. The whole vertical range of the panel is two watts in thirteen hundred and sixty, which is the honest scale of the thing the solar minimum scenario perturbs.</p>
+
 <div class="tag">matplotlib, horizontal bar, log scale</div>
 <h3 style="margin-top:4px">Every node names its source</h3>
 <img class="fig wide" src="assets/13_provenance.png" alt="Every node names its source">

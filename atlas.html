@@ -12,77 +12,202 @@
 <main>
 
 <h1>The atlas</h1>
-<p class="dim">Seven layers of one model. 109,296 nodes and 74,155 weighted links.</p>
+<p class="dim">86,622 nodes and 197,068 weighted links, each carrying a
+parameter from a public data set.</p>
 
-<p><a class="btn" href="atlas-app.html" target="_blank" rel="noopener">Open the atlas full screen</a></p>
+<p>The atlas is the world energy system drawn as a graph and made to move.
+Every node holds one measured quantity and names where it came from. Apply a
+change anywhere and the effect propagates along the links until it settles,
+which takes between twenty and fifty steps.</p>
 
-<p>The atlas runs entirely in the browser. Choose a scenario and press Run. The
-side panel reports how many nodes changed, how many steps the model needed to
-settle, and the largest single effect. The counts on the tabs show where the
-change landed in the other layers. Click any node to read its data source and
-apply a change there.</p>
 
-<iframe src="atlas-app.html" title="The world energy model atlas"
- style="width:100%;height:760px;border:1px solid var(--faint);border-radius:8px;
- margin:16px 0" loading="lazy"></iframe>
 
-<h2>The seven layers</h2>
+<h2>The nine layers</h2>
+
 <table><tr><th>Layer</th><th class="n">Nodes</th><th>Contents</th></tr>
-<tr><td>Climate</td><td class="n">2</td><td>The measured carbon dioxide curve</td></tr>
-<tr><td>Events</td><td class="n">30,850</td><td>Earthquakes of magnitude 5.5 and above since 1960, and the earlier disaster set</td></tr>
+<tr><td>Space</td><td class="n">19</td><td>The measured solar constant, and the annual mean insolation above the atmosphere at each band of latitude, computed from orbital geometry</td></tr>
+<tr><td>Weather</td><td class="n">2</td><td>El Nino / La Nina and the North Atlantic Oscillation, from their measured index series</td></tr>
+<tr><td>Climate</td><td class="n">2</td><td>Carbon dioxide and the global temperature anomaly, both global series shown at Mauna Loa, where the record is kept</td></tr>
+<tr><td>Events</td><td class="n">9,259</td><td>Earthquakes of magnitude 5.5 and above since 1960 that reach infrastructure, and the earlier disaster set</td></tr>
 <tr><td>Markets and fuel</td><td class="n">3,627</td><td>Price benchmarks, national fuel supplies, and every port in the World Port Index</td></tr>
-<tr><td>Grids</td><td class="n">4,650</td><td>National grids and first-level administrative districts</td></tr>
+<tr><td>Grids</td><td class="n">3,546</td><td>National grids and first-level administrative districts at their settlement centroid</td></tr>
 <tr><td>Power plants</td><td class="n">34,936</td><td>Every unit in the world database, 167 countries</td></tr>
 <tr><td>Demand</td><td class="n">35,207</td><td>Every settlement above fifteen thousand people</td></tr>
-<tr><td>Behaviour</td><td class="n">24</td><td>24 behavioural channels, inside 840 drawn brain structures</td></tr>
+<tr><td>Behaviour</td><td class="n">24</td><td>Behavioural channels, inside 840 drawn brain structures, fed by every district with a measured population</td></tr>
 </table>
-<h2>Why a globe, and why a brain</h2>
 
-<p>Six of the seven layers are drawn on a sphere rather than a flat map. Mercator
-inflates Greenland to the size of Africa and stretches the high-latitude Russian
-and Canadian grids into ribbons. A good deal of this model's fuel supply lives
-at those latitudes. On a globe every node sits at its true angular position, and
-a point on the far side is hidden by the planet instead of being flung to the
-edge of a rectangle. The graticule runs every thirty degrees so that rotation
-reads as rotation.</p>
+<p>Seven of the nine layers are drawn on a sphere. Mercator inflates Greenland
+to the size of Africa and stretches the high-latitude Russian and Canadian
+grids into ribbons, which is where a good deal of this system's fuel lives. On
+a globe every node sits at its true angular position and a point on the far
+side is hidden by the planet rather than flung to the edge of a rectangle.</p>
 
-<p>The seventh layer is not a place, so it has no business on a map. Behaviour
-is drawn inside a brain, with the six channels at anatomically defensible
-positions: present bias in the prefrontal cortex, dissonance at the anterior
-cingulate near the midline, the norm channel at the temporo-parietal junction,
-status in the ventral striatum, habit in the basal ganglia, loss aversion in the
-amygdala. The solid is generated rather than traced, an ellipsoid given a
-longitudinal fissure and a few folds, with a cerebellum and a stem attached. It
-reads as a brain at a glance and it is not anatomy. The application says so on
-screen. The region names, and which channel sits in which, are real.</p>
+<p>The space layer is drawn standing off the surface, because the sun is not
+on the Earth and neither is the sunlight arriving above the atmosphere.</p>
 
-<h2>Anatomy and behaviour</h2>
+<p>The last layer is not a place. Behaviour is drawn inside a brain, with
+24 channels at anatomically defensible positions among 840 named
+structures of the Allen Mouse Brain Common Coordinate Framework. The
+structures are scenery: they carry no weight, no link and no channel, and they
+are held outside the node arrays so that nothing can mistake them for part of
+the model. The channels carry weight and wire into demand.</p>
 
-<p>The behaviour layer holds 24 channels, and that number is
-not going up. It is roughly the inventory of distinct, named mechanisms from
-behavioural economics and decision neuroscience that bear on how energy gets
-used. Filling a brain with two hundred of them would mean inventing mechanisms
-to occupy anatomy.</p>
+<h2>What a run does</h2>
 
-<p>So the anatomy is drawn separately. 840 named structures of
-the Allen Mouse Brain Common Coordinate Framework sit inside the shell at the
-centre of mass the atlas publishes for each one, rescaled but not otherwise
-moved. They carry no weight, no edge and no channel, and they are held outside
-the node arrays entirely, so nothing can mistake scenery for part of the model.
-The 24 channels that do carry weight sit among them and wire
-into demand.</p>
+<p>Select a scenario or click any node and push on it. Each node takes the
+mean of what its neighbours are carrying, damped by its own resilience, bounded
+by a hyperbolic tangent so that nothing runs away, and the source is held at
+the value it was pushed to. The run repeats until the largest remaining
+movement falls below a threshold, which takes between twenty and fifty steps.
+Nodes the run moved pulse, with the depth of the pulse scaling with the size of
+the effect. Clicking a node draws its web of influence three hops deep.</p>
+
+<p>The mean rather than the sum is the load-bearing choice. A national grid
+carries thousands of plants, and a node that added what its drivers were
+carrying would multiply a change by its own degree rather than distribute it.
+Each link is also divided by the number of links reaching that node from the
+same layer, so a layer speaks once however many members it has.</p>
+
+<p>Most links carry in both directions: a grid outage reaches the plants that
+feed it as well as the cities below it. Links out of the climate and event
+layers carry one way only, because an earthquake acts on a grid and no grid
+causes an earthquake.</p>
+
+<p>What the model says for the nine prepared changes:</p>
+
+<table>
+<tr><th>Change applied</th><th class="n">Nodes moved</th><th class="n">Steps to settle</th></tr>
+<tr><td>Climate forcing</td><td class="n">77,563</td><td class="n">43</td></tr>
+<tr><td>Strong El Ni&ntilde;o</td><td class="n">77,256</td><td class="n">42</td></tr>
+<tr><td>United States grid stress</td><td class="n">13,969</td><td class="n">17</td></tr>
+<tr><td>Solar minimum</td><td class="n">8,934</td><td class="n">28</td></tr>
+<tr><td>China coal supply cut</td><td class="n">4,637</td><td class="n">25</td></tr>
+<tr><td>Negative winter NAO</td><td class="n">3,963</td><td class="n">17</td></tr>
+<tr><td>Gas price spike</td><td class="n">3,322</td><td class="n">38</td></tr>
+<tr><td>Large oil supply loss</td><td class="n">2,683</td><td class="n">24</td></tr>
+<tr><td>Conservation wave</td><td class="n">231</td><td class="n">21</td></tr>
+</table>
+
+<p>Reach spans five orders of magnitude, and starting at the most connected
+power plant in the world moves one other node. That spread is the point. A
+model that answers the same number to every question is not answering.</p>
+
+<h2>What is above the climate</h2>
+
+<p>The sun is measured. The solar constant here is the NRLTSI2 composite,
+1362.00 W/m&sup2; in 2023, with a stated uncertainty of 0.61. Across a solar
+cycle it moves by about one part in fifteen hundred, which is the size of the
+change the solar minimum scenario applies.</p>
+
+<p>The insolation bands are not measured, and they are not estimated either.
+The annual mean sunlight arriving above the atmosphere at a given latitude is
+orbital geometry, and it is computed here from the measured solar constant,
+the obliquity and the eccentricity. The check that it is right is that the
+area-weighted global mean of the computed field has to equal the solar constant
+divided by four, the ratio of the disc the Earth intercepts to the sphere it
+radiates from. It does, to one part in ten thousand.</p>
+
+<p>Each band reaches the national grids at its latitude, weighted by the share
+of that country's generating capacity that is solar, measured from the plant
+layer. Ninety-one countries have a solar fleet large enough to record. The rest
+get no link, because a country with no solar plants has no exposure to the
+sunlight for the model to carry.</p>
+
+<h2>Weather</h2>
+
+<p>Two modes of year-to-year variability carry their own measured index
+series. El Ni&ntilde;o and La Ni&ntilde;a enter as the Oceanic Ni&ntilde;o
+Index, 917 overlapping seasons since 1950. The North Atlantic Oscillation
+enters as the standardised station-based index, 917 months over the same
+period.</p>
+
+<p>The ENSO weight was not chosen. Regressing the global temperature anomaly
+on the annual ONI over 1950 to 2025 gives a correlation of 0.44, significant
+at better than one in a thousand, and a slope of 0.068 &deg;C of global anomaly
+per degree of ONI. The correlation on the raw series is 0.10, because the
+temperature carries a strong trend and the ONI does not, so most of what a raw
+correlation measures is the trend. A quadratic in time is removed from the
+temperature first. The 0.44 is the link weight.</p>
+
+<p>The NAO reaches two countries. Winter NAO and winter electricity demand in
+Great Britain are anti-correlated at &minus;0.67, which is a published,
+quantified relationship, and there is an equivalent study for Ireland. A
+negative NAO winter is cold and calm: demand rises and the wind does not blow.
+That is the link. The NAO plainly affects more of Europe than two islands, but
+a weight is a number, and for the rest of the continent I did not have one I
+could cite, so those links are not drawn. The layer is deliberately smaller
+than the physics.</p>
+
+<p>One correction worth stating, since it is the usual explanation for why
+Ireland is habitable at the latitude of Labrador. It is mostly not the Gulf
+Stream. Seager and colleagues took the ocean heat transport out of an
+atmospheric model and the winter contrast across the North Atlantic barely
+moved; the warmth is carried by the prevailing south-westerlies, by the
+seasonal release of heat the ocean absorbed in summer, and by the standing wave
+the Rocky Mountains impose on the flow. The ocean stores and releases; the
+atmosphere is what carries.</p>
+
+<h2>The behaviour layer</h2>
+
+<p>Behaviour is wired in both directions: the channels reach the consumer
+groups, and every district that resolves to a real administrative division
+reaches the channels.</p>
+
+<p>Each of those 2,761 districts carries the population GeoNames records inside
+it and the concentration of that population, a Herfindahl index over its
+settlements: 1.0 means a single city holds everyone, and small means the
+population is spread across many towns. Kerala comes out at 0.012 and Bulawayo
+at 1.000, which is what those two places look like. Districts are joined to the
+settlement data on their administrative code, so the join is exact rather than
+a spatial guess.</p>
+
+<p>The concentration is the weight of the link from a district into the
+behaviour layer. That the measurement is real does not make the direction real:
+that a more concentrated population couples more strongly to shared behaviour
+is a hypothesis, and it is marked assumed rather than measured.</p>
+
+<p>The behaviour tab switches between the brain and the map, because the two
+things worth seeing are the channels and the places feeding them.</p>
+
+<p>What is deliberately absent: there is no weighting of a district by the
+values of the people in it. The World Values Survey measures its two dimensions
+at national level for about 120 countries, subnational data exists for a
+handful, and nothing exists at the resolution of a state or a congressional
+district. Putting a value set on a district would mean spreading a national
+average across geography and calling the result a measurement. The
+concentration figure is a population statistic and says nothing about anyone's
+politics.</p>
+
+<h2>Connectivity</h2>
+
+<p>87 of the 86,622 nodes have no link to anything, which is
+0.10 per cent. The figure is checked on every build, because an isolated
+node is a node the model cannot answer any question about.</p>
+
+<p>An earthquake with nothing inside its felt radius is not added at all. Such
+a record is real and it affects nothing, and keeping it would make the layer
+look full while leaving most of it inert.</p>
 
 <h2>Reading a dense scene</h2>
 
-<p>Twenty-four thousand points is more than anyone can take in at once, so the
-sidebar carries a threshold that hides everything below a chosen weight.
-Weight is generating capacity for a power plant and resilience for everything
-else, which is the quantity the propagation engine already uses. At thirty per cent the scene falls to about fifteen thousand nodes, at sixty to
-under seven hundred, and at eighty-five to the few dozen largest objects in the
-system.</p>
+<p>86,622 points is more than anyone can take in at once, so the sidebar carries
+a threshold that hides everything below a chosen weight. Weight is generating
+capacity for a power plant and resilience for everything else, which is the
+quantity the propagation already uses. Hidden nodes still take part in a run.
+The threshold changes the view, not the answer.</p>
 
-<p>Hidden nodes still take part in the run. The threshold changes the view, not
-the answer.</p>
+<h2>Limits</h2>
+
+<p>Coverage follows the source databases rather than reality. Wikidata and the
+World Resources Institute are better on countries that publish in English, so
+a thin layer over a region is a statement about record-keeping and not about
+the region.</p>
+
+<p>The propagation is a relaxation on a weighted graph, not a power flow. It
+answers what is connected to what and how strongly, and it does not solve
+Kirchhoff's laws, clear a market or respect a transmission constraint. The
+link weights are calibrated against replayed historical events to within about
+a factor of two, and that band is quoted rather than hidden.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>

@@ -5,7 +5,7 @@
  * instead of dots. The front one is cleared and redrawn, so coastlines and
  * nodes stay crisp instead of smearing into the trails.
  *
- * Everything drawn is real: coastlines from the country polygon set, and 1,906
+ * Everything drawn is real: coastlines from the country polygon set, and the
  * of the model's 7,192 nodes at their recorded coordinates. Nothing is placed
  * for looks.
  *
@@ -42,7 +42,10 @@
     district: [ 92, 106, 140],
     consumer: [139, 147, 176],
     market:   [207, 214, 240],
-    climate:  [207, 214, 240]
+    climate:  [207, 214, 240],
+    sun:        [242, 217, 139],
+    insolation: [232, 201, 143],
+    weather:    [ 79, 157, 132]
   };
   var kindColor = D.kinds.map(function (k) {
     return COLOR[k] || [160, 160, 160];
@@ -139,7 +142,7 @@
     fc.fillStyle = 'rgba(0,0,0,0.032)';
     fc.fillRect(0, 0, W, H);
     fc.globalCompositeOperation = 'source-over';
-    fc.lineWidth = 0.85;
+    fc.lineWidth = 1.9;
     fc.lineCap = 'round';
 
     for (var i = 0; i < N; i++) {
@@ -160,9 +163,9 @@
         var limb = Math.min(1, p0[2] * 2.4);
         var a = age[i] / life[i];
         var envelope = Math.sin(Math.PI * Math.min(a, 1));
-        var alpha = 0.60 * limb * envelope;
+        var alpha = 0.78 * limb * envelope;
         if (alpha > 0.004) {
-          fc.strokeStyle = 'rgba(222,232,252,' + alpha.toFixed(3) + ')';
+          fc.strokeStyle = 'rgba(101,178,204,' + alpha.toFixed(3) + ')';
           fc.beginPath();
           fc.moveTo(p0[0], p0[1]);
           fc.lineTo(p1[0], p1[1]);

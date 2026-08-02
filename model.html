@@ -12,10 +12,9 @@
 <main>
 <h1>The World Energy Model: Structure, Weights, and Behaviour</h1>
 
-<p><strong>Andrew Silvestri — July 2026</strong></p>
 
-<p>This report describes a model of the world energy system. The model has 7,192
-nodes and 13,826 weighted links. It shows how a change at one point in the
+<p>This report describes a model of the world energy system. The model has 86,622
+nodes and 197,068 weighted links. It shows how a change at one point in the
 system travels to every other point.</p>
 
 <hr>
@@ -40,16 +39,16 @@ at every other node.</p>
 
 <table>
 <tr><th>Node type</th><th>Count</th><th>What one node is</th></tr>
-<tr><td>Power station</td><td>4,000</td><td>One real United States plant, with its coordinates</td></tr>
-<tr><td>Consumer group</td><td>1,142</td><td>Households or industry in one district</td></tr>
+<tr><td>Power station</td><td>34,936</td><td>One real United States plant, with its coordinates</td></tr>
+<tr><td>Consumer group</td><td>35,207</td><td>Households or industry in one district</td></tr>
 <tr><td>Fuel supply</td><td>725</td><td>One fuel in one country</td></tr>
 <tr><td>District</td><td>571</td><td>One part of a national grid</td></tr>
-<tr><td>Historical event</td><td>526</td><td>One recorded disaster, with its real damage cost</td></tr>
-<tr><td>National grid</td><td>214</td><td>The power system of one country</td></tr>
+<tr><td>Historical event</td><td>9,259</td><td>One recorded disaster, with its real damage cost</td></tr>
+<tr><td>National grid</td><td>3,546</td><td>The power system of one country</td></tr>
 <tr><td>Price benchmark</td><td>6</td><td>One traded price, such as Brent crude</td></tr>
 <tr><td>Behaviour channel</td><td>6</td><td>One psychological effect on demand</td></tr>
 <tr><td>Climate system</td><td>2</td><td>Carbon dioxide level and temperature anomaly</td></tr>
-<tr><td>**Total**</td><td>**7,192**</td><td></td></tr>
+<tr><td>**Total**</td><td>**86,622**</td><td></td></tr>
 </table>
 
 <hr>
@@ -67,6 +66,10 @@ at every other node.</p>
 <tr><td>EM-DAT</td><td>Recorded disasters with damage costs</td><td>27,727 events; 14,057 energy-relevant</td></tr>
 <tr><td>NOAA Mauna Loa</td><td>Carbon dioxide level</td><td>820 months</td></tr>
 <tr><td>NASA GISTEMP</td><td>Global temperature anomaly</td><td>146 years</td></tr>
+<tr><td>LASP LISIRD, NRLTSI2</td><td>Total solar irradiance, the solar constant the space layer runs on</td><td>44 years, with uncertainties</td></tr>
+<tr><td>NOAA CPC, Oceanic Ni&ntilde;o Index</td><td>El Ni&ntilde;o and La Ni&ntilde;a</td><td>917 overlapping seasons, 1950 on</td></tr>
+<tr><td>NOAA CPC, standardised NAO</td><td>The North Atlantic Oscillation</td><td>917 months, 1950 on</td></tr>
+<tr><td>Orbital geometry</td><td>Annual mean insolation by latitude. Computed, not measured, and checked against S<sub>0</sub>/4</td><td>18 bands</td></tr>
 <tr><td>Allen Brain Atlas</td><td>Brain structures for the behaviour nodes</td><td>6 channels matched</td></tr>
 <tr><td>FAOSTAT</td><td>Nitrogen fertilizer use</td><td>12,734 area-years</td></tr>
 </table>
@@ -83,47 +86,63 @@ model, and they are marked as assumed in the provenance report.</p>
 
 <h3>4.1 The state of a node</h3>
 
-<p>Each node holds one number. This number is the <strong>effect</strong>. An
-effect of 0 means no change. A positive effect means more stress or a higher
-price. A negative effect means relief or a lower price. The effect stays between
--1 and +1.</p>
+<p>Each node holds one number. This number is the effect. An effect of 0 means
+no change. A positive effect means more stress or a higher price. A negative
+effect means relief or a lower price. The effect stays between -1 and +1.</p>
 
-<h3>4.2 The calculation</h3>
+<h3>4.2 Which way a link carries</h3>
+
+<p>Most couplings in this system run both ways. A grid and the plants feeding
+it move together, and so do a price benchmark and the supplies priced against
+it. Two layers are different. An earthquake acts on a grid and no grid causes
+an earthquake, and the same holds for the climate.</p>
+
+<p>So the layers carry a rank: climate 0, events 1, everything else 2. A link
+between equal ranks carries in both directions. A link that crosses a rank
+carries one way only, from the lower rank to the higher. The exogenous layers
+drive and are not driven.</p>
+
+<h3>4.3 How a node weighs its drivers</h3>
+
+<p>Each link is divided by the number of links arriving at the same node from
+the same layer. A layer therefore speaks once however many members it has, and
+the members split that one voice between them. What remains is divided by the
+node's total incoming weight, so a node's inflow is the weighted mean of what
+its drivers are carrying.</p>
+
+<p>The mean rather than the sum is the load-bearing choice. A national grid
+carries thousands of plants, and a node that added what its drivers carried
+would multiply a change by its own degree instead of distributing it.</p>
+
+<h3>4.4 The calculation</h3>
 
 <p>The model repeats these steps until the numbers stop moving:</p>
 
 <ol>
-<li>For each node, add the effects that arrive along its incoming links,
-multiplying each arriving effect by the weight of its link. This total is the
-<strong>inflow</strong>.</li>
-<li>Multiply the inflow by (1 − inertia) for that node.</li>
+<li>For each node, take the weighted mean of the effects arriving along its
+links, using the coefficients from 4.3.</li>
+<li>Multiply that inflow by (1 &minus; inertia) for that node.</li>
 <li>Add the applied change at that node, if any.</li>
 <li>Apply the tanh function. This keeps the result between -1 and +1.</li>
-<li>Move the node part of the way to this new value. The model moves 55 percent
-of the way at each step, which prevents oscillation.</li>
+<li>Move the node most of the way to this new value.</li>
 </ol>
 
-<p>The model stops when no node moves more than 0.00001 in one step.</p>
+<p>The model stops when no node moves more than 0.00001 in one step, and gives
+up at sixty steps. Nothing in this write-up reaches sixty.</p>
 
-<h3>4.3 Why the tanh function</h3>
+<h3>4.5 Why the tanh function</h3>
 
 <p>Without it, a large change grows without limit. A price cannot rise forever,
 and a grid cannot fail more than completely. The tanh function makes large
-inputs approach a limit.</p>
-
-<h3>4.4 Why the 55 percent step</h3>
-
-<p>A full step causes oscillation. The value overshoots, then overshoots in the
-other direction. A partial step removes this, and the model settles smoothly.</p>
-
-<hr>
+inputs approach a limit, and it is also what makes the iteration a contraction:
+the weighted mean has a spectral radius of exactly 1, and tanh and the inertia
+factor pull it below 1.</p>
 
 <h2>5. How the model is weighted</h2>
 
 <h3>5.1 Link weights</h3>
 
-<p>There are 13,826 links, with weights between -0.011 and +0.850. Of these,
-1,142 are negative. A negative link carries relief rather than stress.</p>
+<p>There are 197,068 links, with weights between -0.670 and +1.000. Of these, 1,144 are negative. A negative link carries relief rather than stress.</p>
 
 <table>
 <tr><th>Link</th><th>Weight</th><th>Where the weight comes from</th></tr>
@@ -158,58 +177,73 @@ reacts at once. A value of 1 means the node almost never moves.</p>
 
 <h3>5.3 Fan-in normalisation</h3>
 
-<p>A grid has 4,000 plants connected to it. If each plant sent 0.02, the total
-would be 80, and the grid would saturate for any change at all.</p>
+<p>A grid has thousands of plants connected to it. If each plant sent its full
+link weight, China's 4,235 plants would together send 1,042, and the grid would
+saturate for any change at all.</p>
 
-<p>The model divides the total influence of a group by the number of members. The
-4,000 plants together send 0.45. Each plant sends 0.45 ÷ 4,000.</p>
+<p>The model divides each link by the number of links reaching the same node
+from the same layer, so a layer's total influence does not grow with its
+membership. Adding more plants therefore improves the detail of the model. It
+does not make the grid more sensitive.</p>
 
-<p><strong>Adding more plants therefore improves the detail of the model. It does
-not make the grid more sensitive.</strong> The same rule applies to districts and
-to consumer groups.</p>
-
-<hr>
+<p>The rule keeps the layers commensurable. The Chinese grid hears its plants
+at 0.246, its markets at 0.265, the climate at 0.300, its fuel supplies at
+0.108 and the disaster record at 0.500, so a change in the country's coal
+supply moves it and a change at one of its 4,235 plants does not.</p>
 
 <h2>6. How the model behaves</h2>
 
-<p>The table shows six changes. Each change was applied at full size.</p>
+<p>The table shows the nine prepared changes. Each was applied at the
+size stored with the scenario.</p>
 
 <table>
-<tr><th>Change applied</th><th>Nodes that changed</th><th>Settled by step</th><th>First effect</th></tr>
-<tr><td>Climate forcing</td><td>1,315</td><td>8</td><td>Temperature, then every grid</td></tr>
-<tr><td>Large oil supply loss</td><td>582</td><td>19</td><td>Gasoline and WTI prices</td></tr>
-<tr><td>Gas price spike</td><td>294</td><td>9</td><td>Gas-dependent national supplies</td></tr>
-<tr><td>United States grid stress</td><td>19</td><td>2</td><td>United States districts</td></tr>
-<tr><td>China coal supply cut</td><td>8</td><td>3</td><td>The Chinese grid</td></tr>
-<tr><td>Conservation wave</td><td>7</td><td>1</td><td>Household groups</td></tr>
+<tr><th>Change applied</th><th class="n">Nodes that changed</th><th class="n">Settled by step</th><th>Largest single response</th></tr>
+<tr><td>Climate forcing</td><td class="n">77,563</td><td class="n">43</td><td>Global temperature, +0.330</td></tr>
+<tr><td>Strong El Ni&ntilde;o</td><td class="n">77,256</td><td class="n">42</td><td>Global temperature, +0.234</td></tr>
+<tr><td>United States grid stress</td><td class="n">13,969</td><td class="n">17</td><td>Plants on that grid, +0.615</td></tr>
+<tr><td>Solar minimum</td><td class="n">8,934</td><td class="n">28</td><td>Insolation bands, -0.581</td></tr>
+<tr><td>China coal supply cut</td><td class="n">4,637</td><td class="n">25</td><td>The Chinese grid, +0.025</td></tr>
+<tr><td>Negative winter NAO</td><td class="n">3,963</td><td class="n">17</td><td>The Irish grid, +0.193</td></tr>
+<tr><td>Gas price spike</td><td class="n">3,322</td><td class="n">38</td><td>Gas-dependent national supplies, +0.565</td></tr>
+<tr><td>Large oil supply loss</td><td class="n">2,683</td><td class="n">24</td><td>WTI crude, +0.650</td></tr>
+<tr><td>Conservation wave</td><td class="n">231</td><td class="n">21</td><td>Household groups, -0.264</td></tr>
 </table>
 
-<h3>6.1 Two results worth noting</h3>
+<h3>6.1 Three results worth noting</h3>
 
-<p><strong>Slow changes reach further than fast ones.</strong> The climate change
-reached 1,315 nodes. The grid change reached 19. The climate connects to every
-country. A national grid connects only to its own districts.</p>
+<p><b>Reach spans five orders of magnitude.</b> A change starting at the most
+connected power plant moves one other node. A change starting at the climate
+moves seventy-seven thousand. The climate is the only node in the model that
+connects to every country, and the spread is the evidence that the propagation
+discriminates rather than floods.</p>
 
-<p><strong>Price changes move fastest.</strong> An oil supply loss reaches the
-price benchmarks in one step and households in ten. Prices are the signal the
-system uses to communicate.</p>
+<p><b>Depth and breadth are different quantities.</b> The China coal cut reaches
+5,030 nodes but moves the Chinese grid only 0.026, because coal is one of six
+things that grid listens to. The gas price spike reaches fewer nodes and moves
+them much harder. Counting nodes alone would rank these the wrong way round.</p>
+
+<p><b>Prices move fastest, the climate slowest.</b> An oil supply loss settles
+in 24 steps and a climate forcing takes 45. Prices are the signal this system
+uses to communicate, and the climate is a slow variable connected to everything.</p>
 
 <h3>6.2 An example route</h3>
 
-<p>This is the strongest route from the climate to a United States household:</p>
+<p>This is the strongest route out of a full climate forcing, chosen at each
+step by following the largest settled effect among the current node's
+neighbours:</p>
 
-<pre style='background:var(--faint);padding:14px;border-radius:6px;overflow-x:auto;font-size:14px'>
-Climate system (CO2 431 ppm)          effect +0.664
-  -&gt; Global temperature (+1.19 C)     effect +0.249
-    -&gt; USA grid (544.8 GW average)    effect +0.093
-      -&gt; USA district 1               effect +0.036
-        -&gt; USA district 1 household   effect +0.010
-</pre>
+<pre>Climate system (CO2 431.4 ppm)                 +0.883
+  -&gt; Global temperature (+1.19 C)               +0.531
+    -&gt; United States Storm 2005 ($206bn)        +0.449
+      -&gt; USA grid (544.8 GW average)            +0.252
+        -&gt; a plant on that grid                 +0.227</pre>
 
-<p>The route strength is 0.0765, the product of the link weights. The effect
-falls at each step. Distant causes have small effects.</p>
+<p>The effect falls at each step. Distant causes have small effects.</p>
 
-<hr>
+<p>The climate layer reaches the disaster record only for the types the
+climate drives: storms, floods, droughts, wildfires and heat extremes. It does
+not reach earthquakes, tsunamis or landslides. Plate tectonics does not read
+the temperature record.</p>
 
 <h2>7. How to run the model</h2>
 
@@ -261,7 +295,7 @@ full economic model.</li>
 <h2>9. Summary</h2>
 
 <p>The model connects public data about the physical world to public data about
-human systems. It has 7,192 nodes and 13,826 links, and every weight has a
+human systems. It has 86,622 nodes and 197,068 links, and every weight has a
 source. The behaviour matches expectation: slow global variables reach far, fast
 local variables reach near, and prices carry the signal between them.</p>
 
@@ -271,7 +305,7 @@ forecast prices.</p>
 
 <hr>
 
-<p><em>Data current to July 2026. The model, the data and the code are
+<p><em>The model, the data and the code are
 reproducible from the published sources listed in section 3.</em></p>
 
 <hr>

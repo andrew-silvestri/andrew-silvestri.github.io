@@ -128,7 +128,8 @@
     var COLOR = {
       station: 0x8b7ff2, event: 0xd86a86, grid: 0x5aa8d8, supply: 0x6f7fd8,
       district: 0x5c6a8c, consumer: 0x8b93b0, market: 0xcfd6f0,
-      climate: 0xcfd6f0
+      climate: 0xcfd6f0, sun: 0xf2d98b, insolation: 0xe8c98f,
+      weather: 0x4f9d84
     };
     var np = [], nc = [], ns = [], n = D.nodes, col = new THREE.Color();
     for (var k = 0; k < n.length; k += 3) {
@@ -176,7 +177,7 @@
     })));
 
     /* ---- flow, as trailed geometry ------------------------------------- */
-    var P = 2600, TAIL = 9;             // ~23,400 segments
+    var P = 4200, TAIL = 11;            // ~42,000 segments
     var plon = new Float32Array(P), plat = new Float32Array(P);
     var page = new Float32Array(P), plife = new Float32Array(P);
     var hist = new Float32Array(P * TAIL * 3);
@@ -201,8 +202,11 @@
     fg.setAttribute('position', new THREE.BufferAttribute(fpos, 3));
     fg.setAttribute('color', new THREE.BufferAttribute(fcol, 3));
     world.add(new THREE.LineSegments(fg, new THREE.LineBasicMaterial({
+      /* WebGL ignores linewidth on every platform that matters, so weight
+         comes from density and brightness rather than from a property that
+         silently does nothing. */
       vertexColors: true, transparent: true, depthWrite: false,
-      blending: THREE.AdditiveBlending, opacity: 0.9
+      blending: THREE.AdditiveBlending, opacity: 1.0
     })));
 
     // the same field as the 2D path, so both tell the same story
@@ -250,8 +254,9 @@
           fpos[w + 4] = jump ? hist[a + 1] : hist[b + 1];
           fpos[w + 5] = jump ? hist[a + 2] : hist[b + 2];
           var g1 = 0.62 * env * far, g2 = 0.62 * env * far * 0.75;
-          fcol[w] = g1 * 0.89; fcol[w + 1] = g1 * 0.94; fcol[w + 2] = g1;
-          fcol[w + 3] = g2 * 0.89; fcol[w + 4] = g2 * 0.94; fcol[w + 5] = g2;
+          /* sky blue, #65B2CC */
+          fcol[w] = g1 * 0.396; fcol[w + 1] = g1 * 0.698; fcol[w + 2] = g1 * 0.800;
+          fcol[w + 3] = g2 * 0.396; fcol[w + 4] = g2 * 0.698; fcol[w + 5] = g2 * 0.800;
           w += 6;
         }
         if (page[i] > plife[i]) spawn(i, false);
