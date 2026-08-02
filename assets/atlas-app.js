@@ -28,7 +28,16 @@
     if (!D.srcDict) return D.src[i] || '';
     return D.srcDict[D.src[i]] || '';
   }
-  var MW = D.mw ? Float64Array.from(D.mw) : null;
+  /* Capacity and node ids are sparse: a hundred thousand nodes, of which
+     thirty-five thousand have a capacity and a couple of dozen have an id
+     anything refers to. Storing them as maps rather than as full-length
+     arrays of zeroes and blanks is most of a megabyte. */
+  var MWMAP = D.mwMap || null;
+  function mwOf(i) {
+    if (!MWMAP) return 0;
+    var v = MWMAP[i];
+    return v === undefined ? 0 : v;
+  }
   var ES = Int32Array.from(D.es), ET = Int32Array.from(D.et);
   var EW = Float64Array.from(D.ew), RES = Float64Array.from(D.res);
   var steps = 0, state = null, hit = null, shocks = {};
@@ -208,6 +217,30 @@
                             brainMat);
   stem.position.set(0, -0.62, -0.20); stem.rotation.x = 0.42;
   brainGrp.add(stem);
+  /* The anatomy. Every named structure of the Allen Common Coordinate
+     Framework at its published centre of mass, drawn as a faint point cloud
+     inside the shell. It carries no weight, no edge and no behavioural
+     channel, and it is deliberately kept out of the node arrays so that
+     nothing can mistake scenery for part of the model. What it buys is a
+     brain that reads as a brain rather than two dozen dots in a void. */
+  if (D.anatomy && D.anatomy.length) {
+    var ap = [], ac = [];
+    var acol = new THREE.Color(0x5a6a9c);
+    for (var ai = 0; ai < D.anatomy.length; ai++) {
+      var xyz = D.anatomy[ai].xyz;
+      ap.push(xyz[0], xyz[1], xyz[2]);
+      ac.push(acol.r, acol.g, acol.b);
+    }
+    var ag = new THREE.BufferGeometry();
+    ag.setAttribute('position', new THREE.Float32BufferAttribute(ap, 3));
+    ag.setAttribute('color', new THREE.Float32BufferAttribute(ac, 3));
+    var anat = new THREE.Points(ag, new THREE.PointsMaterial({
+      size: 0.022, vertexColors: true, transparent: true, opacity: 0.42,
+      sizeAttenuation: true, depthWrite: false }));
+    anat.userData.anatomy = true;
+    brainGrp.add(anat);
+  }
+
   brainGrp.add(new THREE.AmbientLight(0xffffff, 0.55));
   var dl = new THREE.DirectionalLight(0xc8d4ff, 0.9);
   dl.position.set(2, 3, 4); brainGrp.add(dl);
@@ -414,7 +447,8 @@
 
   function weightOf(i) {
     // capacity where a node has one, resilience otherwise; both normalised
-    if (MW && MW[i] > 0) return Math.min(1, Math.pow(MW[i] / 8000, 1 / 3));
+    var mw = mwOf(i);
+    if (mw > 0) return Math.min(1, Math.pow(mw / 8000, 1 / 3));
     return RES[i];
   }
 
@@ -600,7 +634,8 @@
   };
 
   var byId = {};
-  for (var q = 0; q < N; q++) byId[D.id[q]] = q;
+  if (D.idMap) { for (var k0 in D.idMap) byId[k0] = D.idMap[k0]; }
+  else { for (var q = 0; q < N; q++) byId[D.id[q]] = q; }
   var sc = $('scen');
   Object.keys(D.scenarios).forEach(function (k) {
     var o = document.createElement('option');

@@ -8,11 +8,11 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html" class="on">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html" class="on">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The atlas</h1>
-<p class="dim">Seven layers of one model. 24,547 nodes and 28,267 weighted links, each on a real coordinate.</p>
+<p class="dim">Seven layers of one model. 109,296 nodes and 74,155 weighted links.</p>
 
 <p><a class="btn" href="atlas-app.html" target="_blank" rel="noopener">Open the atlas full screen</a></p>
 
@@ -29,12 +29,12 @@ apply a change there.</p>
 <h2>The seven layers</h2>
 <table><tr><th>Layer</th><th class="n">Nodes</th><th>Contents</th></tr>
 <tr><td>Climate</td><td class="n">2</td><td>The measured carbon dioxide curve</td></tr>
-<tr><td>Events</td><td class="n">526</td><td>Recorded disasters at their true coordinates</td></tr>
-<tr><td>Markets and fuel</td><td class="n">731</td><td>Price benchmarks and national fuel supplies</td></tr>
-<tr><td>Grids</td><td class="n">785</td><td>National grids and their districts</td></tr>
-<tr><td>Power plants</td><td class="n">21,337</td><td>Units of 10 MW and above in 163 countries</td></tr>
-<tr><td>Demand</td><td class="n">1,142</td><td>Household and industry groups</td></tr>
-<tr><td>Behaviour</td><td class="n">24</td><td>Behavioural channels on named brain regions</td></tr>
+<tr><td>Events</td><td class="n">30,850</td><td>Earthquakes of magnitude 5.5 and above since 1960, and the earlier disaster set</td></tr>
+<tr><td>Markets and fuel</td><td class="n">3,627</td><td>Price benchmarks, national fuel supplies, and every port in the World Port Index</td></tr>
+<tr><td>Grids</td><td class="n">4,650</td><td>National grids and first-level administrative districts</td></tr>
+<tr><td>Power plants</td><td class="n">34,936</td><td>Every unit in the world database, 167 countries</td></tr>
+<tr><td>Demand</td><td class="n">35,207</td><td>Every settlement above fifteen thousand people</td></tr>
+<tr><td>Behaviour</td><td class="n">24</td><td>24 behavioural channels, inside 840 drawn brain structures</td></tr>
 </table>
 <h2>Why a globe, and why a brain</h2>
 
@@ -56,14 +56,30 @@ longitudinal fissure and a few folds, with a cerebellum and a stem attached. It
 reads as a brain at a glance and it is not anatomy. The application says so on
 screen. The region names, and which channel sits in which, are real.</p>
 
+<h2>Anatomy and behaviour</h2>
+
+<p>The behaviour layer holds 24 channels, and that number is
+not going up. It is roughly the inventory of distinct, named mechanisms from
+behavioural economics and decision neuroscience that bear on how energy gets
+used. Filling a brain with two hundred of them would mean inventing mechanisms
+to occupy anatomy.</p>
+
+<p>So the anatomy is drawn separately. 840 named structures of
+the Allen Mouse Brain Common Coordinate Framework sit inside the shell at the
+centre of mass the atlas publishes for each one, rescaled but not otherwise
+moved. They carry no weight, no edge and no channel, and they are held outside
+the node arrays entirely, so nothing can mistake scenery for part of the model.
+The 24 channels that do carry weight sit among them and wire
+into demand.</p>
+
 <h2>Reading a dense scene</h2>
 
 <p>Twenty-four thousand points is more than anyone can take in at once, so the
 sidebar carries a threshold that hides everything below a chosen weight.
 Weight is generating capacity for a power plant and resilience for everything
-else, which is the quantity the propagation engine already uses. At a quarter
-the scene falls to about nine thousand nodes, at a half to sixteen hundred, and
-at three-quarters to the hundred and forty largest objects in the system.</p>
+else, which is the quantity the propagation engine already uses. At thirty per cent the scene falls to about fifteen thousand nodes, at sixty to
+under seven hundred, and at eighty-five to the few dozen largest objects in the
+system.</p>
 
 <p>Hidden nodes still take part in the run. The threshold changes the view, not
 the answer.</p>
