@@ -6,7 +6,7 @@
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#070a12">
-<link rel="stylesheet" href="style.css?v=d8edecd5">
+<link rel="stylesheet" href="style.css?v=41fc184a">
 </head><body>
 <nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html" class="on">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -18,86 +18,87 @@ drawn by hand.</p>
 <div class="card">
 <div class="tag">matplotlib, stacked horizontal bar</div>
 <h3 style="margin-top:4px">Electricity fuel mix of the 28 largest power systems</h3>
-<img class="fig wide" src="assets/01_world_fuel_mix.png" alt="Electricity fuel mix of the 28 largest power systems">
+<img class="fig wide" src="assets/01_world_fuel_mix.png?v=c9da749e" alt="Electricity fuel mix of the 28 largest power systems">
 <p>Each bar is one country, split by the share of its electricity that comes from each fuel. The countries are ordered by average demand, with the largest at the top. The shares are measured, not estimated. They come from the Energy Institute Statistical Review and from Our World in Data. In the model, this share sets the strength of the link between a fuel supply and its national grid. A country with a high coal share therefore reacts more to a coal supply problem.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib cumulative curve</div>
 <h3 style="margin-top:4px">How world electricity demand is distributed and concentrated</h3>
-<img class="fig wide" src="assets/02_demand_distribution.png" alt="How world electricity demand is distributed and concentrated">
+<img class="fig wide" src="assets/02_demand_distribution.png?v=107cb4ff" alt="How world electricity demand is distributed and concentrated">
 <p>The left panel counts countries by their average electricity demand. The scale is logarithmic because the range is very wide. The right panel adds the countries together, starting with the largest. It shows how few countries hold most of the world demand. This concentration is the reason a change in one large system can move the world total.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, small multiples</div>
 <h3 style="margin-top:4px">The four price series that set market inertia in the model</h3>
-<img class="fig wide" src="assets/03_price_histories.png" alt="The four price series that set market inertia in the model">
+<img class="fig wide" src="assets/03_price_histories.png?v=a959c533" alt="The four price series that set market inertia in the model">
 <p>Each panel is one traded price, taken from the Federal Reserve Economic Data service. The model uses the variation in these series, not the prices themselves. A price that moves a great deal in the record is given a low inertia value, so it reacts quickly in the model. A steady price is given a high inertia value. This is how the real behaviour of each market enters the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn box plot</div>
 <h3 style="margin-top:4px">How strongly each type of node resists change</h3>
-<img class="fig wide" src="assets/04_inertia_by_type.png" alt="How strongly each type of node resists change">
+<img class="fig wide" src="assets/04_inertia_by_type.png?v=ab8f6f63" alt="How strongly each type of node resists change">
 <p>Inertia controls the speed of a node. A recorded event has the lowest inertia because a disaster happens at once. Behaviour channels have the highest inertia because habits change over years. Price benchmarks cover a range, because each one takes its value from its own measured volatility. This single parameter produces the order in which effects arrive across the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib bar</div>
 <h3 style="margin-top:4px">The structure of the links between nodes</h3>
-<img class="fig wide" src="assets/05_link_structure.png" alt="The structure of the links between nodes">
+<img class="fig wide" src="assets/05_link_structure.png?v=d5cf8e91" alt="The structure of the links between nodes">
 <p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 197,068 links in total, of which 1,144 are negative. A negative link carries relief rather than stress.</p>
 
 </div><div class="card">
 <div class="tag">seaborn heat map with annotations</div>
 <h3 style="margin-top:4px">How far one change travels, by the layer it starts in</h3>
-<img class="fig wide" src="assets/06_scenario_reach.png" alt="How far one change travels, by the layer it starts in">
+<img class="fig wide" src="assets/06_scenario_reach.png?v=114d30c3" alt="How far one change travels, by the layer it starts in">
 <p>Each bar is a change applied to the most connected node in one layer, and its length is the number of other nodes that finished more than 0.02 away from where they started. The axis is logarithmic because the answers span five orders of magnitude: a change at the most connected power plant in the world moves one other node, and a change at the climate moves seventy-eight thousand. The climate is the only node in the model that connects to every country. The spread is the evidence that the propagation discriminates rather than floods.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, logarithmic count axis</div>
 <h3 style="margin-top:4px">When the effect arrives</h3>
-<img class="fig wide" src="assets/07_arrival_order.png" alt="When the effect arrives, by the layer the change starts in">
+<img class="fig wide" src="assets/07_arrival_order.png?v=425fc719" alt="When the effect arrives, by the layer the change starts in">
 <p>One line per starting layer. Each point counts the nodes reached for the first time at that step, so the area under a line is that layer&rsquo;s total reach. A grid delivers almost everything it is going to deliver in the first two steps, because its plants and districts are its immediate neighbours. A price works through the fuel supplies and the grids behind them and is still reaching new nodes twenty steps later. Physical coupling is fast and shallow; market coupling is slow and deep.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>
 <h3 style="margin-top:4px">The model saturates rather than growing without limit</h3>
-<img class="fig wide" src="assets/08_response_curve.png" alt="The model saturates rather than growing without limit">
+<img class="fig wide" src="assets/08_response_curve.png?v=cda1dbe6" alt="The model saturates rather than growing without limit">
 <p>The change applied to the oil price is increased in steps from a small value to the maximum. The blue line counts how many nodes changed. The gold line gives the average size of the effect. Both lines bend and flatten. This is the effect of the limit function in the calculation. A real system behaves in the same way: a price cannot rise without end, and a grid cannot fail more than completely.</p>
 
 </div><div class="card">
 <div class="tag">plotnine, grammar of graphics</div>
 <h3 style="margin-top:4px">System size against low carbon share</h3>
-<img class="fig wide" src="assets/09_size_vs_lowcarbon.png" alt="System size against low carbon share">
+<img class="fig wide" src="assets/09_size_vs_lowcarbon.png?v=979dc8b0" alt="System size against low carbon share">
 <p>Each point is one country. The horizontal position is the size of its power system. The vertical position is the share of its electricity that comes from nuclear, hydro or other renewable sources. The grey line is a smoothed trend. The plot shows that size alone does not decide the low carbon share. Small systems occupy the full range, because a single large hydro station can supply most of a small country.</p>
 
 </div><div class="card">
-<div class="tag">plotly express, interactive map, html output</div>
-<h3 style="margin-top:4px">United States power plants in the model</h3>
+<div class="tag">the atlas itself</div>
+<h3 style="margin-top:4px">Every power plant in the model</h3>
 
-<p>Every point is one power plant that the model contains. The position is the plant&#x27;s recorded coordinate, taken from the bulk archive of the Energy Information Administration. The model holds 4,000 of the 15,247 located plants by default. This map confirms that the station layer follows the real pattern of United States generation, with dense clusters along the Gulf coast, the Ohio valley and the coasts. Open the html file to pan, zoom and read plant names.</p>
-<p class="small"><a href="assets/10_us_plants_map.html">Open the interactive version</a></p>
+<p>The station layer holds 34,936 generating units across 167 countries, each at its recorded coordinate, from the World Resources Institute Global Power Plant Database. Capacity is carried per unit, and the fuel is carried in the node&#x27;s name, which is where the solar share driving the insolation links is measured from.</p>
+<p>The plant layer is not a static picture, so it is not reproduced here as one. The atlas draws all of it on a globe, filters it by weight, and lets a change be applied to any single unit.</p>
+<p class="small"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas on the plant layer</a></p>
 </div><div class="card">
 <div class="tag">matplotlib, stacked time series</div>
 <h3 style="margin-top:4px">The two climate series that set the state of the model</h3>
-<img class="fig wide" src="assets/11_climate_record.png" alt="The two climate series that set the state of the model">
+<img class="fig wide" src="assets/11_climate_record.png?v=f3c15d6f" alt="The two climate series that set the state of the model">
 <p>The upper panel is the carbon dioxide record from Mauna Loa. The saw pattern is the growing season of the northern hemisphere. The lower panel is the global temperature anomaly. Both series are read directly into the model. They set the starting state of the two climate nodes. The climate nodes then connect to every national grid, and to the gas and electricity prices, through heating and cooling demand.</p>
 
 </div><div class="card">
 <div class="tag">pandas plotting on matplotlib axes</div>
 <h3 style="margin-top:4px">Recorded disasters that the model contains</h3>
-<img class="fig wide" src="assets/12_recorded_events.png" alt="Recorded disasters that the model contains">
+<img class="fig wide" src="assets/12_recorded_events.png?v=3f8b12eb" alt="Recorded disasters that the model contains">
 <p>The left panel adds the adjusted damage of every energy relevant disaster in each decade, and separates the total by disaster type. The right panel names the twelve costliest single events. These records come from the international disaster database. In the model, each event is a node. The recorded damage sets the strength of the link from that event to the national grid of the country it struck.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, computed field and measured series</div>
 <h3 style="margin-top:4px">The space layer</h3>
-<img class="fig wide" src="assets/14_space_layer.png" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
+<img class="fig wide" src="assets/14_space_layer.png?v=ef648f89" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
 <p>On the left, the annual mean sunlight arriving above the atmosphere at each latitude. This is not data. It is computed from the measured solar constant, the obliquity of 23.44 degrees and the eccentricity of the orbit, integrated over 365 days. The dashed line is the solar constant divided by four, which is what the area-weighted mean of the curve has to equal &mdash; the disc the Earth intercepts over the sphere it radiates from. It agrees to one part in ten thousand, which is the check that the integration is right rather than merely plausible. The equator receives 416 W/m&sup2; and the poles about 174.</p>
 <p>On the right, the measured total solar irradiance, NRLTSI2, with its stated uncertainty as the shaded band. Four solar cycles are visible. The whole vertical range of the panel is two watts in thirteen hundred and sixty, which is the honest scale of the thing the solar minimum scenario perturbs.</p>
 
 <div class="tag">matplotlib, horizontal bar, log scale</div>
 <h3 style="margin-top:4px">Every node names its source</h3>
-<img class="fig wide" src="assets/13_provenance.png" alt="Every node names its source">
-<p>The model records where each node came from. This chart counts the nodes by source. The largest group is the plant list from the bulk archive of the Energy Information Administration. The group marked as published studies holds the consumer response values. These values are the only assumed parameters in the model, and they are labelled so that a reader can find them.</p>
+<img class="fig wide" src="assets/13_provenance.png?v=c487cf8a" alt="Every node names its source">
+<p>The model records where each node came from. This chart counts the nodes by source. The largest groups are the settlement list from GeoNames and the plant list from the World Resources Institute. The group marked as published studies holds the consumer response values. These values are the only assumed parameters in the model, and they are labelled so that a reader can find them.</p>
 
 </div>
 </div>

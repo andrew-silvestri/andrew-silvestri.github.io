@@ -259,7 +259,7 @@
              the trails are densest. The brightness is held low
              enough that the hue survives the overlap; the weight
              comes from the number of trails, not from each one. */
-          var g1 = 0.34 * env * far, g2 = 0.34 * env * far * 0.75;
+          var g1 = 0.72 * env * far, g2 = 0.72 * env * far * 0.75;
           fcol[w] = g1 * 0.396; fcol[w + 1] = g1 * 0.698; fcol[w + 2] = g1 * 0.800;
           fcol[w + 3] = g2 * 0.396; fcol[w + 4] = g2 * 0.698; fcol[w + 5] = g2 * 0.800;
           w += 6;

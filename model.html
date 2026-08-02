@@ -6,7 +6,7 @@
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#070a12">
-<link rel="stylesheet" href="style.css?v=d8edecd5">
+<link rel="stylesheet" href="style.css?v=41fc184a">
 </head><body>
 <nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -61,7 +61,10 @@ at every other node.</p>
 <tr><th>Source</th><th>What it gives the model</th><th>Size</th></tr>
 <tr><td>Energy Institute Statistical Review</td><td>Fuel mix and electricity demand for each country</td><td>299,321 rows, 1965 to 2025</td></tr>
 <tr><td>Our World in Data</td><td>Fuel shares for 182 more countries</td><td>11,285 country-years</td></tr>
-<tr><td>EIA bulk archive</td><td>United States plants with coordinates</td><td>765,756 series; 15,247 plants located</td></tr>
+<tr><td>WRI Global Power Plant Database v1.3</td><td>Every generating unit in the world database, at its recorded coordinate, with capacity and fuel</td><td>34,936 units, 167 countries</td></tr>
+<tr><td>GeoNames cities15000</td><td>Settlements above fifteen thousand people, and the population and concentration of each administrative division</td><td>34,068 settlements, 2,786 divisions</td></tr>
+<tr><td>USGS earthquake catalogue</td><td>Earthquakes of magnitude 5.5 and above that reach infrastructure</td><td>8,733 wired events</td></tr>
+<tr><td>NGA World Port Index</td><td>Ports</td><td>2,896</td></tr>
 <tr><td>FRED</td><td>Daily price histories</td><td>9 series, 38,633 observations</td></tr>
 <tr><td>EM-DAT</td><td>Recorded disasters with damage costs</td><td>27,727 events; 14,057 energy-relevant</td></tr>
 <tr><td>NOAA Mauna Loa</td><td>Carbon dioxide level</td><td>820 months</td></tr>
@@ -310,7 +313,7 @@ reproducible from the published sources listed in section 3.</em></p>
 
 <hr>
 <h2>Figures from this model</h2>
-<img class="fig wide" src="assets/energy_model_throughlines.png"
+<img class="fig wide" src="assets/energy_model_throughlines.png?v=ba03972f"
  alt="Routes through the model from the climate to behaviour">
 <p class="small">The routes through the system, computed from the link weights.
 <a href="library.html">All figures</a>.</p>
