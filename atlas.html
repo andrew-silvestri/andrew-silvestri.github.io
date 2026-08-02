@@ -12,8 +12,7 @@
 <main>
 
 <h1>The atlas</h1>
-<p class="dim">Seven layers of one model. 7,192 nodes, each on a real
-coordinate.</p>
+<p class="dim">Seven layers of one model. 24,547 nodes and 28,267 weighted links, each on a real coordinate.</p>
 
 <p><a class="btn" href="atlas-app.html" target="_blank" rel="noopener">Open the atlas full screen</a></p>
 
@@ -28,14 +27,14 @@ apply a change there.</p>
  margin:16px 0" loading="lazy"></iframe>
 
 <h2>The seven layers</h2>
-<table><tr><th>Layer</th><th>Nodes</th><th>Contents</th></tr>
-<tr><td>Climate</td><td>2</td><td>The measured carbon dioxide curve</td></tr>
-<tr><td>Events</td><td>526</td><td>Recorded disasters at their true coordinates</td></tr>
-<tr><td>Markets and fuel</td><td>731</td><td>Price benchmarks and national fuel supplies</td></tr>
-<tr><td>Grids</td><td>785</td><td>214 national grids and their districts</td></tr>
-<tr><td>Power plants</td><td>4,000</td><td>Real United States plants, recorded coordinates</td></tr>
-<tr><td>Demand</td><td>1,142</td><td>Household and industry groups</td></tr>
-<tr><td>Behaviour</td><td>6</td><td>Behaviour channels on Allen Brain Atlas regions</td></tr>
+<table><tr><th>Layer</th><th class="n">Nodes</th><th>Contents</th></tr>
+<tr><td>Climate</td><td class="n">2</td><td>The measured carbon dioxide curve</td></tr>
+<tr><td>Events</td><td class="n">526</td><td>Recorded disasters at their true coordinates</td></tr>
+<tr><td>Markets and fuel</td><td class="n">731</td><td>Price benchmarks and national fuel supplies</td></tr>
+<tr><td>Grids</td><td class="n">785</td><td>National grids and their districts</td></tr>
+<tr><td>Power plants</td><td class="n">21,337</td><td>Units of 10 MW and above in 163 countries</td></tr>
+<tr><td>Demand</td><td class="n">1,142</td><td>Household and industry groups</td></tr>
+<tr><td>Behaviour</td><td class="n">24</td><td>Behavioural channels on named brain regions</td></tr>
 </table>
 <h2>Why a globe, and why a brain</h2>
 
@@ -56,6 +55,18 @@ amygdala. The solid is generated rather than traced, an ellipsoid given a
 longitudinal fissure and a few folds, with a cerebellum and a stem attached. It
 reads as a brain at a glance and it is not anatomy. The application says so on
 screen. The region names, and which channel sits in which, are real.</p>
+
+<h2>Reading a dense scene</h2>
+
+<p>Twenty-four thousand points is more than anyone can take in at once, so the
+sidebar carries a threshold that hides everything below a chosen weight.
+Weight is generating capacity for a power plant and resilience for everything
+else, which is the quantity the propagation engine already uses. At a quarter
+the scene falls to about nine thousand nodes, at a half to sixteen hundred, and
+at three-quarters to the hundred and forty largest objects in the system.</p>
+
+<p>Hidden nodes still take part in the run. The threshold changes the view, not
+the answer.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>

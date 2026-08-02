@@ -19,6 +19,16 @@
 
   /* ================================================================= data */
   var N = D.n;
+
+  /* Provenance is dictionary-encoded: twenty thousand plants share a few
+     thousand distinct source strings, and storing one copy each rather than
+     one copy per node is two thirds of the payload. Read through an accessor
+     so nothing downstream has to know. */
+  function srcOf(i) {
+    if (!D.srcDict) return D.src[i] || '';
+    return D.srcDict[D.src[i]] || '';
+  }
+  var MW = D.mw ? Float64Array.from(D.mw) : null;
   var ES = Int32Array.from(D.es), ET = Int32Array.from(D.et);
   var EW = Float64Array.from(D.ew), RES = Float64Array.from(D.res);
   var steps = 0, state = null, hit = null, shocks = {};
@@ -58,6 +68,18 @@
   }
   window.__atlasEngine = { propagate: propagate, touched: touched,
                            getSteps: function () { return steps; } };
+
+  /* A handle for the test harness. It is attached before the renderer is
+     built, because the checks that matter - the data is global, the filter
+     hides what it says it hides - are true whether or not there is a GPU, and
+     a harness that can only run with one is a harness that does not run. */
+  window.__atlas = {
+    D: D, N: N, srcOf: srcOf,
+    weightOf: function (i) { return weightOf(i); },
+    visible: function (i) { return visible(i); },
+    setMin: function (v) { minW = v; if (typeof applyFilter === 'function') applyFilter(); },
+    getMin: function () { return minW; }
+  };
 
   /* =============================================================== scene */
   var view = $('view'), canvas = $('gl');
@@ -311,9 +333,11 @@
     var r = canvas.getBoundingClientRect();
     var mx = clientX - r.left, my = clientY - r.top;
     var L = layers[tab], best = -1, bestD = 16 * 16;
+    // a hidden point is not there as far as the pointer is concerned
     var grp = isBrain() ? brainGrp : globeGrp;
     var posAttr = L.pts.geometry.attributes.position;
     for (var j = 0; j < L.idxs.length; j++) {
+      if (!visible(L.idxs[j])) continue;   // hidden points are not pickable
       proj.set(posAttr.getX(j), posAttr.getY(j), posAttr.getZ(j));
       grp.localToWorld(proj);
       var wx = proj.x, wy = proj.y, wz = proj.z;
@@ -377,9 +401,48 @@
     renderLegend();
   }
 
+  /* ------------------------------------------------------- weight filter --
+   * Twenty-four thousand points is more than anyone can read at once. The
+   * threshold hides everything whose weight in the system falls below it,
+   * which for a power plant is its capacity and for everything else is its
+   * resilience: the quantity the propagation engine actually uses. Hidden
+   * nodes are hidden, not deleted. They keep taking part in the propagation,
+   * because a filter that changed the answer would be a different model
+   * rather than a clearer view of this one.
+   */
+  var minW = 0;
+
+  function weightOf(i) {
+    // capacity where a node has one, resilience otherwise; both normalised
+    if (MW && MW[i] > 0) return Math.min(1, Math.pow(MW[i] / 8000, 1 / 3));
+    return RES[i];
+  }
+
+  function visible(i) { return weightOf(i) >= minW; }
+
+  function applyFilter() {
+    // The slider exists in the markup whether or not the scene was built. If
+    // WebGL failed there are no layers to filter, and moving it should do
+    // nothing rather than throw.
+    var L = (typeof layers !== 'undefined' && layers && layers[tab]) || null;
+    var lab = $('wlab');
+    if (lab && L) {
+      var shown = 0, total = L.idxs.length;
+      L.idxs.forEach(function (n) { if (visible(n)) shown++; });
+      lab.textContent = minW <= 0
+        ? total.toLocaleString() + ' of ' + total.toLocaleString() + ' shown'
+        : shown.toLocaleString() + ' of ' + total.toLocaleString() +
+          ' shown · hiding below ' + (minW * 100).toFixed(0) + '%';
+    }
+    if (!L) return;
+    paint();
+    renderKinds();
+  }
+
   function renderKinds() {
     var counts = {};
     layers[tab].idxs.forEach(function (n) {
+      if (!visible(n)) return;
       var k = D.kinds[D.kind[n]];
       counts[k] = (counts[k] || 0) + 1;
     });
@@ -421,7 +484,7 @@
       '<h2>Selection</h2>' +
       '<h3>' + esc(D.name[i]) + '</h3>' +
       '<div class="sub">' + esc(KNAME[D.kinds[D.kind[i]]] || '') +
-        (D.src[i] ? ' · ' + esc(D.src[i]) : '') + '</div>' +
+        (srcOf(i) ? ' · ' + esc(srcOf(i)) : '') + '</div>' +
       '<dl>' +
         '<div><dt>Effect now</dt><dd id="d-val">' +
           (state ? state[i].toFixed(4) : '—') + '</dd></div>' +
@@ -465,6 +528,11 @@
       var siz = L.pts.geometry.attributes.sz;
       for (var j = 0; j < L.idxs.length; j++) {
         var n = L.idxs[j], base = L.base;
+        if (!visible(n)) {          // filtered out: drawn at zero size
+          siz.setX(j, 0);
+          col.setXYZ(j, base[j * 3], base[j * 3 + 1], base[j * 3 + 2]);
+          continue;
+        }
         if (!state) {
           col.setXYZ(j, base[j * 3], base[j * 3 + 1], base[j * 3 + 2]);
           siz.setX(j, L.sizeBase[j]);
@@ -504,6 +572,17 @@
     if (sel != null && $('d-val')) $('d-val').textContent = state[sel].toFixed(4);
     paint();
   }
+
+  (function () {
+    var sl = $('wmin');
+    if (sl) {
+      sl.addEventListener('input', function () {
+        minW = +this.value / 100;
+        applyFilter();
+      });
+      applyFilter();
+    }
+  })();
 
   $('run').onclick = run;
   $('reset').onclick = function () {

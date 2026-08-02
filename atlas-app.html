@@ -168,6 +168,16 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:4px 0 0}
     </div>
   </div>
 
+  <div class="sec">
+    <h2>Hide small nodes</h2>
+    <input type="range" id="wmin" min="0" max="90" step="1" value="0">
+    <p class="desc" id="wlab">all nodes shown</p>
+    <p class="desc">Weight is capacity for a power plant and resilience for
+      everything else, which is the quantity the propagation uses. Hidden
+      nodes still take part in the run; this changes the view, not the
+      answer.</p>
+  </div>
+
   <div class="sec" id="shockbox" style="display:none">
     <h2>Changes queued</h2>
     <ul class="shocklist" id="shocks"></ul>
