@@ -136,7 +136,7 @@ nav.top .back:hover { color: var(--acc); border-bottom-color: var(--acc); }
   min-width: 268px;
   background: var(--card);
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: 2px;
   box-shadow: var(--shadow);
 }
 .dd:hover > .ddmenu, .dd:focus-within > .ddmenu { display: block; }
@@ -218,7 +218,7 @@ code {
   background: var(--bg-lift);
   border: 1px solid var(--faint);
   padding: 2px 7px;
-  border-radius: 5px;
+  border-radius: 2px;
   color: var(--cool);
 }
 
@@ -251,7 +251,7 @@ img.fig {
   width: 100%;
   max-width: 100%;
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: 2px;
   margin: 18px 0 8px;
   background: var(--card);
   display: block;
@@ -272,7 +272,7 @@ img.fig {
 /* -------------------------------------------------------------- cards --- */
 .card {
   border: 1px solid var(--rule);
-  border-radius: 12px;
+  border-radius: 2px;
   padding: 26px 28px;
   margin: 22px 0;
   background: linear-gradient(180deg, var(--card), var(--bg-lift));
@@ -297,7 +297,7 @@ img.fig {
   background: var(--acc);
   color: var(--acc-ink);
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 2px;
   font: 600 14px var(--sans);
   letter-spacing: .01em;
   margin: 12px 10px 0 0;
@@ -319,7 +319,7 @@ img.fig {
   width: 100%;
   height: clamp(320px, 46vh, 560px);
   margin: 18px 0 6px;
-  border-radius: 14px;
+  border-radius: 2px;
   overflow: hidden;
   background: radial-gradient(circle at 50% 46%, #0a1024 0%, #05070f 72%);
   border: 1px solid var(--rule);

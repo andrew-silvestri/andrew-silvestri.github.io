@@ -8,18 +8,18 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html" class="on">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html" class="on">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Figures</h1>
-<p class="dim">Every figure is produced from the model and its data. Each one has
-its own description. Nothing is drawn by hand.</p>
+<p class="dim">Every figure is produced from the model and its data. Nothing is
+drawn by hand.</p>
 <div class="grid">
 <div class="card">
 <div class="tag">matplotlib, stacked horizontal bar</div>
 <h3 style="margin-top:4px">Electricity fuel mix of the 28 largest power systems</h3>
 <img class="fig wide" src="assets/01_world_fuel_mix.png" alt="Electricity fuel mix of the 28 largest power systems">
-<p>Each bar is one country. The bar shows the share of that country&#x27;s electricity that comes from each fuel. The countries are ordered by average demand, with the largest at the top. These shares are not estimates. They come from the Energy Institute Statistical Review and from Our World in Data. In the model, this share sets the strength of the link between a fuel supply and its national grid. A country with a high coal share therefore reacts more to a coal supply problem.</p>
+<p>Each bar is one country, split by the share of its electricity that comes from each fuel. The countries are ordered by average demand, with the largest at the top. The shares are measured, not estimated. They come from the Energy Institute Statistical Review and from Our World in Data. In the model, this share sets the strength of the link between a fuel supply and its national grid. A country with a high coal share therefore reacts more to a coal supply problem.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib cumulative curve</div>
@@ -31,7 +31,7 @@ its own description. Nothing is drawn by hand.</p>
 <div class="tag">matplotlib, small multiples</div>
 <h3 style="margin-top:4px">The four price series that set market inertia in the model</h3>
 <img class="fig wide" src="assets/03_price_histories.png" alt="The four price series that set market inertia in the model">
-<p>Each panel is one traded price, taken from the Federal Reserve Economic Data service. The model does not use these prices to forecast. It uses their variation. A price that moves a great deal in the record is given a low inertia value, so it reacts quickly in the model. A steady price is given a high inertia value. This is how the real behaviour of each market enters the model.</p>
+<p>Each panel is one traded price, taken from the Federal Reserve Economic Data service. The model uses the variation in these series, not the prices themselves. A price that moves a great deal in the record is given a low inertia value, so it reacts quickly in the model. A steady price is given a high inertia value. This is how the real behaviour of each market enters the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn box plot</div>
@@ -55,7 +55,7 @@ its own description. Nothing is drawn by hand.</p>
 <div class="tag">seaborn strip plot with median markers</div>
 <h3 style="margin-top:4px">Order of arrival after a large oil supply loss</h3>
 <img class="fig wide" src="assets/07_arrival_order.png" alt="Order of arrival after a large oil supply loss">
-<p>Each dot is one node that changed. Its position shows the step at which it first moved. The black bar marks the middle value for that type. Prices move first, in one step. Fuel supplies follow, then grids, then districts, then consumers. The model therefore reproduces the expected order: a market signal travels before a physical effect.</p>
+<p>Each dot is one node that changed. Its position shows the step at which it first moved. The black bar marks the middle value for that type. Prices move first, in one step. Fuel supplies follow, then grids, then districts, then consumers. The market signal travels before the physical effect, which is the expected order.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>

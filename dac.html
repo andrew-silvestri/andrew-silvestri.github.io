@@ -9,33 +9,31 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html" class="on">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html" class="on">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Direct air capture: a fixed-bed cycle and its cost</h1>
 <p class="dim">A temperature-swing adsorption model and capture-cost analysis,
 and the negative result that redirected a laboratory project.</p>
 
-<p>Most laboratory sorbents are asked to do one job and then, sooner or later,
-asked to do a harder one. This one had been chosen for flue gas, where carbon
-dioxide arrives at something like twelve per cent, and the question was whether
-it could also work on open air, where it arrives at four hundred and twenty
-parts per million — roughly three hundred times more dilute. The check failed,
-and the failure turned out to be the useful part.</p>
+<p>A sorbent chosen for one job is sooner or later asked to do a harder one.
+CALF-20 was chosen for flue gas, where carbon dioxide arrives at something like
+twelve per cent. The question here is whether it also works on open air, where
+carbon dioxide arrives at four hundred and twenty parts per million, roughly
+three hundred times more dilute. It does not.</p>
 
 <h2>The negative result</h2>
 <p>Running the laboratory's own dual-site Langmuir<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> parameters for CALF-20 at
 direct air capture conditions gives an adsorbed quantity of about
 <strong>0.031 millimoles per gram</strong> at 420 parts per million. That is
-effectively zero working capacity: the desorption backpressure defeats any
+effectively zero working capacity. The desorption backpressure defeats any
 temperature swing that could be run in practice. CALF-20 is a flue-gas
-physisorbent, and the arithmetic says so plainly. The implementation was
-validated against the laboratory's own spreadsheet first, reproducing its
-affinity constant at 303 kelvin to three figures, so the disagreement is with
-the material rather than with the code.</p>
+physisorbent. The implementation reproduces the laboratory's own spreadsheet,
+including its affinity constant at 303 kelvin to three figures, so the
+disagreement is with the material and not with the code.</p>
 
-<p>That is the quantitative justification for moving to an amine<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> chemisorbent,
-which the cost model then runs on.</p>
+<p>That is the quantitative justification for moving to an amine<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> chemisorbent.
+The cost model runs on the amine.</p>
 
 <h2>The amine case</h2>
 <table><tr><th>Quantity</th><th>Value</th></tr>
@@ -48,10 +46,10 @@ which the cost model then runs on.</p>
 desorption at 100 degrees Celsius and 2 kilopascals of carbon dioxide, without
 heat recovery.</p>
 
-<p>The cost sits inside the published range for small direct air capture. The
-sensitivity analysis puts cycles per day, sorbent cost, and sorbent lifetime at
-the top, which means the economics are governed by how hard the bed is worked
-and how long it survives, not by the thermodynamics of the swing.</p>
+<p>The cost sits inside the published range for small direct air capture.
+Sensitivity analysis puts cycles per day, sorbent cost and sorbent lifetime at
+the top. The economics are governed by how hard the bed is worked and how long
+it survives, not by the thermodynamics of the swing.</p>
 
 <img class="fig wide" src="assets/dac_fig1_isotherms.png" alt="Isotherms for the amine sorbent and CALF-20. At the concentration of air, the two materials are not in the same regime.">
 <p class="small">Isotherms for the amine sorbent and CALF-20. At the concentration of air, the two materials are not in the same regime.</p>
@@ -68,12 +66,11 @@ and how long it survives, not by the thermodynamics of the swing.</p>
 
 <h2>Limits</h2>
 <p>The amine isotherm is a single-site Langmuir calibrated to literature anchor
-points rather than a full Toth fit, which is what publication-grade work would
-use. Humidity is ignored, and this is the largest single omission: water
-co-adsorption on an amine roughly doubles the real thermal duty, so the energy
-figures above should be read as a floor. The breakthrough calculation uses a
-linear driving force in a single well-mixed stage, which gives timing but not
-spatial profiles.</p>
+points rather than a full Toth fit. Humidity is ignored, and that is the largest
+single omission. Water co-adsorption on an amine roughly doubles the real
+thermal duty, so the energy figures above should be read as a floor. The
+breakthrough calculation uses a linear driving force in a single well-mixed
+stage, which gives timing but not spatial profiles.</p>
 
 <hr>
 <h2>The code</h2>
@@ -82,6 +79,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 <p><a class="btn" href="downloads/dac-code.zip">Download source · 22 KB</a>
 <a class="btn ghost" href="code.html">All code</a></p>
+
 
 
 

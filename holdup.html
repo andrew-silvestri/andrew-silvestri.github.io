@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html" class="on">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html" class="on">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Pipeline liquid holdup calculator</h1>
@@ -37,16 +37,14 @@ case the sheet displays 8.554 barrels per mile; recomputing from the weights
 the sheet itself has stored gives 8.359, and the port gives 8.361.</p>
 
 <p>The workbook is carrying stale values from a partial recalculation. Forcing a
-full recalculation brings it back into agreement. This is worth knowing before
-anyone quotes a number off that sheet, and it is the kind of error that only
-shows up when an independent implementation is checked against the original
-rather than against its own output.</p>
+full recalculation brings it back into agreement. Anyone quoting a figure from
+that sheet should force the recalculation first.</p>
 
 <hr>
 <h2>Code</h2>
 <p>This work was done during an industrial internship. The engine, the
-simulation library and the source workbook are the company's, so they are not
-published here. The description above covers the method and the finding; the
+simulation library and the source workbook belong to the company and are not
+published here. The description above covers the method and the finding. The
 implementation stays private.</p>
 
 

@@ -9,19 +9,19 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Battery revenue simulator</h1>
 <p class="dim">A linear program over a year of hourly prices<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, and what it says
 about how long a battery should be.</p>
 
-<p>A grid battery makes its living the way a hibernating ground squirrel does:
-by taking in more than it needs when the taking is good, sitting on the surplus,
-and spending it when nothing else is available. The squirrel's constraint is how
-much fat it can carry. The battery's is how many hours of energy it can hold,
-and the interesting question is the same in both cases — at what point does
-carrying more stop paying for itself?</p>
+<p>A grid battery makes its living the way a hibernating ground squirrel does. It
+takes in more than it needs when the taking is good, sits on the surplus, and
+spends it when nothing else is available. The squirrel's constraint is how much
+fat it can carry. The battery's is how many hours of energy it can hold. The
+question is the same in both cases. At what point does carrying more stop paying
+for itself?</p>
 
 <p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
 linear programming<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, in monthly blocks with the state of charge carried across
@@ -40,10 +40,9 @@ symmetrically as the square root per leg.</p>
 
 <p>Doubling from two hours to four buys about nine per cent more revenue.
 Doubling again from four to eight buys under four. On energy arbitrage alone the
-value of duration flattens hard past four hours<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>, which is the textbook result and
-is now measured rather than asserted. The reason is unglamorous: there are only
-so many hours in a day when the price spread is worth crossing, and a longer
-battery cannot manufacture more of them.</p>
+value of duration flattens hard past four hours<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>. The reason is unglamorous.
+There are only so many hours in a day when the price spread is worth crossing,
+and a longer battery cannot manufacture more of them.</p>
 
 <p>The longer battery also cycles far less, which matters for a warranty
 argument even where it does not matter for revenue. The eight-hour case turns
@@ -62,20 +61,20 @@ over about a third as many equivalent cycles as the two-hour case.</p>
 <p class="small">The price series: duration curve and average daily shape.</p>
 
 
-<h2>Two honest caveats</h2>
+<h2>Caveats</h2>
 <p>The shipped run uses a documented synthetic price year built to resemble the
 Texas market, with a solar belly, an evening peak, summer scarcity spikes and a
 small fraction of negative hours. It is not real data. The model reads a real
-day-ahead price file automatically as soon as one is placed in its data folder,
-and replacing the series is the first thing to do before quoting any figure.</p>
+day-ahead price file automatically as soon as one is placed in its data folder.
+Replace the series before quoting any figure.</p>
 
-<p>The dispatch assumes perfect foresight, which is an upper bound rather than
-an estimate. Real bidding into a day-ahead market captures roughly seventy to
-ninety per cent of the perfect-foresight value, so the revenue column above
-should be discounted accordingly.</p>
+<p>The dispatch assumes perfect foresight, so the revenue is an upper bound.
+Real bidding into a day-ahead market captures roughly seventy to ninety per cent
+of the perfect-foresight value, and the revenue column above should be
+discounted accordingly.</p>
 
-<p>The Julia port is written with JuMP and HiGHS, which is the stack this class
-of model is actually built on in industry.</p>
+<p>The Julia port is written with JuMP and HiGHS, the stack this class of model
+is built on in industry.</p>
 
 <hr>
 <h2>The code</h2>
@@ -84,6 +83,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 <p><a class="btn" href="downloads/storage-code.zip">Download source · 216 KB</a>
 <a class="btn ghost" href="code.html">All code</a></p>
+
 
 
 

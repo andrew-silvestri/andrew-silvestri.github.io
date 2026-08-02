@@ -8,34 +8,31 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html" class="on">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 <h1>The World Energy Model: Structure, Weights, and Behaviour</h1>
 
 <p><strong>Andrew Silvestri — July 2026</strong></p>
 
-<p>This report describes a model of the world energy system. The model has 7,192</p>
-<p>nodes and 13,826 weighted links. It shows how a change at one point in the</p>
-<p>system moves to all other points.</p>
-
-<p>This report uses Simplified Technical English. Sentences are short. Each</p>
-<p>sentence gives one fact.</p>
+<p>This report describes a model of the world energy system. The model has 7,192
+nodes and 13,826 weighted links. It shows how a change at one point in the
+system travels to every other point.</p>
 
 <hr>
 
 <h2>1. What the model does</h2>
 
-<p>The model answers one question: **if something changes here, what changes</p>
-<p>elsewhere, by how much, and how soon?**</p>
+<p>The model answers one question. <strong>If something changes here, what
+changes elsewhere, by how much, and how soon?</strong></p>
 
-<p>A node is one part of the system. Examples are a price benchmark, a national</p>
-<p>grid, a power station, a household group, or a recorded disaster.</p>
+<p>A node is one part of the system: a price benchmark, a national grid, a power
+station, a household group, or a recorded disaster.</p>
 
-<p>A link connects two nodes. Each link has a weight. The weight says how strongly</p>
-<p>a change at the first node moves the second node.</p>
+<p>A link connects two nodes. Each link carries a weight, and the weight says how
+strongly a change at the first node moves the second.</p>
 
-<p>You give the model a change at one or more nodes. The model then calculates the</p>
-<p>effect at every other node.</p>
+<p>A change is applied at one or more nodes. The model then calculates the effect
+at every other node.</p>
 
 <hr>
 
@@ -76,9 +73,9 @@
 
 <p>The complete data set is 11.5 GB. It is stored in 13 folders by subject.</p>
 
-<p><strong>One group of values is not measured.</strong> The consumer response values come from</p>
-<p>published studies. These are the only assumed parameters in the model. They are</p>
-<p>marked as assumed in the provenance report.</p>
+<p><strong>One group of values is not measured.</strong> The consumer response
+values come from published studies. These are the only assumed parameters in the
+model, and they are marked as assumed in the provenance report.</p>
 
 <hr>
 
@@ -86,34 +83,38 @@
 
 <h3>4.1 The state of a node</h3>
 
-<p>Each node holds one number. This number is the <strong>effect</strong>. An effect of 0 means</p>
-<p>no change. A positive effect means more stress or a higher price. A negative</p>
-<p>effect means relief or a lower price. The effect stays between -1 and +1.</p>
+<p>Each node holds one number. This number is the <strong>effect</strong>. An
+effect of 0 means no change. A positive effect means more stress or a higher
+price. A negative effect means relief or a lower price. The effect stays between
+-1 and +1.</p>
 
 <h3>4.2 The calculation</h3>
 
 <p>The model repeats these steps until the numbers stop moving:</p>
 
-<li>For each node, add the effects that arrive along its incoming links. Multiply</li>
-<p>   each arriving effect by the weight of its link. This total is the <strong>inflow</strong>.</p>
+<ol>
+<li>For each node, add the effects that arrive along its incoming links,
+multiplying each arriving effect by the weight of its link. This total is the
+<strong>inflow</strong>.</li>
 <li>Multiply the inflow by (1 − inertia) for that node.</li>
-<li>Add the change that you applied to that node, if any.</li>
+<li>Add the applied change at that node, if any.</li>
 <li>Apply the tanh function. This keeps the result between -1 and +1.</li>
-<li>Move the node part of the way to this new value. The model moves 55 percent</li>
-<p>   of the way at each step. This prevents oscillation.</p>
+<li>Move the node part of the way to this new value. The model moves 55 percent
+of the way at each step, which prevents oscillation.</li>
+</ol>
 
 <p>The model stops when no node moves more than 0.00001 in one step.</p>
 
 <h3>4.3 Why the tanh function</h3>
 
-<p>Without it, a large change can grow without limit. Real systems do not behave</p>
-<p>this way. A price cannot rise forever, and a grid cannot fail more than</p>
-<p>completely. The tanh function makes large inputs approach a limit.</p>
+<p>Without it, a large change grows without limit. A price cannot rise forever,
+and a grid cannot fail more than completely. The tanh function makes large
+inputs approach a limit.</p>
 
 <h3>4.4 Why the 55 percent step</h3>
 
-<p>A full step causes oscillation. The value overshoots, then overshoots in the</p>
-<p>other direction. A partial step removes this. The model settles smoothly.</p>
+<p>A full step causes oscillation. The value overshoots, then overshoots in the
+other direction. A partial step removes this, and the model settles smoothly.</p>
 
 <hr>
 
@@ -121,8 +122,8 @@
 
 <h3>5.1 Link weights</h3>
 
-<p>There are 13,826 links. The weights are between -0.011 and +0.850. There are</p>
-<p>1,142 negative links. Negative links carry relief, not stress.</p>
+<p>There are 13,826 links, with weights between -0.011 and +0.850. Of these,
+1,142 are negative. A negative link carries relief rather than stress.</p>
 
 <table>
 <tr><th>Link</th><th>Weight</th><th>Where the weight comes from</th></tr>
@@ -141,8 +142,8 @@
 
 <h3>5.2 Node inertia</h3>
 
-<p>Inertia says how strongly a node resists change. A value of 0 means the node</p>
-<p>reacts at once. A value of 1 means the node almost never moves.</p>
+<p>Inertia says how strongly a node resists change. A value of 0 means the node
+reacts at once. A value of 1 means the node almost never moves.</p>
 
 <table>
 <tr><th>Node type</th><th>Inertia</th><th>Reason</th></tr>
@@ -157,15 +158,15 @@
 
 <h3>5.3 Fan-in normalisation</h3>
 
-<p>A grid has 4,000 plants connected to it. If each plant sent 0.02, the total</p>
-<p>would be 80. The grid would then saturate for any change at all.</p>
+<p>A grid has 4,000 plants connected to it. If each plant sent 0.02, the total
+would be 80, and the grid would saturate for any change at all.</p>
 
-<p>The model divides the total influence of a group by the number of members. The</p>
-<p>4,000 plants together send 0.45. Each plant sends 0.45 ÷ 4,000.</p>
+<p>The model divides the total influence of a group by the number of members. The
+4,000 plants together send 0.45. Each plant sends 0.45 ÷ 4,000.</p>
 
-<p>This rule means that **adding more plants improves the detail of the model. It</p>
-<p>does not make the grid more sensitive.** The same rule applies to districts and</p>
-<p>to consumer groups.</p>
+<p><strong>Adding more plants therefore improves the detail of the model. It does
+not make the grid more sensitive.</strong> The same rule applies to districts and
+to consumer groups.</p>
 
 <hr>
 
@@ -185,29 +186,28 @@
 
 <h3>6.1 Two results worth noting</h3>
 
-<p><strong>Slow changes reach further than fast ones.</strong> The climate change reached 1,315</p>
-<p>nodes. The grid change reached 19. The climate connects to every country. A</p>
-<p>national grid connects only to its own districts.</p>
+<p><strong>Slow changes reach further than fast ones.</strong> The climate change
+reached 1,315 nodes. The grid change reached 19. The climate connects to every
+country. A national grid connects only to its own districts.</p>
 
-<p><strong>Price changes move fastest.</strong> An oil supply loss reaches the price benchmarks</p>
-<p>in one step. It reaches households in ten steps. Prices are the signal that the</p>
-<p>system uses to communicate.</p>
+<p><strong>Price changes move fastest.</strong> An oil supply loss reaches the
+price benchmarks in one step and households in ten. Prices are the signal the
+system uses to communicate.</p>
 
 <h3>6.2 An example route</h3>
 
 <p>This is the strongest route from the climate to a United States household:</p>
 
 <pre style='background:var(--faint);padding:14px;border-radius:6px;overflow-x:auto;font-size:14px'>
-<p>Climate system (CO2 431 ppm)          effect +0.664</p>
-<p>  -&gt; Global temperature (+1.19 C)     effect +0.249</p>
-<p>    -&gt; USA grid (544.8 GW average)    effect +0.093</p>
-<p>      -&gt; USA district 1               effect +0.036</p>
-<p>        -&gt; USA district 1 household   effect +0.010</p>
-<pre style='background:var(--faint);padding:14px;border-radius:6px;overflow-x:auto;font-size:14px'>
+Climate system (CO2 431 ppm)          effect +0.664
+  -&gt; Global temperature (+1.19 C)     effect +0.249
+    -&gt; USA grid (544.8 GW average)    effect +0.093
+      -&gt; USA district 1               effect +0.036
+        -&gt; USA district 1 household   effect +0.010
+</pre>
 
-<p>The route strength is 0.0765. This is the product of the link weights. The</p>
-<p>effect falls at each step. This is correct behaviour. Distant causes have small</p>
-<p>effects.</p>
+<p>The route strength is 0.0765, the product of the link weights. The effect
+falls at each step. Distant causes have small effects.</p>
 
 <hr>
 
@@ -222,54 +222,57 @@
 <tr><td>Charts</td><td>`python3 make_chart.py`</td><td>Produces the summary figures.</td></tr>
 </table>
 
-<p>The Julia version and the Python version give the same numbers. This was checked</p>
-<p>node by node. The check file is <code>calibrate/out/parity_target.json</code>.</p>
+<p>The Julia version and the Python version give the same numbers, node by node.
+The check file is <code>calibrate/out/parity_target.json</code>.</p>
 
 <hr>
 
 <h2>8. What the model does not do</h2>
 
-<p>This section lists the limits. A user must know these limits.</p>
+<p>These are the limits, and a user has to know them.</p>
 
-<li><strong>The effects have no units.</strong> An effect of 0.38 does not mean 38 percent or</li>
-<p>   38 dollars. It means a large change relative to other nodes. To convert the</p>
-<p>   effects to dollars, the model needs price calibration against known events.</p>
-<p>   The price histories for this work are already loaded.</p>
+<ul>
+<li><strong>The effects have no units.</strong> An effect of 0.38 does not mean 38
+percent or 38 dollars. It means a large change relative to other nodes.
+Converting effects to dollars requires price calibration against known events.
+The price histories for that work are already loaded.</li>
 
-<li><strong>Time is in steps, not in days.</strong> One step is not one day. The steps show</li>
-<p>   the order of arrival, not the calendar.</p>
+<li><strong>Time is in steps, not in days.</strong> One step is not one day. The
+steps show the order of arrival, not the calendar.</li>
 
-<li><strong>The consumer response values are assumed.</strong> They come from published</li>
-<p>   studies of price elasticity. They are not fitted to this data set.</p>
+<li><strong>The consumer response values are assumed.</strong> They come from
+published studies of price elasticity. They are not fitted to this data set.</li>
 
-<li><strong>The model does not optimise.</strong> It does not decide which plant runs. It</li>
-<p>   shows how stress spreads through fixed connections. A dispatch model answers</p>
-<p>   the question of which plant runs.</p>
+<li><strong>The model does not optimise.</strong> It does not decide which plant
+runs. It shows how stress spreads through fixed connections. Deciding which
+plant runs is the job of a dispatch model.</li>
 
-<li><strong>The station layer covers the United States only.</strong> The EIA archive gives</li>
-<p>   plant coordinates for the United States. Other countries are represented by</p>
-<p>   their national grid node and their fuel supplies.</p>
+<li><strong>The station layer covers the United States only.</strong> The EIA
+archive gives plant coordinates for the United States. Other countries are
+represented by their national grid node and their fuel supplies.</li>
 
-<li><strong>Feedback is limited.</strong> An oil shock that causes a recession that reduces</li>
-<p>   demand is represented by the negative consumer links. It is not a full</p>
-<p>   economic model.</p>
+<li><strong>Feedback is limited.</strong> An oil shock that causes a recession
+that reduces demand is represented by the negative consumer links. This is not a
+full economic model.</li>
+</ul>
 
 <hr>
 
 <h2>9. Summary</h2>
 
-<p>The model connects public data about the physical world to public data about</p>
-<p>human systems. It has 7,192 nodes and 13,826 links. Every weight has a source.</p>
-<p>The behaviour matches expectation: slow global variables reach far, fast local</p>
-<p>variables reach near, and prices carry the signal between them.</p>
+<p>The model connects public data about the physical world to public data about
+human systems. It has 7,192 nodes and 13,826 links, and every weight has a
+source. The behaviour matches expectation: slow global variables reach far, fast
+local variables reach near, and prices carry the signal between them.</p>
 
-<p>The model is a tool for one purpose. It shows the <strong>shape and the speed</strong> of how</p>
-<p>an effect travels through the energy system. It does not forecast prices.</p>
+<p>The model serves one purpose. It shows the <strong>shape and the
+speed</strong> of an effect travelling through the energy system. It does not
+forecast prices.</p>
 
 <hr>
 
-<p>*Data current to July 2026. The model, the data, and the code are reproducible</p>
-<p>from the published sources listed in section 3.*</p>
+<p><em>Data current to July 2026. The model, the data and the code are
+reproducible from the published sources listed in section 3.</em></p>
 
 <hr>
 <h2>Figures from this model</h2>

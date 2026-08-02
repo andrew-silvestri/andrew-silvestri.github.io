@@ -8,20 +8,20 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html" class="on">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html" class="on">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The atlas</h1>
 <p class="dim">Seven layers of one model. 7,192 nodes, each on a real
 coordinate.</p>
 
-<p><a class="btn" href="atlas-app.html">Open the atlas full screen</a></p>
+<p><a class="btn" href="atlas-app.html" target="_blank" rel="noopener">Open the atlas full screen</a></p>
 
-<p>The atlas runs entirely in your browser. Choose a scenario and press Run. The
+<p>The atlas runs entirely in the browser. Choose a scenario and press Run. The
 side panel reports how many nodes changed, how many steps the model needed to
 settle, and the largest single effect. The counts on the tabs show where the
-change landed in the other layers. Click any node to read its data source, then
-apply your own change there.</p>
+change landed in the other layers. Click any node to read its data source and
+apply a change there.</p>
 
 <iframe src="atlas-app.html" title="The world energy model atlas"
  style="width:100%;height:760px;border:1px solid var(--faint);border-radius:8px;
@@ -39,24 +39,23 @@ apply your own change there.</p>
 </table>
 <h2>Why a globe, and why a brain</h2>
 
-<p>Six of the seven layers are drawn on a sphere rather than a flat map, and the
-change is not cosmetic. Mercator inflates Greenland to the size of Africa and
-stretches the high-latitude Russian and Canadian grids into ribbons — which is
-precisely where a good deal of this model's fuel supply lives. On a globe every
-node sits at its true angular position, and a point on the far side is hidden by
-the planet instead of being flung to the edge of a rectangle. The graticule runs
-every thirty degrees so that rotation reads as rotation.</p>
+<p>Six of the seven layers are drawn on a sphere rather than a flat map. Mercator
+inflates Greenland to the size of Africa and stretches the high-latitude Russian
+and Canadian grids into ribbons. A good deal of this model's fuel supply lives
+at those latitudes. On a globe every node sits at its true angular position, and
+a point on the far side is hidden by the planet instead of being flung to the
+edge of a rectangle. The graticule runs every thirty degrees so that rotation
+reads as rotation.</p>
 
 <p>The seventh layer is not a place, so it has no business on a map. Behaviour
 is drawn inside a brain, with the six channels at anatomically defensible
 positions: present bias in the prefrontal cortex, dissonance at the anterior
 cingulate near the midline, the norm channel at the temporo-parietal junction,
 status in the ventral striatum, habit in the basal ganglia, loss aversion in the
-amygdala. The solid itself is generated rather than traced — an ellipsoid given
-a longitudinal fissure and a few folds, with a cerebellum and a stem attached.
-It reads as a brain at a glance and it is not anatomy; the application says so
-on screen. The region names, and which channel sits in which, are the part that
-is real.</p>
+amygdala. The solid is generated rather than traced, an ellipsoid given a
+longitudinal fissure and a few folds, with a cerebellum and a stem attached. It
+reads as a brain at a glance and it is not anatomy. The application says so on
+screen. The region names, and which channel sits in which, are real.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>

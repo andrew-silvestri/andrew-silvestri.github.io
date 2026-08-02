@@ -8,18 +8,18 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html" class="on">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html" class="on">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Longevity quotient</h1>
 <p class="dim">How long an animal lives, against how long an animal of its
 size should live.</p>
 
-<p>Body mass predicts lifespan. Across the 7,873 species in this model — from a
+<p>Body mass predicts lifespan. The 7,873 species in this model run from a
 nematode at a microgram to a blue whale at 150 tonnes, twenty orders of
-magnitude of body size — each tenfold increase in mass buys roughly a 1.5-fold
-increase in maximum lifespan. The relationship is strong enough to be worth
-dividing out. What remains when you do is the longevity quotient:</p>
+magnitude of body size. Across that whole range each tenfold increase in mass
+buys roughly a 1.5-fold increase in maximum lifespan. The relationship is strong
+enough to be worth dividing out. What remains is the longevity quotient:</p>
 
 <p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
 lifespan predicted from body mass</code></p>
@@ -33,17 +33,19 @@ long as its size predicts. The interesting animals are the ones far from one.</p
 
 <div class="card">
 <div class="tag">Interactive</div>
+
+
 <h3 style="margin-top:4px">The visualiser</h3>
-<p>Every species is a row with two bars: wild maximum and captive maximum, with
-a tick at the average of the two. Change the sort and the rows animate to their
-new positions, so the ranking rearranges in front of you rather than being
-replaced by a new table. Sort by quotient, lifespan, body mass or name; switch
-which lifespan is used; switch the baseline between a species' own group and a
-single fit across all animals; filter to any taxon at any rank.</p>
+<p>Every species is a row with two bars, wild maximum and captive maximum, with
+a tick at the average of the two. Changing the sort animates the rows to their
+new positions, so the ranking rearranges rather than being replaced by a new
+table. Sort by quotient, lifespan, body mass or name. Switch which lifespan is
+used. Switch the baseline between a species' own group and a single fit across
+all animals. Filter to any taxon at any rank.</p>
 <p>The second view aggregates whole taxa and compares them against each other at
 any rank from phylum down to genus, by mean quotient, median lifespan, longest
 member or species count. Click a group to drop into the species inside it.</p>
-<a class="btn" href="longevity-app.html">Open the visualiser</a>
+<a class="btn" href="longevity-app.html" target="_blank" rel="noopener">Open the visualiser</a>
 <a class="btn ghost" href="downloads/longevity-code.zip">Download code and data</a>
 </div>
 
@@ -57,13 +59,13 @@ species' own class, is the quotient.</p>
 <h2>Fitting the baseline</h2>
 
 <p>An ordinary least squares regression of log lifespan on log body mass, run
-globally and within each group. Fitting inside a group matters a great deal.
-Birds come out about 1.8 times longer-lived than mammals of equal mass, which
-matches what the comparative literature reports, so a single fit across every
-animal charges every bird a bonus it did not earn and every mammal a penalty it
-does not deserve. Fish classes are pooled together, and the many small
-invertebrate classes are pooled into one baseline, because separately they are
-too thin to fit.</p>
+globally and within each group. Fitting inside a group matters. Birds come out
+about 1.8 times longer-lived than mammals of equal mass, which matches what the
+comparative literature reports, so a single fit across every animal charges
+every bird a bonus it did not earn and every mammal a penalty it does not
+deserve. Fish classes are pooled together, and the many small invertebrate
+classes are pooled into one baseline, because separately they are too thin to
+fit.</p>
 
 <table>
 <tr><th>Baseline</th><th>Species in fit</th><th>Slope b</th><th>r&sup2;</th><th>Predicted at 1 kg</th></tr>
@@ -76,11 +78,11 @@ too thin to fit.</p>
 <tr><td>Invertebrates</td><td>57</td><td>0.256</td><td>0.41</td><td>23.0 yr</td></tr>
 </table>
 
-<p>A fit is only used if it is worth using. The amphibian regression returns an
-r² of 0.12 across twenty-four species, which is not a relationship. Any group fit
-with a non-positive slope or an r² below 0.15 is rejected, and that group falls
-back to the global baseline. The model reports which groups were rejected and
-why. Amphibians are currently the only one.</p>
+<p>The amphibian regression returns an r² of 0.12 across twenty-four species,
+which is not a relationship. Any group fit with a non-positive slope or an r²
+below 0.15 is rejected, and that group falls back to the global baseline. The
+model reports which groups were rejected and why. Amphibians are currently the
+only one.</p>
 
 <h2>Comparing whole groups</h2>
 
@@ -123,17 +125,16 @@ leafcutter ant queen and the red sea urchin at ten. The lowest belong to the
 silkmoth, a wasp worker, Labord's chameleon, and the squid and octopus at around
 one-twentieth of prediction.</p>
 
-<p>Three of those are the reason the exercise is worth doing at all. The honey
-bee worker and the honey bee queen carry the same genome and sit an order of
-magnitude apart in lifespan, because caste and diet decide the outcome rather
-than genetics. The giant Pacific octopus is large, capable, and dead in five
-years, because it breeds once and then stops eating — while the chambered
-nautilus, a cephalopod that does not breed once and die, lives twenty. And
-Labord's chameleon spends most of its existence inside an egg and then lives
-four or five months as an adult, the shortest life of any four-limbed vertebrate,
-in a body whose size predicts eight years. None of this is visible in a table of
-lifespans sorted by years. All of it is unmissable the moment body mass is
-divided out.</p>
+<p>Three of those are worth a closer look. The honey bee worker and the honey
+bee queen carry the same genome and sit an order of magnitude apart in lifespan,
+because caste and diet decide the outcome rather than genetics. The giant
+Pacific octopus is large, capable, and dead in five years, because it breeds
+once and then stops eating. The chambered nautilus, a cephalopod that does not
+breed once and die, lives twenty. Labord's chameleon spends most of its
+existence inside an egg and then lives four or five months as an adult, the
+shortest life of any four-limbed vertebrate, in a body whose size predicts eight
+years. None of this is visible in a table of lifespans sorted by years. All of
+it appears the moment body mass is divided out.</p>
 
 <img class="fig wide" src="assets/lq_wild_captive.png"
  alt="Dumbbell chart comparing wild and captive maximum lifespan by species">
@@ -153,12 +154,11 @@ holders show.</p>
 
 <p>An r² of 0.46 measured on logarithms still permits a factor-of-two error on
 any individual species. The quotient is a lens for finding outliers, not a
-measurement of one. And body mass is one variable among several that carry real
-signal — metabolic rate, age at first reproduction, whether the animal flies,
+measurement of one. Body mass is also one variable among several that carry real
+signal: metabolic rate, age at first reproduction, whether the animal flies,
 whether it lives underground, and whether it breeds once or repeatedly. Flight
 and burrowing between them account for most of the top of the mammal list.
-Adding a predation-risk proxy as a second regressor is the obvious next
-build.</p>
+Adding a predation-risk proxy as a second regressor is the next build.</p>
 
 <h2>Data</h2>
 
@@ -167,10 +167,10 @@ build.</p>
 2921 genera. Every record carries full taxonomy, an adult body mass, at
 least one maximum lifespan, a quality grade and its provenance.
 6,387 have a wild maximum, 1,795 a captive maximum, and
-309 have both &mdash; which is the comparison this project was built
-around, and the reason the merge keeps the hand-checked table at the top of the
-precedence order rather than letting a bulk source overwrite it. Most bulk
-sources report a single figure per species without saying which kind it is.</p>
+309 have both. That last comparison is the reason the merge keeps
+the hand-checked table at the top of the precedence order rather than letting a
+bulk source overwrite it. Most bulk sources report a single figure per species
+without saying which kind it is.</p>
 
 <p>Disputed records lose to verified ones: the 226-year koi and the 120-year
 cockatoo are both out. Grade C records appear in the table and in the
@@ -205,22 +205,21 @@ that has been aged and never weighed, which they did
 
 <p>8,583 distinct species carried a lifespan
 after the merge. 710 of them were dropped for
-having no body mass in any source &mdash; mostly reptiles and amphibians,
+having no body mass in any source, mostly reptiles and amphibians,
 which are routinely measured snout to vent and never put on a scale.
 641 fish were kept with a mass computed
-from maximum length through FishBase's own length&ndash;weight relationship;
-those are modelled, not measured, and are marked and graded accordingly. What
-survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474.</p>
+from maximum length through FishBase's own length&ndash;weight relationship.
+Those masses are modelled rather than measured, and are marked and graded
+accordingly. What survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474.</p>
 
-<p class="small">This is the ceiling, and it is worth being clear about why.
-About 2.24 million species have been described. Fewer than nine thousand have
-ever been both aged and weighed, because a maximum lifespan requires somebody
-to have watched an animal until it died. The limit here is not access to data.
-It is that the observations were never made. Wikidata, which is the aggregate
-of individual species pages rather than a compiled table, holds 1,147 taxa with
-a recorded maximum lifespan and 259 with a lifespan and a mass together
-&mdash; less than a twentieth of what the compiled databases give, which is the
-answer to whether scraping species pages one at a time would do better.</p>
+<p class="small">This is the ceiling. About 2.24 million species have been
+described. Fewer than nine thousand have ever been both aged and weighed,
+because a maximum lifespan requires somebody to have watched an animal until it
+died. The limit here is not access to data. The observations were never made.
+Wikidata, an aggregate of individual species pages rather than a compiled table,
+holds 1,147 taxa with a recorded maximum lifespan and 259 with a lifespan and a
+mass together, less than a twentieth of what the compiled databases give.
+Scraping species pages one at a time would not do better.</p>
 
 <h2>The arithmetic, written out</h2>
 
@@ -248,11 +247,12 @@ quoting the raw number would overstate the fit's authority by about a
 factor of two.</p>
 
 <p>The slope is the interesting parameter. At 0.191 it says a tenfold
-increase in mass buys a 1.55-fold increase in maximum lifespan
-&mdash; lifespan goes roughly as the 5th root of mass. This is
-why the prediction is so hard to escape by growing: an animal a thousand times
+increase in mass buys a 1.55-fold increase in maximum lifespan.
+Lifespan goes roughly as the 5th root of mass. Growing is
+therefore a poor way to escape the prediction: an animal a thousand times
 heavier than another is predicted to live only about
 3.8 times longer.</p>
+
 
 
 

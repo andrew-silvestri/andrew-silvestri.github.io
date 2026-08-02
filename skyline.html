@@ -9,108 +9,60 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html" class="on">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Skylines, played</h1>
 <p class="dim">A skyline and a spectrum analyser are the same picture. So the
 picture is played.</p>
 
-<p>Both are a row of vertical bars of varying height, both are read left to
-right, and in both the eye goes straight to the tall spikes. That is a
-coincidence of drawing conventions rather than of physics, but it is a usable
-one: if a skyline can be read as a spectrum, a city can be turned into a sound
-and the sound will change as you turn around.</p>
+<p>Both are a row of vertical bars of varying height. That is a coincidence of
+drawing conventions rather than of physics, but it is usable: if a skyline can
+be read as a spectrum, it can be played, and the sound will change as the
+listener turns. This tool does that for twenty-six cities, using published
+building heights and coordinates.</p>
 
 <div class="card">
 <div class="tag">Interactive</div>
+
+
 <h3 style="margin-top:4px">26 cities</h3>
-<p>Drag to turn on the spot, or press Spin and let it turn for you. The upper
-panel is a wheel of the city's towers &mdash; up to a hundred and twenty of
-them, the far side in a colder colour because it is behind you. The lower panel
-is that same ring as a meter, and the meter is what you hear.</p>
-<a class="btn" href="skyline-app.html">Open it</a>
+<p>The upper panel is a wheel of the city's towers, up to a hundred and twenty
+of them, with the far side drawn in a colder colour because it is behind the
+listener. The lower panel is the same ring as a meter, and the meter is what
+sounds. Drag to turn, or press Spin.</p>
+<a class="btn" href="skyline-app.html" target="_blank" rel="noopener">Open it</a>
 <a class="btn ghost" href="downloads/skyline-code.zip">Download code and data</a>
 </div>
 
 <h2>What is measured and what is invented</h2>
 
-<p>Sonification projects usually blur this line, so it is worth drawing
-sharply.</p>
+<p>Sonification tends to blur the line between what was observed and what was
+composed, so it is drawn sharply here.</p>
 
-<p><strong>Measured.</strong> Every building is a real entity with a published
-structural height and a published coordinate. The observer stands at a stated
-point outside the city, and the angular position and apparent height of each
-tower from that point is trigonometry on those two numbers and nothing else.
-The silhouette is a genuine one: where a tower stands behind a taller tower it
-contributes nothing, which is what your eye does.</p>
+<p><strong>Measured.</strong> Each building carries a published structural
+height and a published coordinate. The listener stands at a stated point, and
+each tower's bearing and apparent height follow from those two numbers by
+trigonometry. Where a tower stands behind a taller one it contributes nothing,
+which is what an eye does.</p>
 
 <p><strong>Assumed.</strong> Footprint width is not recorded anywhere usable,
 so each tower is given a width of eighteen per cent of its height, between
 twenty-five and seventy metres. That is about right for a slender tower and
 about wrong for a broad one.</p>
 
-<p><strong>Rearranged.</strong> The spacing around the wheel, and only the
-spacing. Order, height, distance and bearing are all real; how far apart two
-towers sit on the ring is not. This is set out in full below rather than
-buried, because it is the one place the picture departs from the ground.</p>
+<p><strong>Rearranged.</strong> The spacing around the wheel, and nothing
+else. Buildings hold their true compass order, clockwise from north; the angle
+between any two of them does not survive. A downtown occupies perhaps forty degrees of a real horizon, and a wheel that
+reproduced that would be two-thirds empty. A transit map takes the same liberty
+with distance, for the same reason.</p>
 
 <p><strong>Invented.</strong> The sound. There is no sense in which a city has
 a pitch. The mapping is a choice, it is written out in full below, and it is
 deterministic: the same city at the same bearing always makes the same
 sound.</p>
 
-<h2>Two panels, not one picture</h2>
-
-<p>Above is a wheel, drawn the way a reverb room or a rotary control is drawn:
-a cylinder seen from slightly above, with each building a stave standing on the
-rim. Screen position comes from the sine of its angle and depth from the
-cosine, so the near face is large, bright and low, and the far face &mdash; the
-part of the city behind you &mdash; rides higher, smaller and in a colder
-colour. It is drawn back to front, so near towers hide far ones for free.
-Below is the same ring as a meter, with fast attack, slow release and peak
-markers that fall back under their own weight, which is how every meter ever
-built behaves.</p>
-
-<p>Turning does not rotate the city. It rotates <em>you</em>. What was behind
-comes around, and the colour tells you when it has.</p>
-
-<h2>One liberty, taken deliberately</h2>
-
-<p>The first version put every tower at its true bearing from a viewpoint
-outside the city. That is exactly what a skyline is, it is entirely honest, and
-as a carousel it was useless: a downtown occupies perhaps forty degrees of
-anybody's horizon, so turning ninety degrees gave a blank screen. Accurate and
-worthless is still worthless.</p>
-
-<p>So the wheel does one stated thing to the geography. Buildings keep their
-true compass <strong>order</strong> &mdash; clockwise from north, exactly as
-they stand on the ground, and the panel names the real bearing of anything you
-hover &mdash; but their <strong>spacing</strong> is equalised so the ring is
-full. Neighbours on the wheel are neighbours in the city; the angle between
-them is not the angle between them. It is the liberty a transit map takes with
-distance, taken for the same reason. Every one of the fifty cities now has
-something in front of you at every bearing, which was checked rather than
-assumed.</p>
-
-<p>Two other things changed with it. The height floor came down: 120 m for the
-headline count, 55 m for wheel membership, which roughly doubles the set. And
-the wheel carries up to 120 buildings per city rather than 20 &mdash;
-1,115 across the whole set, New York fullest at 120.</p>
-
-<p>It also cost me twenty-six cities, and that is the honest part. The ask was
-the top fifty; the database supports 24. Beijing has seven towers on
-record here and something over a thousand in life, and a seven-tower wheel
-would have said more about Wikidata's coverage than about Beijing while
-reading, to anybody looking at it, as a statement about Beijing. A city is
-published when it has enough buildings to fill a turn. Padding the list back
-to fifty would have meant putting the original complaint &mdash; too much empty
-space &mdash; back in, on purpose, to hit a number.</p>
-
 <h2>Musical and realistic</h2>
-
-<p>A toggle, because the liberty above is the only interesting question here
-and it should be the reader's to answer rather than mine.</p>
 
 <p><strong>Realistic</strong> puts every tower at its true angular position and
 plays the whole mode across four octaves, fourteen voices. It is closer to what
@@ -123,50 +75,33 @@ consonant, so no bearing in any city can produce a dissonance &mdash; not
 because it is avoided but because the dissonant intervals are not in the
 instrument.</p>
 
-<p>The first attempt at that used the first, third, fifth and <em>seventh</em>,
-which on a seven-note mode puts a major seventh one semitone under the octave
-root. An instrument advertised as incapable of a minor second contained one.
-Building a ladder out of consonant degrees is not the same as proving the
-assembled ladder is consonant, and the assembled ladder is now checked: nothing
-closer than a minor third in musical, nothing closer than a whole tone in
-realistic.</p>
-
-<h2>It cannot be made to hurt</h2>
+<h2>Why it cannot become painful</h2>
 
 <p>A bank of sine waves driven by a data set can, at some bearing in some city,
-line up: twenty partials at full tilt in the two-to-four kilohertz band where
-hearing is sharpest and least forgiving. That is the sound of a smoke alarm,
-and no amount of tuning the mapping prevents it, because the mapping does not
-know what the ear finds painful. So it is made structurally impossible instead,
-and then measured across every city at every bearing in both modes:</p>
+line up: twenty partials at full amplitude in the two-to-four kilohertz band,
+where hearing is sharpest and least forgiving. Tuning the mapping does not
+prevent this, because the mapping has no model of what an ear finds painful.
+The constraint is built into the instrument instead, and measured across every
+city, at every bearing, in both modes.</p>
 
 <table>
-<tr><th>What could go wrong</th><th>What stops it</th><th>Measured worst case</th></tr>
-<tr><td>Too many partials at once</td><td>A voice limit: only the loudest few
-sound</td><td>7 in musical, 14 in realistic</td></tr>
-<tr><td>Shrillness</td><td>Nothing above 1.5 kHz in musical, 1.9 in realistic,
-plus a high shelf and a lowpass</td><td>highest partial 1,397 Hz and 1,865
-Hz</td></tr>
-<tr><td>The 2&ndash;4 kHz band dominating</td><td>The ceiling sits below
-it</td><td>0% of power, in every city, at every bearing</td></tr>
-<tr><td>A painful interval</td><td>The assembled ladder is thinned to a
-minimum spacing</td><td>closest pair 2.9 semitones</td></tr>
-<tr><td>Spinning becoming a volume ride</td><td>Constant-power normalisation,
-computed on the gains actually sent</td><td>loudest bearing 1.0&times; the
-quietest</td></tr>
-<tr><td>Anything else</td><td>A limiter and a fixed ceiling after it</td>
+<tr><th>Failure mode</th><th>Constraint</th><th>Worst case measured</th></tr>
+<tr><td>Too many partials at once</td><td>Voice limit; only the loudest few
+sound</td><td>7 musical, 14 realistic</td></tr>
+<tr><td>Shrillness</td><td>Ceiling below the ear's sensitive band, plus a high
+shelf and a lowpass</td><td>1,397 Hz and 1,865 Hz</td></tr>
+<tr><td>The 2&ndash;4 kHz band dominating</td><td>Nothing is placed in
+it</td><td>0% of power</td></tr>
+<tr><td>A painful interval</td><td>Minimum spacing enforced on the assembled
+ladder</td><td>2.9 semitones</td></tr>
+<tr><td>Turning as a volume ride</td><td>Constant-power normalisation on the
+gains actually sent</td><td>1.0&times;</td></tr>
+<tr><td>Anything else</td><td>A limiter and a fixed ceiling behind it</td>
 <td>&mdash;</td></tr>
 </table>
 
-<p>That last row is the only one doing defensive work. The others are
-structural, and the difference matters: a limiter catching a problem means the
-problem was produced.</p>
-
-<p>The normalisation was wrong the first time in a way worth recording. It
-flattened the raw levels and <em>then</em> applied the spectral tilt that makes
-the thing sound like an instrument, which un-did the flattening. A bearing
-lighting only low partials came out fourteen times louder than one lighting
-only high ones. Tilt first, normalise second.</p>
+<p>Only the last row is defensive. The rest are structural, and the difference
+matters: a limiter that engages means the problem was produced.</p>
 
 <h2>Two cities entered by hand</h2>
 
@@ -182,29 +117,6 @@ equalises angular spacing anyway &mdash; a coordinate decides what order
 buildings appear in, not the gap between them.</p>
 
 <h2>The key</h2>
-
-<p>The first version derived a pitch from the city's median building height.
-That is defensible, and it means nothing &mdash; it made Frankfurt and Busan
-sound different because their towers differ by nine metres, which is not a fact
-about either city. So the key is now editorial, and every one of them is
-sourced. They fall into three tiers, marked in the app so a reader can see how
-much weight to put on any one:</p>
-
-<table>
-<tr><th>Tier</th><th>Cities</th><th>What it is</th></tr>
-<tr><td><b>Piece</b></td><td>10</td><td>A widely known piece of
-music inseparable from the city, in its usual key. New York is B&#9837; from
-the opening glissando of <i>Rhapsody in Blue</i>; Warsaw is F minor from
-Chopin, who lived there; Moscow is E&#9837; from the <i>1812</i>.</td></tr>
-<tr><td><b>Anthem</b></td><td>6</td><td>The national anthem in
-its conventional published key. Weaker &mdash; it is about the country, not the
-city &mdash; but checkable rather than invented.</td></tr>
-<tr><td><b>Mode</b></td><td>34</td><td>Where neither exists, the
-scale system of the city's own tradition. A Gulf city gets maqam Hijaz because
-Hijaz is what is played there; Tokyo gets the yo scale; Guangzhou gets yu mode,
-which is what Cantonese opera uses. The root is arbitrary; the mode is
-not.</td></tr>
-</table>
 
 <p>Nothing here claims a city <em>is</em> a key. It claims that if you had to
 pick one, this is the pick with a reason attached &mdash; and the reason is on
@@ -250,39 +162,6 @@ they already do in the picture.</td></tr>
 <tr><td>Empty horizon</td><td>Silence</td><td>Which is why turning away from the
 towers quiets the instrument rather than merely changing it.</td></tr>
 </table>
-
-<h2>Where to stand</h2>
-
-<p>A skyline is a thing seen from outside, so the observer has to be put
-somewhere, and the choice changes the picture completely. The model places
-them beyond the ninetieth percentile of the tower cluster, on the bearing from
-which the greatest total angular height falls in front of them &mdash; roughly
-what a photographer does. For the cities whose classic view is across water,
-Manhattan and Hong Kong and Chicago, it lands close to the classic view without
-having been told that the water is there.</p>
-
-<p>The first version of this put the observer at a fixed distance from the
-centroid instead, which in Dubai left them standing two hundred metres from the
-Burj Khalifa, filling seventy-five degrees of sky. Being outside the middle of
-a city is not the same as being outside the city.</p>
-
-<h2>What went wrong with the data</h2>
-
-<p>The obvious query &mdash; things over a hundred and twenty metres, with a
-height and a coordinate &mdash; returns a nine-hundred-and-fifty-metre tower in
-Rotterdam. Rotterdam has no such tower. The height property applies to anything
-with a height: mountains, waterfalls, bridges, dams, radio masts, and, in the
-returned set, forty-nine nuclear weapons tests. It also carries a unit, so a
-value of 950 may be feet.</p>
-
-<p>Both are now handled. Heights come back normalised to metres by the query
-itself rather than trusted as written, and the class of every entity is checked
-against a list of things that are actually buildings. The build reports the
-largest rejected classes each time it runs, so the filter is visible rather
-than a silent judgement: at the last run, waterfalls, road bridges, mountains
-and transmitter masts, in that order. The check that this worked is the one
-that matters &mdash; the tallest building in each city now comes out as the
-building everyone knows it to be.</p>
 
 <h2>Limits</h2>
 

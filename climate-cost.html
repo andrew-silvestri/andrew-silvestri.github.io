@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html" class="on">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The true climate cost of a thing</h1>
@@ -21,8 +21,8 @@ none of those sources will tell you why they disagree. They disagree because a
 footprint is not a measurement. It is the end of a long argument about what to
 count and who to charge, and publishing only the answer hides the argument.</p>
 
-<p>This model runs the argument in the open. Give it three things &mdash; an
-item, where it was produced, where it is eaten &mdash; and it returns the chain
+<p>This model runs the argument in the open. Give it three things: an item, where it was produced, and where it is
+eaten. It returns the chain
 as it actually happens: a spine of stages from the field to the bin, with a
 branching tree under each stage showing where that stage's emissions came from.
 The branches have branches. A tomato needs fertiliser<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, the fertiliser needs
@@ -31,59 +31,28 @@ leaks methane<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. Four levels
 
 <div class="card">
 <div class="tag">Interactive</div>
+
+
 <h3 style="margin-top:4px">The calculator</h3>
-<p>Twenty items in three groups &mdash; food, transport and clothing &mdash;
-across twenty-eight producing regions and four freight modes. It
+<p>Twenty items in three groups, food, transport and clothing, across
+twenty-eight producing regions and four freight modes. It
 recomputes rather than looking up a stored answer, so any combination works,
-including the absurd ones &mdash; and the absurd ones are often the instructive
-ones.</p>
-<a class="btn" href="climate-cost-app.html">Open the calculator</a>
+including the absurd ones. Those are often the instructive ones.</p>
+<a class="btn" href="climate-cost-app.html" target="_blank" rel="noopener">Open the calculator</a>
 <a class="btn ghost" href="downloads/climate-cost-code.zip">Download code and data</a>
 </div>
-
-<h2>Why it is drawn in three dimensions</h2>
-
-<p>The first version of this tool printed the chain as an indented list, and
-the list was honest and nearly unreadable. Four levels of indentation eat the
-page, and once they have, the eye cannot tell a large branch from a small one
-without stopping to read every figure. The structure was there and nobody could
-see it.</p>
-
-<p>So the same graph is put in space. The stages run left to right as a
-straight line, because the thing itself happens in a straight line: field,
-harvest, packing, freight, distribution, kitchen, bin. Everything that feeds a
-stage hangs off it as a cone of branches, and every branch is itself a cone.
-Ball size is emissions on a cube-root scale, which keeps the small
-contributions visible without letting them pretend to be large ones. The open
-arc around a ball is its allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so a process charged only a third to this
-product wears a third of a ring.</p>
-
-<p>Geography gets a globe rather than a map. Producing region, consuming
-region, and the freight route drawn as the great circle the model actually
-measured &mdash; on Mercator that distance is a property of the projection, and
-half of what a reader would conclude about shipping would be an artefact of the
-mapmaker. The freight branch is the one thing pulled out of its fan and pinned
-to the apex of the route, because freight is the single step whose size is set
-by geography rather than by chemistry, and that is worth seeing rather than
-reading.</p>
-
-<p>Drag to orbit, scroll to zoom, click any ball to read what it is and what
-share of it is charged here, and use the arrow keys to walk the chain: left and
-right along the stages, down into the largest branch, up towards the spine.
-Where there is no WebGL, or where a list is simply the better tool, the same
-tree is one button away with every number intact.</p>
 
 <h2>Allocation, which is where the disagreement lives</h2>
 
 <p>Every branch carries a multiplier saying what share of that process belongs
-to the product in front of you. A slaughterhouse also makes leather and tallow.
+to the product in the model. A slaughterhouse also makes leather and tallow.
 A dairy cow also becomes beef. A coffee mill also sells pulp. Charging the whole
 burden to the one output you happen to care about is a choice, and in almost
 every published footprint it is an invisible one.</p>
 
 <p>Two careful studies of the same cheese can differ twofold without either
 being wrong, because one split the cow's methane between milk and meat by
-economic value and the other by protein mass. The <b>allocation</b> factor is a
+economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
 judgement, it changes the answer, and it should be visible. Here it sits on
 every edge, and it compounds down the chain, so a process four levels deep may
 contribute only a third of what it emits.</p>
@@ -120,20 +89,18 @@ contribute only a third of what it emits.</p>
 <p>Three groups, one axis. The point of putting a flight, a pair of jeans and
 a tomato in the same model is that they can then be asked the same question,
 and the answers turn out to be commensurable in ways that are hard to see when
-each lives in its own report. A cotton t-shirt worn for three years costs about
-what thirty-three kilometres of driving costs. A pair of trainers costs about
+each lives in its own report. A cotton t-shirt worn for three years costs about what thirty-three
+kilometres of driving costs. A pair of trainers costs about
 half a beefsteak dinner. Whether that is a useful comparison is a separate
 argument; whether it is an available one is not.</p>
 
-<p>Two of the entries exist mainly to make an argument about method. The
-<b>electric car</b> is a machine for turning a grid into motion, so it is the
-one item whose destination matters more than its origin: the same car is a
-different object in France and in Poland, and the model already knows the
-difference because production electricity and consumption electricity are
-charged separately. The <b>leather shoe</b> is the allocation argument in its
-purest form &mdash; a hide is a co-product of a beef animal, and how much of
-that animal's methane belongs to a shoe is a judgement rather than a
-measurement. At 2.2% by economic value the shoes come in under four kilograms;
+<p>Two of the entries exist mainly to make an argument about method. The <b>electric car</b> is a machine for turning a grid into motion, so it is
+the one item whose destination matters more than its origin. The same car is a
+different object in France and in Poland. Production electricity and
+consumption electricity are charged separately, so the model already
+distinguishes them. The <b>leather shoe</b> is the allocation argument in its purest form. A hide
+is a co-product of a beef animal, and how much of that animal's methane belongs
+to a shoe is a judgement rather than a measurement. At 2.2% by economic value the shoes come in under four kilograms;
 by mass allocation, at about 7%, they would triple. Nothing about the shoe
 changes.</p>
 
@@ -163,7 +130,7 @@ move the answer in the direction physics says they should.</p>
 <p>One test exists because of a bug that hid well. Production-side electricity
 was being charged at the <i>consuming</i> region's grid intensity, so a French
 dairy looked dirty when someone in India ate the cheese. It is invisible in any
-single run &mdash; the number just looks slightly high &mdash; and only shows up
+single run the number just looks slightly high, and only shows up
 when you change the destination and something moves that has no business moving.
 There is now a test that walks every production stage and fails if any of them
 draws power from the wrong grid.</p>
@@ -180,6 +147,7 @@ measurements of a particular farm. The spread within a single food is enormous
 &mdash; beef ranges roughly tenfold between the best and worst producers, more
 than the gap between many different foods &mdash; so a number here should be
 read as an order of magnitude with a plausible shape.</p>
+
 
 
 

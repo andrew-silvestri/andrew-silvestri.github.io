@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Industrial heat electrification break-even</h1>
@@ -17,13 +17,14 @@
 natural-gas boiler, for process steam in Texas.</p>
 
 <p>A chemical plant that wants to stop burning gas for process steam has one
-obvious substitute, and it is almost insultingly simple: put an electric
-resistance heater where the burner was. No new chemistry, no new catalyst,
-nothing to invent. The whole question is arithmetic — what does the electricity
-have to cost before the substitution stops losing money?</p>
+obvious substitute. Put an electric resistance heater where the burner was. No
+new chemistry, no new catalyst, nothing to invent. The whole question is
+arithmetic. What does the electricity have to cost before the substitution stops
+losing money?</p>
 
-<p>The answer is delivered heat, not fuel bought, so both routes are compared in
-dollars per million British thermal units<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> that actually reach the process.</p>
+<p>The comparison is on delivered heat. Both routes are priced in dollars per
+million British thermal units<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> that actually reach the process, not on fuel
+bought at the gate.</p>
 
 <h2>What the model finds</h2>
 <p>At a gas price of $3.50 per million British thermal units and electricity at
@@ -32,18 +33,17 @@ million British thermal units and electric heat about <strong>$20.00</strong>.
 The break-even electricity price is about <strong>1.53 cents per kilowatt
 hour</strong>, or 1.38 cents if only fuel is counted.</p>
 
-<p>The result that matters is not the number itself but its insensitivity.
-Moving capital cost and fixed operations across a range of plus or minus fifty
-per cent shifts the break-even by roughly 0.15 cents per kilowatt hour. The
-spark gap, meaning the ratio between the electricity price and the gas price,
-decides the outcome almost by itself. Arguments about equipment cost are
-therefore arguments about the wrong variable.</p>
+<p>That threshold barely moves. Swinging capital cost and fixed operations across
+a range of plus or minus fifty per cent shifts the break-even by roughly 0.15
+cents per kilowatt hour. The spark gap, meaning the ratio between the
+electricity price and the gas price, decides the outcome almost by itself.
+Arguments about equipment cost are arguments about the wrong variable.</p>
 
-<p>Emissions follow the same logic and give a second threshold. The electric
-boiler only emits less than the gas boiler when the grid carbon intensity<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> is at
-or below <strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The
-eGRID average for the Texas grid is about 0.365. On average grid power, in other
-words, electrifying this heat increases emissions.</p>
+<p>Emissions give a second threshold. The electric boiler emits less than the
+gas boiler only when the grid carbon intensity<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> is at or below
+<strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The eGRID
+average for the Texas grid is about 0.365. On average grid power, electrifying
+this heat increases emissions.</p>
 
 <img class="fig wide" src="assets/heat_fig1_breakeven_price.png" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p class="small">Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.</p>
@@ -61,20 +61,19 @@ words, electrifying this heat increases emissions.</p>
 <h2>Method</h2>
 <p>The levelised cost<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> is built from an annualised capital charge, fixed and
 variable operations, and fuel, divided by annual delivered heat. Boiler
-efficiency is applied on the gas side and conversion and distribution losses on
-the electric side. The workbook carries the same arithmetic in live formulas so
-that the assumptions can be edited without touching code, and the Python
-implementation is the reference the other ports were checked against.</p>
+efficiency is applied on the gas side, conversion and distribution losses on the
+electric side. The workbook carries the same arithmetic in live formulas, so the
+assumptions can be edited without touching code. The Python implementation is
+the reference for the other ports.</p>
 
 <h2>Limits</h2>
-<p>The prices in the shipped run are placeholders, and the model reads a real
-series from a template file the moment one is supplied. The boundary between
-retail all-in electricity and wholesale energy-only pricing has to be stated
-before any number is quoted, because it moves the answer by more than the
-capital cost does. Capital figures are scaling placeholders with a stated
-uncertainty band rather than vendor quotes. The emissions comparison uses
-average grid intensity; a marginal-emissions treatment is the more defensible
-framing and is the next revision.</p>
+<p>The prices in the shipped run are placeholders. The model reads a real series
+from a template file the moment one is supplied. The boundary between retail
+all-in electricity and wholesale energy-only pricing has to be stated before any
+number is quoted, because it moves the answer by more than the capital cost
+does. Capital figures are scaling placeholders with a stated uncertainty band
+rather than vendor quotes. The emissions comparison uses average grid intensity.
+A marginal-emissions treatment is more defensible and is the next revision.</p>
 
 <hr>
 <h2>The code</h2>
@@ -83,6 +82,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 <p><a class="btn" href="downloads/heat-code.zip">Download source · 23 KB</a>
 <a class="btn ghost" href="code.html">All code</a></p>
+
 
 
 
