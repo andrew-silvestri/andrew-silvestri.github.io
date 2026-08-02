@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skylines, played — Andrew Silvestri</title>
+<meta name="description" content="Fifty city skylines built from real building heights and coordinates, drawn as spectra and played as sound.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#070a12">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a><a href="skyline.html" class="on">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<main>
+
+<h1>Skylines, played</h1>
+<p class="dim">A skyline and a spectrum analyser are the same picture. So the
+picture is played.</p>
+
+<p>Both are a row of vertical bars of varying height, both are read left to
+right, and in both the eye goes straight to the tall spikes. That is a
+coincidence of drawing conventions rather than of physics, but it is a usable
+one: if a skyline can be read as a spectrum, a city can be turned into a sound
+and the sound will change as you turn around.</p>
+
+<div class="card">
+<div class="tag">Interactive</div>
+<h3 style="margin-top:4px">Fifty cities</h3>
+<p>Drag to turn on the spot. The bars are the buildings in front of you, and
+the sound is those bars played as an additive tone. Turn towards downtown and
+it fills out; turn away and it empties.</p>
+<a class="btn" href="skyline-app.html">Open it</a>
+<a class="btn ghost" href="downloads/skyline-code.zip">Download code and data</a>
+</div>
+
+<h2>What is measured and what is invented</h2>
+
+<p>Sonification projects usually blur this line, so it is worth drawing
+sharply.</p>
+
+<p><strong>Measured.</strong> Every building is a real entity with a published
+structural height and a published coordinate. The observer stands at a stated
+point outside the city, and the angular position and apparent height of each
+tower from that point is trigonometry on those two numbers and nothing else.
+The silhouette is a genuine one: where a tower stands behind a taller tower it
+contributes nothing, which is what your eye does.</p>
+
+<p><strong>Assumed.</strong> Footprint width is not recorded anywhere usable,
+so each tower is given a width of eighteen per cent of its height, between
+twenty-five and seventy metres. That is about right for a slender tower and
+about wrong for a broad one, and it decides how much of the horizon a building
+occupies rather than how tall it looks.</p>
+
+<p><strong>Invented.</strong> The sound. There is no sense in which a city has
+a pitch. The mapping is a choice, it is written out in full below, and it is
+deterministic: the same city at the same bearing always makes the same
+sound.</p>
+
+<h2>The mapping</h2>
+
+<p>The view is divided into forty bars. Each is the tallest apparent building
+angle in its slice of the horizon, and each drives one partial of an additive
+tone.</p>
+
+<table>
+<tr><th>Property of the bar</th><th>Property of the sound</th><th>Why</th></tr>
+<tr><td>Position across the view</td><td>Pitch, along a pentatonic ladder four
+octaves tall</td><td>A skyline is not a melody, and there is no reason to make
+an arbitrary arrangement of towers sound like a mistake.</td></tr>
+<tr><td>Apparent height</td><td>Loudness of that partial, as height to the
+power 1.6</td><td>The exponent makes the peaks stand out in the ear the way
+they already do in the picture.</td></tr>
+<tr><td>Empty horizon</td><td>Silence</td><td>Which is why turning away from
+the towers quiets the instrument rather than merely changing it.</td></tr>
+<tr><td>The city's median tower height</td><td>The root note, over two octaves
+from 55 Hz</td><td>The one place a real quantity is used for something
+arbitrary. Cities of low dense towers sound low; cities of a few enormous
+spikes sound high and sparse.</td></tr>
+</table>
+
+<h2>Where to stand</h2>
+
+<p>A skyline is a thing seen from outside, so the observer has to be put
+somewhere, and the choice changes the picture completely. The model places
+them beyond the ninetieth percentile of the tower cluster, on the bearing from
+which the greatest total angular height falls in front of them &mdash; roughly
+what a photographer does. For the cities whose classic view is across water,
+Manhattan and Hong Kong and Chicago, it lands close to the classic view without
+having been told that the water is there.</p>
+
+<p>The first version of this put the observer at a fixed distance from the
+centroid instead, which in Dubai left them standing two hundred metres from the
+Burj Khalifa, filling seventy-five degrees of sky. Being outside the middle of
+a city is not the same as being outside the city.</p>
+
+<h2>What went wrong with the data</h2>
+
+<p>The obvious query &mdash; things over a hundred and twenty metres, with a
+height and a coordinate &mdash; returns a nine-hundred-and-fifty-metre tower in
+Rotterdam. Rotterdam has no such tower. The height property applies to anything
+with a height: mountains, waterfalls, bridges, dams, radio masts, and, in the
+returned set, forty-nine nuclear weapons tests. It also carries a unit, so a
+value of 950 may be feet.</p>
+
+<p>Both are now handled. Heights come back normalised to metres by the query
+itself rather than trusted as written, and the class of every entity is checked
+against a list of things that are actually buildings. The build reports the
+largest rejected classes each time it runs, so the filter is visible rather
+than a silent judgement: at the last run, waterfalls, road bridges, mountains
+and transmitter masts, in that order. The check that this worked is the one
+that matters &mdash; the tallest building in each city now comes out as the
+building everyone knows it to be.</p>
+
+<h2>Limits</h2>
+
+<p>Coverage follows the reference database, not reality, so cities well
+documented in English are better represented than cities that are not. Several
+Chinese cities with more tall buildings than Chicago appear here with fewer,
+because fewer of their towers have been entered. The hundred-and-twenty-metre
+floor is a convention rather than a fact about what reads as skyline, and
+raising it thins the picture faster in some cities than others.</p>
+
+<p>And the instrument is not a recording. It does not sound like the city. It
+sounds like the city's shape, which is a different and much smaller
+claim.</p>
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main>
+<script>
+/* The back link points at the page you came from when that page was on this
+   site, and hides itself when it would have nowhere to go. */
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer;
+  var same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) {
+    b.href = ref;
+  } else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else {
+    b.style.display = 'none';
+  }
+})();
+</script>
+</body></html>

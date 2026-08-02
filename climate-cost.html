@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The true climate cost of a thing</h1>
@@ -32,7 +32,8 @@ leaks methane<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. Four levels
 <div class="card">
 <div class="tag">Interactive</div>
 <h3 style="margin-top:4px">The calculator</h3>
-<p>Nine items across twenty producing regions and four freight modes. It
+<p>Twenty items in three groups &mdash; food, transport and clothing &mdash;
+across twenty-eight producing regions and four freight modes. It
 recomputes rather than looking up a stored answer, so any combination works,
 including the absurd ones &mdash; and the absurd ones are often the instructive
 ones.</p>
@@ -90,17 +91,51 @@ contribute only a third of what it emits.</p>
 <h2>What the model says</h2>
 
 <table>
-<tr><th>Item</th><th class="n">kg CO<sub>2</sub>e per kg</th><th>Default route</th></tr>
-<tr><td>Beef, dedicated herd</td><td class="n">75.5</td><td>Brazil to Texas</td></tr>
-<tr><td>Cheese, hard</td><td class="n">12.9</td><td>France to New York</td></tr>
-<tr><td>Chicken</td><td class="n">5.0</td><td>Brazil to Texas</td></tr>
-<tr><td>Rice</td><td class="n">3.4</td><td>India to California</td></tr>
-<tr><td>Coffee, roasted</td><td class="n">3.1</td><td>Colombia to Texas</td></tr>
-<tr><td>Tomato, heated greenhouse</td><td class="n">3.0</td><td>Netherlands to New York</td></tr>
-<tr><td>Almonds</td><td class="n">1.7</td><td>California to New York</td></tr>
-<tr><td>Banana</td><td class="n">0.9</td><td>Peru to New York</td></tr>
-<tr><td>Tomato, field grown</td><td class="n">0.7</td><td>Spain to Texas</td></tr>
+<tr><th>Item</th><th class="n">kg CO<sub>2</sub>e</th><th>Per</th><th>Default route</th></tr>
+<tr><td colspan="4" class="dim"><b>Food</b></td></tr>
+<tr><td>Beef, from a dedicated herd</td><td class="n">75.49</td><td>1 kg as eaten</td><td>Brazil to Texas</td></tr>
+<tr><td>Cheese, hard</td><td class="n">12.86</td><td>1 kg as eaten</td><td>France to New York</td></tr>
+<tr><td>Chicken</td><td class="n">5.02</td><td>1 kg as eaten</td><td>Brazil to Texas</td></tr>
+<tr><td>Rice</td><td class="n">3.39</td><td>1 kg as eaten</td><td>India to California</td></tr>
+<tr><td>Coffee, roasted beans</td><td class="n">3.05</td><td>1 kg roasted</td><td>Colombia to Texas</td></tr>
+<tr><td>Tomato, heated greenhouse</td><td class="n">2.99</td><td>1 kg as eaten</td><td>Netherlands to New York</td></tr>
+<tr><td>Almonds</td><td class="n">1.74</td><td>1 kg as eaten</td><td>California to New York</td></tr>
+<tr><td>Banana</td><td class="n">0.89</td><td>1 kg as eaten</td><td>Peru to New York</td></tr>
+<tr><td>Tomato, field grown</td><td class="n">0.67</td><td>1 kg as eaten</td><td>Spain to Texas</td></tr>
+<tr><td colspan="4" class="dim"><b>Transport</b></td></tr>
+<tr><td>Car, petrol</td><td class="n">23.47</td><td>100 km, one occupant</td><td>Germany to Texas</td></tr>
+<tr><td>Flight, short haul</td><td class="n">21.40</td><td>100 passenger-km</td><td>France to Italy</td></tr>
+<tr><td>Flight, long haul</td><td class="n">15.81</td><td>100 passenger-km</td><td>New York to China</td></tr>
+<tr><td>Car, battery electric</td><td class="n">12.66</td><td>100 km, one occupant</td><td>China to Texas</td></tr>
+<tr><td>Bus, city diesel</td><td class="n">9.52</td><td>100 passenger-km</td><td>Germany to Texas</td></tr>
+<tr><td>Train, electric intercity</td><td class="n">0.56</td><td>100 passenger-km</td><td>France to France</td></tr>
+<tr><td colspan="4" class="dim"><b>Clothing</b></td></tr>
+<tr><td>Jeans, denim</td><td class="n">14.85</td><td>1 pair, whole life</td><td>China to California</td></tr>
+<tr><td>Trainers, synthetic</td><td class="n">10.09</td><td>1 pair, whole life</td><td>Vietnam to New York</td></tr>
+<tr><td>T-shirt, cotton</td><td class="n">7.09</td><td>1 shirt, whole life</td><td>India to Texas</td></tr>
+<tr><td>T-shirt, polyester</td><td class="n">4.69</td><td>1 shirt, whole life</td><td>China to Texas</td></tr>
+<tr><td>Shoes, leather</td><td class="n">3.66</td><td>1 pair, whole life</td><td>Italy to New York</td></tr>
 </table>
+
+<p>Three groups, one axis. The point of putting a flight, a pair of jeans and
+a tomato in the same model is that they can then be asked the same question,
+and the answers turn out to be commensurable in ways that are hard to see when
+each lives in its own report. A cotton t-shirt worn for three years costs about
+what thirty-three kilometres of driving costs. A pair of trainers costs about
+half a beefsteak dinner. Whether that is a useful comparison is a separate
+argument; whether it is an available one is not.</p>
+
+<p>Two of the entries exist mainly to make an argument about method. The
+<b>electric car</b> is a machine for turning a grid into motion, so it is the
+one item whose destination matters more than its origin: the same car is a
+different object in France and in Poland, and the model already knows the
+difference because production electricity and consumption electricity are
+charged separately. The <b>leather shoe</b> is the allocation argument in its
+purest form &mdash; a hide is a co-product of a beef animal, and how much of
+that animal's methane belongs to a shoe is a judgement rather than a
+measurement. At 2.2% by economic value the shoes come in under four kilograms;
+by mass allocation, at about 7%, they would triple. Nothing about the shoe
+changes.</p>
 
 <p>The two tomatoes are the point of the whole exercise. Same plant, same
 distance, five times the emissions, and the entire difference is whether the
@@ -145,6 +180,8 @@ measurements of a particular farm. The spread within a single food is enormous
 &mdash; beef ranges roughly tenfold between the best and worst producers, more
 than the gap between many different foods &mdash; so a number here should be
 read as an order of magnitude with a plausible shape.</p>
+
+
 
 
 
