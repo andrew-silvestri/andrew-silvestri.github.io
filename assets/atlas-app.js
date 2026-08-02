@@ -454,6 +454,11 @@
      tabs were inserted in front of it and it silently became the markets.
      Resolved by id, with a fallback that cannot land on a tab that does not
      exist. */
+  /* The count is read from the payload. It said six for a long time after
+     there were nine. */
+  var SCEN_HINT = Object.keys(D.scenarios || {}).length +
+    ' prepared changes, or click any point and push on it yourself.';
+
   var tab = (function () {
     for (var i = 0; i < D.tabs.length; i++) {
       if (D.tabs[i].id === 'plants') return i;
@@ -835,6 +840,22 @@
   /* A handle for the interaction tests. Clicking a point is the whole point
      of this page and it broke once without anything else breaking, so it is
      now reachable from a harness rather than only from a mouse. */
+  /* the scene graph, for the harness: counting what is actually in the world
+     is the only way to tell a stray line object from a coastline */
+  window.__atlasScene = function () {
+    function walk(o, out) {
+      (o.children || []).forEach(function (c) {
+        var pa = c.geometry && c.geometry.attributes &&
+                 c.geometry.attributes.position;
+        out.push({ verts: pa ? pa.count : 0, visible: c.visible !== false });
+        walk(c, out);
+      });
+      return out;
+    }
+    return { globe: walk(globeGrp, []), brain: walk(brainGrp, []),
+             web: webLine ? webLine.geometry.attributes.position.count : 0 };
+  };
+
   window.__atlasUI = {
     select: function (i) { return select(i); },
     setMindMap: function (v) { mindMap = !!v; showLayer(); place(); return mindMap; },
@@ -842,11 +863,20 @@
     brainTab: function () { return BRAIN_TAB; },
     setTab: function (i) { return setTab(i); },
     selected: function () { return sel; },
+    clearSel: function () { return clearSel(); },
+    openTab: function () { return tab; },
+    webSize: function () {
+      return webLine ? webLine.geometry.attributes.position.count : 0;
+    },
     tabCount: function () { return D.tabs.length; }
   };
 
+  /* Clearing the selection has to clear what the selection drew. The web is
+     a picture of one node's reach, so leaving it on the globe after the panel
+     says nothing is selected is a lie the renderer tells about the model. */
   function clearSel() {
     sel = null;
+    clearWeb();
     $('selbox').innerHTML = '<h2>Selection</h2><p class="empty">Nothing ' +
       'selected. Click a point to read what it is, where its number came ' +
       'from, and to push on it.</p>';
@@ -931,7 +961,7 @@
     $('s-max').textContent = '—';
     $('scen').value = '';
     $('scendesc').textContent =
-      'Six prepared changes, or click any point and push on it yourself.';
+      SCEN_HINT;
     renderShocks(); clearSel(); paint();
   };
   $('home').onclick = function () {
@@ -952,7 +982,7 @@
   sc.onchange = function () {
     var s = D.scenarios[sc.value];
     if (!s) { $('scendesc').textContent =
-      'Six prepared changes, or click any point and push on it yourself.';
+      SCEN_HINT;
       return; }
     shocks = {};
     Object.keys(s.shocks).forEach(function (id) {
@@ -967,7 +997,8 @@
     ES.length.toLocaleString() + ' weighted links. Every position is a real ' +
     'coordinate. Every parameter comes from a public data set.';
 
-  buildTabs(); setTab(4); clearSel(); renderShocks(); paint();
+  $('scendesc').textContent = SCEN_HINT;
+  buildTabs(); setTab(tab); clearSel(); renderShocks(); paint();
   resize(); place();
   window.addEventListener('resize', function () { resize(); place(); });
 

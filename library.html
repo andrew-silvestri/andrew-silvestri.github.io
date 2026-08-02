@@ -60,8 +60,8 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>
 <h3 style="margin-top:4px">The model saturates rather than growing without limit</h3>
-<img class="fig wide" src="assets/08_response_curve.png?v=cda1dbe6" alt="The model saturates rather than growing without limit">
-<p>The change applied to the oil price is increased in steps from a small value to the maximum. The blue line counts how many nodes changed. The gold line gives the average size of the effect. Both lines bend and flatten. This is the effect of the limit function in the calculation. A real system behaves in the same way: a price cannot rise without end, and a grid cannot fail more than completely.</p>
+<img class="fig wide" src="assets/08_response_curve.png?v=437f4faf" alt="The model saturates rather than growing without limit">
+<p>A change is applied to the climate, the most widely connected node in the model, and its size is raised in steps from a twentieth to the maximum. The violet line counts the nodes that moved; the gold line gives the mean effect among them. The violet line is nearly vertical and then flat: past about a fifth of full size the change already reaches everything it is ever going to reach, and pushing harder only pushes those same nodes further. The gold line keeps climbing, but with a bend, because the tanh in the calculation bounds every node inside (&minus;1, 1). A price cannot rise without end and a grid cannot fail more than completely.</p>
 
 </div><div class="card">
 <div class="tag">plotnine, grammar of graphics</div>
