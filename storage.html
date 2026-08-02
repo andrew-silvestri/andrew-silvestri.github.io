@@ -6,14 +6,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#141310">
+<meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Battery revenue simulator</h1>
-<p class="dim">A linear program over a year of hourly prices, and what it says
+<p class="dim">A linear program over a year of hourly prices<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, and what it says
 about how long a battery should be.</p>
 
 <p>A grid battery makes its living the way a hibernating ground squirrel does:
@@ -24,8 +24,8 @@ and the interesting question is the same in both cases — at what point does
 carrying more stop paying for itself?</p>
 
 <p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
-linear programming, in monthly blocks with the state of charge carried across
-the joins. Every megawatt hour of throughput is charged a cycling cost, so the
+linear programming<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, in monthly blocks with the state of charge carried across
+the joins. Every megawatt hour of throughput is charged a cycling cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so the
 optimiser cannot trade for free, and round-trip efficiency is split
 symmetrically as the square root per leg.</p>
 
@@ -40,7 +40,7 @@ symmetrically as the square root per leg.</p>
 
 <p>Doubling from two hours to four buys about nine per cent more revenue.
 Doubling again from four to eight buys under four. On energy arbitrage alone the
-value of duration flattens hard past four hours, which is the textbook result and
+value of duration flattens hard past four hours<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>, which is the textbook result and
 is now measured rather than asserted. The reason is unglamorous: there are only
 so many hours in a day when the price spread is worth crossing, and a longer
 battery cannot manufacture more of them.</p>
@@ -87,6 +87,37 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 
 
+
+
+
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, <i>Energy Economics</i>, 2009 - estimating the value of electricity storage under perfect foresight.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref3"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Degradation cost per megawatt hour of throughput, and round-trip efficiency.</span></li><li id="ref4"><span class="src">Denholm <i>et al.</i>, <i>The Four-Hour Challenge</i>, National Renewable Energy Laboratory, 2019.</span><span class="what">Why duration value flattens past four hours.</span></li></ol>
+
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
-</main></body></html>
+</main>
+<script>
+/* The back link points at the page you came from when that page was on this
+   site, and hides itself when it would have nowhere to go - which is the case
+   if you arrived from a search engine or opened the file directly. A link that
+   silently does nothing is worse than no link. */
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer;
+  var same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) {
+    b.href = ref;
+  } else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else {
+    b.style.display = 'none';
+  }
+})();
+</script>
+</body></html>

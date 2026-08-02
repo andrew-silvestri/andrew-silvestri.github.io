@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The true climate cost of a thing — Andrew Silvestri</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#070a12">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1&ndash;v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<main>
+
+<h1>The true climate cost of a thing</h1>
+<p class="dim">A life-cycle model that shows its working: every step, and what
+each step is made of.</p>
+
+<p>A tomato has a number attached to it. Somewhere on the internet you can find
+out that it is 0.4 kilograms of carbon dioxide equivalent, or 2.1, or 1.4, and
+none of those sources will tell you why they disagree. They disagree because a
+footprint is not a measurement. It is the end of a long argument about what to
+count and who to charge, and publishing only the answer hides the argument.</p>
+
+<p>This model runs the argument in the open. Give it three things &mdash; an
+item, where it was produced, where it is eaten &mdash; and it returns the chain
+as it actually happens: a spine of stages from the field to the bin, with a
+branching tree under each stage showing where that stage's emissions came from.
+The branches have branches. A tomato needs fertiliser<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, the fertiliser needs
+ammonia, the ammonia needs natural gas, and getting that gas out of the ground
+leaks methane<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. Four levels down, and every level is a real emission somewhere.</p>
+
+<div class="card">
+<div class="tag">Interactive</div>
+<h3 style="margin-top:4px">The calculator</h3>
+<p>Nine items across twenty producing regions and four freight modes. It
+recomputes rather than looking up a stored answer, so any combination works,
+including the absurd ones &mdash; and the absurd ones are often the instructive
+ones.</p>
+<a class="btn" href="climate-cost-app.html">Open the calculator</a>
+<a class="btn ghost" href="downloads/climate-cost-code.zip">Download code and data</a>
+</div>
+
+<h2>Allocation, which is where the disagreement lives</h2>
+
+<p>Every branch carries a multiplier saying what share of that process belongs
+to the product in front of you. A slaughterhouse also makes leather and tallow.
+A dairy cow also becomes beef. A coffee mill also sells pulp. Charging the whole
+burden to the one output you happen to care about is a choice, and in almost
+every published footprint it is an invisible one.</p>
+
+<p>Two careful studies of the same cheese can differ twofold without either
+being wrong, because one split the cow's methane between milk and meat by
+economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
+judgement, it changes the answer, and it should be visible. Here it sits on
+every edge, and it compounds down the chain, so a process four levels deep may
+contribute only a third of what it emits.</p>
+
+<h2>What the model says</h2>
+
+<table>
+<tr><th>Item</th><th class="n">kg CO<sub>2</sub>e per kg</th><th>Default route</th></tr>
+<tr><td>Beef, dedicated herd</td><td class="n">75.5</td><td>Brazil to Texas</td></tr>
+<tr><td>Cheese, hard</td><td class="n">12.9</td><td>France to New York</td></tr>
+<tr><td>Chicken</td><td class="n">5.0</td><td>Brazil to Texas</td></tr>
+<tr><td>Rice</td><td class="n">3.4</td><td>India to California</td></tr>
+<tr><td>Coffee, roasted</td><td class="n">3.1</td><td>Colombia to Texas</td></tr>
+<tr><td>Tomato, heated greenhouse</td><td class="n">3.0</td><td>Netherlands to New York</td></tr>
+<tr><td>Almonds</td><td class="n">1.7</td><td>California to New York</td></tr>
+<tr><td>Banana</td><td class="n">0.9</td><td>Peru to New York</td></tr>
+<tr><td>Tomato, field grown</td><td class="n">0.7</td><td>Spain to Texas</td></tr>
+</table>
+
+<p>The two tomatoes are the point of the whole exercise. Same plant, same
+distance, five times the emissions, and the entire difference is whether the
+greenhouse was heated. Food miles are the thing people reach for and they are
+usually the wrong lever: a banana crosses eight thousand kilometres by sea and
+still comes in at under a kilogram, because sea freight costs almost nothing per
+tonne-kilometre<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>. Switch that banana to air and it goes up more than tenfold.
+Distance matters enormously when it goes by air and barely at all when it does
+not.</p>
+
+<p>Beef is unmoved by anything downstream. Enteric fermentation and land use
+happen before the animal leaves the farm, so the route is noise against them.
+No packaging decision and no shipping choice touches a number that is
+three-quarters methane and cleared forest.</p>
+
+<h2>How it is checked</h2>
+
+<p>Every total is compared against the ranges in the published literature<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> rather
+than against a single figure, because these are distributions across thousands
+of farms and a point estimate would be false precision. All nine items land
+inside their bands. The tree is checked to sum at every node, allocation is
+checked to compound correctly down each chain, and the levers are checked to
+move the answer in the direction physics says they should.</p>
+
+<p>One test exists because of a bug that hid well. Production-side electricity
+was being charged at the <i>consuming</i> region's grid intensity, so a French
+dairy looked dirty when someone in India ate the cheese. It is invisible in any
+single run &mdash; the number just looks slightly high &mdash; and only shows up
+when you change the destination and something moves that has no business moving.
+There is now a test that walks every production stage and fails if any of them
+draws power from the wrong grid.</p>
+
+<h2>What it does not do</h2>
+
+<p>It reports greenhouse gases and nothing else. Almonds are usually criticised
+on water, and this model is silent about water; saying so plainly is better than
+letting a modest carbon number imply a clean bill of health. There is no
+biodiversity term, no eutrophication, no labour.</p>
+
+<p>Emission factors are representative of a class of production, not
+measurements of a particular farm. The spread within a single food is enormous
+&mdash; beef ranges roughly tenfold between the best and worst producers, more
+than the gap between many different foods &mdash; so a number here should be
+read as an order of magnitude with a plausible shape.</p>
+
+
+
+
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">IPCC, <i>2019 Refinement to the 2006 Guidelines for National Greenhouse Gas Inventories</i>, Volume 4 Chapter 11 - direct and indirect nitrous oxide from managed soils.</span><span class="what">The emission factor for nitrogen applied to soils.</span></li><li id="ref2"><span class="src">IPCC, <i>Sixth Assessment Report</i>, Working Group I Chapter 7, Table 7.15 - global warming potentials.</span><span class="what">Methane at 27 and nitrous oxide at 273 over a century.</span></li><li id="ref3"><span class="src">ISO 14044:2006, <i>Environmental management - Life cycle assessment - Requirements and guidelines</i>, clause 4.3.4.</span><span class="what">The allocation hierarchy: avoid, then physical, then economic.</span></li><li id="ref4"><span class="src">UK Department for Energy Security and Net Zero, <i>Greenhouse gas reporting: conversion factors</i>, 2023.</span><span class="what">Freight emission factors by mode.</span></li><li id="ref5"><span class="src">Poore &amp; Nemecek, <i>Science</i> 360:987, 2018 - reducing food’s environmental impacts through producers and consumers.</span><span class="what">Per-kilogram footprints and the spread within each food.</span></li></ol>
+
+<footer>Andrew Silvestri &middot; energy systems modelling &middot;
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main>
+<script>
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer, same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) { b.href = ref; }
+  else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else { b.style.display = 'none'; }
+})();
+</script>
+</body></html>

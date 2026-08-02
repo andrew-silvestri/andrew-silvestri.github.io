@@ -6,14 +6,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#141310">
+<meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Industrial heat electrification break-even</h1>
-<p class="dim">Levelised cost of heat from a resistive electric boiler against a
+<p class="dim">Levelised cost of heat from a resistive electric boiler<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> against a
 natural-gas boiler, for process steam in Texas.</p>
 
 <p>A chemical plant that wants to stop burning gas for process steam has one
@@ -23,7 +23,7 @@ nothing to invent. The whole question is arithmetic — what does the electricit
 have to cost before the substitution stops losing money?</p>
 
 <p>The answer is delivered heat, not fuel bought, so both routes are compared in
-dollars per million British thermal units that actually reach the process.</p>
+dollars per million British thermal units<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> that actually reach the process.</p>
 
 <h2>What the model finds</h2>
 <p>At a gas price of $3.50 per million British thermal units and electricity at
@@ -40,7 +40,7 @@ decides the outcome almost by itself. Arguments about equipment cost are
 therefore arguments about the wrong variable.</p>
 
 <p>Emissions follow the same logic and give a second threshold. The electric
-boiler only emits less than the gas boiler when the grid carbon intensity is at
+boiler only emits less than the gas boiler when the grid carbon intensity<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> is at
 or below <strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The
 eGRID average for the Texas grid is about 0.365. On average grid power, in other
 words, electrifying this heat increases emissions.</p>
@@ -59,7 +59,7 @@ words, electrifying this heat increases emissions.</p>
 
 
 <h2>Method</h2>
-<p>The levelised cost is built from an annualised capital charge, fixed and
+<p>The levelised cost<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> is built from an annualised capital charge, fixed and
 variable operations, and fuel, divided by annual delivered heat. Boiler
 efficiency is applied on the gas side and conversion and distribution losses on
 the electric side. The workbook carries the same arithmetic in live formulas so
@@ -86,6 +86,37 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 
 
+
+
+
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">Texas industrial electricity and gas prices.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID</i> 2022, ERCOT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity and the natural gas emission factor.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
+
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
-</main></body></html>
+</main>
+<script>
+/* The back link points at the page you came from when that page was on this
+   site, and hides itself when it would have nowhere to go - which is the case
+   if you arrived from a search engine or opened the file directly. A link that
+   silently does nothing is worse than no link. */
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer;
+  var same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) {
+    b.href = ref;
+  } else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else {
+    b.style.display = 'none';
+  }
+})();
+</script>
+</body></html>

@@ -35,14 +35,14 @@
 
   /* node colours by kind, in the order build_hero.py wrote them */
   var COLOR = {
-    station:  [232, 176,  74],
-    event:    [214,  92,  74],
-    grid:     [122, 196, 214],
-    supply:   [126, 158, 196],
-    district: [110, 128, 150],
-    consumer: [150, 146, 136],
-    market:   [236, 228, 206],
-    climate:  [236, 228, 206]
+    station:  [139, 127, 242],
+    event:    [216, 106, 134],
+    grid:     [ 90, 168, 216],
+    supply:   [111, 127, 216],
+    district: [ 92, 106, 140],
+    consumer: [139, 147, 176],
+    market:   [207, 214, 240],
+    climate:  [207, 214, 240]
   };
   var kindColor = D.kinds.map(function (k) {
     return COLOR[k] || [160, 160, 160];
@@ -162,7 +162,7 @@
         var envelope = Math.sin(Math.PI * Math.min(a, 1));
         var alpha = 0.60 * limb * envelope;
         if (alpha > 0.004) {
-          fc.strokeStyle = 'rgba(228,240,248,' + alpha.toFixed(3) + ')';
+          fc.strokeStyle = 'rgba(222,232,252,' + alpha.toFixed(3) + ')';
           fc.beginPath();
           fc.moveTo(p0[0], p0[1]);
           fc.lineTo(p1[0], p1[1]);
@@ -182,9 +182,9 @@
     // the sphere itself, lit from upper left
     var g = gc.createRadialGradient(cx - R * 0.42, cy - R * 0.46, R * 0.06,
                                     cx, cy, R * 1.02);
-    g.addColorStop(0, 'rgba(28,42,54,0.95)');
-    g.addColorStop(0.55, 'rgba(12,19,26,0.95)');
-    g.addColorStop(1, 'rgba(5,8,11,0.98)');
+    g.addColorStop(0, 'rgba(30,40,74,0.95)');
+    g.addColorStop(0.55, 'rgba(13,18,38,0.95)');
+    g.addColorStop(1, 'rgba(5,7,15,0.98)');
     gc.beginPath();
     gc.arc(cx, cy, R, 0, 6.2832);
     gc.fillStyle = g;
@@ -192,7 +192,7 @@
 
     // coastlines
     gc.lineWidth = 0.72;
-    gc.strokeStyle = 'rgba(150,196,190,0.5)';
+    gc.strokeStyle = 'rgba(110,150,200,0.5)';
     var coast = D.coast, pt = [0, 0, 0], prev = null;
     for (var r = 0; r < coast.length; r++) {
       var ring = coast[r];
@@ -225,9 +225,9 @@
 
     // limb glow, drawn last so it sits over everything
     var rim = gc.createRadialGradient(cx, cy, R * 0.93, cx, cy, R * 1.12);
-    rim.addColorStop(0, 'rgba(120,180,210,0)');
-    rim.addColorStop(0.55, 'rgba(120,180,210,0.13)');
-    rim.addColorStop(1, 'rgba(120,180,210,0)');
+    rim.addColorStop(0, 'rgba(120,140,230,0)');
+    rim.addColorStop(0.55, 'rgba(120,140,230,0.15)');
+    rim.addColorStop(1, 'rgba(120,140,230,0)');
     gc.beginPath();
     gc.arc(cx, cy, R * 1.12, 0, 6.2832);
     gc.fillStyle = rim;

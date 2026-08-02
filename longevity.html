@@ -5,10 +5,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#141310">
+<meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">▾</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1–v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html">Climate cost calculator</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Longevity quotient</h1>
@@ -24,7 +24,7 @@ dividing out. What remains when you do is the longevity quotient:</p>
 <p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
 lifespan predicted from body mass</code></p>
 
-<p>It is built by analogy with the encephalisation quotient, which does the
+<p>It is built by analogy with the encephalisation quotient<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, which does the
 same thing to brain size. A quotient of one means an animal lives exactly as
 long as its size predicts. The interesting animals are the ones far from one.</p>
 
@@ -87,11 +87,11 @@ faint line spanning its lowest to its highest. The geometric mean is the correct
 average for ratios: a species at four times prediction and one at a quarter of
 it should average to one, not to 2.1.</p>
 
-<p>At order rank the bats of Chiroptera lead at two and a half times prediction,
+<p>At order rank the bats of Chiroptera<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> lead at two and a half times prediction,
 followed by the perch-like fishes, the parrots, the primates at 1.8, and the
 albatrosses and petrels. At the bottom sit the shrews, moles and hedgehogs of
 Eulipotyphla at 0.37, and the ground birds of Galliformes at 0.43. At family rank
-the bats of Vespertilionidae reach 3.1 and the rockfishes of Sebastidae 3.5.
+the bats of Vespertilionidae reach 3.1 and the rockfishes of Sebastidae<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> 3.5.
 Flight, burrowing, venom, armour and simply being difficult to swallow all
 register as raised quotients. Being a ground bird or a small terrestrial
 insectivore registers as the reverse.</p>
@@ -113,7 +113,7 @@ the data actually shows.</p>
 
 <h2>What comes out</h2>
 
-<p>The highest quotients against their own group belong to an ocean quahog clam
+<p>The highest quotients against their own group belong to an ocean quahog<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> clam
 at forty-five times its predicted lifespan, a garden ant queen at twenty-seven, a
 cold-seep tubeworm at twenty-two, the freshwater pearl mussel at fifteen, and a
 leafcutter ant queen and the red sea urchin at ten. The lowest belong to the
@@ -161,7 +161,7 @@ build.</p>
 
 <p>417 species spanning 10 phyla, 30 classes, 127 orders, 263 families and 387
 genera, each with full taxonomy, adult body mass, wild maximum, captive maximum,
-a quality grade and a note, compiled from the comparative longevity literature. Grades run
+a quality grade and a note, compiled from the comparative longevity literature<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>. Grades run
 from documented and verified, through defensible literature estimate, to
 uncertain, and each species carries its grade in the visualiser. Disputed
 records are excluded in favour of verified ones: the 226-year koi and the
@@ -177,6 +177,37 @@ the wild-against-captive comparison this project is built around.</p>
 self-contained HTML file. <a href="downloads/longevity-code.zip">Download the
 code and data</a>.</p>
 
+
+
+
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">Jerison, <i>Evolution of the Brain and Intelligence</i>, Academic Press, 1973.</span><span class="what">The quotient construction this model borrows.</span></li><li id="ref2"><span class="src">Wilkinson &amp; Adams, <i>Biology Letters</i>, 2019 - recent advances in the biology of bat ageing.</span><span class="what">Why flight and longevity travel together.</span></li><li id="ref3"><span class="src">Nielsen <i>et al.</i>, <i>Science</i> 353:702, 2016 (Greenland shark, eye-lens radiocarbon); Cailliet <i>et al.</i>, <i>Experimental Gerontology</i> 36:739, 2001 (rockfish otolith ageing).</span><span class="what">The extreme fish lifespans, and the dating methods behind them.</span></li><li id="ref4"><span class="src">Butler <i>et al.</i>, <i>Palaeogeography, Palaeoclimatology, Palaeoecology</i>, 2013 - the 507-year <i>Arctica islandica</i>.</span><span class="what">The longest-lived non-colonial animal recorded.</span></li><li id="ref5"><span class="src">Tacutu <i>et al.</i>, <i>Nucleic Acids Research</i> 46:D1083, 2018 - the AnAge database of animal ageing and longevity.</span><span class="what">Maximum lifespan and adult body mass for most species in the table.</span></li></ol>
+
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
-</main></body></html>
+</main>
+<script>
+/* The back link points at the page you came from when that page was on this
+   site, and hides itself when it would have nowhere to go - which is the case
+   if you arrived from a search engine or opened the file directly. A link that
+   silently does nothing is worse than no link. */
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer;
+  var same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) {
+    b.href = ref;
+  } else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else {
+    b.style.display = 'none';
+  }
+})();
+</script>
+</body></html>

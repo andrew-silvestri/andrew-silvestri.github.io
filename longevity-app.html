@@ -4,7 +4,7 @@
 <title>Longevity quotient — how long animals live for their size</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
-<meta name="theme-color" content="#141310">
+<meta name="theme-color" content="#070a12">
 
 <style>
 :root{--ink:#1b1b1b;--dim:#6a6f75;--faint:#e6e2db;--bg:#fbfaf8;--acc:#8a6d2f;
@@ -113,22 +113,28 @@ table.fits th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;
  #detail{left:16px;right:16px;width:auto}}
 </style>
 <style id="site-palette">
-/* Site palette, injected so the standalone apps match the pages around them.
-   Only colour variables are touched; every rule the app defines still wins on
-   layout and behaviour. */
+/* Site palette. Deep blue ground, violet accent, blue and green for data.
+   Only colour variables are set; every layout rule the app defines still
+   wins. */
 :root{
-  --ink:#e8e5dd; --dim:#8f8d86; --faint:#1e2126; --bg:#08090b;
-  --acc:#d9a441; --card:#101215; --rule:#262a30;
-  --wild:#7ac4d6; --cap:#d9a441; --avg:#e8e5dd; --grp:#a992c9;
+  --ink:#e3e6f2; --dim:#8b93b0; --faint:#1a2038; --bg:#070a12;
+  --acc:#8b7ff2; --card:#10152a; --panel:#0c1020; --rule:#232a45;
+  --cool:#5aa8d8; --moss:#4f9d84;
+  --wild:#4f9d84; --cap:#8b7ff2; --avg:#e3e6f2; --grp:#6f7fd8;
+  --blue:#5aa8d8; --green:#4f9d84; --red:#d86a86;
+  --sea:#070c18; --land:#10192c; --accent:#8b7ff2;
+  --station:#8b7ff2; --event:#d86a86; --grid:#5aa8d8; --supply:#6f7fd8;
+  --district:#5c6a8c; --consumer:#8b93b0; --market:#cfd6f0;
+  --climate:#cfd6f0; --psych:#a98fd8; --line:#232a45;
 }
 @media (prefers-color-scheme: light){
   :root{
-    --ink:#191818; --dim:#6a675f; --faint:#e6e0d4; --bg:#f7f4ee;
-    --acc:#8a6420; --card:#fffdf8; --rule:#ddd6c8;
-    --wild:#2c7183; --cap:#8a6420; --avg:#191818; --grp:#6b5a86;
+    --ink:#161a26; --dim:#5c6480; --faint:#e0e3ef; --bg:#f4f5fa;
+    --acc:#4c3fb5; --card:#ffffff; --panel:#ecedf6; --rule:#d2d7e6;
+    --cool:#2a6a96; --moss:#2f6f5c;
+    --wild:#2f6f5c; --cap:#4c3fb5; --avg:#161a26; --grp:#4a56a8;
   }
 }
-body{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
 </style>
 
 </head><body><div class="wrap">

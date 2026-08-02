@@ -75,9 +75,9 @@
   brainGrp.visible = false;
 
   var KCOL = {
-    market: 0xece4ce, climate: 0xf0e6c8, grid: 0x7ac4d6, supply: 0x7e9ec4,
-    district: 0x6e8096, consumer: 0x9a9488, event: 0xd65c4a,
-    station: 0xe8b04a, psych: 0xa992c9
+    market: 0xcfd6f0, climate: 0xdfe4f8, grid: 0x5aa8d8, supply: 0x6f7fd8,
+    district: 0x5c6a8c, consumer: 0x8b93b0, event: 0xd86a86,
+    station: 0x8b7ff2, psych: 0xa98fd8
   };
   var KNAME = {
     market: 'price benchmark', climate: 'climate system', grid: 'power system',
@@ -95,12 +95,12 @@
 
   /* ---- globe body ---- */
   globeGrp.add(new THREE.Mesh(new THREE.SphereGeometry(1, 72, 54),
-    new THREE.MeshBasicMaterial({ color: 0x0b141c })));
+    new THREE.MeshBasicMaterial({ color: 0x0b1226 })));
   globeGrp.add(new THREE.Mesh(new THREE.SphereGeometry(1.05, 72, 54),
     new THREE.ShaderMaterial({
       transparent: true, side: THREE.BackSide, depthWrite: false,
       blending: THREE.AdditiveBlending,
-      uniforms: { c: { value: new THREE.Color(0x7ac4d6) } },
+      uniforms: { c: { value: new THREE.Color(0x6f8ae0) } },
       vertexShader: 'varying float i;void main(){vec3 n=normalize(normalMatrix*normal);' +
         'vec4 mv=modelViewMatrix*vec4(position,1.);' +
         'i=pow(1.0-abs(dot(n,normalize(-mv.xyz))),2.8);' +
@@ -121,7 +121,7 @@
   var cg = new THREE.BufferGeometry();
   cg.setAttribute('position', new THREE.Float32BufferAttribute(cpos, 3));
   globeGrp.add(new THREE.LineSegments(cg, new THREE.LineBasicMaterial({
-    color: 0x8fb9b4, transparent: true, opacity: 0.42 })));
+    color: 0x6f8ab4, transparent: true, opacity: 0.44 })));
 
   // graticule, every 30 degrees, so rotation is readable
   var gpos = [];
@@ -140,7 +140,7 @@
   var gg = new THREE.BufferGeometry();
   gg.setAttribute('position', new THREE.Float32BufferAttribute(gpos, 3));
   globeGrp.add(new THREE.LineSegments(gg, new THREE.LineBasicMaterial({
-    color: 0x2f3a44, transparent: true, opacity: 0.5 })));
+    color: 0x2a3352, transparent: true, opacity: 0.5 })));
 
   /* ---- a schematic brain, built rather than traced ----------------------
    * An ellipsoid with a midline fissure and a few folds, plus a cerebellum
@@ -172,12 +172,12 @@
     return geo;
   }
   var brainMat = new THREE.MeshLambertMaterial({
-    color: 0x6d5f70, transparent: true, opacity: 0.34, side: THREE.DoubleSide,
+    color: 0x6a5f96, transparent: true, opacity: 0.34, side: THREE.DoubleSide,
     depthWrite: false });
   brainGrp.add(new THREE.Mesh(brainMesh(), brainMat));
   brainGrp.add(new THREE.LineSegments(
     new THREE.WireframeGeometry(brainMesh()),
-    new THREE.LineBasicMaterial({ color: 0x9d86ad, transparent: true,
+    new THREE.LineBasicMaterial({ color: 0x9d86d8, transparent: true,
                                   opacity: 0.05 })));
   var cere = new THREE.Mesh(new THREE.SphereGeometry(0.34, 40, 28), brainMat);
   cere.position.set(0, -0.50, -0.62); cere.scale.set(1.25, 0.72, 0.90);
@@ -187,7 +187,7 @@
   stem.position.set(0, -0.62, -0.20); stem.rotation.x = 0.42;
   brainGrp.add(stem);
   brainGrp.add(new THREE.AmbientLight(0xffffff, 0.55));
-  var dl = new THREE.DirectionalLight(0xcfe4ff, 0.85);
+  var dl = new THREE.DirectionalLight(0xc8d4ff, 0.9);
   dl.position.set(2, 3, 4); brainGrp.add(dl);
 
   /* ---- node points, one object per tab ---- */

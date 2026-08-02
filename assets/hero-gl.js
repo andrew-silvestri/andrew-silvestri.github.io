@@ -85,7 +85,7 @@
     /* ---- the globe --------------------------------------------------- */
     var globe = new THREE.Mesh(
       new THREE.SphereGeometry(1, 64, 48),
-      new THREE.MeshBasicMaterial({ color: 0x0b141c })
+      new THREE.MeshBasicMaterial({ color: 0x0b1226 })
     );
     world.add(globe);
 
@@ -95,7 +95,7 @@
       new THREE.ShaderMaterial({
         transparent: true, side: THREE.BackSide, depthWrite: false,
         blending: THREE.AdditiveBlending,
-        uniforms: { c: { value: new THREE.Color(0x7ac4d6) } },
+        uniforms: { c: { value: new THREE.Color(0x6f8ae0) } },
         vertexShader:
           'varying float i;void main(){vec3 n=normalize(normalMatrix*normal);' +
           'vec4 mv=modelViewMatrix*vec4(position,1.);' +
@@ -121,14 +121,14 @@
     var cg = new THREE.BufferGeometry();
     cg.setAttribute('position', new THREE.Float32BufferAttribute(cpos, 3));
     world.add(new THREE.LineSegments(cg, new THREE.LineBasicMaterial({
-      color: 0x96c4be, transparent: true, opacity: 0.5
+      color: 0x6f8ab4, transparent: true, opacity: 0.5
     })));
 
     /* ---- nodes -------------------------------------------------------- */
     var COLOR = {
-      station: 0xe8b04a, event: 0xd65c4a, grid: 0x7ac4d6, supply: 0x7e9ec4,
-      district: 0x6e8096, consumer: 0x969288, market: 0xece4ce,
-      climate: 0xece4ce
+      station: 0x8b7ff2, event: 0xd86a86, grid: 0x5aa8d8, supply: 0x6f7fd8,
+      district: 0x5c6a8c, consumer: 0x8b93b0, market: 0xcfd6f0,
+      climate: 0xcfd6f0
     };
     var np = [], nc = [], ns = [], n = D.nodes, col = new THREE.Color();
     for (var k = 0; k < n.length; k += 3) {

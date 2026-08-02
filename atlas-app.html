@@ -4,7 +4,7 @@
 <title>The world energy model — atlas</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
-<meta name="theme-color" content="#08090b">
+<meta name="theme-color" content="#070a12">
 <style>
 /* Layout is a CSS grid: three rows, two columns, every panel a flow child of
    its own cell. Nothing is absolutely positioned over anything else except the
@@ -36,16 +36,16 @@ header a.back{float:right;color:var(--dim);font-size:12.5px;text-decoration:none
 header a.back:hover{color:var(--acc)}
 
 #view{grid-area:view;position:relative;min-width:0;min-height:0;overflow:hidden;
-  background:radial-gradient(circle at 50% 45%,#0a1017 0%,#050709 70%)}
+  background:radial-gradient(circle at 50% 45%,#0a1024 0%,#05070f 70%)}
 #gl{display:block;width:100%;height:100%}
 #legend{position:absolute;left:16px;bottom:14px;font:11.5px var(--sans);
-  color:var(--dim);background:rgba(8,9,11,.74);border:1px solid var(--rule);
+  color:var(--dim);background:rgba(7,10,18,.78);border:1px solid var(--rule);
   border-radius:8px;padding:9px 12px;pointer-events:none;max-width:250px}
 #legend b{color:var(--ink);font-weight:600}
 #hint{position:absolute;right:16px;bottom:14px;font:11.5px var(--sans);
   color:var(--dim);pointer-events:none;opacity:.7}
 #tip{position:fixed;pointer-events:none;z-index:60;display:none;
-  background:rgba(13,15,18,.97);border:1px solid var(--rule);border-radius:8px;
+  background:rgba(12,16,32,.97);border:1px solid var(--rule);border-radius:8px;
   padding:7px 10px;font:12px var(--sans);max-width:270px;
   box-shadow:0 10px 28px rgba(0,0,0,.5)}
 #tip b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
@@ -65,8 +65,8 @@ select{width:100%;padding:9px 10px;background:var(--card);color:var(--ink);
 button{font:600 13px var(--sans);padding:9px 15px;border-radius:8px;cursor:pointer;
   border:1px solid var(--rule);background:transparent;color:var(--dim)}
 button:hover{color:var(--ink);border-color:var(--dim)}
-button.pri{background:var(--acc);border-color:var(--acc);color:#14100a}
-button.pri:hover{filter:brightness(1.09);color:#14100a}
+button.pri{background:var(--acc);border-color:var(--acc);color:#f2f0ff}
+button.pri:hover{background:#5a4fb0;border-color:#5a4fb0;color:#f2f0ff}
 button:disabled{opacity:.38;cursor:default}
 dl{margin:0;font-size:13px}
 dl div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;
@@ -113,6 +113,31 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:4px 0 0}
   #tabs button{border-right:0;border-bottom:1px solid var(--faint)}
 }
 </style>
+<style id="site-palette">
+/* Site palette. Deep blue ground, violet accent, blue and green for data.
+   Only colour variables are set; every layout rule the app defines still
+   wins. */
+:root{
+  --ink:#e3e6f2; --dim:#8b93b0; --faint:#1a2038; --bg:#070a12;
+  --acc:#8b7ff2; --card:#10152a; --panel:#0c1020; --rule:#232a45;
+  --cool:#5aa8d8; --moss:#4f9d84;
+  --wild:#4f9d84; --cap:#8b7ff2; --avg:#e3e6f2; --grp:#6f7fd8;
+  --blue:#5aa8d8; --green:#4f9d84; --red:#d86a86;
+  --sea:#070c18; --land:#10192c; --accent:#8b7ff2;
+  --station:#8b7ff2; --event:#d86a86; --grid:#5aa8d8; --supply:#6f7fd8;
+  --district:#5c6a8c; --consumer:#8b93b0; --market:#cfd6f0;
+  --climate:#cfd6f0; --psych:#a98fd8; --line:#232a45;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --ink:#161a26; --dim:#5c6480; --faint:#e0e3ef; --bg:#f4f5fa;
+    --acc:#4c3fb5; --card:#ffffff; --panel:#ecedf6; --rule:#d2d7e6;
+    --cool:#2a6a96; --moss:#2f6f5c;
+    --wild:#2f6f5c; --cap:#4c3fb5; --avg:#161a26; --grp:#4a56a8;
+  }
+}
+</style>
+
 </head><body>
 <div id="app">
 

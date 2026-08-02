@@ -5,7 +5,7 @@
 <title>World Energy Web v5 — Taxonomy Navigator</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
-<meta name="theme-color" content="#141310">
+<meta name="theme-color" content="#070a12">
 
 <style>
 :root{--bg:#0f1419;--panel:#1a2129;--ink:#e8e6e3;--dim:#8b949e;--acc:#e8a33d;--blue:#4c9fd0;--green:#55a868;--red:#c44e52;}
@@ -37,9 +37,27 @@ small{color:var(--dim)}
 .bar i{display:block;height:100%;background:var(--acc)}
 </style>
 <style id="site-palette">
+/* Site palette. Deep blue ground, violet accent, blue and green for data.
+   Only colour variables are set; every layout rule the app defines still
+   wins. */
 :root{
-  --bg:#08090b; --panel:#101215; --ink:#e8e5dd; --dim:#8f8d86;
-  --acc:#d9a441; --blue:#7ac4d6; --green:#7fb877; --red:#d65c4a;
+  --ink:#e3e6f2; --dim:#8b93b0; --faint:#1a2038; --bg:#070a12;
+  --acc:#8b7ff2; --card:#10152a; --panel:#0c1020; --rule:#232a45;
+  --cool:#5aa8d8; --moss:#4f9d84;
+  --wild:#4f9d84; --cap:#8b7ff2; --avg:#e3e6f2; --grp:#6f7fd8;
+  --blue:#5aa8d8; --green:#4f9d84; --red:#d86a86;
+  --sea:#070c18; --land:#10192c; --accent:#8b7ff2;
+  --station:#8b7ff2; --event:#d86a86; --grid:#5aa8d8; --supply:#6f7fd8;
+  --district:#5c6a8c; --consumer:#8b93b0; --market:#cfd6f0;
+  --climate:#cfd6f0; --psych:#a98fd8; --line:#232a45;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --ink:#161a26; --dim:#5c6480; --faint:#e0e3ef; --bg:#f4f5fa;
+    --acc:#4c3fb5; --card:#ffffff; --panel:#ecedf6; --rule:#d2d7e6;
+    --cool:#2a6a96; --moss:#2f6f5c;
+    --wild:#2f6f5c; --cap:#4c3fb5; --avg:#161a26; --grp:#4a56a8;
+  }
 }
 </style>
 
