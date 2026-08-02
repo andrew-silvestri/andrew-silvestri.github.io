@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="energy-web.html">World energy web, v1&ndash;v5</a><a href="atlas.html">The atlas</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><a href="library.html">Figures</a><a href="model.html">How it works</a><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The energy model <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas.html">The atlas</a><a href="model.html">How it works</a><a href="library.html">Figures</a><a href="energy-web.html">How it got there, v1-v5</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Projects <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="dac.html">Direct air capture TEA</a><a href="storage.html">Battery revenue simulator</a><a href="holdup.html">Pipeline liquid holdup</a><a href="longevity.html">Longevity quotient</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>The true climate cost of a thing</h1>
@@ -40,6 +40,38 @@ ones.</p>
 <a class="btn ghost" href="downloads/climate-cost-code.zip">Download code and data</a>
 </div>
 
+<h2>Why it is drawn in three dimensions</h2>
+
+<p>The first version of this tool printed the chain as an indented list, and
+the list was honest and nearly unreadable. Four levels of indentation eat the
+page, and once they have, the eye cannot tell a large branch from a small one
+without stopping to read every figure. The structure was there and nobody could
+see it.</p>
+
+<p>So the same graph is put in space. The stages run left to right as a
+straight line, because the thing itself happens in a straight line: field,
+harvest, packing, freight, distribution, kitchen, bin. Everything that feeds a
+stage hangs off it as a cone of branches, and every branch is itself a cone.
+Ball size is emissions on a cube-root scale, which keeps the small
+contributions visible without letting them pretend to be large ones. The open
+arc around a ball is its allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so a process charged only a third to this
+product wears a third of a ring.</p>
+
+<p>Geography gets a globe rather than a map. Producing region, consuming
+region, and the freight route drawn as the great circle the model actually
+measured &mdash; on Mercator that distance is a property of the projection, and
+half of what a reader would conclude about shipping would be an artefact of the
+mapmaker. The freight branch is the one thing pulled out of its fan and pinned
+to the apex of the route, because freight is the single step whose size is set
+by geography rather than by chemistry, and that is worth seeing rather than
+reading.</p>
+
+<p>Drag to orbit, scroll to zoom, click any ball to read what it is and what
+share of it is charged here, and use the arrow keys to walk the chain: left and
+right along the stages, down into the largest branch, up towards the spine.
+Where there is no WebGL, or where a list is simply the better tool, the same
+tree is one button away with every number intact.</p>
+
 <h2>Allocation, which is where the disagreement lives</h2>
 
 <p>Every branch carries a multiplier saying what share of that process belongs
@@ -50,7 +82,7 @@ every published footprint it is an invisible one.</p>
 
 <p>Two careful studies of the same cheese can differ twofold without either
 being wrong, because one split the cow's methane between milk and meat by
-economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
+economic value and the other by protein mass. The <b>allocation</b> factor is a
 judgement, it changes the answer, and it should be visible. Here it sits on
 every edge, and it compounds down the chain, so a process four levels deep may
 contribute only a third of what it emits.</p>
@@ -113,6 +145,7 @@ measurements of a particular farm. The spread within a single food is enormous
 &mdash; beef ranges roughly tenfold between the best and worst producers, more
 than the gap between many different foods &mdash; so a number here should be
 read as an order of magnitude with a plausible shape.</p>
+
 
 
 
