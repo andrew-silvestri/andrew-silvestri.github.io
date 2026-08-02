@@ -26,10 +26,9 @@ and the sound will change as you turn around.</p>
 <div class="tag">Interactive</div>
 <h3 style="margin-top:4px">Fifty cities</h3>
 <p>Drag to turn on the spot, or press Spin and let it turn for you. The upper
-panel is the city itself &mdash; every tower where it actually stands, near
-ones occluding far ones. The lower panel is that same horizon as a meter, and
-the meter is what you hear. Turn towards downtown and it fills out; turn away
-and it empties.</p>
+panel is a wheel of the city's towers &mdash; up to a hundred and twenty of
+them, the far side in a colder colour because it is behind you. The lower panel
+is that same ring as a meter, and the meter is what you hear.</p>
 <a class="btn" href="skyline-app.html">Open it</a>
 <a class="btn ghost" href="downloads/skyline-code.zip">Download code and data</a>
 </div>
@@ -49,8 +48,12 @@ contributes nothing, which is what your eye does.</p>
 <p><strong>Assumed.</strong> Footprint width is not recorded anywhere usable,
 so each tower is given a width of eighteen per cent of its height, between
 twenty-five and seventy metres. That is about right for a slender tower and
-about wrong for a broad one, and it decides how much of the horizon a building
-occupies rather than how tall it looks.</p>
+about wrong for a broad one.</p>
+
+<p><strong>Rearranged.</strong> The spacing around the wheel, and only the
+spacing. Order, height, distance and bearing are all real; how far apart two
+towers sit on the ring is not. This is set out in full below rather than
+buried, because it is the one place the picture departs from the ground.</p>
 
 <p><strong>Invented.</strong> The sound. There is no sense in which a city has
 a pitch. The mapping is a choice, it is written out in full below, and it is
@@ -59,18 +62,43 @@ sound.</p>
 
 <h2>Two panels, not one picture</h2>
 
-<p>The city is drawn above and the analyser below, and they are deliberately
-not the same drawing. Above, each building sits at its true bearing from the
-viewpoint and its true apparent height, hazed with distance so that depth
-reads, and a near tower hides a far one exactly as it would. Below, the same
-horizon is reduced to ninety-six bars with fast attack, slow release and peak
+<p>Above is a wheel, drawn the way a reverb room or a rotary control is drawn:
+a cylinder seen from slightly above, with each building a stave standing on the
+rim. Screen position comes from the sine of its angle and depth from the
+cosine, so the near face is large, bright and low, and the far face &mdash; the
+part of the city behind you &mdash; rides higher, smaller and in a colder
+colour. It is drawn back to front, so near towers hide far ones for free.
+Below is the same ring as a meter, with fast attack, slow release and peak
 markers that fall back under their own weight, which is how every meter ever
 built behaves.</p>
 
-<p>Turning does not rotate the city. It rotates <em>you</em>: the compass under
-the horizon slides, the buildings slide with it, and what was behind you comes
-around. That distinction is the whole reason the profile is computed over a
-full 360 degrees rather than for one photogenic view.</p>
+<p>Turning does not rotate the city. It rotates <em>you</em>. What was behind
+comes around, and the colour tells you when it has.</p>
+
+<h2>One liberty, taken deliberately</h2>
+
+<p>The first version put every tower at its true bearing from a viewpoint
+outside the city. That is exactly what a skyline is, it is entirely honest, and
+as a carousel it was useless: a downtown occupies perhaps forty degrees of
+anybody's horizon, so turning ninety degrees gave a blank screen. Accurate and
+worthless is still worthless.</p>
+
+<p>So the wheel does one stated thing to the geography. Buildings keep their
+true compass <strong>order</strong> &mdash; clockwise from north, exactly as
+they stand on the ground, and the panel names the real bearing of anything you
+hover &mdash; but their <strong>spacing</strong> is equalised so the ring is
+full. Neighbours on the wheel are neighbours in the city; the angle between
+them is not the angle between them. It is the liberty a transit map takes with
+distance, taken for the same reason. Every one of the fifty cities now has
+something in front of you at every bearing, which was checked rather than
+assumed.</p>
+
+<p>Two other things changed with it. The height floor came down from 120 m to
+80 m, which is still a high-rise by any definition and roughly triples the set
+&mdash; at 120 m Chongqing had nine towers, because the reference database
+thins fast below the famous ones. And the wheel now carries up to 120 buildings
+per city rather than 20: 1,239 across the fifty, with New York the
+fullest at 120.</p>
 
 <h2>The key</h2>
 
