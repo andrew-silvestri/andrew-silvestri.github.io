@@ -6,7 +6,6 @@
 <link rel="alternate icon" href="favicon.png">
 <meta name="theme-color" content="#070a12">
 <style>
-/* The same shell as the atlas and the shoe model: head, view + side, tabs. */
 :root{
   --bg:#070a12; --panel:#0c1020; --card:#10152a; --ink:#e3e6f2;
   --dim:#8b93b0; --faint:#1a2038; --rule:#232a45; --acc:#8b7ff2;
@@ -19,66 +18,62 @@
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--sans);
   overflow:hidden}
-#app{display:grid;height:100vh;
-  grid-template-columns:330px 1fr;
-  grid-template-rows:auto 1fr;
-  grid-template-areas:"head head" "side view"}
-header{grid-area:head;padding:15px 24px 12px;border-bottom:1px solid var(--rule)}
-header h1{margin:0;font:500 20px/1.2 var(--serif);letter-spacing:-.01em}
-header p{margin:5px 0 0;color:var(--dim);font-size:12.5px;max-width:88ch}
+#app{display:grid;height:100vh;grid-template-columns:320px 1fr;
+  grid-template-rows:auto 1fr;grid-template-areas:"head head" "side view"}
+header{grid-area:head;padding:14px 24px 11px;border-bottom:1px solid var(--rule)}
+header h1{margin:0;font:500 20px/1.2 var(--serif)}
+header p{margin:5px 0 0;color:var(--dim);font-size:12.5px;max-width:96ch}
 header a.back{float:right;color:var(--dim);font-size:12.5px;text-decoration:none;
   border-bottom:1px solid var(--faint)}
 header a.back:hover{color:var(--acc)}
 
 #side{grid-area:side;border-right:1px solid var(--rule);background:var(--panel);
-  overflow-y:auto;padding:18px 20px 26px}
-.sec{margin-bottom:19px}
-.sec>h2{margin:0 0 8px;font:600 10.5px var(--sans);letter-spacing:.14em;
+  overflow-y:auto;padding:16px 18px 26px}
+.sec{margin-bottom:16px}
+.sec>h2{margin:0 0 7px;font:600 10.5px var(--sans);letter-spacing:.14em;
   text-transform:uppercase;color:var(--dim)}
-label.f{display:block;font-size:12.5px;color:var(--dim);margin:9px 0 3px}
-select,input[type=range]{width:100%}
-select{padding:8px 9px;background:var(--card);color:var(--ink);
-  border:1px solid var(--rule);border-radius:6px;font:13px var(--sans)}
-input[type=range]{accent-color:var(--acc);margin:3px 0 0}
-.val{font:12px var(--mono);color:var(--acc);font-variant-numeric:tabular-nums}
-.note{color:var(--dim);font:11.5px/1.55 var(--sans);margin:9px 0 0;
-  padding-top:9px;border-top:1px solid var(--rule)}
+label.f{display:block;font-size:12.5px;color:var(--dim);margin:8px 0 3px}
+select{width:100%;padding:7px 9px;background:var(--card);color:var(--ink);
+  border:1px solid var(--rule);border-radius:6px;font:12.5px var(--sans)}
+input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 0}
+.val{font:12px var(--mono);color:var(--acc);float:right}
+.gapbar{height:6px;background:var(--faint);border-radius:3px;margin:3px 0 7px;
+  overflow:hidden}
+.gapbar i{display:block;height:100%;background:var(--cool)}
+.gaplab{display:flex;justify-content:space-between;font-size:11.5px;
+  color:var(--dim)}
+.gaplab b{color:var(--ink);font-weight:500}
 
-#view{grid-area:view;overflow-y:auto;padding:20px 26px 40px;min-width:0}
-#lede{color:var(--dim);font:12.5px/1.6 var(--sans);max-width:78ch;
-  margin:0 0 16px}
-.row{display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:16px;
-  border:1px solid var(--rule);border-radius:8px;background:var(--card);
-  padding:13px 15px;margin-bottom:11px;align-items:start}
-.row h3{margin:0 0 3px;font:500 15.5px/1.3 var(--serif);color:var(--ink)}
-.row .what{color:var(--dim);font-size:12.5px;margin:0 0 7px}
-.row .ev{font-size:12.5px;margin:0 0 5px}
-.row .ev b{color:var(--ink);font-weight:600}
-.row .cav{color:var(--dim);font-size:11.5px;margin:6px 0 0;
-  padding-top:6px;border-top:1px solid var(--faint)}
-.row .fit{color:var(--cool);font-size:11.5px;margin:5px 0 0}
-.tier{display:inline-block;font:600 10px var(--sans);letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-bottom:6px}
-.t-rct{background:rgba(79,157,132,.16);color:var(--good);
-  border:1px solid rgba(79,157,132,.42)}
-.t-mr{background:rgba(79,157,132,.16);color:var(--good);
-  border:1px solid rgba(79,157,132,.42)}
-.t-coh{background:rgba(232,201,143,.13);color:var(--gold);
-  border:1px solid rgba(232,201,143,.36)}
-.t-xs{background:rgba(216,106,134,.14);color:var(--warn);
-  border:1px solid rgba(216,106,134,.4)}
-.t-null{background:rgba(216,106,134,.14);color:var(--warn);
-  border:1px solid rgba(216,106,134,.4)}
-.bars{font-size:11px;color:var(--dim)}
-.bar{height:7px;background:var(--faint);border-radius:3px;overflow:hidden;
-  margin:3px 0 9px}
-.bar i{display:block;height:100%;border-radius:3px}
-.b-ev i{background:var(--good)}
-.b-fit i{background:var(--cool)}
-.hint{color:var(--dim);font-size:11.5px;margin-top:2px}
-h2.grp{margin:22px 0 10px;font:600 10.5px var(--sans);letter-spacing:.14em;
-  text-transform:uppercase;color:var(--dim);
-  border-bottom:1px solid var(--rule);padding-bottom:6px}
+#view{grid-area:view;overflow-y:auto;padding:16px 24px 44px;min-width:0}
+#lede{color:var(--dim);font:12.5px/1.6 var(--sans);max-width:90ch;margin:0 0 14px}
+table.res{width:100%;border-collapse:collapse;font-size:13px}
+table.res th{text-align:left;font:600 10px var(--sans);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);padding:0 10px 7px 0;
+  border-bottom:1px solid var(--rule)}
+table.res td{padding:9px 10px 9px 0;border-bottom:1px solid var(--faint);
+  vertical-align:top}
+table.res tr:hover td{background:rgba(139,127,242,.05)}
+.nm{color:var(--ink);font-weight:500;font-size:13.5px}
+.eg{color:var(--dim);font-size:11.5px;display:block;margin-top:2px}
+.why{color:var(--cool);font-size:11.5px;display:block;margin-top:3px}
+.mech{display:inline-block;font:11px var(--mono);color:var(--dim);
+  border:1px solid var(--rule);border-radius:3px;padding:1px 5px;margin:2px 3px 0 0}
+.mech.big{color:var(--ink);border-color:var(--acc)}
+.sc{font:12.5px var(--mono);color:var(--acc);font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.sbar{height:6px;background:var(--faint);border-radius:3px;margin-top:3px;
+  width:86px;overflow:hidden}
+.sbar i{display:block;height:100%;background:var(--acc)}
+.tier{font:10px var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  padding:1px 5px;border-radius:3px;white-space:nowrap}
+.t-hi{background:rgba(79,157,132,.16);color:var(--good);
+  border:1px solid rgba(79,157,132,.4)}
+.t-md{background:rgba(232,201,143,.13);color:var(--gold);
+  border:1px solid rgba(232,201,143,.34)}
+.t-lo{background:rgba(216,106,134,.13);color:var(--warn);
+  border:1px solid rgba(216,106,134,.36)}
+.cost{color:var(--dim);font-size:11.5px;white-space:nowrap}
+#count{color:var(--dim);font-size:11.5px;margin:10px 0 0}
 @media (max-width:900px){
   body{overflow:auto}
   #app{grid-template-columns:1fr;grid-template-rows:auto auto auto;
@@ -91,10 +86,11 @@ h2.grp{margin:22px 0 10px;font:600 10.5px var(--sans);letter-spacing:.14em;
 <header>
   <a class="back" href="hobbies.html">&larr; back</a>
   <h1>What a hobby is worth</h1>
-  <p>Describe your week and this ranks activities by what the published
-    evidence would predict, and says how good that evidence is. It is not a
-    prediction about you: nearly all of it is population-average, and most of
-    it is observational. The two bars are kept separate on purpose.</p>
+  <p>Fifty-two activities, ranked for the week you describe. Evidence is
+    attached to <b>mechanisms</b> &mdash; raising your heart rate, seeing the
+    same people, being outdoors &mdash; because that is what the studies
+    measured. Each activity inherits evidence from the mechanisms it actually
+    delivers, and the mechanisms it delivers are a judgement, marked as one.</p>
 </header>
 
 <aside id="side">
@@ -102,333 +98,346 @@ h2.grp{margin:22px 0 10px;font:600 10.5px var(--sans);letter-spacing:.14em;
     <h2>Your week</h2>
     <label class="f" for="age">Age</label>
     <select id="age">
-      <option value="18">18&ndash;29</option>
-      <option value="35" selected>30&ndash;44</option>
-      <option value="50">45&ndash;59</option>
+      <option value="22">18&ndash;29</option>
+      <option value="37" selected>30&ndash;44</option>
+      <option value="52">45&ndash;59</option>
       <option value="67">60&ndash;74</option>
       <option value="80">75 and over</option>
-    </select>
-
-    <label class="f" for="work">Working day</label>
-    <select id="work">
-      <option value="desk" selected>Mostly seated, screen</option>
-      <option value="onfeet">On my feet, moving</option>
-      <option value="heavy">Physically heavy</option>
-      <option value="care">Caring for someone / irregular</option>
-      <option value="none">Not working, or retired</option>
     </select>
 
     <label class="f" for="hours">Free hours a week <span class="val"
       id="hoursval">6</span></label>
     <input id="hours" type="range" min="1" max="25" value="6">
 
+    <label class="f" for="block">Longest single free block</label>
+    <select id="block">
+      <option value="0.5">Half an hour here and there</option>
+      <option value="1.5" selected>An hour or two</option>
+      <option value="4">Half a day, most weeks</option>
+    </select>
+
     <label class="f" for="active">Physical activity now</label>
     <select id="active">
       <option value="0">Almost none</option>
-      <option value="1" selected>A little, under an hour a week</option>
-      <option value="2">Some, an hour or two</option>
+      <option value="1" selected>Under an hour a week</option>
+      <option value="2">One to three hours</option>
       <option value="3">Meeting guidelines, 150 min or more</option>
     </select>
 
-    <label class="f" for="social">People, in a normal week</label>
+    <label class="f" for="social">People, outside work</label>
     <select id="social">
-      <option value="0">Rarely see anyone outside work</option>
+      <option value="0">Rarely see anyone</option>
       <option value="1" selected>A few, sometimes</option>
       <option value="2">Often, and it feels like enough</option>
     </select>
 
-    <label class="f" for="place">Where you are</label>
-    <select id="place">
-      <option value="city" selected>City, things within reach</option>
-      <option value="town">Town or suburb</option>
-      <option value="rural">Rural, travel is the cost</option>
-    </select>
-
-    <label class="f" for="out">Time outdoors now</label>
+    <label class="f" for="out">Time outdoors</label>
     <select id="out">
       <option value="0" selected>Very little</option>
       <option value="1">Some most days</option>
+      <option value="2">Plenty</option>
+    </select>
+
+    <label class="f" for="learn">Learning something new</label>
+    <select id="learn">
+      <option value="0" selected>Not really</option>
+      <option value="1">Yes, something</option>
     </select>
   </div>
 
   <div class="sec">
-    <h2>Reading it</h2>
-    <p class="note" style="border:0;padding:0;margin:0">
-      <b style="color:var(--good)">Evidence</b> is how well the effect is
-      established, not how large it is. Randomised trials and Mendelian
-      randomisation sit at the top because they survive the objection that
-      healthier people simply take up more hobbies.<br><br>
-      <b style="color:var(--cool)">Headroom</b> is how much room your stated
-      week leaves for that particular change. Someone already meeting the
-      activity guidelines has little headroom on exercise and may have a great
-      deal on company.
-    </p>
+    <h2>Constraints</h2>
+    <label class="f" for="place">Where you are</label>
+    <select id="place">
+      <option value="city" selected>City</option>
+      <option value="town">Town or suburb</option>
+      <option value="rural">Rural</option>
+    </select>
+    <label class="f" for="budget">Budget to start</label>
+    <select id="budget">
+      <option value="0">Near nothing</option>
+      <option value="1" selected>Modest, under a hundred</option>
+      <option value="2">A few hundred</option>
+      <option value="3">Not a constraint</option>
+    </select>
+    <label class="f" for="phys">Physical limits</label>
+    <select id="phys">
+      <option value="0" selected>None worth noting</option>
+      <option value="1">Joints, back, or low impact only</option>
+      <option value="2">Significant, seated or gentle</option>
+    </select>
+    <label class="f" for="want">Prefer</label>
+    <select id="want">
+      <option value="any" selected>No preference</option>
+      <option value="solo">On my own</option>
+      <option value="group">With people</option>
+      <option value="outdoor">Outdoors</option>
+      <option value="indoor">Indoors</option>
+    </select>
+  </div>
+
+  <div class="sec">
+    <h2>Where your headroom is</h2>
+    <div id="gaps"></div>
+    <p style="color:var(--dim);font:11.5px/1.5 var(--sans);margin:8px 0 0;
+      padding-top:8px;border-top:1px solid var(--rule)">
+      Score = what an activity delivers, times how well that mechanism is
+      evidenced, times how much room your week leaves for it &mdash; then
+      penalised for cost, time block and access. Nothing here is advice.</p>
   </div>
 </aside>
 
 <div id="view">
   <p id="lede"></p>
-  <div id="out-list"></div>
+  <table class="res">
+    <thead><tr>
+      <th style="width:44%">Activity</th>
+      <th>Mechanisms it delivers</th>
+      <th>Evidence</th>
+      <th>Cost</th>
+      <th style="width:96px">Score</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="count"></p>
 </div>
 </div>
 
 <script>
 'use strict';
-/* --------------------------------------------------------------- evidence --
-   One entry per activity. Every number is from a named published study, and
-   the tier says what kind of study it was. Where the honest answer is "this
-   is confounded" or "this does not work", the entry says that instead of
-   being dropped, because a tool that only lists things that work is an
-   advertisement rather than a model.
+/* ------------------------------------------------------------ mechanisms --
+   The studies measured mechanisms, not pastimes. Nobody has run a trial on
+   woodwork. So evidence lives here, once, with its source, and an activity
+   inherits it in proportion to how much of that mechanism it actually
+   delivers. Splitting it this way is what lets the list be specific without
+   inventing a literature for each entry.
 
-   tier:  rct | mr | cohort | xs | null
-   ev:    0-1, how well established the causal claim is
-   what:  the outcome actually measured, in the units it was measured in    */
-var TIERS = {
-  rct:    ["t-rct",  "Randomised trials"],
-  mr:     ["t-mr",   "Mendelian randomisation"],
-  cohort: ["t-coh",  "Longitudinal cohort"],
-  xs:     ["t-xs",   "Cross-sectional"],
-  null_:  ["t-null", "Evidence against"]
+   ev: how well the causal claim is established, 0-1. Not effect size.      */
+var MECH = {
+  aerobic: { name: "aerobic activity", ev: 0.95,
+    src: "Mendelian randomisation, OR 0.74 for depression per SD of "
+       + "accelerometer activity (Choi 2019); trials median -0.43 SD "
+       + "(Singh 2023)" },
+  strength: { name: "strength and load", ev: 0.80,
+    src: "Resistance training trials show independent effects on function "
+       + "and mood; smaller literature than aerobic" },
+  social: { name: "repeated company", ev: 0.70,
+    src: "148 studies, 308,849 people: stronger social relationships, 50% "
+       + "higher survival (Holt-Lunstad 2010)" },
+  hobby: { name: "absorbing hobby", ev: 0.62,
+    src: "93,263 people, 16 countries: hobby predicts fewer depressive "
+       + "symptoms 4-8 years later (Mak 2023, age 65+)" },
+  reading: { name: "sustained reading", ev: 0.45,
+    src: "12-year cohort, book readers 20% lower mortality hazard "
+       + "(Bavishi 2016)" },
+  outdoors: { name: "time outdoors", ev: 0.42,
+    src: "Cohort and cross-sectional; confounded by income and "
+       + "neighbourhood" },
+  learning: { name: "learning something hard", ev: 0.32,
+    src: "Near transfer is real, far transfer to everyday cognition is "
+       + "largely not (Simons 2016)" },
+  craft: { name: "making with hands", ev: 0.28,
+    src: "Consistent survey associations, little clean identification" }
 };
 
-var ACTS = [
-  {
-    id: "aerobic", name: "Something that raises your heart rate",
-    eg: "walking fast, cycling, swimming, running, racket sports",
-    tier: "mr", ev: 0.95,
-    ev_text: "Genetic instruments for accelerometer-measured activity give " +
-             "an odds ratio of <b>0.74</b> for major depression per standard " +
-             "deviation of activity — roughly the difference between sitting " +
-             "and 15 minutes a day of brisk walking.",
-    cav: "Mendelian randomisation answers the reverse-causation objection " +
-         "that cohort studies cannot: it is genotype, fixed at conception, " +
-         "predicting later depression. It assumes those genetic variants " +
-         "affect depression only through activity, which is an assumption.",
-    trial: "Trials agree on size: an umbrella review of 97 reviews found a " +
-           "median effect of <b>&minus;0.43</b> standard deviations on " +
-           "depression, comparable to psychotherapy.",
-    need: function (s) { return 1 - s.active / 3; },
-    fit: function (s) {
-      if (s.active >= 3) return "You already meet the guidelines, so the " +
-        "marginal return here is small — that is what the headroom bar says.";
-      if (s.work === "heavy") return "Occupational activity is not the same " +
-        "as leisure activity in these studies, and heavy work days predict " +
-        "less leisure exercise, not more.";
-      return "This is the strongest causal evidence on the page, and your " +
-        "stated activity leaves room for it.";
-    },
-    hours: 2
-  },
-  {
-    id: "team", name: "An activity with the same people every week",
-    eg: "club sport, choir, band, regular class, league",
-    tier: "cohort", ev: 0.7,
-    ev_text: "Across 148 studies and 308,849 people, those with stronger " +
-             "social relationships had a <b>50% higher</b> likelihood of " +
-             "surviving the follow-up period; the effect was strongest for " +
-             "complex measures of social integration rather than simply " +
-             "living with someone.",
-    cav: "Observational. People who are already well are more able to join " +
-         "things, and the review could not fully separate that. The size is " +
-         "comparable to smoking cessation, which is a claim worth treating " +
-         "with suspicion precisely because it is so large.",
-    trial: "The regularity is the mechanism being measured, not the hobby: " +
-           "what is scored is repeated contact with the same people.",
-    need: function (s) { return 1 - s.social / 2; },
-    fit: function (s) {
-      if (s.social === 0) return "This is where your week has the most " +
-        "headroom, and it combines with the row above if the activity moves.";
-      if (s.social >= 2) return "You describe enough company already, so " +
-        "treat this as maintenance rather than a change.";
-      return "Some headroom. The measured thing is repetition with the same " +
-        "people, not the size of the group.";
-    },
-    hours: 2
-  },
-  {
-    id: "hobbyany", name: "Any absorbing hobby, kept up",
-    eg: "the category itself: making, growing, playing, collecting, repairing",
-    tier: "cohort", ev: 0.62,
-    ev_text: "In 93,263 people aged 65 and over across 16 countries, having " +
-             "a hobby predicted <b>fewer depressive symptoms and higher life " +
-             "satisfaction four to eight years later</b>, independent of " +
-             "income, employment and baseline health.",
-    cav: "Longitudinal and confounder-adjusted, which is better than " +
-         "cross-sectional, but still not a trial. The authors say it " +
-         "suggests a causal effect; they do not claim one. The sample is " +
-         "65 and over, so applying it below that age is an extrapolation.",
-    trial: "Hobby prevalence ranged from 51% in Spain to 96% in Denmark, " +
-           "which tells you national context matters as much as the activity.",
-    need: function (s) { return s.hours >= 3 ? 0.6 : 0.35; },
-    fit: function (s) {
-      if (s.age >= 60) return "Your age band is the one this study actually " +
-        "measured, which is unusual on this page.";
-      return "The evidence is from people 65 and over. Below that it is an " +
-        "extrapolation, and it is marked as one.";
-    },
-    hours: 2
-  },
-  {
-    id: "outdoor", name: "Something that puts you outside",
-    eg: "gardening, walking, birding, allotment, fishing, running",
-    tier: "cohort", ev: 0.5,
-    ev_text: "Combines the activity evidence above with time outdoors. The " +
-             "activity half is strong; the outdoors half rests on cohort and " +
-             "cross-sectional work with far weaker identification.",
-    cav: "Nature-exposure studies are hard to run cleanly: people who spend " +
-         "time outdoors differ in income, neighbourhood, health and " +
-         "employment from those who do not, and the greenest neighbourhoods " +
-         "are rarely the poorest. Take the activity component as the part " +
-         "that is established.",
-    trial: "Scored here mostly for the activity it carries, not for the " +
-           "outdoors on its own.",
-    need: function (s) { return (1 - s.out) * 0.6 + (1 - s.active / 3) * 0.4; },
-    fit: function (s) {
-      if (s.place === "rural") return "Rural: the access cost that makes " +
-        "club activities expensive in time does not apply to this one.";
-      if (s.out === 0) return "You report very little time outside, which is " +
-        "where the headroom comes from.";
-      return "Some headroom, mostly through the activity it carries.";
-    },
-    hours: 2
-  },
-  {
-    id: "making", name: "Making something with your hands",
-    eg: "woodwork, cooking properly, instruments, repair, textiles, ceramics",
-    tier: "xs", ev: 0.3,
-    ev_text: "Consistently associated with wellbeing in surveys, and it sits " +
-             "inside the hobby category the 16-country study measured. On " +
-             "its own, separated from that category, the direct evidence is " +
-             "mostly cross-sectional.",
-    cav: "Cross-sectional means the arrow could point either way: feeling " +
-         "well makes it easier to start a craft. Absence of strong evidence " +
-         "here is absence of good studies, not evidence of no effect.",
-    trial: "The strongest defensible claim is the category-level one from " +
-           "the row above, not a craft-specific effect.",
-    need: function (s) { return s.hours >= 4 ? 0.55 : 0.3; },
-    fit: function (s) {
-      if (s.work === "desk") return "A seated screen job and a seated craft " +
-        "do not stack; if activity is the gap, this does not fill it.";
-      return "Fits most weeks, and needs a block of time rather than minutes.";
-    },
-    hours: 3
-  },
-  {
-    id: "reading", name: "Reading books, regularly",
-    eg: "books specifically, rather than periodicals",
-    tier: "cohort", ev: 0.45,
-    ev_text: "In a 12-year cohort of older adults, book readers had a " +
-             "<b>20% lower</b> mortality hazard than non-readers, with " +
-             "periodicals showing a weaker association than books.",
-    cav: "Adjusted for education, wealth and baseline health, and still " +
-         "observational. Reading is a marker for a great deal else. The " +
-         "book-versus-periodical gradient is interesting but does not " +
-         "establish that the reading itself is the active ingredient.",
-    trial: "No trial has randomised people to read books for a decade, and " +
-           "none is likely to.",
-    need: function (s) { return 0.4; },
-    fit: function (s) {
-      return "Independent of location and cost, which is rare on this page.";
-    },
-    hours: 2
-  },
-  {
-    id: "brain", name: "Brain-training apps",
-    eg: "commercial cognitive-training programmes",
-    tier: "null_", ev: 0.1,
-    ev_text: "A review of the entire literature by seven researchers found " +
-             "that these programmes reliably improve <b>the trained task</b>, " +
-             "much less reliably improve closely related tasks, and show " +
-             "<b>very little evidence</b> of improving distantly related " +
-             "tasks or everyday cognition.",
-    cav: "This is the one row where the evidence argues against the " +
-         "activity rather than for it. It is included because a ranking " +
-         "that silently omitted the popular thing that does not work would " +
-         "be less useful than one that names it.",
-    trial: "If the goal is cognition, the activity rows have better " +
-           "evidence than the cognitive ones.",
-    need: function (s) { return 0.05; },
-    fit: function (s) { return "Ranked last on evidence, not on appeal."; },
-    hours: 1
-  }
+/* -------------------------------------------------------------- activities
+   m: mechanism delivery, 0-1. These coefficients are a judgement about what
+      the activity involves, not a measurement, and the page says so.
+   blk: hours the smallest useful session takes
+   $: 0 near-free, 1 under a hundred, 2 a few hundred, 3 more
+   imp: impact on joints, 0 none, 1 some, 2 high
+   env: in | out | both      soc: solo | either | group
+   rur: does it work outside a city                                        */
+var A = [
+  // ---- moving, outdoors
+  {n:"Walking, a real route", e:"an hour, somewhere specific, most days", m:{aerobic:.55,outdoors:.9,social:.1}, blk:1, $:0, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Trail running", e:"off road, hills, shoes and nothing else", m:{aerobic:1,outdoors:.9}, blk:1, $:1, imp:2, env:"out", soc:"either", rur:1},
+  {n:"Road cycling", e:"solo or a Sunday club run", m:{aerobic:1,outdoors:.8,social:.3}, blk:2, $:2, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Mountain biking", e:"technical, and a skill you keep learning", m:{aerobic:.9,outdoors:.9,learning:.4}, blk:2, $:3, imp:1, env:"out", soc:"either", rur:1},
+  {n:"Open-water or lap swimming", e:"low impact, whole body", m:{aerobic:.95,strength:.3}, blk:1, $:1, imp:0, env:"both", soc:"either", rur:0},
+  {n:"Hiking, day routes", e:"navigation, weather, a destination", m:{aerobic:.6,outdoors:1,social:.3}, blk:4, $:1, imp:1, env:"out", soc:"either", rur:1},
+  {n:"Rock climbing at a wall", e:"strength and problem solving together", m:{strength:.9,aerobic:.4,social:.5,learning:.6}, blk:2, $:2, imp:1, env:"in", soc:"group", rur:0},
+  {n:"Bouldering outdoors", e:"the same, on real rock", m:{strength:.9,aerobic:.35,outdoors:.8,learning:.6}, blk:4, $:2, imp:1, env:"out", soc:"either", rur:1},
+  {n:"Sea kayaking or canoeing", e:"upper body, weather, water", m:{aerobic:.7,strength:.6,outdoors:.9}, blk:4, $:3, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Rowing, club", e:"crew boat, fixed times, other people", m:{aerobic:.95,strength:.6,social:.9}, blk:2, $:2, imp:0, env:"out", soc:"group", rur:0},
+  {n:"Orienteering", e:"running plus a map, scored", m:{aerobic:.8,outdoors:.9,learning:.5,social:.5}, blk:4, $:1, imp:2, env:"out", soc:"group", rur:1},
+  {n:"Wild swimming", e:"cold water, a group, a habit", m:{aerobic:.4,outdoors:.9,social:.6}, blk:1, $:0, imp:0, env:"out", soc:"group", rur:1},
+
+  // ---- moving, indoors and social
+  {n:"Five-a-side or a league sport", e:"a fixture, the same faces weekly", m:{aerobic:.9,social:.95,hobby:.4}, blk:2, $:1, imp:2, env:"both", soc:"group", rur:0},
+  {n:"Racket sports: tennis, squash, padel", e:"partner required, quick to book", m:{aerobic:.9,social:.7,learning:.4}, blk:1.5, $:1, imp:2, env:"both", soc:"group", rur:0},
+  {n:"Badminton or table tennis", e:"low impact, easy to find a club", m:{aerobic:.6,social:.7,learning:.3}, blk:1.5, $:1, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Strength training", e:"barbell or machines, three sessions", m:{strength:1,aerobic:.25}, blk:1, $:1, imp:1, env:"in", soc:"solo", rur:0},
+  {n:"Yoga or pilates class", e:"a room, a fixed time, a teacher", m:{strength:.55,social:.4,aerobic:.2}, blk:1, $:1, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Martial arts", e:"grading structure, partner work, years of it", m:{aerobic:.75,strength:.6,social:.8,learning:.8}, blk:1.5, $:1, imp:2, env:"in", soc:"group", rur:0},
+  {n:"Social dance: swing, salsa, ceilidh", e:"partner rotation is the point", m:{aerobic:.6,social:1,learning:.6}, blk:2, $:1, imp:1, env:"in", soc:"group", rur:0},
+  {n:"Climbing gym membership, solo", e:"turn up alone, leave alone", m:{strength:.9,learning:.5}, blk:1.5, $:2, imp:1, env:"in", soc:"solo", rur:0},
+  {n:"Tai chi or qigong", e:"gentle, balance, standing", m:{strength:.3,social:.5,outdoors:.3,learning:.4}, blk:1, $:0, imp:0, env:"both", soc:"group", rur:1},
+
+  // ---- growing and outdoors, low impact
+  {n:"Allotment or vegetable growing", e:"a plot, a season, neighbours", m:{outdoors:1,aerobic:.35,hobby:.8,social:.5,craft:.4}, blk:2, $:1, imp:1, env:"out", soc:"either", rur:1},
+  {n:"Gardening at home", e:"smaller, same mechanism, no commute", m:{outdoors:.85,aerobic:.3,hobby:.7,craft:.4}, blk:1, $:1, imp:1, env:"out", soc:"solo", rur:1},
+  {n:"Beekeeping", e:"seasonal, technical, needs space", m:{outdoors:.8,hobby:.9,learning:.7,craft:.4}, blk:2, $:2, imp:0, env:"out", soc:"solo", rur:1},
+  {n:"Birdwatching", e:"patience, lists, early mornings", m:{outdoors:1,hobby:.8,aerobic:.3,learning:.5}, blk:2, $:1, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Foraging", e:"seasonal, needs a book and caution", m:{outdoors:1,hobby:.7,learning:.7,aerobic:.35}, blk:2, $:0, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Fishing", e:"long blocks, quiet, weather", m:{outdoors:1,hobby:.8}, blk:4, $:2, imp:0, env:"out", soc:"either", rur:1},
+  {n:"Astronomy", e:"clear nights, dark skies, equipment", m:{outdoors:.6,hobby:.9,learning:.8}, blk:2, $:2, imp:0, env:"out", soc:"solo", rur:1},
+  {n:"Conservation volunteering", e:"physical work, a team, a Saturday", m:{outdoors:1,aerobic:.5,social:.9,hobby:.5}, blk:4, $:0, imp:1, env:"out", soc:"group", rur:1},
+
+  // ---- making
+  {n:"Woodwork or furniture making", e:"space, tools, projects that take weeks", m:{craft:1,hobby:.9,learning:.7,strength:.2}, blk:4, $:2, imp:1, env:"in", soc:"solo", rur:1},
+  {n:"Cooking properly, from scratch", e:"technique rather than assembly", m:{craft:.9,hobby:.7,learning:.5,social:.4}, blk:1.5, $:0, imp:0, env:"in", soc:"either", rur:1},
+  {n:"Bread and fermentation", e:"slow, repeatable, cheap", m:{craft:.9,hobby:.8,learning:.6}, blk:1, $:0, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Pottery, a wheel class", e:"a studio, a term, the same people", m:{craft:1,hobby:.9,social:.7,learning:.7}, blk:2, $:2, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Knitting, sewing, textiles", e:"portable, cheap, fits small blocks", m:{craft:1,hobby:.85,learning:.4}, blk:0.5, $:1, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Repair: bikes, electronics, furniture", e:"useful, and it accumulates skill", m:{craft:1,hobby:.7,learning:.8}, blk:1.5, $:1, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Drawing or painting", e:"needs almost nothing to start", m:{craft:.9,hobby:.9,learning:.7}, blk:1, $:0, imp:0, env:"both", soc:"solo", rur:1},
+  {n:"Film photography", e:"walking, looking, a darkroom or a lab", m:{craft:.7,hobby:.9,outdoors:.6,learning:.6,aerobic:.25}, blk:2, $:2, imp:0, env:"both", soc:"solo", rur:1},
+  {n:"Model making or miniatures", e:"long, absorbing, indoor", m:{craft:1,hobby:.95,learning:.4}, blk:1.5, $:1, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Home brewing", e:"process control, batches, patience", m:{craft:.9,hobby:.85,learning:.6}, blk:2, $:2, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Blacksmithing or metalwork", e:"a course first, then space", m:{craft:1,hobby:.9,strength:.5,learning:.8,social:.4}, blk:4, $:3, imp:1, env:"in", soc:"group", rur:1},
+
+  // ---- playing, together
+  {n:"Choir", e:"weekly, the same people, no audition needed", m:{social:1,hobby:.8,learning:.5}, blk:1.5, $:0, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Playing in a band or ensemble", e:"rehearsal is a standing commitment", m:{social:.95,hobby:.9,learning:.9,craft:.5}, blk:2, $:2, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Learning an instrument, alone", e:"daily practice, slow returns", m:{hobby:.9,learning:1,craft:.5}, blk:0.5, $:2, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Board games or a games night", e:"a fixed evening, the same table", m:{social:.95,hobby:.7,learning:.3}, blk:2, $:1, imp:0, env:"in", soc:"group", rur:1},
+  {n:"Chess, in a club", e:"study alone, play with people", m:{hobby:.8,learning:.9,social:.6}, blk:1.5, $:0, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Amateur dramatics", e:"a production cycle, a company", m:{social:1,hobby:.9,learning:.7}, blk:2, $:0, imp:0, env:"in", soc:"group", rur:0},
+  {n:"Volunteering with a fixed shift", e:"same time, same place, same people", m:{social:.95,hobby:.5,outdoors:.3}, blk:2, $:0, imp:0, env:"both", soc:"group", rur:1},
+
+  // ---- quiet
+  {n:"Reading books, seriously", e:"books rather than periodicals", m:{reading:1,hobby:.7}, blk:0.5, $:0, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"A book club", e:"reading, plus a room of people", m:{reading:.9,social:.85,hobby:.6}, blk:2, $:0, imp:0, env:"in", soc:"group", rur:1},
+  {n:"Learning a language", e:"years, and it needs speakers to matter", m:{learning:1,hobby:.8,social:.4}, blk:0.5, $:1, imp:0, env:"in", soc:"either", rur:1},
+  {n:"Writing", e:"the discipline is the hobby", m:{hobby:.85,craft:.6,learning:.5}, blk:1, $:0, imp:0, env:"in", soc:"solo", rur:1},
+  {n:"Brain-training apps", e:"included because it has been tested", m:{learning:.15}, blk:0.5, $:1, imp:0, env:"in", soc:"solo", rur:1}
 ];
 
-/* ------------------------------------------------------------------- app -- */
-function $(id) { return document.getElementById(id); }
-function esc(s) {
-  return String(s).replace(/[&<>]/g, function (c) {
-    return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; });
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+
+function state(){
+  return { age:+$("age").value, hours:+$("hours").value, blk:+$("block").value,
+    active:+$("active").value, social:+$("social").value, out:+$("out").value,
+    learn:+$("learn").value, place:$("place").value, budget:+$("budget").value,
+    phys:+$("phys").value, want:$("want").value };
 }
 
-function state() {
+/* Headroom per mechanism: how much room the week leaves. This is what makes
+   the ranking move — two people with the same age and hours get different
+   lists because their gaps are in different places. */
+function gaps(s){
   return {
-    age: +$("age").value, work: $("work").value,
-    hours: +$("hours").value, active: +$("active").value,
-    social: +$("social").value, place: $("place").value,
-    out: +$("out").value
+    aerobic: 1 - s.active/3,
+    strength: s.active >= 3 ? 0.35 : 0.75,
+    social: 1 - s.social/2,
+    hobby: s.hours >= 4 ? 0.65 : 0.4,
+    reading: 0.45,
+    outdoors: 1 - s.out/2,
+    learning: s.learn ? 0.3 : 0.75,
+    craft: s.hours >= 4 ? 0.6 : 0.4
   };
 }
 
-function render() {
-  var s = state();
+function render(){
+  var s = state(), g = gaps(s);
   $("hoursval").textContent = s.hours;
 
-  var rows = ACTS.map(function (a) {
-    var need = Math.max(0, Math.min(1, a.need(s)));
-    /* Time is a hard constraint rather than a score: an activity that wants
-       more hours than the week has is marked, not silently down-ranked. */
-    var tight = a.hours > s.hours;
-    return { a: a, need: need, tight: tight,
-             rank: a.ev * 0.6 + need * 0.4 - (tight ? 0.15 : 0) };
-  }).sort(function (p, q) { return q.rank - p.rank; });
+  var gh = "";
+  Object.keys(g).sort(function(a,b){ return g[b]-g[a]; }).forEach(function(k){
+    gh += '<div class="gaplab"><b>' + esc(MECH[k].name) + '</b><span>' +
+      Math.round(g[k]*100) + '%</span></div><div class="gapbar"><i style="width:' +
+      (g[k]*100).toFixed(0) + '%"></i></div>';
+  });
+  $("gaps").innerHTML = gh;
 
-  $("lede").innerHTML =
-    "Ranked for a " + (s.age >= 75 ? "75-plus" : s.age >= 60 ? "60 to 74"
-      : s.age >= 45 ? "45 to 59" : s.age >= 30 ? "30 to 44" : "18 to 29") +
-    " week with about <b>" + s.hours + "</b> free hours. Ordering is " +
-    "60% evidence strength and 40% headroom, stated so you can disagree " +
-    "with it. Nothing here is medical advice, and no row is a prediction " +
-    "about one person.";
+  var out = A.map(function(a){
+    var raw = 0, top = [];
+    for (var k in a.m){
+      var v = a.m[k] * MECH[k].ev * g[k];
+      raw += v;
+      top.push({k:k, v:v, d:a.m[k]});
+    }
+    top.sort(function(p,q){ return q.v - p.v; });
+
+    /* Penalties are constraints, not preferences: they say an activity is
+       hard to reach from the week described, and each one is visible. */
+    var pen = 1, why = [];
+    if (a.blk > s.blk){
+      /* Scaled by how far over, not a flat cut. A flat cut let an activity
+         needing three hours outrank one that fits, purely on mechanism. */
+      pen *= Math.max(0.12, s.blk / a.blk * 0.55);
+      why.push("needs a longer session than your free block");
+    }
+    if (a.blk * 1.5 > s.hours){ pen *= 0.7; why.push("tight on total hours"); }
+    if (a.$ > s.budget){ pen *= 0.5; why.push("above your stated budget"); }
+    if (s.place === "rural" && !a.rur){ pen *= 0.45; why.push("hard to reach rurally"); }
+    if (s.phys === 1 && a.imp === 2){ pen *= 0.45; why.push("high impact"); }
+    if (s.phys === 2){
+      /* Joint impact and aerobic demand are different things. Rowing is
+         kind to joints and still hard work, so a seated-or-gentle answer
+         has to look at both or it recommends a crew boat. */
+      if (a.imp >= 1){ pen *= 0.25; why.push("too demanding as described"); }
+      if ((a.m.aerobic || 0) > 0.5 || (a.m.strength || 0) > 0.7){
+        pen *= 0.3; why.push("strenuous");
+      }
+    }
+    if (s.age >= 75 && a.imp === 2){ pen *= 0.7; }
+    if (s.want === "solo" && a.soc === "group"){ pen *= 0.5; }
+    if (s.want === "group" && a.soc === "solo"){ pen *= 0.5; }
+    if (s.want === "outdoor" && a.env === "in"){ pen *= 0.45; }
+    if (s.want === "indoor" && a.env === "out"){ pen *= 0.45; }
+
+    return { a:a, score: raw * pen, top:top, why:why,
+             ev: top.length ? MECH[top[0].k].ev : 0, lead: top[0] };
+  }).sort(function(p,q){ return q.score - p.score; });
+
+  var max = out[0].score || 1;
+  $("lede").innerHTML = "Your largest gaps are <b>" +
+    Object.keys(g).sort(function(a,b){return g[b]-g[a];}).slice(0,2)
+      .map(function(k){ return esc(MECH[k].name); }).join("</b> and <b>") +
+    "</b>, so activities delivering those rise. Hover a mechanism to see the "
+    + "study behind it. Ranking is not advice, and every coefficient is a "
+    + "judgement about what an activity involves.";
 
   var html = "";
-  rows.forEach(function (r) {
-    var a = r.a, t = TIERS[a.tier];
-    html += '<div class="row"><div>' +
-      '<span class="tier ' + t[0] + '">' + esc(t[1]) + '</span>' +
-      '<h3>' + esc(a.name) + '</h3>' +
-      '<p class="what">' + esc(a.eg) + '</p>' +
-      '<p class="ev">' + a.ev_text + '</p>' +
-      '<p class="ev" style="color:var(--dim)">' + a.trial + '</p>' +
-      '<p class="fit">' + esc(a.fit(s)) +
-        (r.tight ? " Needs about " + a.hours + " hours a week; you have " +
-                   s.hours + "." : "") + '</p>' +
-      '<p class="cav">' + esc(a.cav) + '</p>' +
-      '</div><div class="bars">' +
-      'Evidence<div class="bar b-ev"><i style="width:' +
-        (a.ev * 100).toFixed(0) + '%"></i></div>' +
-      'Headroom for you<div class="bar b-fit"><i style="width:' +
-        (r.need * 100).toFixed(0) + '%"></i></div>' +
-      '<div class="hint">' + (a.ev >= 0.9 ? "Causal design"
-        : a.ev >= 0.6 ? "Longitudinal, adjusted"
-        : a.ev >= 0.3 ? "Associational" : "Argues against") + '</div>' +
-      '</div></div>';
+  out.forEach(function(r){
+    var a = r.a;
+    var mh = r.top.filter(function(t){ return t.d >= 0.25; }).slice(0,4)
+      .map(function(t){
+        return '<span class="mech' + (t.d >= 0.7 ? ' big' : '') +
+          '" title="' + esc(MECH[t.k].src) + '">' + esc(MECH[t.k].name) +
+          '</span>'; }).join("");
+    var tier = r.ev >= 0.7 ? ["t-hi","strong"] : r.ev >= 0.42 ? ["t-md","moderate"]
+             : ["t-lo","weak"];
+    html += '<tr><td><span class="nm">' + esc(a.n) + '</span>' +
+      '<span class="eg">' + esc(a.e) + '</span>' +
+      (r.why.length ? '<span class="why">' + esc(r.why.join("; ")) + '</span>' : '') +
+      '</td><td>' + mh + '</td>' +
+      '<td><span class="tier ' + tier[0] + '">' + tier[1] + '</span></td>' +
+      '<td class="cost">' + ["free","&lt;100","few 00s","more"][a.$] + '</td>' +
+      '<td><span class="sc">' + (r.score*100).toFixed(0) + '</span>' +
+      '<div class="sbar"><i style="width:' + (r.score/max*100).toFixed(0) +
+      '%"></i></div></td></tr>';
   });
-  $("out-list").innerHTML = html;
+  $("rows").innerHTML = html;
+  $("count").textContent = out.length + " activities ranked. The list is the " +
+    "same every time; the order is not.";
 }
 
-["age", "work", "hours", "active", "social", "place", "out"].forEach(
-  function (id) {
-    $(id).addEventListener("input", render);
-    $(id).addEventListener("change", render);
-  });
+["age","hours","block","active","social","out","learn","place","budget","phys",
+ "want"].forEach(function(id){
+  $(id).addEventListener("input", render);
+  $(id).addEventListener("change", render);
+});
 
-/* A view can be linked to, and the page figure is captured from the live
-   tool rather than drawn a second time. */
-(function () {
+(function(){
   var q = new URLSearchParams(location.search);
-  ["age", "work", "hours", "active", "social", "place", "out"].forEach(
-    function (k) { if (q.get(k) !== null) $(k).value = q.get(k); });
+  ["age","hours","block","active","social","out","learn","place","budget",
+   "phys","want"].forEach(function(k){
+    if (q.get(k) !== null) $(k).value = q.get(k); });
   render();
 })();
 </script>
