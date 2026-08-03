@@ -266,6 +266,11 @@ th {
   border-bottom-color: var(--rule);
 }
 tr:hover td { background: var(--bg-lift); }
+/* Numeric cells, right-aligned so digits line up against each other. The
+   class was in use on several pages and in the house conventions before it
+   had a rule here, which is why those columns were left-aligned in a
+   stylesheet that already asks for tabular figures. */
+th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* --------------------------------------------------------------- figs --- */
 img.fig {
