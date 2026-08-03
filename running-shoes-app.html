@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A running shoe, taken apart</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<meta name="theme-color" content="#070a12">
+<style>
+/* Same shell as the atlas: a CSS grid of head / view + side / tabs, nothing
+   absolutely positioned over anything else except the hover readout. The
+   shoe archetypes sit in the tab strip along the bottom, one per column, the
+   way the atlas puts its layers there. */
+:root{
+  --bg:#070a12; --panel:#0c1020; --card:#10152a; --ink:#e3e6f2;
+  --dim:#8b93b0; --faint:#1a2038; --rule:#232a45; --acc:#8b7ff2;
+  --cool:#5aa8d8; --warn:#d86a86; --good:#4f9d84; --gold:#e8c98f;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 var(--sans);
+  overflow:hidden}
+#app{display:grid;height:100vh;
+  grid-template-columns:1fr 340px;
+  grid-template-rows:auto 1fr auto;
+  grid-template-areas:"head head" "view side" "tabs tabs"}
+
+header{grid-area:head;padding:15px 24px 12px;border-bottom:1px solid var(--rule)}
+header h1{margin:0;font:500 20px/1.2 var(--serif);letter-spacing:-.01em}
+header p{margin:5px 0 0;color:var(--dim);font-size:12.5px;max-width:82ch}
+header a.back{float:right;color:var(--dim);font-size:12.5px;text-decoration:none;
+  border-bottom:1px solid var(--faint)}
+header a.back:hover{color:var(--acc)}
+
+#view{grid-area:view;position:relative;min-width:0;min-height:0;overflow:hidden;
+  background:radial-gradient(circle at 50% 45%,#0a1024 0%,#05070f 70%)}
+#gl{display:block;width:100%;height:100%}
+#legend{position:absolute;left:16px;bottom:14px;font:11.5px var(--sans);
+  color:var(--dim);background:rgba(7,10,18,.78);border:1px solid var(--rule);
+  border-radius:2px;padding:9px 12px;max-width:270px}
+#legend b{color:var(--ink);font-weight:600;display:block;margin-bottom:5px}
+#legend ul{margin:0;padding:0;list-style:none}
+#legend li{display:flex;align-items:center;gap:8px;padding:2px 0;cursor:pointer}
+#legend li:hover{color:var(--ink)}
+#legend i{width:9px;height:9px;border-radius:2px;flex:none}
+#hint{position:absolute;right:16px;bottom:14px;font:11.5px var(--sans);
+  color:var(--dim);pointer-events:none;opacity:.7;text-align:right}
+#tip{position:fixed;pointer-events:none;z-index:60;display:none;
+  background:rgba(12,16,32,.97);border:1px solid var(--rule);border-radius:2px;
+  padding:7px 10px;font:12px var(--sans);max-width:270px;
+  box-shadow:0 10px 28px rgba(0,0,0,.5)}
+#tip b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+#tip span{color:var(--dim);font-size:11.5px}
+#nogl{position:absolute;inset:0;display:none;place-items:center;padding:40px;
+  text-align:center;color:var(--dim);font:14px/1.7 var(--serif)}
+
+#side{grid-area:side;border-left:1px solid var(--rule);background:var(--panel);
+  overflow-y:auto;padding:18px 20px 26px;display:flex;flex-direction:column;
+  gap:20px}
+.sec>h2{margin:0 0 9px;font:600 10.5px var(--sans);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim)}
+.desc{margin:8px 0 0;font:12.5px/1.6 var(--serif);color:var(--dim)}
+.row2{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
+button{font:600 13px var(--sans);padding:9px 15px;border-radius:2px;cursor:pointer;
+  border:1px solid var(--rule);background:transparent;color:var(--dim)}
+button:hover{color:var(--ink);border-color:var(--dim)}
+button.pri{background:var(--acc);border-color:var(--acc);color:#f2f0ff}
+button.pri:hover{background:#5a4fb0;border-color:#5a4fb0}
+.parts{margin:0;padding:0;list-style:none;font-size:12.5px}
+.parts li{display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;
+  border-bottom:1px solid var(--faint)}
+.parts li:hover{color:var(--ink)}
+.parts li.on{color:var(--ink)}
+.parts i{width:9px;height:9px;border-radius:2px;flex:none}
+.parts span{color:var(--dim);margin-left:auto;font:11px var(--mono);flex:none}
+.parts li.on span{color:var(--acc)}
+#selbox h3{margin:0 0 2px;font:500 15px/1.3 var(--serif);color:var(--ink)}
+#selbox .sub{color:var(--dim);font-size:11.5px;margin-bottom:10px}
+#selbox .empty{color:var(--dim);font:12.5px/1.65 var(--serif)}
+dl{margin:0;font-size:13px}
+dl div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;
+  border-bottom:1px solid var(--faint)}
+dl dt{color:var(--dim);flex:none}
+dl dd{margin:0;text-align:right;font-size:12.5px}
+.flag{display:inline-block;font:600 10.5px var(--sans);letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-top:2px}
+.flag.no{background:rgba(216,106,134,.15);color:var(--warn);
+  border:1px solid rgba(216,106,134,.4)}
+.flag.part{background:rgba(232,201,143,.13);color:var(--gold);
+  border:1px solid rgba(232,201,143,.36)}
+.flag.yes{background:rgba(79,157,132,.15);color:var(--good);
+  border:1px solid rgba(79,157,132,.4)}
+.note{color:var(--dim);font:12px/1.6 var(--sans);margin:10px 0 0;
+  padding-top:9px;border-top:1px solid var(--rule)}
+
+#tabs{grid-area:tabs;display:grid;grid-auto-flow:column;
+  grid-auto-columns:1fr;border-top:1px solid var(--rule);background:var(--panel)}
+#tabs button{border:0;border-right:1px solid var(--faint);border-radius:0;
+  padding:10px 8px;text-align:center;background:transparent;color:var(--dim)}
+#tabs button:last-child{border-right:0}
+#tabs button b{display:block;font:600 12.5px var(--sans);color:inherit}
+#tabs button small{display:block;font-size:10.5px;opacity:.72;margin-top:2px}
+#tabs button .ct{display:block;font:11px var(--mono);color:var(--acc);
+  margin-top:3px;min-height:13px}
+#tabs button:hover{background:var(--card);color:var(--ink)}
+#tabs button[aria-selected=true]{background:var(--card);color:var(--ink);
+  box-shadow:inset 0 2px 0 var(--acc)}
+
+@media (max-width:900px){
+  body{overflow:auto}
+  #app{grid-template-columns:1fr;grid-template-rows:auto 56vh auto auto;
+    grid-template-areas:"head" "view" "side" "tabs";height:auto}
+  #side{border-left:0;border-top:1px solid var(--rule)}
+  #tabs{grid-auto-flow:row}
+  #tabs button{border-right:0;border-bottom:1px solid var(--faint)}
+}
+</style>
+</head><body>
+<div id="app">
+<header>
+  <a class="back" href="running-shoes.html">&larr; back</a>
+  <h1>A running shoe, taken apart</h1>
+  <p>Four constructions, every part named by the polymer it is made of. Click
+    any layer &mdash; in the model or in the list &mdash; to read what it does,
+    what it is joined to, and what happens to it at the end. Drag to turn,
+    scroll to zoom.</p>
+</header>
+
+<div id="view">
+  <canvas id="gl"></canvas>
+  <div id="legend"><b>Layers</b><ul id="leg"></ul></div>
+  <div id="hint">drag to turn &middot; scroll to zoom &middot; click a layer</div>
+  <div id="nogl">This view needs WebGL, which this browser has not made
+    available. The same material breakdown is on the page behind this one.</div>
+</div>
+
+<aside id="side">
+  <div class="sec">
+    <h2>Construction</h2>
+    <h3 id="shoe-name" style="margin:0;font:500 16px/1.3 var(--serif)"></h3>
+    <p class="desc" id="shoe-desc"></p>
+    <div class="row2">
+      <button id="explode">Separate</button>
+      <button id="spin">Spin</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Parts, ground up</h2>
+    <ul class="parts" id="parts"></ul>
+  </div>
+
+  <div class="sec" id="selbox">
+    <h2>Selection</h2>
+    <p class="empty">Nothing selected. Click a layer to read what it is made
+      of, how it is attached, and whether that attachment is what stops it
+      being recycled.</p>
+  </div>
+
+  <div class="sec">
+    <h2>The whole shoe</h2>
+    <dl>
+      <div><dt>Distinct polymers</dt><dd id="s-poly">&mdash;</dd></div>
+      <div><dt>Joints between unlike materials</dt><dd id="s-bond">&mdash;</dd></div>
+      <div><dt>Parts that lift out</dt><dd id="s-sep">&mdash;</dd></div>
+    </dl>
+    <p class="note">No per-part mass or footprint is shown here, because no
+      published teardown reports them part by part. The one whole-shoe number
+      that is published: the MIT life-cycle assessment put a pair at about
+      13.6&nbsp;kg CO<sub>2</sub>e, and found more than two thirds of that can
+      fall in manufacturing rather than materials.</p>
+  </div>
+</aside>
+
+<div id="tabs" role="tablist"></div>
+</div>
+<div id="tip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+/* ------------------------------------------------------------------ data */
+/* Materials. Colour is shared with the flat figure on the page behind this
+   one, so a reader moving between them is looking at the same key. */
+var M = {
+  mesh:    {c:0x5aa8d8, n:"Engineered mesh",     p:"Polyester (PET), often recycled"},
+  tpu:     {c:0x8b7ff2, n:"TPU overlays",        p:"Thermoplastic polyurethane"},
+  eva:     {c:0x4f9d84, n:"EVA foam",            p:"Ethylene-vinyl acetate"},
+  peba:    {c:0xe0736f, n:"PEBA foam",           p:"Polyether block amide, supercritically foamed"},
+  etpu:    {c:0xc98fd8, n:"eTPU foam",           p:"Expanded thermoplastic polyurethane beads"},
+  plate:   {c:0xe8c98f, n:"Carbon plate",        p:"Carbon fibre in epoxy"},
+  rubber:  {c:0x6c7488, n:"Outsole rubber",      p:"Vulcanised rubber, carbon or blown"},
+  sock:    {c:0x7f8aa8, n:"Sockliner",           p:"EVA or polyurethane, textile faced"},
+  tpuall:  {c:0x8b7ff2, n:"TPU, one family",     p:"Thermoplastic polyurethane throughout"}
+};
+
+/* Recyclability is stated as a class with a reason, not as a score. Three
+   classes only, because that is as fine a distinction as the evidence
+   supports: thermoplastics can in principle be remelted, thermosets and
+   composites cannot, and a bonded assembly of either is not separable. */
+var EOL = {
+  ok:   {k:"yes",  t:"Remeltable in principle"},
+  part: {k:"part", t:"Remeltable, but only if separated"},
+  no:   {k:"no",   t:"Not remeltable at all"}
+};
+
+/* Every part: what it is, what it does, what holds it on, what that means
+   at end of life. Geometry fields: lo/hi are fractions of the sole stack,
+   or "upper" bands measured above it. */
+function P(o){ return o; }
+
+var SHOES = [
+  {
+    id:"trainer", name:"Daily trainer",
+    tab:"Daily trainer", sub:"EVA midsole",
+    desc:"The default running shoe. One foam, one rubber, a mesh upper with "
+       + "welded plastic structure. Nothing here is exotic, and it is already "
+       + "four incompatible polymers glued into one object.",
+    heel:0.34, fore:0.25, lugs:false,
+    parts:[
+      P({m:"rubber", lo:0.00, hi:0.18, name:"Outsole",
+         does:"Takes the abrasion and provides grip. Vulcanised, so its "
+            + "polymer chains are cross-linked into a single network.",
+         join:"Glued to the midsole across its whole area",
+         eol:EOL.no,
+         why:"Vulcanisation is irreversible. A thermoset cannot be melted and "
+            + "reformed, so the best available fate is grinding into crumb "
+            + "for surfaces and matting."}),
+      P({m:"eva", lo:0.18, hi:1.00, name:"Midsole",
+         does:"Nearly all of the cushioning, and most of the shoe's volume. "
+            + "EVA is cheap, light, and loses rebound as its cell walls "
+            + "collapse — which is what usually ends the shoe's life.",
+         join:"Glued to the outsole below and lasted to the upper above",
+         eol:EOL.part,
+         why:"EVA is a thermoplastic and could be reprocessed, but only from "
+            + "a clean single-polymer stream. Bonded to rubber on one face "
+            + "and textile on the other, it never reaches one."}),
+      P({m:"sock", lo:1.00, hi:1.10, name:"Sockliner",
+         does:"The removable insole. Comfort layer, not structure.",
+         join:"Loose — it lifts straight out",
+         eol:EOL.part,
+         why:"The one part of the shoe that is already separable, and the one "
+            + "part small enough not to matter much."}),
+      P({m:"mesh", up:[0.00,1.00], name:"Upper",
+         does:"Holds the foot on the platform. Engineered mesh, knitted in "
+            + "zones so different areas stretch differently.",
+         join:"Welded and glued to the overlays; lasted and glued to the midsole",
+         eol:EOL.part,
+         why:"Polyester is recyclable in its own stream and frequently "
+            + "contains recycled PET already. Fused to polyurethane overlays, "
+            + "it is a mixed textile."}),
+      P({m:"tpu", up:[0.00,0.62], heelOnly:true, name:"Heel counter",
+         does:"A stiff cup that holds the rearfoot over the midsole.",
+         join:"Sandwiched inside the upper, bonded on both faces",
+         eol:EOL.part,
+         why:"TPU is among the most recyclable polymers in the shoe, and it "
+            + "is buried in the least accessible place in it."}),
+      P({m:"tpu", up:[0.00,1.00], toeOnly:true, name:"Toe bumper",
+         does:"Abrasion protection where the shoe scuffs the ground.",
+         join:"Welded to the mesh",
+         eol:EOL.part,
+         why:"Same polymer as the heel counter, same problem: a weld is not a "
+            + "joint you can undo."})
+    ]
+  },
+  {
+    id:"racer", name:"Racing shoe",
+    tab:"Racing shoe", sub:"PEBA + plate",
+    desc:"The plated super-shoe. A tall stack of the lightest, springiest "
+       + "foam available, split by a carbon-fibre plate. The performance case "
+       + "is strong and the end-of-life case is the worst of the four.",
+    heel:0.46, fore:0.36, lugs:false,
+    parts:[
+      P({m:"rubber", lo:0.00, hi:0.13, name:"Outsole",
+         does:"Thin rubber, applied only where the shoe actually touches "
+            + "down, to save weight.",
+         join:"Glued to the foam",
+         eol:EOL.no,
+         why:"Thermoset, as ever. Less of it here, which helps the weight and "
+            + "not the recycling."}),
+      P({m:"peba", lo:0.13, hi:0.52, name:"Lower foam",
+         does:"PEBA, foamed with supercritical gas. Lighter than EVA with "
+            + "markedly higher energy return, and it holds its properties in "
+            + "the cold.",
+         join:"Bonded to the plate above and the outsole below",
+         eol:EOL.part,
+         why:"A thermoplastic in principle; in practice laminated either side "
+            + "of a composite plate that no melting process can remove."}),
+      P({m:"plate", lo:0.52, hi:0.58, name:"Carbon plate",
+         does:"A stiff spoon through the length of the shoe. It changes how "
+            + "the foot levers over the forefoot and stiffens the toe joint.",
+         join:"Laminated between two foam layers",
+         eol:EOL.no,
+         why:"Carbon fibre in a thermoset epoxy matrix. Not remeltable, not "
+            + "economically separable from foam, and it contaminates any "
+            + "stream it enters."}),
+      P({m:"peba", lo:0.58, hi:1.00, name:"Upper foam",
+         does:"The rest of the stack. Together with the lower layer this is "
+            + "most of the shoe's mass and nearly all of its behaviour.",
+         join:"Bonded to the plate below, lasted to the upper above",
+         eol:EOL.part,
+         why:"Same as the lower foam, and the same reason it will not happen."}),
+      P({m:"mesh", up:[0.00,1.00], name:"Upper",
+         does:"As little material as will hold the foot down. Single-layer "
+            + "engineered mesh, minimal structure.",
+         join:"Glued to the foam; welded overlays",
+         eol:EOL.part,
+         why:"Thin, mixed, and bonded to foam."}),
+      P({m:"tpu", up:[0.00,0.55], heelOnly:true, name:"Heel tab",
+         does:"A small stiffener where the shoe meets the achilles.",
+         join:"Welded into the upper",
+         eol:EOL.part,
+         why:"Recyclable polymer, unrecoverable position."})
+    ]
+  },
+  {
+    id:"trail", name:"Trail shoe",
+    tab:"Trail shoe", sub:"eTPU + EVA, lugs",
+    desc:"Built for abrasion and for stones. Deep lugs, a protective plate, "
+       + "and a bead foam that survives cold and rough ground. More parts than "
+       + "the trainer, and more polymers.",
+    heel:0.30, fore:0.24, lugs:true,
+    parts:[
+      P({m:"rubber", lo:0.00, hi:0.20, name:"Lugged outsole",
+         does:"Deep, widely spaced rubber lugs for grip on soft ground, in a "
+            + "softer compound than a road shoe uses.",
+         join:"Glued across the full footprint",
+         eol:EOL.no,
+         why:"Vulcanised, and there is more of it here than on any other shoe "
+            + "in this set."}),
+      P({m:"tpu", lo:0.20, hi:0.26, name:"Rock plate",
+         does:"A thin sheet between outsole and foam that spreads the load of "
+            + "a stone so it is not felt as a point.",
+         join:"Bonded between rubber and foam",
+         eol:EOL.part,
+         why:"Thermoplastic, and completely encapsulated."}),
+      P({m:"etpu", lo:0.26, hi:0.64, name:"eTPU foam",
+         does:"Steam-fused expanded beads. High rebound, resistant to "
+            + "temperature swings, heavier than EVA.",
+         join:"Bonded to the plate below and the carrier foam above",
+         eol:EOL.part,
+         why:"Bead foams are among the easier midsole materials to reprocess "
+            + "in isolation. It is not in isolation."}),
+      P({m:"eva", lo:0.64, hi:1.00, name:"EVA carrier",
+         does:"A cheaper foam above the eTPU that carries the sidewall and "
+            + "shapes the fit.",
+         join:"Bonded to the foam below, lasted to the upper",
+         eol:EOL.part,
+         why:"Two different foams, fused. Neither can be recovered as itself."}),
+      P({m:"mesh", up:[0.00,1.00], name:"Upper",
+         does:"Tighter, more abrasion-resistant mesh than a road shoe, often "
+            + "with a fused film to keep debris out.",
+         join:"Welded, glued and in places stitched",
+         eol:EOL.part,
+         why:"The added film layer makes the textile stream more mixed, not "
+            + "less."}),
+      P({m:"tpu", up:[0.00,0.66], heelOnly:true, name:"Heel counter",
+         does:"A larger, stiffer counter than a road shoe carries, because "
+            + "the ground moves underfoot.",
+         join:"Bonded inside the upper",
+         eol:EOL.part,
+         why:"As before."}),
+      P({m:"tpu", up:[0.00,1.00], toeOnly:true, name:"Toe cap",
+         does:"A hard cap over the toes for rocks and roots.",
+         join:"Welded and glued over the mesh",
+         eol:EOL.part,
+         why:"As before, over a larger area."})
+    ]
+  },
+  {
+    id:"mono", name:"Single-polymer shoe",
+    tab:"Single-polymer", sub:"one family, no glue",
+    desc:"What the alternative actually looks like. Every part from one "
+       + "polymer family, joined mechanically or by welding like to like, so "
+       + "the whole shoe is a single feedstock. Built and worn in beta "
+       + "programmes; never released as an ordinary product.",
+    heel:0.32, fore:0.25, lugs:false, mono:true,
+    parts:[
+      P({m:"tpuall", lo:0.00, hi:0.20, name:"Outsole",
+         does:"A harder grade of the same polymer as the midsole, textured "
+            + "for grip rather than compounded from rubber.",
+         join:"Welded to the midsole — like to like, no adhesive",
+         eol:EOL.ok,
+         why:"Same polymer family as everything above it, so the joint does "
+            + "not contaminate the stream."}),
+      P({m:"tpuall", lo:0.20, hi:1.00, name:"Midsole",
+         does:"Expanded beads of the same polymer, fused with steam. The "
+            + "cushioning is good; it is not the lightest available.",
+         join:"Welded below, welded above",
+         eol:EOL.ok,
+         why:"The whole point: one polymer, so grinding the shoe produces a "
+            + "usable feedstock instead of a mixture."}),
+      P({m:"tpuall", up:[0.00,1.00], name:"Knitted upper",
+         does:"Knitted from yarn of the same polymer family, with structure "
+            + "knitted in rather than added as separate welded parts.",
+         join:"Welded to the midsole",
+         eol:EOL.ok,
+         why:"No polyester, no separate overlay material, no adhesive layer."}),
+      P({m:"tpuall", up:[0.00,0.60], heelOnly:true, name:"Knitted counter",
+         does:"A denser knit zone doing the heel counter's job without being "
+            + "a different material.",
+         join:"Knitted in — not a separate part at all",
+         eol:EOL.ok,
+         why:"The cheapest way to remove a joint is to remove the part."})
+    ]
+  }
+];
+
+/* ------------------------------------------------------------- geometry */
+/* The same parametric outline the flat figure uses, so the two agree: a
+   ground line that springs only at the toe, a stack falling from heel to
+   forefoot by a real drop, ends rounded rather than cut square, and an
+   upper that is a collar at the heel falling away to a low toe box. */
+function bottomAt(t){ return 0.02 + 0.16*Math.pow(clamp((t-0.84)/0.16,0,1),2.2); }
+function stackAt(t, heel, fore){
+  var s = t*t*(3-2*t);
+  var h = heel + (fore-heel)*s;
+  var edge = Math.pow(clamp(Math.min(t/0.05,(1-t)/0.045),0,1),0.5);
+  return h*(0.35+0.65*edge);
+}
+function upperAt(t){
+  /* Collar at the heel, a valley at the throat where the laces sit, and the
+     toe box rising slightly again in front of it. Without the valley the
+     upper is a smooth ramp from heel to toe, which is the single thing that
+     stops the model reading as a shoe. */
+  var u = 0.34 - 0.10*t                                    // the body
+        + 0.50*Math.exp(-Math.pow((t-0.14)/0.11,2))        // ankle collar
+        - 0.16*Math.exp(-Math.pow((t-0.48)/0.16,2))        // lace throat
+        + 0.06*Math.exp(-Math.pow((t-0.80)/0.14,2));       // toe box
+  u *= Math.pow(clamp(t/0.06,0,1),0.5);
+  u *= Math.pow(clamp((1-t)/0.055,0,1),0.4);
+  return Math.max(u, 0.04);
+}
+/* Half-width across the foot: narrow at the heel, widest at the forefoot,
+   tapering into the toe. This is what turns an extruded slab into a shoe. */
+function widthAt(t){
+  return 0.60 + 0.40*Math.pow(Math.sin(Math.PI*clamp(t*0.94+0.06,0,1)),0.55);
+}
+function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+
+/* Real proportions, in units of shoe length. A men's shoe is roughly 28 cm
+   long, 10 cm across the forefoot, and about 9 cm from the ground to the top
+   of the heel collar — so height is about a third of length, not a whole one.
+   Getting this wrong is what made the first build read as a doorstop: the
+   profile was right and the vertical scale was 2.4 times too large. */
+var LEN = 3.0, WID = 1.06, HGT = 0.95;
+
+function bandGeometry(loF, hiF, cfg, kind, only){
+  /* A slab between two fractions of the stack (kind "sole") or between two
+     fractions of the upper's height (kind "upper"), extruded across the
+     foot and then narrowed at the ends. */
+  var N = 96, i, t, y0, y1, top = [], bot = [];
+  var t0 = 0, t1 = 1;
+  if (only === "heel") { t1 = 0.30; }
+  if (only === "toe")  { t0 = 0.86; }
+  for (i = 0; i <= N; i++){
+    t = t0 + (t1-t0)*i/N;
+    var b = bottomAt(t), s = stackAt(t, cfg.heel, cfg.fore);
+    if (kind === "sole"){
+      y0 = b + s*loF; y1 = b + s*hiF;
+    } else {
+      var st = b + s, u = upperAt(t);
+      y0 = st + u*loF; y1 = st + u*hiF;
+    }
+    top.push(new THREE.Vector2(t*LEN, y1*HGT));
+    bot.push(new THREE.Vector2(t*LEN, y0*HGT));
+  }
+  var shape = new THREE.Shape();
+  shape.moveTo(top[0].x, top[0].y);
+  for (i=1;i<top.length;i++) shape.lineTo(top[i].x, top[i].y);
+  for (i=bot.length-1;i>=0;i--) shape.lineTo(bot[i].x, bot[i].y);
+  shape.closePath();
+
+  var geo = new THREE.ExtrudeGeometry(shape, {
+    depth: WID, bevelEnabled:true, bevelThickness:0.035,
+    bevelSize:0.035, bevelSegments:2, curveSegments:2
+  });
+  geo.translate(0,0,-WID/2);
+  /* Narrow the slab towards heel and toe so the footprint is a foot, and —
+     for the upper — pull its cross-section in as it rises, so the top is a
+     rounded ridge rather than a plateau. Without the second step a solid
+     extrusion of a correct side profile still reads as a slab, because the
+     eye is looking at a flat table top where a shoe has a curved instep. */
+  var pos = geo.attributes.position;
+  for (i=0;i<pos.count;i++){
+    var x = pos.getX(i), y = pos.getY(i);
+    var tt = clamp(x/LEN, 0, 1);
+    var w = widthAt(tt);
+    if (kind === "upper"){
+      var st = (bottomAt(tt) + stackAt(tt, cfg.heel, cfg.fore))*HGT;
+      var ut = upperAt(tt)*HGT;
+      var hn = ut > 1e-6 ? clamp((y-st)/ut, 0, 1) : 0;
+      w *= 1 - 0.52*Math.pow(hn, 1.5);
+    }
+    pos.setZ(i, pos.getZ(i)*w);
+  }
+  geo.computeVertexNormals();
+  geo.translate(-LEN/2, 0, 0);
+  return geo;
+}
+
+function lugGeometry(cfg){
+  var g = new THREE.Group();
+  for (var k=0;k<8;k++){
+    var t = 0.10 + k*0.107;
+    var w2 = widthAt(t)*WID;
+    var box = new THREE.BoxGeometry(LEN*0.055, HGT*0.055, w2*0.86);
+    box.translate(t*LEN - LEN/2, bottomAt(t)*HGT - HGT*0.022, 0);
+    g.add(new THREE.Mesh(box, null));
+  }
+  return g;
+}
+
+/* ----------------------------------------------------------------- view */
+var scene, cam, ren, root, raycaster, mouse, meshes = [], picked = null;
+var spinning = false, exploded = false, cur = 0;
+var canvas = document.getElementById("gl");
+
+function init(){
+  try {
+    ren = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+  } catch(e){ document.getElementById("nogl").style.display="grid"; return false; }
+  if (!ren) { document.getElementById("nogl").style.display="grid"; return false; }
+  ren.setPixelRatio(Math.min(2, window.devicePixelRatio||1));
+  scene = new THREE.Scene();
+  cam = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+  cam.position.set(3.1, 2.0, 4.4);
+  cam.lookAt(0, 0.55, 0);
+
+  scene.add(new THREE.HemisphereLight(0x8f9fd0, 0x0a0d18, 0.52));
+  var key = new THREE.DirectionalLight(0xffffff, 0.62);
+  key.position.set(4, 6, 5); scene.add(key);
+  var rim = new THREE.DirectionalLight(0x8b7ff2, 0.34);
+  rim.position.set(-5, 2, -4); scene.add(rim);
+  var fill = new THREE.DirectionalLight(0x65B2CC, 0.18);
+  fill.position.set(-2, -3, 3); scene.add(fill);
+
+  root = new THREE.Group(); scene.add(root);
+
+  /* A soft contact shadow. It carries no information, and without it the
+     shoe floats in the middle of a dark box with nothing to stand on. */
+  var sh = new THREE.Mesh(
+    new THREE.CircleGeometry(1, 48),
+    new THREE.MeshBasicMaterial({color:0x000000, transparent:true,
+      opacity:0.38}));
+  sh.rotation.x = -Math.PI/2;
+  sh.scale.set(LEN*0.52, WID*0.62, 1);
+  sh.position.y = -0.552;
+  scene.add(sh);
+  raycaster = new THREE.Raycaster();
+  mouse = new THREE.Vector2();
+  resize();
+  return true;
+}
+
+function resize(){
+  var r = canvas.parentElement.getBoundingClientRect();
+  var w = Math.max(1, r.width), h = Math.max(1, r.height);
+  ren.setSize(w, h, false);
+  cam.aspect = w/h; cam.updateProjectionMatrix();
+}
+
+function build(idx){
+  cur = idx;
+  while (root.children.length) root.remove(root.children[0]);
+  meshes = [];
+  var shoe = SHOES[idx];
+
+  shoe.parts.forEach(function(p, i){
+    var mat = new THREE.MeshStandardMaterial({
+      color: M[p.m].c, roughness: 0.94, metalness: 0.0,
+      transparent: true, opacity: 1
+    });
+    var only = p.heelOnly ? "heel" : (p.toeOnly ? "toe" : null);
+    var geo, mesh;
+    if (p.lo !== undefined){
+      geo = bandGeometry(p.lo, p.hi, shoe, "sole", only);
+    } else {
+      geo = bandGeometry(p.up[0], p.up[1], shoe, "upper", only);
+    }
+    mesh = new THREE.Mesh(geo, mat);
+    /* Separation offsets are in the same units as the shoe, which is about
+       one unit tall, so the whole exploded stack stays inside the frame. */
+    mesh.userData = {part:p, i:i, baseY:0,
+                     explodeY: (p.lo !== undefined ? p.lo*0.85
+                                                   : 1.05 + p.up[0]*0.4)};
+    root.add(mesh);
+    meshes.push(mesh);
+  });
+
+  /* The foot opening. The upper is drawn as a solid, because a proper shell
+     would need boolean geometry the library does not carry; a dark recessed
+     disc where the throat is does the same job for the eye and costs
+     nothing. It is not pickable — it is not a part. */
+  (function(){
+    var t = 0.26;
+    var yTop = (bottomAt(t) + stackAt(t, shoe.heel, shoe.fore)
+                + upperAt(t)*0.88) * HGT;
+    var g = new THREE.CircleGeometry(1, 40);
+    var mm = new THREE.MeshStandardMaterial({color:0x080b14, roughness:1,
+      transparent:true, opacity:1, side:THREE.DoubleSide});
+    var disc = new THREE.Mesh(g, mm);
+    disc.rotation.x = -Math.PI/2;
+    disc.rotation.z = 0;
+    disc.scale.set(LEN*0.20, WID*widthAt(t)*0.34, 1);
+    disc.position.set(t*LEN - LEN/2 + 0.06, yTop, 0);
+    disc.userData = {opening:true, explodeY: 1.05};
+    root.add(disc);
+  })();
+
+  if (shoe.lugs){
+    var lm = new THREE.MeshStandardMaterial({color:M.rubber.c, roughness:0.9,
+      transparent:true, opacity:1});
+    var lugs = lugGeometry(shoe);
+    lugs.children.forEach(function(m){
+      m.material = lm;
+      m.userData = {part: shoe.parts[0], i:0, explodeY:0};
+      root.add(m);
+    });
+  }
+
+  root.position.y = -0.55;
+  renderSide(shoe);
+  select(null);
+  document.querySelectorAll("#tabs button").forEach(function(b,k){
+    b.setAttribute("aria-selected", k===idx ? "true" : "false");
+  });
+}
+
+/* ------------------------------------------------------------- side panel */
+function renderSide(shoe){
+  document.getElementById("shoe-name").textContent = shoe.name;
+  document.getElementById("shoe-desc").textContent = shoe.desc;
+
+  /* The joint that matters is the one between unlike materials. A weld
+     between two grades of the same polymer is not a contaminated joint, so
+     counting every weld as a problem — which the first version did — made
+     the single-polymer shoe look as bad as the others and inverted the one
+     point it exists to make. */
+  var seen = {}, bad = 0, loose = 0;
+  shoe.parts.forEach(function(p){
+    seen[M[p.m].p] = 1;
+    var glued = /glue|bond|lasted|laminat|sandwich/i.test(p.join);
+    var welded = /weld/i.test(p.join);
+    if (glued || (welded && !shoe.mono)) bad++;
+    if (/loose/i.test(p.join)) loose++;
+  });
+  document.getElementById("s-poly").textContent =
+    Object.keys(seen).length + (shoe.mono ? " (one family)" : "");
+  document.getElementById("s-bond").textContent =
+    bad + " of " + shoe.parts.length;
+  document.getElementById("s-sep").textContent =
+    loose ? (loose + " part" + (loose>1?"s":"")) : "none";
+
+  var ul = document.getElementById("parts");
+  ul.innerHTML = "";
+  shoe.parts.forEach(function(p, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<i style="background:' + col(M[p.m].c) + '"></i>' +
+                   esc(p.name) + '<span>' + esc(shortMat(p.m)) + '</span>';
+    li.onclick = function(){ select(i); };
+    li.onmouseenter = function(){ hover(i); };
+    ul.appendChild(li);
+  });
+
+  var leg = document.getElementById("leg");
+  leg.innerHTML = "";
+  var done = {};
+  shoe.parts.forEach(function(p, i){
+    if (done[p.m]) return;
+    done[p.m] = 1;
+    var li = document.createElement("li");
+    li.innerHTML = '<i style="background:' + col(M[p.m].c) + '"></i>' +
+                   esc(M[p.m].n);
+    li.onclick = function(){ select(i); };
+    leg.appendChild(li);
+  });
+}
+
+function shortMat(k){
+  return {mesh:"PET", tpu:"TPU", eva:"EVA", peba:"PEBA", etpu:"eTPU",
+          plate:"CF", rubber:"rubber", sock:"EVA/PU", tpuall:"TPU"}[k] || k;
+}
+function col(c){ return "#" + c.toString(16).padStart(6,"0"); }
+function esc(s){ return String(s).replace(/[&<>]/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+
+function select(i){
+  picked = i;
+  /* Isolate rather than ghost. Two earlier versions dimmed the unselected
+     layers instead of hiding them; a shoe is a dozen nested shells, and a
+     dozen half-transparent shells stacked in depth wash out to a pale fog
+     whichever way they are sorted. Hiding them is unambiguous, and the
+     Separate button is there when the stack itself is the subject. */
+  root.children.forEach(function(m){
+    if (!m.material || !m.userData) return;
+    if (m.userData.opening){ m.visible = (i === null); return; }
+    if (m.userData.i === undefined) return;
+    m.visible = (i === null) || (m.userData.i === i);
+    m.material.transparent = false;
+    m.material.opacity = 1;
+    m.material.depthWrite = true;
+    if (m.material.emissive) m.material.emissive = new THREE.Color(0x000000);
+    m.material.needsUpdate = true;
+  });
+  document.getElementById("hint").textContent = (i === null)
+    ? "drag to turn · scroll to zoom · click a layer"
+    : "one layer shown · click the background for the whole shoe";
+  document.querySelectorAll("#parts li").forEach(function(li,k){
+    li.className = (k === i) ? "on" : "";
+  });
+
+  var box = document.getElementById("selbox");
+  if (i === null){
+    box.innerHTML = '<h2>Selection</h2><p class="empty">Nothing selected. ' +
+      'Click a layer to read what it is made of, how it is attached, and ' +
+      'whether that attachment is what stops it being recycled.</p>';
+    return;
+  }
+  var p = SHOES[cur].parts[i];
+  box.innerHTML =
+    '<h2>Selection</h2>' +
+    '<h3>' + esc(p.name) + '</h3>' +
+    '<div class="sub">' + esc(M[p.m].p) + '</div>' +
+    '<p class="desc" style="margin-top:0">' + esc(p.does) + '</p>' +
+    '<dl><div><dt>Held on by</dt><dd>' + esc(p.join) + '</dd></div></dl>' +
+    '<div style="margin-top:10px"><span class="flag ' + p.eol.k + '">' +
+      esc(p.eol.t) + '</span></div>' +
+    '<p class="note">' + esc(p.why) + '</p>';
+}
+
+function hover(i){
+  if (picked !== null) return;
+  meshes.forEach(function(m){
+    if (m.material.emissive)
+      m.material.emissive = new THREE.Color(
+        m.userData.i === i ? 0x241f45 : 0x000000);
+  });
+}
+
+/* ------------------------------------------------------------ interaction */
+/* Opening view: a three-quarter from the lateral side and slightly above,
+   which is how a shoe is photographed and the angle that shows the stack. */
+var az = 0.30, el = 0.15, dist = 4.5, dragging = false, lx = 0, ly = 0;
+
+var shown = 4.5;                    // eased camera distance actually used
+function place(){
+  /* Pull back when the stack is separated, so the exploded shoe fills the
+     same amount of frame as the assembled one. */
+  var want = dist * (exploded ? 1.30 : 1);
+  shown += (want - shown)*0.10;
+  var lookY = exploded ? 0.45 : 0.15;
+  cam.position.set(
+    shown*Math.cos(el)*Math.sin(az),
+    shown*Math.sin(el) + 0.5 + (exploded ? 0.25 : 0),
+    shown*Math.cos(el)*Math.cos(az));
+  cam.lookAt(0, lookY, 0);
+}
+
+canvas.addEventListener("pointerdown", function(e){
+  dragging = true; lx = e.clientX; ly = e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener("pointerup", function(e){
+  dragging = false;
+  canvas.releasePointerCapture(e.pointerId);
+});
+canvas.addEventListener("pointermove", function(e){
+  if (dragging){
+    az -= (e.clientX-lx)*0.008;
+    el = clamp(el + (e.clientY-ly)*0.006, -0.45, 1.15);
+    lx = e.clientX; ly = e.clientY;
+    spinning = false;
+    return;
+  }
+  var r = canvas.getBoundingClientRect();
+  mouse.x = ((e.clientX-r.left)/r.width)*2 - 1;
+  mouse.y = -((e.clientY-r.top)/r.height)*2 + 1;
+  raycaster.setFromCamera(mouse, cam);
+  var hit = raycaster.intersectObjects(root.children, false);
+  var tip = document.getElementById("tip");
+  if (hit.length && hit[0].object.userData.part){
+    var p = hit[0].object.userData.part;
+    tip.style.display = "block";
+    tip.style.left = Math.min(window.innerWidth-290, e.clientX+14) + "px";
+    tip.style.top  = Math.min(window.innerHeight-90, e.clientY+14) + "px";
+    tip.innerHTML = "<b>" + esc(p.name) + "</b><span>" + esc(M[p.m].p) +
+                    "</span>";
+    canvas.style.cursor = "pointer";
+    if (picked === null) hover(hit[0].object.userData.i);
+  } else {
+    tip.style.display = "none";
+    canvas.style.cursor = "grab";
+    if (picked === null) hover(-1);
+  }
+});
+canvas.addEventListener("pointerleave", function(){
+  document.getElementById("tip").style.display = "none";
+});
+canvas.addEventListener("click", function(e){
+  if (Math.abs(e.clientX-lx) > 3) return;
+  var r = canvas.getBoundingClientRect();
+  mouse.x = ((e.clientX-r.left)/r.width)*2 - 1;
+  mouse.y = -((e.clientY-r.top)/r.height)*2 + 1;
+  raycaster.setFromCamera(mouse, cam);
+  var hit = raycaster.intersectObjects(root.children, false);
+  select(hit.length && hit[0].object.userData.part ? hit[0].object.userData.i : null);
+});
+canvas.addEventListener("wheel", function(e){
+  e.preventDefault();
+  dist = clamp(dist * (1 + Math.sign(e.deltaY)*0.09), 3.2, 11);
+}, {passive:false});
+
+document.getElementById("spin").onclick = function(){
+  spinning = !spinning;
+  this.classList.toggle("pri", spinning);
+};
+document.getElementById("explode").onclick = function(){
+  exploded = !exploded;
+  this.classList.toggle("pri", exploded);
+  this.textContent = exploded ? "Reassemble" : "Separate";
+};
+
+/* ---------------------------------------------------------------- tabs */
+var tabs = document.getElementById("tabs");
+SHOES.forEach(function(s, i){
+  var b = document.createElement("button");
+  b.setAttribute("role","tab");
+  b.innerHTML = "<b>" + esc(s.tab) + "</b><small>" + esc(s.sub) + "</small>" +
+                '<span class="ct">' + s.parts.length + " parts</span>";
+  b.onclick = function(){ build(i); };
+  tabs.appendChild(b);
+});
+
+/* ---------------------------------------------------------------- loop */
+function frame(){
+  requestAnimationFrame(frame);
+  if (spinning) az += 0.004;
+  root.children.forEach(function(m){
+    var want = exploded ? (m.userData.explodeY || 0) : 0;
+    m.position.y += (want - m.position.y)*0.12;
+  });
+  place();
+  ren.render(scene, cam);
+}
+
+window.addEventListener("resize", resize);
+if (init()){
+  /* Opening state can be set from the query string, so a particular
+     construction with a particular layer selected can be linked to, and so
+     the figures on the page behind this one are captures of the real app
+     rather than a second drawing that can drift from it.
+     ?shoe=1&part=2&explode=1&az=0.4&el=0.2 */
+  var q = new URLSearchParams(location.search);
+  var si = Math.min(SHOES.length-1, Math.max(0, parseInt(q.get("shoe"),10) || 0));
+  build(si);
+  if (q.get("part") !== null){
+    var pi = parseInt(q.get("part"), 10);
+    if (pi >= 0 && pi < SHOES[si].parts.length) select(pi);
+  }
+  if (q.get("explode") === "1"){
+    exploded = true;
+    var eb = document.getElementById("explode");
+    eb.classList.add("pri"); eb.textContent = "Reassemble";
+    root.children.forEach(function(m){
+      m.position.y = m.userData.explodeY || 0;
+    });
+  }
+  if (q.get("az")) az = parseFloat(q.get("az"));
+  if (q.get("el")) el = parseFloat(q.get("el"));
+  frame();
+}
+</script>
+</body></html>
