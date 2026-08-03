@@ -95,6 +95,7 @@
     <option value="oak">Oak</option>
     <option value="ebony">Ebonised</option>
   </select>
+  <button id="fit">Fit every book</button>
   <button id="shuffle">Rearrange</button>
   <button id="dl" class="primary">Download wallpaper (PNG)</button>
 
@@ -168,6 +169,7 @@ var DEMO = [
 var books = DEMO.slice();
 var usingDemo = true;
 var seed = 1;
+var fitAll = false;         // shelves sized to the library rather than the screen
 
 /* ---------------------------------------------------------------- helpers */
 function hash(s) {                       // FNV-1a, deterministic per string
@@ -422,75 +424,112 @@ function build() {
   g.addColorStop(0, wood.wall); g.addColorStop(1, "#0a0b10");
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
-  var rows = Math.max(3, Math.min(7, Math.round(H / 300)));
   var frame = Math.round(Math.min(W, H) * 0.020) + 6;
   var boardT = Math.max(8, Math.round(H * 0.012));
   var innerW = W - frame * 2;
-  var rowH = (H - frame * 2 - boardT) / rows;
-  var slotH = rowH - boardT;
 
   var order = lib.map(function (b) {
     return { b: b, k: hash(b.title + "|" + b.author + "|" + seed) };
   }).sort(function (p, q) { return p.k - q.k; });
 
   var unit = Math.max(16, Math.min(64, innerW / 46));
-  var placed = 0, omitted = 0, bi = 0;
   ctx.textBaseline = "middle";
 
+  /* Which books can actually appear. In cover mode that is the ones whose
+     cover came back; in spine mode it is all of them. */
+  var have = order, omitted = 0;
   if (useCovers) {
-    /* The cover wall: the real covers and nothing else, face-out at one
-       height, each brought to the same matte finish. A book with no cover
-       on file is left off rather than faked. */
-    var have = order.filter(function (o) {
+    have = order.filter(function (o) {
       return o.b.isbn && typeof coverCache[o.b.isbn] === "object";
     });
     omitted = order.length - have.length;
-    var ch = slotH * 0.90;
-    var cgap = Math.max(4, unit * 0.22);
-    for (var r = 0; r < rows && bi < have.length; r++) {
-      var yTop = frame + r * rowH;
-      var base = yTop + slotH;
-      var x = frame + 2 + cgap;
-      keyLight(ctx, frame, yTop, innerW, slotH);
-      while (bi < have.length) {
-        var cov = coverCache[have[bi].b.isbn];
-        var ar = cov.img.width / cov.img.height;
-        ar = Math.max(0.52, Math.min(0.85, ar));
-        var cw = ch * ar;
-        if (x + cw > frame + innerW - 2) break;
-        drawCover(ctx, cov, x, base, cw, ch);
-        x += cw + cgap;
-        bi++; placed++;
-      }
-      drawBoard(ctx, frame, base, innerW, boardT, wood);
-    }
-  } else {
-    for (var r2 = 0; r2 < rows && bi < order.length; r2++) {
-      var yTop2 = frame + r2 * rowH;
-      var base2 = yTop2 + slotH;
-      var x2 = frame + 2;
-      keyLight(ctx, frame, yTop2, innerW, slotH);
-      var run = 0;                          // books since the last breather
-      while (bi < order.length) {
-        var b = order[bi].b;
-        var hs = rng(hash(b.title + "~" + b.author));
-        var pages = b.pages > 0 ? b.pages : 180 + Math.floor(hs() * 320);
-        var bw = Math.round(unit * (0.45 + Math.min(2.6, pages / 300)));
-        if (x2 + bw > frame + innerW - 2) break;
-        var bh = Math.round(slotH * (0.68 + 0.27 * hs()));
-        /* the last book before a breather leans into the gap */
-        var gap = 0, lean = 0;
-        if (run > 4 + hs() * 6) {
-          gap = unit * (0.5 + hs() * 0.9); run = 0;
-          if (hs() < 0.5 && bh < slotH * 0.9) lean = 0.10 + hs() * 0.06;
+  }
+
+  /* One pass over the shelves at a given row count. With cc null it measures
+     instead of drawing, which is what lets the fit search ask "how many
+     would this many shelves hold?" without a second copy of the packing
+     rules to drift out of step with this one. */
+  function pass(rows, cc) {
+    var rowH = (H - frame * 2 - boardT) / rows;
+    var slotH = rowH - boardT;
+    if (slotH < 12) return 0;                 // shelves too thin to hold a book
+    var placed = 0, bi = 0, r, x, yTop, base;
+    if (useCovers) {
+      var ch = slotH * 0.90;
+      var cgap = Math.max(3, Math.min(unit * 0.22, ch * 0.10));
+      for (r = 0; r < rows && bi < have.length; r++) {
+        yTop = frame + r * rowH; base = yTop + slotH;
+        x = frame + 2 + cgap;
+        if (cc) keyLight(cc, frame, yTop, innerW, slotH);
+        while (bi < have.length) {
+          var cov = coverCache[have[bi].b.isbn];
+          var ar = cov.img.width / cov.img.height;
+          ar = Math.max(0.52, Math.min(0.85, ar));
+          var cw = ch * ar;
+          if (x + cw > frame + innerW - 2) break;
+          if (cc) drawCover(cc, cov, x, base, cw, ch);
+          x += cw + cgap;
+          bi++; placed++;
         }
-        drawSpine(ctx, b, x2, base2, bw, bh, hs, lean);
-        x2 += bw + 1 + gap;
-        bi++; placed++; run++;
+        if (cc) drawBoard(cc, frame, base, innerW, boardT, wood);
       }
-      drawBoard(ctx, frame, base2, innerW, boardT, wood);
+    } else {
+      for (r = 0; r < rows && bi < have.length; r++) {
+        yTop = frame + r * rowH; base = yTop + slotH;
+        x = frame + 2;
+        if (cc) keyLight(cc, frame, yTop, innerW, slotH);
+        var run = 0;                        // books since the last breather
+        while (bi < have.length) {
+          var b = have[bi].b;
+          var hs = rng(hash(b.title + "~" + b.author));
+          var pages = b.pages > 0 ? b.pages : 180 + Math.floor(hs() * 320);
+          var bw = Math.round(unit * (0.45 + Math.min(2.6, pages / 300))
+                              * Math.min(1, slotH / 150));
+          bw = Math.max(3, bw);
+          if (x + bw > frame + innerW - 2) break;
+          var bh = Math.round(slotH * (0.68 + 0.27 * hs()));
+          /* the last book before a breather leans into the gap */
+          var gap = 0, lean = 0;
+          if (run > 4 + hs() * 6) {
+            gap = unit * (0.5 + hs() * 0.9); run = 0;
+            if (hs() < 0.5 && bh < slotH * 0.9) lean = 0.10 + hs() * 0.06;
+          }
+          if (cc) drawSpine(cc, b, x, base, bw, bh, hs, lean);
+          x += bw + 1 + gap;
+          bi++; placed++; run++;
+        }
+        if (cc) drawBoard(cc, frame, base, innerW, boardT, wood);
+      }
+    }
+    return placed;
+  }
+
+  /* How many shelves. Either a comfortable number for the screen, or the
+     fewest that hold the whole library — capacity grows roughly with the
+     square of the row count, since thinner shelves make every book smaller
+     in both directions, so the search converges in a few steps and is
+     cheaper than solving the packing analytically. */
+  var rows = Math.max(3, Math.min(7, Math.round(H / 300)));
+  var fitted = false;
+  if (fitAll && have.length) {
+    var lo = 1, hi = 60, best = 0;
+    while (lo <= hi) {
+      var mid = (lo + hi) >> 1;
+      if (pass(mid, null) >= have.length) { best = mid; hi = mid - 1; }
+      else lo = mid + 1;
+    }
+    if (best) { rows = best; fitted = true; }
+    else {
+      /* Nothing fits everything: take the row count that holds the most. */
+      var bestN = -1;
+      for (var rr = 1; rr <= 60; rr++) {
+        var n = pass(rr, null);
+        if (n > bestN) { bestN = n; rows = rr; }
+      }
     }
   }
+
+  var placed = pass(rows, ctx);
 
   ctx.fillStyle = wood.edge;
   ctx.fillRect(0, 0, W, frame); ctx.fillRect(0, H - frame, W, frame);
@@ -502,6 +541,7 @@ function build() {
 
   el("cap").textContent = W + " × " + H + " px · " + placed + " of " +
     lib.length + " books on " + rows + " shelves" +
+    (fitted ? " · fitted" : "") +
     (omitted ? " · " + omitted + " left off (no cover on file)" : "") +
     (placed + omitted < lib.length ?
       " — Rearrange deals a different hand" : "");
@@ -754,6 +794,12 @@ el("shelf").addEventListener("change", function () {
 el("covers").addEventListener("change", function () {
   if (el("covers").checked) startCovers(); else { coverStatus = false; build(); }
 });
+el("fit").onclick = function () {
+  fitAll = !fitAll;
+  this.classList.toggle("primary", fitAll);
+  this.textContent = fitAll ? "Fit the screen instead" : "Fit every book";
+  build();
+};
 el("shuffle").onclick = function () { seed++; build(); };
 el("dl").onclick = function () {
   el("cv").toBlob(function (blob) {
@@ -822,6 +868,11 @@ rebuildShelfOptions();
   if (q.get("h")) el("h").value = q.get("h");
   if (q.get("shelf")) el("shelf").value = q.get("shelf");
   if (!el("shelf").value) el("shelf").value = "read";
+  if (q.get("fit") === "1"){
+    fitAll = true;
+    var fb = el("fit");
+    fb.classList.add("primary"); fb.textContent = "Fit the screen instead";
+  }
   if (q.get("covers") === "1") {
     el("covers").checked = true;
     startCovers();
