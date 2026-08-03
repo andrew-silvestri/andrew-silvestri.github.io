@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The desktop — Andrew Silvestri</title>
+<meta name="description" content="Museum walls and bookshelves for the desktop: a config-driven wallpaper generator with five collections, and a bookshelf drawn from a Goodreads export, all offline.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#070a12">
+<link rel="stylesheet" href="style.css?v=41fc184a">
+</head><body>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html" class="on">The desktop</a></span></span><a href="code.html">Code</a></nav>
+<main>
+
+<h1>The desktop</h1>
+<p class="dim">A screen is wall space. These are two things to hang on
+it &mdash; a museum wall and a bookshelf &mdash; both generated locally, from
+data, with nothing phoning home.</p>
+
+<p>A desktop background is looked at more often than anything anyone hangs in
+a house, and it is usually a stock photograph. These two small tools treat it
+as what it is: the most-seen surface you own. One hangs paintings on it, with
+the little plaques. The other builds a bookshelf out of the books you have
+actually read, spine by spine. Both run entirely on your machine.</p>
+
+<div class="card">
+<div class="tag">Interactive</div>
+<h3 style="margin-top:4px">The bookshelf</h3>
+<p>Drop in a Goodreads export, give it your screen size, and download the
+wallpaper. The page is the whole application &mdash; it parses the CSV, draws
+the shelf and writes the PNG in the browser, and works with the network cable
+out.</p>
+<a class="btn" href="bookshelf-app.html" target="_blank" rel="noopener">Open it</a>
+<a class="btn ghost" href="downloads/bookshelf-code.zip">Download it to keep</a>
+</div>
+
+<div class="card">
+<div class="tag">Download</div>
+<h3 style="margin-top:4px">The gallery</h3>
+<p>A command-line generator that composes a triptych of paintings &mdash; or a
+single work, centred &mdash; over a near-black wall, each with a museum plaque:
+title, artist, date, medium. Five collections are configured, and a collection
+is just a folder with a manifest.</p>
+<a class="btn" href="downloads/desktop-gallery-code.zip">Download code and manifests</a>
+</div>
+
+<h2>The gallery</h2>
+
+<p>The generator reads a collection manifest, picks works, lays them out as
+fractions of whatever canvas size it is given &mdash; detected from the screen
+on Windows, stated with <code>--size</code> anywhere else &mdash; and never
+scales an image above its native resolution. A painting filter keeps
+sculpture and furniture off the wall; a seed makes any wall reproducible.</p>
+
+<table>
+<tr><th>Collection</th><th>Works</th><th class="dim">What it is</th></tr>
+<tr><td>Philbrook Museum of Art</td><td class="n">631</td><td class="dim">the
+full public collection metadata, of which 285 read as paintings to the
+filter</td></tr>
+<tr><td>Mus&eacute;e du Louvre</td><td class="n">12</td><td class="dim">public-domain
+paintings, carried by their ark identifiers</td></tr>
+<tr><td>The National Gallery, London</td><td class="n">12</td><td class="dim">public-domain
+paintings, carried by inventory number</td></tr>
+<tr><td>Joseph Wright of Derby</td><td class="n">1</td><td class="dim">The
+Alchymist, in Search of the Philosopher&rsquo;s Stone, Discovers Phosphorus
+(1771, Derby Museum and Art Gallery) &mdash; hung alone, as it should be</td></tr>
+<tr><td>Harry Ransom Center</td><td class="n">2</td><td class="dim">the
+Ni&eacute;pce heliograph &mdash; the first photograph &mdash; and the Gutenberg
+Bible</td></tr>
+</table>
+
+<p>The download contains code and metadata, not images. Each collection ships
+a <code>fetch.py</code> that retrieves the pictures from the museum&rsquo;s own
+public site onto your machine, politely and resumably. That split is
+deliberate: the museums publish the images for looking at, and a metadata
+manifest plus a fetcher respects that arrangement; a zip of their files would
+not. The works in the staged collections are public-domain paintings; the
+photography of them belongs to the institutions.</p>
+
+<h2>The bookshelf</h2>
+
+<p>Goodreads exports a CSV of everything you have shelved. The app reads it
+and builds a case of book spines sized to your screen: a spine&rsquo;s width
+follows its page count, and the shelf holds whichever slice of the library
+you ask for &mdash; read, reading, or the aspirational pile.</p>
+
+<p>What is real: titles, authors, page counts and years, straight from the
+export. What is chosen: the cloth colours, bands, labels and lettering are
+drawn deterministically from each title, so the same book always gets the
+same spine &mdash; but the spine is a design, not a photograph of your
+edition. The page states the same split, because sonification and
+visualisation projects usually blur it.</p>
+
+<h2>Install and removal</h2>
+
+<p>Neither tool installs anything. The gallery is a folder; the bookshelf is
+one HTML file. Setting the wallpaper on Windows is the one act that touches
+state outside the folder, so it is made reversible: before the first change,
+the path of the current wallpaper is saved to a single JSON file next to the
+script, and <code>--undo</code> restores it and deletes the file. No
+registry keys are written, nothing runs at startup, and removal is deleting
+the folder.</p>
+
+<h2>The code</h2>
+
+<p>Python 3.10+, with Pillow as the gallery&rsquo;s only dependency; the
+bookshelf is dependency-free HTML and JavaScript. Both downloads are on the
+<a href="code.html">code page</a>.</p>
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main>
+<script>
+/* The back link points at the page you came from when that page was on this
+   site, and hides itself when it would have nowhere to go. */
+(function () {
+  var b = document.getElementById('backlink');
+  if (!b) return;
+  var ref = document.referrer;
+  var same = false;
+  try { same = ref && new URL(ref).origin === location.origin &&
+               new URL(ref).pathname !== location.pathname; } catch (e) {}
+  if (same) {
+    b.href = ref;
+  } else if (history.length > 1) {
+    b.addEventListener('click', function (e) { e.preventDefault(); history.back(); });
+  } else {
+    b.style.display = 'none';
+  }
+})();
+</script>
+</body></html>

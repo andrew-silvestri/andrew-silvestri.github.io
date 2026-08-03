@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css?v=41fc184a">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a><a href="desktop.html">The desktop</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Skylines, played</h1>
@@ -19,14 +19,14 @@ picture is played.</p>
 <p>Both are a row of vertical bars of varying height. That is a coincidence of
 drawing conventions rather than of physics, but it is usable: if a skyline can
 be read as a spectrum, it can be played, and the sound will change as the
-listener turns. This tool does that for twenty-six cities, using published
+listener turns. This tool does that for twenty-seven cities, using published
 building heights and coordinates.</p>
 
 <div class="card">
 <div class="tag">Interactive</div>
 
 
-<h3 style="margin-top:4px">26 cities</h3>
+<h3 style="margin-top:4px">27 cities</h3>
 <p>The upper panel is a wheel of the city's towers, up to a hundred and twenty
 of them, with the far side drawn in a colder colour because it is behind the
 listener. The lower panel is the same ring as a meter, and the meter is what
@@ -103,18 +103,32 @@ gains actually sent</td><td>1.0&times;</td></tr>
 <p>Only the last row is defensive. The rest are structural, and the difference
 matters: a limiter that engages means the problem was produced.</p>
 
-<h2>Two cities entered by hand</h2>
+<h2>Three cities carried from published lists</h2>
 
-<p>Wikidata has three buildings on record for Austin and fourteen for
-Nashville. Austin has something over forty above a hundred metres. That gap is
-not about the cities; it is about who has been entering data, and coverage of
-mid-size American downtowns is thin in a way that coverage of Manhattan is not.
-Both are therefore supplemented from published records, the supplement lives in
-its own file, and the app says how many of a city's towers were entered by hand
-whenever there are any. Heights are structural; coordinates are block-level
-rather than surveyed, which matters less than it sounds because the wheel
-equalises angular spacing anyway &mdash; a coordinate decides what order
-buildings appear in, not the gap between them.</p>
+<p>Wikidata has three buildings on record for Austin, fourteen for Nashville
+and one for Fort Worth. Austin alone has sixty-five completed buildings above
+three hundred feet. That gap is not about the cities; it is about who has been
+entering data, and coverage of mid-size American downtowns is thin in a way
+that coverage of Manhattan is not. These three are therefore transcribed from
+each city's published tallest-buildings record, the transcription lives in its
+own file, and the app says how many of a city's towers arrived that way.
+Heights are structural; coordinates are block-level rather than surveyed,
+which matters less than it sounds because the wheel equalises angular spacing
+anyway &mdash; a coordinate decides what order buildings appear in, not the
+gap between them.</p>
+
+<p>Carrying the full lists is also what puts the landmarks on the wheel,
+because they qualify on their own numbers: the Texas State Capitol at 94.8 m
+and the UT Tower with the west-campus high-rises around it, West End Tower on
+the Vanderbilt campus, the Tennessee State Capitol at 63.0 m, and for Fort
+Worth the 1895 Tarrant County Courthouse, Pioneer Tower at the Will Rogers
+Memorial, and the Art Deco stock downtown. What does not qualify is left out
+and said so: the tallest thing at TCU is Robert Carr Chapel's spire at a
+published 137 ft (41.8 m), under the wheel's 55 m floor, and the Ryman and
+the Parthenon fall the same way. Above the height each published list is
+complete down to, the list also overrules the database &mdash; which is how
+the never-built 228.6 m Paramount Tower, carried by Wikidata as if it stood,
+stays out of Nashville's ring.</p>
 
 <h2>The key</h2>
 
@@ -129,18 +143,19 @@ screen whenever you select the city.</p>
 <tr><td>Shenzhen</td><td>D pent major</td><td class="dim">gong mode</td></tr>
 <tr><td>Tokyo</td><td>D yo</td><td class="dim">the yo scale, the pentatonic used in Japanese folk and much gagaku-derived music</td></tr>
 <tr><td>Chicago</td><td>E blues</td><td class="dim">the Chicago blues, which is a named genre of the city; E is the guitar's home key and the one most of it is played in</td></tr>
-<tr><td>Shanghai</td><td>G pent major</td><td class="dim">gong mode</td></tr>
 <tr><td>Toronto</td><td>G major</td><td class="dim">O Canada, published in G major</td></tr>
-<tr><td>Guangzhou</td><td>A pent minor</td><td class="dim">yu mode, the minor pentatonic of Cantonese music</td></tr>
+<tr><td>Paris</td><td>C major</td><td class="dim">Edith Piaf, La Vie en rose, recorded in C major</td></tr>
 <tr><td>Moscow</td><td>Eb major</td><td class="dim">Tchaikovsky, 1812 Overture, op. 49, in E flat major</td></tr>
 <tr><td>Taipei</td><td>G pent minor</td><td class="dim">yu mode</td></tr>
 <tr><td>Hong Kong</td><td>E pent minor</td><td class="dim">yu mode, as in Cantonese opera</td></tr>
-<tr><td>Kuala Lumpur</td><td>C slendro</td><td class="dim">slendro, as in gamelan Melayu</td></tr>
-<tr><td>Doha</td><td>A hijaz</td><td class="dim">maqam Hijaz</td></tr>
+<tr><td>Tel Aviv</td><td>D hijaz</td><td class="dim">Ahava Rabbah, the Jewish liturgical mode with the same interval structure as Hijaz</td></tr>
 <tr><td>Seoul</td><td>G pent major</td><td class="dim">the pyeongjo mode of Korean court music, a major pentatonic</td></tr>
+<tr><td>Austin</td><td>E blues</td><td class="dim">Stevie Ray Vaughan, whose Texas blues is the city's own sound, played in E on a guitar tuned down a half step</td></tr>
+<tr><td>Fort Worth</td><td>C major</td><td class="dim">George Strait, Does Fort Worth Ever Cross Your Mind, recorded in C major</td></tr>
+<tr><td>Nashville</td><td>G major</td><td class="dim">the Nashville Number System, the chord notation this city invented and still runs sessions on; G is the key its session players default to</td></tr>
 </table>
-<p class="small">The first fourteen of fifty. Thirty-six distinct keys across
-ten modes.</p>
+<p class="small">The thirteen with the most skyline, then Fort Worth and
+Nashville. Nineteen distinct keys across eight modes in all.</p>
 
 <h2>How the bars become sound</h2>
 
