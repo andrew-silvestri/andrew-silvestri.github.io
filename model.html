@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#070a12">
 <link rel="stylesheet" href="style.css?v=242aca5b">
 </head><body>
-<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate research <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="beans.html">Nitrogen-fixing beans</a><a href="running-shoes.html">What a running shoe is made of</a><a href="mammon.html">The Mammon trilogy</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="#" class="back" id="backlink">&larr; back</a><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Chemical <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="dac.html">Direct air capture TEA</a><a href="holdup.html">Pipeline liquid holdup</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate research <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Climate cost calculator</a><a href="beans.html">Nitrogen-fixing beans</a><a href="running-shoes.html">What a running shoe is made of</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 <h1>The World Energy Model: Structure, Weights, and Behaviour</h1>
 
@@ -48,7 +48,7 @@ at every other node.</p>
 <tr><td>Price benchmark</td><td>6</td><td>One traded price, such as Brent crude</td></tr>
 <tr><td>Behaviour channel</td><td>6</td><td>One psychological effect on demand</td></tr>
 <tr><td>Climate system</td><td>2</td><td>Carbon dioxide level and temperature anomaly</td></tr>
-<tr><td>**Total**</td><td>**86,622**</td><td></td></tr>
+<tr><td><b>Total</b></td><td><b>86,622</b></td><td></td></tr>
 </table>
 
 <hr>
@@ -151,15 +151,15 @@ factor pull it below 1.</p>
 <tr><th>Link</th><th>Weight</th><th>Where the weight comes from</th></tr>
 <tr><td>Climate system → temperature</td><td>0.85</td><td>Fixed. The temperature follows the forcing closely.</td></tr>
 <tr><td>Oil price → related prices</td><td>0.70 to 0.80</td><td>Observed price correlation</td></tr>
-<tr><td>Fuel supply → national grid</td><td>0.55 × fuel share</td><td>**The real share of that fuel in that country&#x27;s power**</td></tr>
+<tr><td>Fuel supply → national grid</td><td>0.55 × fuel share</td><td><b>The real share of that fuel in that country&#x27;s power</b></td></tr>
 <tr><td>Price benchmark → fuel supply</td><td>0.35 + 0.40 × share</td><td>Higher where the country depends more on that fuel</td></tr>
 <tr><td>National grid → district</td><td>0.60</td><td>Fixed. Districts are parts of the grid.</td></tr>
 <tr><td>District → consumer group</td><td>0.50</td><td>Fixed.</td></tr>
-<tr><td>Historical event → grid</td><td>0.05 to 0.50</td><td>**log10 of the real damage cost in dollars**</td></tr>
+<tr><td>Historical event → grid</td><td>0.05 to 0.50</td><td><b>log10 of the real damage cost in dollars</b></td></tr>
 <tr><td>Temperature → national grid</td><td>0.30</td><td>Heating and cooling demand</td></tr>
 <tr><td>Temperature → gas and power price</td><td>0.15 to 0.20</td><td>Heating and cooling demand</td></tr>
 <tr><td>Consumer group → district</td><td>negative</td><td>Demand response. Consumers use less when costs rise.</td></tr>
-<tr><td>Power station → grid</td><td>0.45 ÷ plant count</td><td>**Normalised.** See section 5.3.</td></tr>
+<tr><td>Power station → grid</td><td>0.45 ÷ plant count</td><td><b>Normalised.</b> See section 5.3.</td></tr>
 </table>
 
 <h3>5.2 Node inertia</h3>
@@ -170,7 +170,7 @@ reacts at once. A value of 1 means the node almost never moves.</p>
 <table>
 <tr><th>Node type</th><th>Inertia</th><th>Reason</th></tr>
 <tr><td>Historical event</td><td>0.15</td><td>An event happens at once.</td></tr>
-<tr><td>Price benchmark</td><td>0.09 to 0.30</td><td>**Set by the real volatility of that price series.** A more volatile price reacts faster.</td></tr>
+<tr><td>Price benchmark</td><td>0.09 to 0.30</td><td><b>Set by the real volatility of that price series.</b> A more volatile price reacts faster.</td></tr>
 <tr><td>National grid</td><td>0.30</td><td>A grid must balance in seconds.</td></tr>
 <tr><td>Fuel supply, district</td><td>0.35</td><td>Supply chains take weeks.</td></tr>
 <tr><td>Consumer group, power station</td><td>0.45</td><td>People and plants change slowly.</td></tr>
@@ -253,9 +253,9 @@ the temperature record.</p>
 
 <table>
 <tr><th>Method</th><th>Command</th><th>Use</th></tr>
-<tr><td>Julia</td><td>`julia run.jl`</td><td>Fastest. No packages needed.</td></tr>
-<tr><td>Terminal application</td><td>`python3 energy_terminal.py`</td><td>Interactive. Browse, shock, trace routes.</td></tr>
-<tr><td>Charts</td><td>`python3 make_chart.py`</td><td>Produces the summary figures.</td></tr>
+<tr><td>Julia</td><td><code>julia run.jl</code></td><td>Fastest. No packages needed.</td></tr>
+<tr><td>Terminal application</td><td><code>python3 energy_terminal.py</code></td><td>Interactive. Browse, shock, trace routes.</td></tr>
+<tr><td>Charts</td><td><code>python3 make_chart.py</code></td><td>Produces the summary figures.</td></tr>
 </table>
 
 <p>The Julia version and the Python version give the same numbers, node by node.
