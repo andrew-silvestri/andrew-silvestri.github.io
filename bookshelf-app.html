@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bookshelf wallpaper — Andrew Silvestri</title>
-<meta name="description" content="Turn a Goodreads library export into a bookshelf wallpaper, generated entirely in the browser.">
+<meta name="description" content="Turn a Goodreads library export into a bookshelf wallpaper. Offline by default; real cover art by ISBN when you allow it.">
 <style>
   :root {
     --bg:#0b0d12; --panel:#10131b; --ink:#e8e6f0; --dim:#8b8fa3;
@@ -26,6 +26,11 @@
     width:100%; padding:7px 9px; background:#0d1017; color:var(--ink);
     border:1px solid var(--rule); border-radius:7px; font:inherit; }
   .row { display:flex; gap:8px; } .row > * { flex:1; }
+  .check { display:flex; gap:8px; align-items:flex-start; margin:10px 0 2px;
+           font-size:12.5px; color:var(--ink); cursor:pointer; }
+  .check input { margin-top:3px; accent-color:var(--acc); }
+  .check span b { font-weight:600; }
+  .check .sub { color:var(--dim); display:block; font-size:11.5px; }
   button {
     width:100%; margin-top:10px; padding:9px 10px; border-radius:8px;
     border:1px solid var(--rule); background:#161a26; color:var(--ink);
@@ -53,8 +58,8 @@
 <aside>
   <h1>Bookshelf, yours</h1>
   <p class="small">A wallpaper generated from the books you have actually
-  read. Everything happens in this page &mdash; nothing is uploaded, and the
-  page works with the network cable out.</p>
+  read. Offline by default: the CSV is parsed here, the shelf is drawn here,
+  the PNG is written here.</p>
 
   <h2>Your library</h2>
   <div id="drop">Drop a Goodreads CSV export here, or click to choose.<br>
@@ -70,6 +75,14 @@
     <option value="to-read">To read</option>
     <option value="all">Everything in the export</option>
   </select>
+
+  <label class="check"><input id="covers" type="checkbox">
+    <span><b>Real covers</b>, face-out
+    <span class="sub">The one thing that uses the network: each book&rsquo;s
+    published cover is fetched from Open&nbsp;Library by the ISBN in your
+    export, and the shelf becomes a wall of actual covers, all brought to
+    one matte finish so mixed scans sit together. Books with no cover on
+    file are left off it.</span></span></label>
 
   <h2>The screen</h2>
   <div class="row">
@@ -91,11 +104,12 @@
   <button id="dl" class="primary">Download wallpaper (PNG)</button>
 
   <h2>What is real here</h2>
-  <p class="small">Real: the titles, authors, page counts and years, straight
-  from your export. A spine&rsquo;s width follows its page count. Chosen: the
-  colours, cloth and lettering, drawn deterministically from each
-  title&mdash;the same book always gets the same spine, but the spine is a
-  design, not a photograph of your edition.</p>
+  <p class="small">Real: titles, authors, page counts, years and ratings from
+  your export, and in cover mode the covers themselves, untouched except for
+  one shared finish. Chosen: the drawn spines &mdash; a design keyed to each
+  book, its width from its page count, its dress from its era. No database
+  of photographed book <em>spines</em> exists, for any price, so this page
+  does not pretend to one.</p>
 </aside>
 <main><div id="wrap">
   <canvas id="cv"></canvas>
@@ -106,36 +120,55 @@
 'use strict';
 /* ------------------------------------------------------------------ data */
 /* The demo shelf, so the page shows its hand before any file arrives.
-   Titles, authors and first-publication years are the real ones; page
-   counts are of commonly printed editions and only set spine width. */
+   Titles, authors, first-publication years and ISBNs are the real ones;
+   page counts are of commonly printed editions and only set spine width. */
 var DEMO = [
-  ["Moby-Dick","Herman Melville",625,1851],["Middlemarch","George Eliot",880,1871],
-  ["War and Peace","Leo Tolstoy",1225,1869],["Anna Karenina","Leo Tolstoy",864,1877],
-  ["Crime and Punishment","Fyodor Dostoevsky",671,1866],
-  ["The Brothers Karamazov","Fyodor Dostoevsky",796,1880],
-  ["Pride and Prejudice","Jane Austen",432,1813],["Emma","Jane Austen",474,1815],
-  ["Jane Eyre","Charlotte Brontë",532,1847],["Wuthering Heights","Emily Brontë",416,1847],
-  ["Great Expectations","Charles Dickens",544,1861],["Bleak House","Charles Dickens",989,1853],
-  ["Ulysses","James Joyce",730,1922],["Mrs Dalloway","Virginia Woolf",194,1925],
-  ["To the Lighthouse","Virginia Woolf",209,1927],["The Great Gatsby","F. Scott Fitzgerald",180,1925],
-  ["The Sun Also Rises","Ernest Hemingway",251,1926],["Beloved","Toni Morrison",324,1987],
-  ["Invisible Man","Ralph Ellison",581,1952],["One Hundred Years of Solitude","Gabriel García Márquez",417,1967],
-  ["Don Quixote","Miguel de Cervantes",1023,1605],["The Odyssey","Homer",541,-700],
-  ["The Iliad","Homer",683,-750],["The Divine Comedy","Dante Alighieri",798,1320],
-  ["Frankenstein","Mary Shelley",280,1818],["Dracula","Bram Stoker",418,1897],
-  ["The Count of Monte Cristo","Alexandre Dumas",1276,1844],
-  ["Les Misérables","Victor Hugo",1463,1862],["Madame Bovary","Gustave Flaubert",329,1856],
-  ["The Trial","Franz Kafka",255,1925],["Lolita","Vladimir Nabokov",336,1955],
-  ["Catch-22","Joseph Heller",453,1961],["Slaughterhouse-Five","Kurt Vonnegut",275,1969],
-  ["1984","George Orwell",328,1949],["Brave New World","Aldous Huxley",311,1932],
-  ["Fahrenheit 451","Ray Bradbury",194,1953],["The Grapes of Wrath","John Steinbeck",464,1939],
-  ["East of Eden","John Steinbeck",601,1952],["The Sound and the Fury","William Faulkner",326,1929],
-  ["Their Eyes Were Watching God","Zora Neale Hurston",219,1937],
-  ["Things Fall Apart","Chinua Achebe",209,1958],["The Stranger","Albert Camus",123,1942],
-  ["The Master and Margarita","Mikhail Bulgakov",384,1967],
-  ["A Confederacy of Dunces","John Kennedy Toole",405,1980]
+  ["Moby-Dick","Herman Melville",625,1851,"9780142437247"],
+  ["Middlemarch","George Eliot",880,1871,"9780141439549"],
+  ["War and Peace","Leo Tolstoy",1225,1869,"9780140447934"],
+  ["Anna Karenina","Leo Tolstoy",864,1877,"9780143035008"],
+  ["Crime and Punishment","Fyodor Dostoevsky",671,1866,"9780143058144"],
+  ["The Brothers Karamazov","Fyodor Dostoevsky",796,1880,"9780374528379"],
+  ["Pride and Prejudice","Jane Austen",432,1813,"9780141439518"],
+  ["Emma","Jane Austen",474,1815,"9780141439587"],
+  ["Jane Eyre","Charlotte Brontë",532,1847,"9780142437209"],
+  ["Wuthering Heights","Emily Brontë",416,1847,"9780141439556"],
+  ["Great Expectations","Charles Dickens",544,1861,"9780141439563"],
+  ["Bleak House","Charles Dickens",989,1853,"9780141439723"],
+  ["Ulysses","James Joyce",730,1922,"9780679722762"],
+  ["Mrs Dalloway","Virginia Woolf",194,1925,"9780156628709"],
+  ["To the Lighthouse","Virginia Woolf",209,1927,"9780156907392"],
+  ["The Great Gatsby","F. Scott Fitzgerald",180,1925,"9780743273565"],
+  ["The Sun Also Rises","Ernest Hemingway",251,1926,"9780743297332"],
+  ["Beloved","Toni Morrison",324,1987,"9781400033416"],
+  ["Invisible Man","Ralph Ellison",581,1952,"9780679732761"],
+  ["One Hundred Years of Solitude","Gabriel García Márquez",417,1967,"9780060883287"],
+  ["Don Quixote","Miguel de Cervantes",1023,1605,"9780060934347"],
+  ["The Odyssey","Homer",541,-700,"9780140268867"],
+  ["The Iliad","Homer",683,-750,"9780140275360"],
+  ["The Divine Comedy","Dante Alighieri",798,1320,"9780142437223"],
+  ["Frankenstein","Mary Shelley",280,1818,"9780141439471"],
+  ["Dracula","Bram Stoker",418,1897,"9780141439846"],
+  ["The Count of Monte Cristo","Alexandre Dumas",1276,1844,"9780140449266"],
+  ["Les Misérables","Victor Hugo",1463,1862,"9780451419439"],
+  ["Madame Bovary","Gustave Flaubert",329,1856,"9780140449129"],
+  ["The Trial","Franz Kafka",255,1925,"9780805209990"],
+  ["Lolita","Vladimir Nabokov",336,1955,"9780679723165"],
+  ["Catch-22","Joseph Heller",453,1961,"9781451626650"],
+  ["Slaughterhouse-Five","Kurt Vonnegut",275,1969,"9780385333849"],
+  ["1984","George Orwell",328,1949,"9780451524935"],
+  ["Brave New World","Aldous Huxley",311,1932,"9780060850524"],
+  ["Fahrenheit 451","Ray Bradbury",194,1953,"9781451673319"],
+  ["The Grapes of Wrath","John Steinbeck",464,1939,"9780143039433"],
+  ["East of Eden","John Steinbeck",601,1952,"9780142000656"],
+  ["The Sound and the Fury","William Faulkner",326,1929,"9780679732242"],
+  ["Their Eyes Were Watching God","Zora Neale Hurston",219,1937,"9780061120060"],
+  ["Things Fall Apart","Chinua Achebe",209,1958,"9780385474542"],
+  ["The Stranger","Albert Camus",123,1942,"9780679720201"],
+  ["The Master and Margarita","Mikhail Bulgakov",384,1967,"9780143108276"],
+  ["A Confederacy of Dunces","John Kennedy Toole",405,1980,"9780802130204"]
 ].map(function(r){ return {title:r[0], author:r[1], pages:r[2], year:r[3],
-                           shelf:"read"}; });
+                           isbn:r[4], rating:0, shelf:"read"}; });
 
 var books = DEMO.slice();
 var usingDemo = true;
@@ -181,6 +214,12 @@ function parseCSV(text) {
   return rows;
 }
 
+function cleanIsbn(s) {
+  // Goodreads wraps ISBNs as ="9780156012195"
+  var d = String(s || "").replace(/[^0-9Xx]/g, "");
+  return (d.length === 13 || d.length === 10) ? d : "";
+}
+
 function fromGoodreads(text) {
   var rows = parseCSV(text);
   if (!rows.length) return null;
@@ -188,7 +227,8 @@ function fromGoodreads(text) {
   function col(name) { return head.indexOf(name); }
   var iT = col("title"), iA = col("author"), iP = col("number of pages"),
       iY = col("original publication year"), iY2 = col("year published"),
-      iS = col("exclusive shelf");
+      iS = col("exclusive shelf"), iR = col("my rating"),
+      iI13 = col("isbn13"), iI10 = col("isbn");
   if (iT < 0 || iA < 0) return null;
   var out = [];
   for (var i = 1; i < rows.length; i++) {
@@ -199,10 +239,91 @@ function fromGoodreads(text) {
       title: t, author: r[iA] || "",
       pages: parseInt(r[iP], 10) || 0,
       year: parseInt(r[iY], 10) || parseInt(r[iY2], 10) || 0,
+      rating: parseInt(r[iR], 10) || 0,
+      isbn: cleanIsbn(iI13 >= 0 && r[iI13]) || cleanIsbn(iI10 >= 0 && r[iI10]),
       shelf: (iS >= 0 && r[iS]) ? r[iS] : "read"
     });
   }
   return out.length ? out : null;
+}
+
+/* ------------------------------------------------------------- cover art */
+/* Open Library serves cover photographs by ISBN with CORS open, which is
+   what lets the canvas read their pixels. This is the page's only network
+   use, it is off by default, and nothing else is sent anywhere: the request
+   carries the ISBN and nothing more. */
+var coverCache = {};          // isbn -> {img, pal} | "none" | "loading"
+var coverGen = 0;
+
+function fetchCovers(list, onprog, ondone) {
+  var want = list.filter(function (b) {
+    return b.isbn && coverCache[b.isbn] === undefined;
+  });
+  var total = want.length, got = 0, live = 0, qi = 0, gen = ++coverGen;
+  if (!total) { ondone(); return; }
+  function pump() {
+    while (live < 6 && qi < want.length) start(want[qi++]);
+    if (!live && qi >= want.length) ondone();
+  }
+  function start(b) {
+    live++;
+    coverCache[b.isbn] = "loading";
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+      coverCache[b.isbn] = { img: img, pal: palette(img) };
+      done();
+    };
+    img.onerror = function () { coverCache[b.isbn] = "none"; done(); };
+    img.src = "https://covers.openlibrary.org/b/isbn/" + b.isbn +
+              "-M.jpg?default=false";
+    function done() {
+      live--; got++;
+      if (gen === coverGen) onprog(got, total);
+      pump();
+    }
+  }
+  pump();
+}
+
+/* One number per cover: its mean luminance, sampled coarse. It is what the
+   uniform finish corrects against, so a washed-out modern thumbnail and a
+   murky old scan land on the same shelf at the same weight. */
+function palette(img) {
+  var c = document.createElement("canvas");
+  c.width = 20; c.height = 28;
+  var x = c.getContext("2d");
+  try {
+    x.drawImage(img, 0, 0, 20, 28);
+    var d = x.getImageData(0, 0, 20, 28).data;
+  } catch (e) { return { mean: 0.5 }; }
+  var sum = 0, n = 0;
+  for (var i = 0; i < d.length; i += 4) {
+    sum += (d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114) / 255;
+    n++;
+  }
+  return { mean: n ? sum / n : 0.5 };
+}
+
+/* The shared finish: a film-grain tile, built once and reused. */
+var grainTile = null;
+function grain() {
+  if (grainTile) return grainTile;
+  var c = document.createElement("canvas");
+  c.width = 96; c.height = 96;
+  var x = c.getContext("2d");
+  var id = x.createImageData ? x.createImageData(96, 96) : null;
+  if (id) {
+    var g = rng(1234);
+    for (var i = 0; i < id.data.length; i += 4) {
+      var v = 96 + Math.floor(g() * 64);
+      id.data[i] = id.data[i+1] = id.data[i+2] = v;
+      id.data[i+3] = 255;
+    }
+    x.putImageData(id, 0, 0);
+  }
+  grainTile = c;
+  return c;
 }
 
 /* ---------------------------------------------------------------- palette */
@@ -211,14 +332,15 @@ var WOODS = {
   oak:    { hi:"#7a5c38", lo:"#54401f", edge:"#33260f", wall:"#141620" },
   ebony:  { hi:"#23242b", lo:"#131318", edge:"#0a0a0e", wall:"#101219" }
 };
-/* Book cloth. Muted bindings a real shelf has, plus a few brights so a run
-   of spines has somewhere for the eye to rest. */
 var CLOTHS = [
   "#5b3a45","#6b4a35","#324a5e","#3c5748","#71624a","#513a63","#7a4a3a",
   "#2f3d55","#5e5648","#43384f","#6e3b3b","#375246","#8a7047","#4f6070",
   "#98342b","#b08d3f","#41618f","#787f8c"
 ];
-var INKS = ["#e9ddc0","#e6d9a8","#dcd6cf","#111417"];
+var LEATHERS = ["#3d2a1e","#4a2429","#2c3327","#26262e","#4d3320","#372430"];
+var MODERNS  = ["#e8e2d6","#171a1e","#c9403a","#2a6f6f","#e0b13e","#3b3f8f",
+                "#d96c2f","#20242c"];
+var GILT = "rgba(214,183,110,0.9)";
 
 /* ----------------------------------------------------------------- layout */
 function build() {
@@ -226,6 +348,7 @@ function build() {
   W = Math.max(640, Math.min(7680, W)); H = Math.max(400, Math.min(4320, H));
   var wood = WOODS[el("wood").value];
   var want = el("shelf").value;
+  var useCovers = el("covers").checked;
   var lib = books.filter(function (b) {
     return want === "all" || b.shelf === want;
   });
@@ -239,8 +362,6 @@ function build() {
   g.addColorStop(0, wood.wall); g.addColorStop(1, "#0a0b10");
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
-  /* case geometry: rows scale with height so 1080p gets 4 shelves and a
-     4K portrait screen gets more, not taller books */
   var rows = Math.max(3, Math.min(7, Math.round(H / 300)));
   var frame = Math.round(Math.min(W, H) * 0.020) + 6;
   var boardT = Math.max(8, Math.round(H * 0.012));
@@ -248,40 +369,72 @@ function build() {
   var rowH = (H - frame * 2 - boardT) / rows;
   var slotH = rowH - boardT;
 
-  /* deterministic order: seed rearranges, same seed same shelf */
-  var order = lib.map(function (b, i) {
+  var order = lib.map(function (b) {
     return { b: b, k: hash(b.title + "|" + b.author + "|" + seed) };
   }).sort(function (p, q) { return p.k - q.k; });
 
-  /* spines: width from pages, everything else from the hash */
-  var unit = Math.max(16, Math.min(64, innerW / 46));   // px per ~300 pages
-  var placed = 0, x, yTop;
+  var unit = Math.max(16, Math.min(64, innerW / 46));
+  var placed = 0, omitted = 0, bi = 0;
   ctx.textBaseline = "middle";
 
-  var bi = 0;
-  for (var r = 0; r < rows && bi < order.length; r++) {
-    yTop = frame + r * rowH;
-    var base = yTop + slotH;                            // top of the board
-    x = frame + 2;
-    while (bi < order.length) {
-      var b = order[bi].b;
-      var hs = rng(hash(b.title + "~" + b.author));
-      var pages = b.pages > 0 ? b.pages : 180 + Math.floor(hs() * 320);
-      var bw = Math.round(unit * (0.45 + Math.min(2.6, pages / 300)));
-      if (x + bw > frame + innerW - 2) break;
-      var bh = Math.round(slotH * (0.68 + 0.27 * hs()));
-      drawSpine(ctx, b, x, base, bw, bh, hs);
-      x += bw + 1;
-      bi++; placed++;
+  if (useCovers) {
+    /* The cover wall: the real covers and nothing else, face-out at one
+       height, each brought to the same matte finish. A book with no cover
+       on file is left off rather than faked. */
+    var have = order.filter(function (o) {
+      return o.b.isbn && typeof coverCache[o.b.isbn] === "object";
+    });
+    omitted = order.length - have.length;
+    var ch = slotH * 0.90;
+    var cgap = Math.max(4, unit * 0.22);
+    for (var r = 0; r < rows && bi < have.length; r++) {
+      var yTop = frame + r * rowH;
+      var base = yTop + slotH;
+      var x = frame + 2 + cgap;
+      keyLight(ctx, frame, yTop, innerW, slotH);
+      while (bi < have.length) {
+        var cov = coverCache[have[bi].b.isbn];
+        var ar = cov.img.width / cov.img.height;
+        ar = Math.max(0.52, Math.min(0.85, ar));
+        var cw = ch * ar;
+        if (x + cw > frame + innerW - 2) break;
+        drawCover(ctx, cov, x, base, cw, ch);
+        x += cw + cgap;
+        bi++; placed++;
+      }
+      drawBoard(ctx, frame, base, innerW, boardT, wood);
     }
-    drawBoard(ctx, frame, base, innerW, boardT, wood);
+  } else {
+    for (var r2 = 0; r2 < rows && bi < order.length; r2++) {
+      var yTop2 = frame + r2 * rowH;
+      var base2 = yTop2 + slotH;
+      var x2 = frame + 2;
+      keyLight(ctx, frame, yTop2, innerW, slotH);
+      var run = 0;                          // books since the last breather
+      while (bi < order.length) {
+        var b = order[bi].b;
+        var hs = rng(hash(b.title + "~" + b.author));
+        var pages = b.pages > 0 ? b.pages : 180 + Math.floor(hs() * 320);
+        var bw = Math.round(unit * (0.45 + Math.min(2.6, pages / 300)));
+        if (x2 + bw > frame + innerW - 2) break;
+        var bh = Math.round(slotH * (0.68 + 0.27 * hs()));
+        /* the last book before a breather leans into the gap */
+        var gap = 0, lean = 0;
+        if (run > 4 + hs() * 6) {
+          gap = unit * (0.5 + hs() * 0.9); run = 0;
+          if (hs() < 0.5 && bh < slotH * 0.9) lean = 0.10 + hs() * 0.06;
+        }
+        drawSpine(ctx, b, x2, base2, bw, bh, hs, lean);
+        x2 += bw + 1 + gap;
+        bi++; placed++; run++;
+      }
+      drawBoard(ctx, frame, base2, innerW, boardT, wood);
+    }
   }
-  /* the case around it */
+
   ctx.fillStyle = wood.edge;
   ctx.fillRect(0, 0, W, frame); ctx.fillRect(0, H - frame, W, frame);
   ctx.fillRect(0, 0, frame, H); ctx.fillRect(W - frame, 0, frame, H);
-  ctx.fillStyle = "rgba(0,0,0,0)";
-  /* soft vignette so the desktop icons have somewhere quiet to sit */
   var v = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.42,
                                    W/2, H/2, Math.max(W,H)*0.75);
   v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.38)");
@@ -289,12 +442,15 @@ function build() {
 
   el("cap").textContent = W + " × " + H + " px · " + placed + " of " +
     lib.length + " books on " + rows + " shelves" +
-    (placed < lib.length ? " — Rearrange deals a different hand" : "");
-  el("stats").innerHTML = usingDemo
-    ? "Showing the built-in demo shelf. <b>" + books.length + "</b> books."
-    : "Your export: <b>" + books.length + "</b> books, <b>" +
-      books.filter(function(b){return b.shelf==="read";}).length +
-      "</b> read.";
+    (omitted ? " · " + omitted + " left off (no cover on file)" : "") +
+    (placed + omitted < lib.length ?
+      " — Rearrange deals a different hand" : "");
+  if (!coverStatus)
+    el("stats").innerHTML = usingDemo
+      ? "Showing the built-in demo shelf. <b>" + books.length + "</b> books."
+      : "Your export: <b>" + books.length + "</b> books, <b>" +
+        books.filter(function(b){return b.shelf==="read";}).length +
+        "</b> read.";
 }
 
 function drawBoard(ctx, x, y, w, t, wood) {
@@ -305,59 +461,184 @@ function drawBoard(ctx, x, y, w, t, wood) {
   ctx.fillRect(x, y + t - 2, w, 2);
 }
 
-function drawSpine(ctx, b, x, base, w, h, hs) {
+function keyLight(ctx, x, yTop, w, h) {
+  /* a warm key light falling on each row */
+  var lg = ctx.createLinearGradient(0, yTop, 0, yTop + h);
+  lg.addColorStop(0, "rgba(255,238,200,0.045)");
+  lg.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = lg; ctx.fillRect(x, yTop, w, h);
+}
+
+/* The uniform finish. Every cover, whatever its scan, gets the same
+   treatment in the same order: its exposure pulled toward one target, its
+   saturation eased off, one warm wash, one pass of grain. The point is that
+   a shelf of covers from six decades of printing reads as one shelf. */
+function drawCover(ctx, cov, x, base, w, h) {
   var y = base - h;
-  var cloth = CLOTHS[Math.floor(hs() * CLOTHS.length)];
-  var dark = shade(cloth, -0.35), lite = shade(cloth, 0.18);
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.55)"; ctx.shadowBlur = 10;
+  ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 4;
+  ctx.drawImage(cov.img, x, y, w, h);
+  ctx.restore();
+  ctx.save();
+  ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  /* exposure toward a common middle */
+  var mean = (cov.pal && cov.pal.mean) || 0.5, target = 0.48;
+  if (mean > target) {
+    ctx.globalAlpha = Math.min(0.4, (mean - target) * 0.9);
+    ctx.fillStyle = "#000"; ctx.fillRect(x, y, w, h);
+  } else {
+    ctx.globalAlpha = Math.min(0.28, (target - mean) * 0.7);
+    ctx.fillStyle = "#fff"; ctx.fillRect(x, y, w, h);
+  }
+  /* one notch less saturated, then one warm wash */
+  ctx.globalAlpha = 0.30;
+  ctx.globalCompositeOperation = "saturation";
+  ctx.fillStyle = "#808080"; ctx.fillRect(x, y, w, h);
+  ctx.globalAlpha = 0.14;
+  ctx.globalCompositeOperation = "soft-light";
+  ctx.fillStyle = "#c9a86a"; ctx.fillRect(x, y, w, h);
+  /* grain, tiled */
+  ctx.globalAlpha = 0.10;
+  ctx.globalCompositeOperation = "overlay";
+  var g = grain();
+  for (var gy = y; gy < y + h; gy += 96)
+    for (var gx = x; gx < x + w; gx += 96)
+      ctx.drawImage(g, gx, gy);
+  ctx.restore();
+  /* settled edges: a hairline and a foot shadow, same for every book */
+  ctx.strokeStyle = "rgba(0,0,0,0.45)"; ctx.lineWidth = 1;
+  ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+  ctx.fillStyle = "rgba(0,0,0,0.4)";
+  ctx.fillRect(x, base - 3, w, 3);
+}
 
-  /* body with a rounded hint at the spine edges */
-  var g = ctx.createLinearGradient(x, 0, x + w, 0);
-  g.addColorStop(0, dark); g.addColorStop(0.12, cloth);
-  g.addColorStop(0.5, lite); g.addColorStop(0.88, cloth);
-  g.addColorStop(1, dark);
-  ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
-  ctx.fillStyle = "rgba(0,0,0,0.45)";
-  ctx.fillRect(x, base - 3, w, 3);                       // sits in shadow
+/* The spine wardrobe. Which coat a book wears follows its era, with the
+   hash breaking ties, so a shelf of Victorians reads darker and older than
+   a shelf of this decade - which is what a real one does. */
+function drawSpine(ctx, b, x, base, w, h, hs, lean) {
+  ctx.save();
+  if (lean) {
+    ctx.translate(x + w, base);
+    ctx.rotate(lean);
+    ctx.translate(-(x + w), -base);
+  }
+  var y = base - h;
+  var era = b.year || 1960;
+  var pick = hs();
+  var mode;                       // leather | label | twotone | pulp | modern
+  if (era < 1900)          mode = pick < 0.72 ? "leather" : "label";
+  else if (era < 1960)     mode = pick < 0.45 ? "label"
+                                 : pick < 0.8 ? "twotone" : "leather";
+  else if (era < 2000)     mode = pick < 0.5 ? "pulp"
+                                 : pick < 0.8 ? "twotone" : "label";
+  else                     mode = pick < 0.55 ? "modern" : "pulp";
 
-  var ink = INKS[Math.floor(hs() * (INKS.length - 1))];
-  if (lum(cloth) > 0.45) ink = INKS[3];
-
-  /* bands and rules, the vocabulary of real bindings */
-  var style = hs();
-  if (style < 0.45) {                                     // head + tail bands
-    var bandH = Math.max(3, h * 0.045);
-    ctx.fillStyle = shade(cloth, -0.5);
-    ctx.fillRect(x, y + h * 0.08, w, bandH);
-    ctx.fillRect(x, base - h * 0.10 - bandH, w, bandH);
-  } else if (style < 0.7) {                               // gilt double rule
-    ctx.fillStyle = "rgba(214,183,110,0.85)";
-    ctx.fillRect(x + 1, y + h * 0.10, w - 2, 1.5);
-    ctx.fillRect(x + 1, y + h * 0.135, w - 2, 1.5);
-    ctx.fillRect(x + 1, base - h * 0.12, w - 2, 1.5);
-  } else if (style < 0.82) {                              // title label patch
-    ctx.fillStyle = "rgba(238,229,205,0.92)";
-    var lh = h * 0.20;
-    ctx.fillRect(x + w * 0.14, y + h * 0.10, w * 0.72, lh);
-    ink = "#1c1a14";
+  var bg, band, ink;
+  if (mode === "leather") {
+    bg = LEATHERS[Math.floor(hs() * LEATHERS.length)];
+    band = GILT; ink = GILT;
+  } else if (mode === "modern") {
+    bg = MODERNS[Math.floor(hs() * MODERNS.length)];
+    band = MODERNS[Math.floor(hs() * MODERNS.length)];
+    ink = lum2(bg) > 0.5 ? "#16171a" : "#f0ede4";
+  } else {
+    bg = CLOTHS[Math.floor(hs() * CLOTHS.length)];
+    band = shade(bg, -0.5);
+    ink = lum2(bg) > 0.45 ? "#111417" : "#e9ddc0";
   }
 
-  /* lettering: down the spine, as printed */
+  /* body, rounded by light */
+  var g = ctx.createLinearGradient(x, 0, x + w, 0);
+  g.addColorStop(0, shade2(bg, -0.35)); g.addColorStop(0.12, bg);
+  g.addColorStop(0.5, shade2(bg, 0.16)); g.addColorStop(0.88, bg);
+  g.addColorStop(1, shade2(bg, -0.35));
+  ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
+  /* cloth grain, very quiet */
+  ctx.globalAlpha = 0.05; ctx.fillStyle = "#000";
+  for (var gx = x + 2; gx < x + w - 1; gx += 3) ctx.fillRect(gx, y, 1, h);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = "rgba(0,0,0,0.45)";
+  ctx.fillRect(x, base - 3, w, 3);
+
+  if (mode === "leather") {
+    /* raised bands, the five ridges of a hand-bound spine */
+    for (var i = 1; i <= 5; i++) {
+      var by = y + h * (0.14 + i * 0.13);
+      ctx.fillStyle = "rgba(0,0,0,0.35)"; ctx.fillRect(x, by + 2, w, 2);
+      ctx.fillStyle = shade2(bg, 0.25);   ctx.fillRect(x, by, w, 2);
+    }
+    ctx.fillStyle = GILT;
+    ctx.fillRect(x + 1, y + h * 0.045, w - 2, 1.5);
+    ctx.fillRect(x + 1, base - h * 0.05, w - 2, 1.5);
+  } else if (mode === "label") {
+    ctx.fillStyle = "rgba(238,229,205,0.93)";
+    ctx.fillRect(x + w * 0.12, y + h * 0.08, w * 0.76, h * 0.24);
+    ink = "#1c1a14";
+  } else if (mode === "twotone") {
+    ctx.fillStyle = band;
+    ctx.fillRect(x, y, w, h * 0.32);
+    ctx.fillStyle = "rgba(0,0,0,0.18)";
+    ctx.fillRect(x, y + h * 0.32 - 1.5, w, 1.5);
+  } else if (mode === "pulp") {
+    ctx.fillStyle = lum2(bg) > 0.4 ? "#141519" : "#eee7d7";
+    ctx.fillRect(x, y + h * 0.06, w, h * 0.085);
+  }
+
+  /* a five-star book earns a gilt point at the foot */
+  if (b.rating === 5) {
+    ctx.fillStyle = GILT;
+    ctx.beginPath();
+    ctx.arc(x + w / 2, base - h * 0.045, Math.max(1.6, w * 0.06), 0,
+            Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* lettering down the spine; wide spines get it across, like a folio */
   var t = b.title.length > 34 ? b.title.slice(0, 32) + "…" : b.title;
-  var fs = Math.max(9, Math.min(w * 0.42, h * 0.05));
-  ctx.save();
-  ctx.translate(x + w / 2, y + h * 0.52);
-  ctx.rotate(Math.PI / 2);
+  var era2 = b.year || 1960;
+  var family = mode === "modern" ? "'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+             : mode === "pulp"   ? "'Arial Narrow', 'Segoe UI', sans-serif"
+             : "Georgia, 'Times New Roman', serif";
+  var weight = mode === "modern" || mode === "pulp" ? "700" : "600";
   ctx.fillStyle = ink;
-  ctx.font = "600 " + fs + "px Georgia, 'Times New Roman', serif";
-  ctx.textAlign = "center";
-  var maxLen = h * 0.78;
-  ctx.fillText(t, 0, 0, maxLen);
-  var surname = (b.author.split(" ").pop() || "").toUpperCase();
-  if (surname && h > 90 && w > 20) {
-    ctx.font = (fs * 0.62) + "px Georgia, serif";
-    ctx.globalAlpha = 0.75;
-    ctx.fillText(surname, 0, -fs * 1.05, maxLen * 0.5);
+  if (w > 64 && h > 120) {                    // folio: horizontal, stacked
+    var fs2 = Math.min(w * 0.16, h * 0.06);
+    ctx.font = weight + " " + fs2 + "px " + family;
+    ctx.textAlign = "center";
+    var words = t.split(" "), lines = [""], li = 0;
+    for (var wi = 0; wi < words.length; wi++) {
+      if ((lines[li] + " " + words[wi]).length > 12 && lines[li]) {
+        lines.push(words[wi]); li++;
+      } else lines[li] = (lines[li] ? lines[li] + " " : "") + words[wi];
+    }
+    lines = lines.slice(0, 4);
+    for (var ln = 0; ln < lines.length; ln++)
+      ctx.fillText(lines[ln], x + w / 2,
+                   y + h * 0.42 + (ln - (lines.length - 1) / 2) * fs2 * 1.25,
+                   w * 0.9);
+    ctx.font = (fs2 * 0.6) + "px " + family;
+    ctx.globalAlpha = 0.8;
+    ctx.fillText((b.author.split(" ").pop() || "").toUpperCase(),
+                 x + w / 2, base - h * 0.14, w * 0.85);
     ctx.globalAlpha = 1;
+  } else {                                    // the usual: down the spine
+    var fs = Math.max(9, Math.min(w * 0.42, h * 0.05));
+    ctx.save();
+    ctx.translate(x + w / 2, y + h * 0.52);
+    ctx.rotate(Math.PI / 2);
+    ctx.font = weight + " " + fs + "px " + family;
+    ctx.textAlign = "center";
+    var maxLen = h * 0.78;
+    ctx.fillText(t, 0, 0, maxLen);
+    var surname = (b.author.split(" ").pop() || "").toUpperCase();
+    if (surname && h > 90 && w > 20) {
+      ctx.font = (fs * 0.62) + "px " + family;
+      ctx.globalAlpha = 0.75;
+      ctx.fillText(surname, 0, -fs * 1.05, maxLen * 0.5);
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
   }
   ctx.restore();
 }
@@ -371,14 +652,30 @@ function shade(hex, k) {
   }
   return "rgb(" + c(r) + "," + c(g2) + "," + c(b) + ")";
 }
-function lum(hex) {
-  var n = parseInt(hex.slice(1), 16);
-  return ((n >> 16 & 255) * 0.299 + (n >> 8 & 255) * 0.587 +
-          (n & 255) * 0.114) / 255;
+function parseCol(s) {
+  if (s[0] === "#") {
+    var n = parseInt(s.slice(1), 16);
+    return [n >> 16 & 255, n >> 8 & 255, n & 255];
+  }
+  var m = s.match(/(\d+),\s*(\d+),\s*(\d+)/);
+  return m ? [+m[1], +m[2], +m[3]] : [128, 128, 128];
+}
+function shade2(col, k) {
+  var v = parseCol(col);
+  function c(x) {
+    x = k < 0 ? x * (1 + k) : x + (255 - x) * k;
+    return Math.max(0, Math.min(255, Math.round(x)));
+  }
+  return "rgb(" + c(v[0]) + "," + c(v[1]) + "," + c(v[2]) + ")";
+}
+function lum2(col) {
+  var v = parseCol(col);
+  return (v[0] * 0.299 + v[1] * 0.587 + v[2] * 0.114) / 255;
 }
 
 /* --------------------------------------------------------------------- UI */
 function el(id) { return document.getElementById(id); }
+var coverStatus = false;
 
 el("w").value = (screen.width * (devicePixelRatio || 1)) | 0;
 el("h").value = (screen.height * (devicePixelRatio || 1)) | 0;
@@ -390,6 +687,9 @@ el("mine").onclick = function () {
 ["w", "h", "wood", "shelf"].forEach(function (id) {
   el(id).addEventListener("change", build);
 });
+el("covers").addEventListener("change", function () {
+  if (el("covers").checked) startCovers(); else { coverStatus = false; build(); }
+});
 el("shuffle").onclick = function () { seed++; build(); };
 el("dl").onclick = function () {
   el("cv").toBlob(function (blob) {
@@ -400,6 +700,28 @@ el("dl").onclick = function () {
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
   }, "image/png");
 };
+
+function startCovers() {
+  var want = el("shelf").value;
+  var lib = books.filter(function (b) {
+    return want === "all" || b.shelf === want;
+  });
+  coverStatus = true;
+  el("stats").innerHTML = "Fetching covers from Open Library…";
+  fetchCovers(lib, function (got, total) {
+    el("stats").innerHTML = "Covers: <b>" + got + "</b> of " + total +
+                            " checked…";
+    if (got % 12 === 0) build();
+  }, function () {
+    coverStatus = false;
+    var have = lib.filter(function (b) {
+      return b.isbn && typeof coverCache[b.isbn] === "object";
+    }).length;
+    el("stats").innerHTML = "Cover art on file for <b>" + have + "</b> of " +
+      lib.length + " books; the rest are left off the wall.";
+    build();
+  });
+}
 
 var drop = el("drop");
 drop.onclick = function () { el("file").click(); };
@@ -422,7 +744,7 @@ function readFile(f) {
       return;
     }
     books = lib; usingDemo = false; seed = 1;
-    build();
+    if (el("covers").checked) startCovers(); else build();
   };
   rd.readAsText(f);
 }

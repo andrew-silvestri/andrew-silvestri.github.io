@@ -28,8 +28,10 @@ actually read, spine by spine. Both run entirely on your machine.</p>
 <h3 style="margin-top:4px">The bookshelf</h3>
 <p>Drop in a Goodreads export, give it your screen size, and download the
 wallpaper. The page is the whole application &mdash; it parses the CSV, draws
-the shelf and writes the PNG in the browser, and works with the network cable
-out.</p>
+the shelf and writes the PNG in the browser, and by default works with the
+network cable out. Switch on real covers and the shelf becomes a wall of
+your books&rsquo; actual covers, fetched by ISBN and brought to one shared
+finish.</p>
 <a class="btn" href="bookshelf-app.html" target="_blank" rel="noopener">Open it</a>
 <a class="btn ghost" href="downloads/bookshelf-code.zip">Download it to keep</a>
 </div>
@@ -81,15 +83,24 @@ photography of them belongs to the institutions.</p>
 
 <p>Goodreads exports a CSV of everything you have shelved. The app reads it
 and builds a case of book spines sized to your screen: a spine&rsquo;s width
-follows its page count, and the shelf holds whichever slice of the library
-you ask for &mdash; read, reading, or the aspirational pile.</p>
+follows its page count, its dress follows its era &mdash; Victorians in
+banded leather with gilt rules, mid-century in cloth and paper labels,
+recent books in flat graphic colour &mdash; and the shelf holds whichever
+slice of the library you ask for: read, reading, or the aspirational
+pile. A five-star rating earns a book a gilt point at the foot of its
+spine.</p>
 
-<p>What is real: titles, authors, page counts and years, straight from the
-export. What is chosen: the cloth colours, bands, labels and lettering are
-drawn deterministically from each title, so the same book always gets the
-same spine &mdash; but the spine is a design, not a photograph of your
-edition. The page states the same split, because sonification and
-visualisation projects usually blur it.</p>
+<p>Cover mode turns the shelf into a wall of the covers themselves, fetched
+from the Open Library covers service by the ISBNs in the export &mdash; the
+page&rsquo;s single use of the network, off by default, and the request
+carries the ISBN and nothing else. Scans of covers arrive in every vintage
+of exposure and colour, so each one is brought to a single matte finish:
+exposure pulled toward a common middle, saturation eased, one warm wash,
+one pass of grain. A book with no cover on file is left off the wall rather
+than faked. A worthwhile limit to state plainly: there is no database of
+photographed book <em>spines</em>, at any scale, from anyone &mdash; spines
+were never scanned the way covers were, which is why the two modes are a
+real-cover wall and a drawn-spine shelf, and nothing in between.</p>
 
 <h2>Install and removal</h2>
 
