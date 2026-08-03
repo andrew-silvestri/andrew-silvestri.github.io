@@ -69,12 +69,7 @@
   <div id="stats">Showing the built-in demo shelf.</div>
 
   <label for="shelf">Which books</label>
-  <select id="shelf">
-    <option value="read" selected>Read</option>
-    <option value="currently-reading">Currently reading</option>
-    <option value="to-read">To read</option>
-    <option value="all">Everything in the export</option>
-  </select>
+  <select id="shelf"></select>
 
   <label class="check"><input id="covers" type="checkbox">
     <span><b>Real covers</b>, face-out
@@ -228,23 +223,92 @@ function fromGoodreads(text) {
   var iT = col("title"), iA = col("author"), iP = col("number of pages"),
       iY = col("original publication year"), iY2 = col("year published"),
       iS = col("exclusive shelf"), iR = col("my rating"),
-      iI13 = col("isbn13"), iI10 = col("isbn");
+      iI13 = col("isbn13"), iI10 = col("isbn"), iB = col("bookshelves");
   if (iT < 0 || iA < 0) return null;
   var out = [];
   for (var i = 1; i < rows.length; i++) {
     var r = rows[i];
     if (!r[iT]) continue;
     var t = r[iT].replace(/\s*\(.*?\)\s*$/, "");   // series suffix off
+    var shelf = (iS >= 0 && r[iS]) ? r[iS].trim() : "read";
+    // the Bookshelves column is the user's own tags, comma-separated; the
+    // exclusive shelf repeats in it, so it is filtered back out
+    var tags = [];
+    if (iB >= 0 && r[iB])
+      tags = r[iB].split(",").map(function (s) { return s.trim(); })
+                  .filter(function (s) {
+                    return s && s !== shelf &&
+                           s !== "currently-reading" && s !== "to-read" &&
+                           s !== "read";
+                  });
     out.push({
       title: t, author: r[iA] || "",
       pages: parseInt(r[iP], 10) || 0,
       year: parseInt(r[iY], 10) || parseInt(r[iY2], 10) || 0,
       rating: parseInt(r[iR], 10) || 0,
       isbn: cleanIsbn(iI13 >= 0 && r[iI13]) || cleanIsbn(iI10 >= 0 && r[iI10]),
-      shelf: (iS >= 0 && r[iS]) ? r[iS] : "read"
+      shelf: shelf, tags: tags
     });
   }
   return out.length ? out : null;
+}
+
+/* Which books make the shelf. The fixed choices, then whatever shelves the
+   export itself carries. "Unread" is everything not marked read, which is
+   the to-read pile plus whatever is mid-flight. */
+function filterLib() {
+  var want = el("shelf").value || "read";
+  var out = books.filter(function (b) {
+    if (want === "all") return true;
+    if (want === "unread") return b.shelf !== "read";
+    if (want.slice(0, 4) === "tag:")
+      return (b.tags || []).indexOf(want.slice(4)) >= 0;
+    return b.shelf === want;
+  });
+  return out.length ? out : books.slice();
+}
+
+function rebuildShelfOptions() {
+  var sel = el("shelf");
+  var keep = sel.value;
+  var counts = { read: 0, "currently-reading": 0, "to-read": 0 };
+  var tags = {};
+  books.forEach(function (b) {
+    if (counts[b.shelf] !== undefined) counts[b.shelf]++;
+    (b.tags || []).forEach(function (t) { tags[t] = (tags[t] || 0) + 1; });
+  });
+  var unread = books.length - counts.read;
+  function opt(v, label) {
+    return '<option value="' + v.replace(/"/g, "&quot;") + '">' + label +
+           "</option>";
+  }
+  var htm = opt("all", "Everything (" + books.length + ")") +
+            opt("read", "Read (" + counts.read + ")") +
+            opt("unread", "Unread (" + unread + ")");
+  if (counts["currently-reading"])
+    htm += opt("currently-reading",
+               "Currently reading (" + counts["currently-reading"] + ")");
+  if (counts["to-read"])
+    htm += opt("to-read", "To read (" + counts["to-read"] + ")");
+  var names = Object.keys(tags).sort(function (p, q) {
+    return tags[q] - tags[p] || (p < q ? -1 : 1);
+  });
+  if (names.length) {
+    htm += '<optgroup label="Your shelves">';
+    names.forEach(function (t) {
+      htm += opt("tag:" + t, esc(t) + " (" + tags[t] + ")");
+    });
+    htm += "</optgroup>";
+  }
+  sel.innerHTML = htm;
+  sel.value = keep;
+  if (!sel.value) sel.value = counts.read ? "read" : "all";
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>]/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
+  });
 }
 
 /* ------------------------------------------------------------- cover art */
@@ -347,12 +411,8 @@ function build() {
   var W = +el("w").value || 1920, H = +el("h").value || 1080;
   W = Math.max(640, Math.min(7680, W)); H = Math.max(400, Math.min(4320, H));
   var wood = WOODS[el("wood").value];
-  var want = el("shelf").value;
   var useCovers = el("covers").checked;
-  var lib = books.filter(function (b) {
-    return want === "all" || b.shelf === want;
-  });
-  if (!lib.length) lib = books.slice();
+  var lib = filterLib();
 
   var cv = el("cv"); cv.width = W; cv.height = H;
   var ctx = cv.getContext("2d");
@@ -684,8 +744,12 @@ el("mine").onclick = function () {
   el("h").value = (screen.height * (devicePixelRatio || 1)) | 0;
   build();
 };
-["w", "h", "wood", "shelf"].forEach(function (id) {
+["w", "h", "wood"].forEach(function (id) {
   el(id).addEventListener("change", build);
+});
+el("shelf").addEventListener("change", function () {
+  // a new slice of the library may need covers not yet fetched
+  if (el("covers").checked) startCovers(); else build();
 });
 el("covers").addEventListener("change", function () {
   if (el("covers").checked) startCovers(); else { coverStatus = false; build(); }
@@ -702,10 +766,7 @@ el("dl").onclick = function () {
 };
 
 function startCovers() {
-  var want = el("shelf").value;
-  var lib = books.filter(function (b) {
-    return want === "all" || b.shelf === want;
-  });
+  var lib = filterLib();
   coverStatus = true;
   el("stats").innerHTML = "Fetching covers from Open Library…";
   fetchCovers(lib, function (got, total) {
@@ -744,11 +805,29 @@ function readFile(f) {
       return;
     }
     books = lib; usingDemo = false; seed = 1;
+    rebuildShelfOptions();
     if (el("covers").checked) startCovers(); else build();
   };
   rd.readAsText(f);
 }
 
-build();
+rebuildShelfOptions();
+
+/* URL parameters, so a particular view can be linked or captured:
+   ?wood=oak&shelf=read&w=1920&h=1080&covers=1 */
+(function () {
+  var q = new URLSearchParams(location.search);
+  if (q.get("wood") && WOODS[q.get("wood")]) el("wood").value = q.get("wood");
+  if (q.get("w")) el("w").value = q.get("w");
+  if (q.get("h")) el("h").value = q.get("h");
+  if (q.get("shelf")) el("shelf").value = q.get("shelf");
+  if (!el("shelf").value) el("shelf").value = "read";
+  if (q.get("covers") === "1") {
+    el("covers").checked = true;
+    startCovers();
+    return;
+  }
+  build();
+})();
 </script>
 </body></html>
