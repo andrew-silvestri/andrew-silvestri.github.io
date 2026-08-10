@@ -53,6 +53,28 @@
            box-shadow:0 18px 50px rgba(0,0,0,.5); }
   #cap { color:var(--dim); font-size:12px; }
   a { color:var(--cool); }
+
+/* Touch. Without touch-action a drag on the canvas is claimed by the page
+   as a scroll, so on a phone the view will not turn — which is most of what
+   these tools are for. dvh rather than vh because iOS counts the address
+   bar in vh and the bottom of the layout ends up under it. */
+canvas, #gl, #view, #stage { touch-action: none; }
+@supports (height: 100dvh) { #app { height: 100dvh; } }
+
+/* Phones. The layout is a fixed 300px control column beside the canvas,
+   which on a 390px screen leaves nothing for the picture. Stack instead:
+   controls first, then the shelf, and let the page scroll normally — this
+   is the one app here that is a form rather than a viewport, so scrolling
+   is the right behaviour and touch-action must not block it. */
+@media (max-width: 760px) {
+  html, body { height: auto; }
+  body { display: block; }
+  aside { width: 100%; min-width: 0; border-right: 0;
+          border-bottom: 1px solid var(--rule); padding: 16px 18px 22px; }
+  main { padding: 16px 14px 40px; }
+  canvas { max-height: 62vh; touch-action: auto; }
+  input[type=number], select, button { font-size: 16px; }
+}
 </style>
 </head><body>
 <aside>

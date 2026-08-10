@@ -184,7 +184,7 @@ main {
   grid-template-columns:
     [full-start] minmax(34px, 1fr)
     [wide-start] minmax(0, calc((var(--wide) - var(--text)) / 2))
-    [text-start] var(--text) [text-end]
+    [text-start] minmax(0, var(--text)) [text-end]
     minmax(0, calc((var(--wide) - var(--text)) / 2)) [wide-end]
     minmax(34px, 1fr) [full-end];
 }
@@ -419,24 +419,47 @@ footer {
 @media (max-width: 760px) {
   main { grid-template-columns: [full-start wide-start text-start] 1fr
                                 [text-end wide-end full-end];
-         padding-left: 20px; padding-right: 20px; }
+         padding-left: 20px; padding-right: 20px;
+         max-width: 100%; }
   .cardgrid { grid-template-columns: 1fr; }
+  /* Nothing may be wider than the screen. One over-wide child gives the
+     whole document a horizontal scroll, and every block then reads as
+     though it has been cut off down the right edge. */
+  main > * { max-width: 100%; min-width: 0; }
+  #hero { max-width: 100%; }
+  /* A table of numbers cannot be made narrow without lying about it, so it
+     scrolls inside its own box rather than stretching the page. */
+  table { display: block; width: 100%; overflow-x: auto; }
+  pre, code { overflow-x: auto; word-break: break-word; }
 }
 @media (max-width: 620px) {
   body { font-size: 16.5px; }
   main { padding-top: 30px; padding-bottom: 90px; }
   nav.top { padding: 20px 20px 0; }
   h1 { font-size: 27px; }
+  /* On a phone the dropdowns used to be forced open — position:static plus
+     display:block — so every page began with the whole site map spilled down
+     the screen and the content pushed below the fold. They stay closed here
+     and open on tap: an anchor takes focus when touched, which is the same
+     mechanism the desktop hover uses, so no script is needed. */
   .ddmenu {
     position: static;
-    display: block;
+    display: none;
     border: 0;
     box-shadow: none;
-    padding: 4px 0 8px;
+    padding: 2px 0 6px;
     min-width: 0;
     background: transparent;
   }
-  .ddmenu a { padding: 6px 0 6px 15px; }
-  .dd { display: block; margin: 8px 0; }
+  .dd:focus-within > .ddmenu { display: block; }
+  .ddmenu a { padding: 9px 0 9px 18px; font-size: 15px; }
+  .dd { display: block; margin: 2px 0; width: 100%; }
+  /* Full-width rows with a comfortable tap target, and the caret turned to
+     point down so a closed group looks closed. */
+  nav.top { gap: 0; padding: 16px 20px 6px; }
+  nav.top a { padding: 9px 4px; font-size: 15px; }
+  nav.top .back { order: -1; margin-left: 0; margin-bottom: 4px; }
+  .dd > .ddbtn { display: block; }
+  .caret { float: right; font-size: 11px; opacity: .8; }
   .card { padding: 20px; }
 }

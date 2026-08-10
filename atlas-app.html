@@ -152,6 +152,13 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:4px 0 0}
     --wild:#2f6f5c; --cap:#4c3fb5; --avg:#161a26; --grp:#4a56a8;
   }
 }
+
+/* Touch. Without touch-action a drag on the canvas is claimed by the page
+   as a scroll, so on a phone the view will not turn — which is most of what
+   these tools are for. dvh rather than vh because iOS counts the address
+   bar in vh and the bottom of the layout ends up under it. */
+canvas, #gl, #view, #stage { touch-action: none; }
+@supports (height: 100dvh) { #app { height: 100dvh; } }
 </style>
 
 </head><body>
