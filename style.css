@@ -125,24 +125,8 @@ nav.top a[aria-current="page"] {
 }
 /* the dropdowns are their own inline-block, so they need the same rhythm */
 nav.top .dd { margin: 0; }
-/* The back link is first in the markup but belongs at the far right. float
-   does nothing inside a flex row, so it is ordered last and given the free
-   space to its left. */
-nav.top .back { order: 99; margin-left: auto; float: none; }
 .ddmenu a.on { color: var(--acc-ink); background: var(--acc); }
 
-/* a small back link, top right of the nav. It prefers the referrer when that
-   was a page on this site, so it returns you where you came from rather than
-   guessing; when there is nowhere to go back to it removes itself instead of
-   sitting there dead. */
-nav.top .back {
-  float: right;
-  margin-right: 0;
-  font-size: 12.5px;
-  color: var(--dim);
-  border-bottom: 1px solid var(--faint);
-}
-nav.top .back:hover { color: var(--acc); border-bottom-color: var(--acc); }
 
 /* dropdown */
 .dd { position: relative; display: inline-block; margin-right: 22px; }
@@ -454,11 +438,18 @@ footer {
   .dd:focus-within > .ddmenu { display: block; }
   .ddmenu a { padding: 9px 0 9px 18px; font-size: 15px; }
   .dd { display: block; margin: 2px 0; width: 100%; }
-  /* Full-width rows with a comfortable tap target, and the caret turned to
-     point down so a closed group looks closed. */
-  nav.top { gap: 0; padding: 16px 20px 6px; }
-  nav.top a { padding: 9px 4px; font-size: 15px; }
-  nav.top .back { order: -1; margin-left: 0; margin-bottom: 4px; }
+  /* One item per row. The bar is a wrapping flex row, so the groups — which
+     are block-level — took a line each while the plain links flowed
+     together and shared one: "Pipeline liquid holdup  Climate cost
+     calculator" sat side by side looking like a single stuck item. A column
+     gives every item the same shape. */
+  nav.top { gap: 0; padding: 16px 20px 6px;
+            flex-direction: column; align-items: stretch; }
+  nav.top > a, nav.top > .dd { width: 100%; }
+  nav.top a { padding: 9px 4px; font-size: 15px; display: block; }
+  /* The current-page highlight hugs its own text rather than running the
+     width of the bar, which in a column layout stretch would otherwise do. */
+  nav.top a.on { align-self: flex-start; width: auto; }
   .dd > .ddbtn { display: block; }
   .caret { float: right; font-size: 11px; opacity: .8; }
   .card { padding: 20px; }
