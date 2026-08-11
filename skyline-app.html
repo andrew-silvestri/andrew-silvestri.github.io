@@ -790,6 +790,24 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   });
 
   var playBtn = document.getElementById('play');
+
+  /* One place that stops the sound, so leaving the page, hiding the tab and
+     pressing Stop all take the same route. The gain is set straight to zero
+     rather than eased, because an eased stop that is still running when the
+     page goes into the background carries on in a tab nobody is looking at. */
+  function silence() {
+    S.playing = false;
+    playBtn.textContent = 'Play';
+    playBtn.classList.remove('on');
+    if (master) {
+      try { master.gain.cancelScheduledValues(actx.currentTime); } catch (e) {}
+      master.gain.value = 0;
+    }
+    if (actx && actx.state === 'running' && actx.suspend) {
+      try { actx.suspend(); } catch (e) {}
+    }
+  }
+
   playBtn.addEventListener('click', function () {
     if (!S.playing) {
       if (!buildAudio()) return;
@@ -798,12 +816,29 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
       S.playing = true;
       playBtn.textContent = 'Stop';
       playBtn.classList.add('on');
+      pushAudio();
     } else {
-      S.playing = false;
-      playBtn.textContent = 'Play';
-      playBtn.classList.remove('on');
+      silence();
     }
-    pushAudio();
+  });
+
+  /* A browser tab keeps running when it is not on screen, and a tab quietly
+     playing a chord behind whatever the reader moved on to is the worst kind
+     of bug to track down. Hiding the tab stops it; coming back leaves it
+     stopped, because restarting an instrument nobody asked to restart is its
+     own annoyance. pagehide covers the back button and the phone browsers
+     that never fire unload. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && S.playing) silence();
+  });
+  window.addEventListener('pagehide', function () {
+    silence();
+    if (actx && actx.close) { try { actx.close(); } catch (e) {} }
+  });
+  window.addEventListener('blur', function () {
+    /* Only for the case where the whole window loses focus with the sound
+       running; a click on the sidebar does not blur the window. */
+    if (S.playing && document.hidden) silence();
   });
 
   var spinBtn = document.getElementById('spin');
