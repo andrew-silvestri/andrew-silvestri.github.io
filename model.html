@@ -56,8 +56,6 @@ at every other node.</p>
 
 <h2>3. Where the numbers come from</h2>
 
-<p>No parameter is invented. Each node records its source.</p>
-
 <table>
 <tr><th>Source</th><th>What it gives the model</th><th>Size</th></tr>
 <tr><td>Energy Institute Statistical Review</td><td>Fuel mix and electricity demand for each country</td><td>299,321 rows, 1965 to 2025</td></tr>
@@ -134,14 +132,6 @@ links, using the coefficients from 4.3.</li>
 <p>The model stops when no node moves more than 0.00001 in one step, and gives
 up at sixty steps. Nothing in this write-up reaches sixty.</p>
 
-<h3>4.5 Why the tanh function</h3>
-
-<p>Without it, a large change grows without limit. A price cannot rise forever,
-and a grid cannot fail more than completely. The tanh function makes large
-inputs approach a limit, and it is also what makes the iteration a contraction:
-the weighted mean has a spectral radius of exactly 1, and tanh and the inertia
-factor pull it below 1.</p>
-
 <h2>5. How the model is weighted</h2>
 
 <h3>5.1 Link weights</h3>
@@ -197,8 +187,6 @@ supply moves it and a change at one of its 4,235 plants does not.</p>
 
 <h2>6. How the model behaves</h2>
 
-<p>The atlas carries 60 prepared changes in 9 kinds. Each names the figure its size rests on. The table gives the widest-reaching change of each kind.</p>
-
 <table>
 <tr><th>Kind of change</th><th>Widest in that kind</th><th class="n">Nodes that changed</th></tr>
 <tr><td>Universe & Earth, exogenous</td><td>A step in climate forcing</td><td class="n">77,669</td></tr>
@@ -211,42 +199,6 @@ supply moves it and a change at one of its 4,235 plants does not.</p>
 <tr><td>People & cognition</td><td>Fear becomes salient</td><td class="n">3,004</td></tr>
 <tr><td>Global pandemics</td><td>The Black Death, at today's scale</td><td class="n">2,744</td></tr>
 </table>
-
-<h3>6.1 Three results worth noting</h3>
-
-<p><b>Reach spans five orders of magnitude.</b> A change starting at the most
-connected power plant moves one other node. A change starting at the climate
-moves seventy-seven thousand. The climate is the only node in the model that
-connects to every country, and the spread is the evidence that the propagation
-discriminates rather than floods.</p>
-
-<p><b>Depth and breadth are different quantities.</b> The China coal cut reaches
-5,030 nodes but moves the Chinese grid only 0.026, because coal is one of six
-things that grid listens to. The gas price spike reaches fewer nodes and moves
-them much harder. Counting nodes alone would rank these the wrong way round.</p>
-
-<p><b>Prices move fastest, the climate slowest.</b> An oil supply loss settles
-in 24 steps and a climate forcing takes 45. Prices are the signal this system
-uses to communicate, and the climate is a slow variable connected to everything.</p>
-
-<h3>6.2 An example route</h3>
-
-<p>This is the strongest route out of a full climate forcing, chosen at each
-step by following the largest settled effect among the current node's
-neighbours:</p>
-
-<pre>Climate system (CO2 431.4 ppm)                 +0.883
-  -&gt; Global temperature (+1.19 C)               +0.531
-    -&gt; United States Storm 2005 ($206bn)        +0.449
-      -&gt; USA grid (544.8 GW average)            +0.252
-        -&gt; a plant on that grid                 +0.227</pre>
-
-<p>The effect falls at each step. Distant causes have small effects.</p>
-
-<p>The climate layer reaches the disaster record only for the types the
-climate drives: storms, floods, droughts, wildfires and heat extremes. It does
-not reach earthquakes, tsunamis or landslides. Plate tectonics does not read
-the temperature record.</p>
 
 <h2>7. How to run the model</h2>
 
@@ -261,55 +213,6 @@ the temperature record.</p>
 
 <p>The Julia version and the Python version give the same numbers, node by node.
 The check file is <code>calibrate/out/parity_target.json</code>.</p>
-
-<hr>
-
-<h2>8. What the model does not do</h2>
-
-<p>These are the limits, and a user has to know them.</p>
-
-<ul>
-<li><strong>The effects have no units.</strong> An effect of 0.38 does not mean 38
-percent or 38 dollars. It means a large change relative to other nodes.
-Converting effects to dollars requires price calibration against known events.
-The price histories for that work are already loaded.</li>
-
-<li><strong>Time is in steps, not in days.</strong> One step is not one day. The
-steps show the order of arrival, not the calendar.</li>
-
-<li><strong>The consumer response values are assumed.</strong> They come from
-published studies of price elasticity. They are not fitted to this data set.</li>
-
-<li><strong>The model does not optimise.</strong> It does not decide which plant
-runs. It shows how stress spreads through fixed connections. Deciding which
-plant runs is the job of a dispatch model.</li>
-
-<li><strong>The station layer covers the United States only.</strong> The EIA
-archive gives plant coordinates for the United States. Other countries are
-represented by their national grid node and their fuel supplies.</li>
-
-<li><strong>Feedback is limited.</strong> An oil shock that causes a recession
-that reduces demand is represented by the negative consumer links. This is not a
-full economic model.</li>
-</ul>
-
-<hr>
-
-<h2>9. Summary</h2>
-
-<p>The model connects public data about the physical world to public data about
-human systems. It has 86,622 nodes and 197,068 links, and every weight has a
-source. The behaviour matches expectation: slow global variables reach far, fast
-local variables reach near, and prices carry the signal between them.</p>
-
-<p>The model serves one purpose. It shows the <strong>shape and the
-speed</strong> of an effect travelling through the energy system. It does not
-forecast prices.</p>
-
-<hr>
-
-<p><em>The model, the data and the code are
-reproducible from the published sources listed in section 3.</em></p>
 
 <hr>
 <h2>Figures from this model</h2>
