@@ -272,6 +272,15 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   }
 
   function buildAudio() {
+    /* A closed context is not a usable one, and this used to read "if (actx)
+       return true", which meant that once anything closed the context the
+       button went on working and the instrument went on being silent for the
+       rest of the page's life. A page put into the back-forward cache and
+       then restored does exactly that. So a dead context is thrown away and
+       built again rather than trusted because the variable is not null. */
+    if (actx && actx.state === 'closed') {
+      actx = null; master = null; parts = []; tilt = null; lpf = null;
+    }
     if (actx) return true;
     var AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) { document.getElementById('noaudio').style.display = 'block';
@@ -831,14 +840,15 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && S.playing) silence();
   });
-  window.addEventListener('pagehide', function () {
+  window.addEventListener('pagehide', function (e) {
     silence();
-    if (actx && actx.close) { try { actx.close(); } catch (e) {} }
-  });
-  window.addEventListener('blur', function () {
-    /* Only for the case where the whole window loses focus with the sound
-       running; a click on the sidebar does not blur the window. */
-    if (S.playing && document.hidden) silence();
+    /* Closing the context frees the audio thread, but only when the page is
+       actually going away. e.persisted means it is going into the
+       back-forward cache and may come back, and a context closed on the way
+       out is still closed on the way in. */
+    if (!e.persisted && actx && actx.close) {
+      try { actx.close(); } catch (err) {}
+    }
   });
 
   var spinBtn = document.getElementById('spin');
@@ -867,6 +877,12 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
 
   window.__sky = {
     S: S, cities: C, bars: bars, peak: peak, freqOf: freqOf, setKey: setKey,
+    // for the test harness: whether anything is actually reaching the output,
+    // rather than whether the button thinks it is
+    audio: function () {
+      return { state: actx ? actx.state : 'none',
+               gain: master ? master.gain.value : 0 };
+    },
     root: function () { return rootHz; }, draw: draw, panel: panel,
     pitches: function () { return pitch; },
     barOf: function (k) { return barTo[k]; },
