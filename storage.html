@@ -61,23 +61,6 @@ over about a third as many equivalent cycles as the two-hour case.</p>
 <img class="fig wide" src="assets/storage_fig1_prices.png?v=9dad5ac5" alt="The price series: duration curve and average daily shape.">
 <p class="small">The price series: duration curve and average daily shape.</p>
 
-
-<h2>Caveats</h2>
-<p>The shipped run uses a documented synthetic price year built to resemble the
-Texas market, with a solar belly, an evening peak, summer scarcity spikes and a
-small fraction of negative hours. It is not real data. The model reads a real
-day-ahead price file automatically as soon as one is placed in its data folder.
-Replace the series before quoting any figure.</p>
-
-<p>The dispatch assumes perfect foresight, so the revenue is an upper bound.
-Real bidding into a day-ahead market captures roughly seventy to ninety per cent
-of the perfect-foresight value, and the revenue column above should be
-discounted accordingly.</p>
-
-<p>The Julia port is written with JuMP and HiGHS, the stack this class of model
-is built on in industry.</p>
-
-<hr>
 <h2>The code</h2>
 <p>Python reference implementation using an open solver, a JuMP and HiGHS port, an Octave port, and the dispatch workbook. The archive holds the source only: no generated figures, no bulk
 data. Each model runs from its own <code>README.md</code>.</p>
