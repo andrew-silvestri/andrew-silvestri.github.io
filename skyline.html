@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/skyline.html">
 <link rel="stylesheet" href="style.css?v=6a6d514d">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="holdup.html">Pipeline liquid holdup</a><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Skylines, played</h1>
@@ -63,79 +63,7 @@ a pitch. The mapping is a choice, it is written out in full below, and it is
 deterministic: the same city at the same bearing always makes the same
 sound.</p>
 
-<h2>Musical and realistic</h2>
-
-<p><strong>Realistic</strong> puts every tower at its true angular position and
-plays the whole mode across four octaves, fourteen voices. It is closer to what
-the skyline literally says and correspondingly less kind.</p>
-
-<p><strong>Musical</strong> equalises the spacing and forces the sound into a
-chord: only the first, third, fifth and sixth degrees of the mode, over two and
-a half octaves, seven voices at a time. Every subset of those notes is
-consonant, so no bearing in any city can produce a dissonance &mdash; not
-because it is avoided but because the dissonant intervals are not in the
-instrument.</p>
-
-<h2>Why it cannot become painful</h2>
-
-<p>A bank of sine waves driven by a data set can, at some bearing in some city,
-line up: twenty partials at full amplitude in the two-to-four kilohertz band,
-where hearing is sharpest and least forgiving. Tuning the mapping does not
-prevent this, because the mapping has no model of what an ear finds painful.
-The constraint is built into the instrument instead, and measured across every
-city, at every bearing, in both modes.</p>
-
-<table>
-<tr><th>Failure mode</th><th>Constraint</th><th>Worst case measured</th></tr>
-<tr><td>Too many partials at once</td><td>Voice limit; only the loudest few
-sound</td><td>7 musical, 14 realistic</td></tr>
-<tr><td>Shrillness</td><td>Ceiling below the ear's sensitive band, plus a high
-shelf and a lowpass</td><td>1,397 Hz and 1,865 Hz</td></tr>
-<tr><td>The 2&ndash;4 kHz band dominating</td><td>Nothing is placed in
-it</td><td>0% of power</td></tr>
-<tr><td>A painful interval</td><td>Minimum spacing enforced on the assembled
-ladder</td><td>2.9 semitones</td></tr>
-<tr><td>Turning as a volume ride</td><td>Constant-power normalisation on the
-gains actually sent</td><td>1.0&times;</td></tr>
-<tr><td>Anything else</td><td>A limiter and a fixed ceiling behind it</td>
-<td>&mdash;</td></tr>
-</table>
-
-<p>Only the last row is defensive. The rest are structural, and the difference
-matters: a limiter that engages means the problem was produced.</p>
-
-<h2>Three cities carried from published lists</h2>
-
-<p>Wikidata has three buildings on record for Austin, fourteen for Nashville
-and one for Fort Worth. Austin alone has sixty-five completed buildings above
-three hundred feet. That gap is not about the cities; it is about who has been
-entering data, and coverage of mid-size American downtowns is thin in a way
-that coverage of Manhattan is not. These three are therefore transcribed from
-each city's published tallest-buildings record, the transcription lives in its
-own file, and the app says how many of a city's towers arrived that way.
-Heights are structural; coordinates are block-level rather than surveyed,
-which matters less than it sounds because the wheel equalises angular spacing
-anyway &mdash; a coordinate decides what order buildings appear in, not the
-gap between them.</p>
-
-<p>Carrying the full lists is also what puts the landmarks on the wheel,
-because they qualify on their own numbers: the Texas State Capitol at 94.8 m
-and the UT Tower with the west-campus high-rises around it, West End Tower on
-the Vanderbilt campus, the Tennessee State Capitol at 63.0 m, and for Fort
-Worth the 1895 Tarrant County Courthouse, Pioneer Tower at the Will Rogers
-Memorial, and the Art Deco stock downtown. What does not qualify is left out
-and said so: the tallest thing at TCU is Robert Carr Chapel's spire at a
-published 137 ft (41.8 m), under the wheel's 55 m floor, and the Ryman and
-the Parthenon fall the same way. Above the height each published list is
-complete down to, the list also overrules the database &mdash; which is how
-the never-built 228.6 m Paramount Tower, carried by Wikidata as if it stood,
-stays out of Nashville's ring.</p>
-
 <h2>The key</h2>
-
-<p>Nothing here claims a city <em>is</em> a key. It claims that if you had to
-pick one, this is the pick with a reason attached &mdash; and the reason is on
-screen whenever you select the city.</p>
 
 <table>
 <tr><th>City</th><th>Key</th><th>From</th></tr>
@@ -178,19 +106,6 @@ they already do in the picture.</td></tr>
 <tr><td>Empty horizon</td><td>Silence</td><td>Which is why turning away from the
 towers quiets the instrument rather than merely changing it.</td></tr>
 </table>
-
-<h2>Limits</h2>
-
-<p>Coverage follows the reference database, not reality, so cities well
-documented in English are better represented than cities that are not. Several
-Chinese cities with more tall buildings than Chicago appear here with fewer,
-because fewer of their towers have been entered. The hundred-and-twenty-metre
-floor is a convention rather than a fact about what reads as skyline, and
-raising it thins the picture faster in some cities than others.</p>
-
-<p>And the instrument is not a recording. It does not sound like the city. It
-sounds like the city's shape, which is a different and much smaller
-claim.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>

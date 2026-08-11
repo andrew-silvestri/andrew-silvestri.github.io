@@ -31,9 +31,6 @@ body{margin:0;background:var(--bg);color:var(--ink);
   border-right:1px solid var(--rule);padding:16px 18px 40px}
 h1{font:500 20px/1.25 var(--serif);margin:0 0 2px}
 .sub{color:var(--dim);font-size:12.5px;margin:0 0 14px}
-.back{color:var(--dim);font-size:12.5px;text-decoration:none;
-  border-bottom:1px solid var(--faint);float:right;margin-left:12px}
-.back:hover{color:var(--acc);border-bottom-color:var(--acc)}
 
 label.f{display:block;font:11px var(--sans);text-transform:uppercase;
   letter-spacing:.11em;color:var(--dim);margin:0 0 3px}
@@ -58,13 +55,6 @@ input[type=range]{accent-color:var(--acc);margin:6px 0 0}
 #spin{background:transparent;color:var(--dim);border-color:var(--rule)}
 #spin:hover{background:transparent;color:var(--ink);border-color:var(--dim)}
 #spin.on{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
-.seg{display:flex;gap:0;border:1px solid var(--rule);border-radius:8px;
-  overflow:hidden}
-.seg button{flex:1;padding:7px 0;background:var(--card);color:var(--dim);
-  border:0;border-right:1px solid var(--rule);font:12.5px var(--sans);
-  cursor:pointer}
-.seg button:last-child{border-right:0}
-.seg button.on{background:var(--acc);color:var(--acc-ink)}
 .tier{display:inline-block;font-size:10.5px;text-transform:uppercase;
   letter-spacing:.12em;color:var(--moss);border:1px solid var(--moss);
   border-radius:20px;padding:0 7px;margin-left:2px}
@@ -93,10 +83,22 @@ ol.tow span{display:block;font-size:11.5px}
 }
 canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   cursor:ew-resize;touch-action:none}
-#hint{position:absolute;left:16px;bottom:12px;font-size:11.5px;
-  color:var(--dim);pointer-events:none;letter-spacing:.03em}
-#az{position:absolute;right:16px;bottom:12px;font:12px var(--mono);
-  color:var(--dim);pointer-events:none}
+#foot{position:absolute;left:0;right:0;bottom:0;display:flex;
+  align-items:flex-end;justify-content:space-between;gap:14px;
+  padding:10px 16px 12px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(7,10,18,.55))}
+@media (prefers-color-scheme: light){
+  #foot{background:linear-gradient(180deg,transparent,rgba(238,240,250,.65))}
+}
+#hint{font-size:11.5px;color:var(--dim);letter-spacing:.03em;
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#az{font:12px var(--mono);color:var(--dim);flex:none;white-space:nowrap;
+  margin-left:auto}
+/* Below the point where the panel stacks, the hint goes: it talks about
+   dragging, arrow keys and the space bar, two of which a phone does not
+   have, and it was the thing running into the bearing readout. The bearing
+   stays, because it is the one reading that changes as you turn. */
+@media (max-width:760px){ #hint{display:none} }
 #tip{position:absolute;pointer-events:none;display:none;padding:6px 10px;
   background:var(--card);border:1px solid var(--rule);border-radius:8px;
   font-size:12.5px;box-shadow:0 12px 30px rgba(2,4,12,.5)}
@@ -108,30 +110,16 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   #app{grid-template-columns:100%;grid-template-rows:auto 1fr}
   #side{border-right:0;border-bottom:1px solid var(--rule);max-height:44vh}
 }
-
-/* Touch. Without touch-action a drag on the canvas is claimed by the page
-   as a scroll, so on a phone the view will not turn — which is most of what
-   these tools are for. dvh rather than vh because iOS counts the address
-   bar in vh and the bottom of the layout ends up under it. */
-canvas, #gl, #view, #stage { touch-action: none; }
-@supports (height: 100dvh) { #app { height: 100dvh; } }
 </style>
 </head><body>
 <div id="app">
 <aside id="side">
-  <a class="back" href="skyline.html">&larr; back</a>
   <h1>Skylines, played</h1>
   <p class="sub">A skyline and a spectrum analyser are the same picture.
   So the picture is played.</p>
 
   <label class="f" for="city">City</label>
   <select id="city"></select>
-
-  <label class="f" style="margin-top:12px">Rendering</label>
-  <div class="seg" id="modeSeg">
-    <button data-k="musical" class="on">Musical</button>
-    <button data-k="realistic">Realistic</button>
-  </div>
 
   <label class="f" for="fov" style="margin-top:12px">Field of view</label>
   <input type="range" id="fov" min="40" max="160" step="5" value="100">
@@ -146,7 +134,10 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
   <h2>The key</h2>
   <p class="note" id="why"></p>
-  <p class="note" id="modenote"></p>
+  <p class="note">Only the first, third, fifth and sixth of the mode sound,
+  over two and a half octaves, seven voices at a time. Every subset of those
+  notes is consonant, so no bearing in any city can produce a dissonance
+  &mdash; the dissonant intervals are not in the instrument.</p>
 
   <h2>This skyline</h2>
   <dl id="stats"></dl>
@@ -160,9 +151,12 @@ canvas, #gl, #view, #stage { touch-action: none; }
   <div id="tip"></div>
   <div id="noaudio">This browser did not offer Web Audio, so the skyline is
     drawn but not played.</div>
-  <div id="hint">drag to turn &middot; arrow keys nudge &middot; space to spin &middot; the top
-    panel is the city, the bottom is the same horizon as a meter</div>
-  <div id="az"></div>
+  <div id="foot">
+    <div id="hint">drag to turn &middot; arrow keys nudge &middot; space to
+      spin &middot; the top panel is the city, the bottom is the same horizon
+      as a meter</div>
+    <div id="az"></div>
+  </div>
 </div>
 </div>
 
@@ -211,8 +205,12 @@ canvas, #gl, #view, #stage { touch-action: none; }
   var ctx = canvas.getContext('2d');
   var tip = document.getElementById('tip');
 
-  var S = { i: 0, az: 0, fov: 100, vol: 0.55, playing: false, spin: 0,
-           mode: 'musical' };
+  /* There used to be a second rendering, "realistic", which sounded the
+     whole mode over four octaves at the buildings' true angular spacing. It
+     was the less pleasant of the two and nobody chose it, so the instrument
+     is now only the musical one and the branches are gone rather than
+     stranded behind a control that no longer exists. */
+  var S = { i: 0, az: 0, fov: 100, vol: 0.55, playing: false, spin: 0 };
 
   // display state that eases towards the data, so the meter moves like a meter
   var lvl = new Float32Array(BARS);
@@ -233,7 +231,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
   /* ------------------------------------------------------------ geometry -- */
   function bars() {
-    var c = C[S.i], p = S.mode === 'musical' ? c.rprof : c.prof;
+    var c = C[S.i], p = c.rprof;
     var n = p.length;
     var out = new Float32Array(BARS);
     var step = S.fov / BARS;
@@ -252,9 +250,9 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
   var peakCache = {};
   function peak() {
-    var ck = S.i + '|' + S.mode;
+    var ck = S.i;
     if (peakCache[ck] === undefined) {
-      var p = S.mode === 'musical' ? C[S.i].rprof : C[S.i].prof, m = 0;
+      var p = C[S.i].rprof, m = 0;
       for (var i = 0; i < p.length; i++) if (p[i] > m) m = p[i];
       peakCache[ck] = m || 1;
     }
@@ -346,47 +344,32 @@ canvas, #gl, #view, #stage { touch-action: none; }
     var st = C[S.i].key.steps;
     pitch = [];
 
-    if (S.mode === 'musical') {
-      /* Forced musical. Not the scale - the chord. Only the first, third,
-         fifth and seventh degrees of the mode sound, over two and a half
-         octaves in the register a cello lives in, with the root doubled an
-         octave down as a drone. Any subset of those notes is consonant, so
-         there is no bearing in no city that can produce a dissonance,
-         because the dissonant intervals are not in the instrument. */
-      // Triad plus the sixth, not the seventh. A major seventh sits one
-      // semitone under the octave root, so [0,2,4,6] on a seven-note mode put
-      // a minor second into an instrument advertised as incapable of one.
-      var chord = [0, 2, 4, 5].filter(function (d) { return d < st.length; });
-      pitch.push(rootHz / 2);                      // the drone
-      for (var oc = 0; oc < 3; oc++) {
-        for (var ci = 0; ci < chord.length; ci++) {
-          var semi = st[chord[ci]];
-          var f = rootHz * Math.pow(2, oc + semi / 12);
-          if (f < 1500) pitch.push(f);             // nothing shrill, ever
-        }
-      }
-    } else {
-      /* Realistic. The whole mode, four octaves, which is closer to what the
-         skyline literally says and correspondingly less kind. It is still
-         inside the same safety chain; it is allowed to be austere, not
-         allowed to be painful. */
-      var n = st.length * 4;
-      for (var s = 0; s < n; s++) {
-        var oct = Math.floor(s / st.length);
-        var fr = rootHz * Math.pow(2, oct + st[s % st.length] / 12);
-        if (fr < 1900) pitch.push(fr);   // the ear's sore spot starts here
+    /* Forced musical. Not the scale - the chord. Only the first, third,
+       fifth and seventh degrees of the mode sound, over two and a half
+       octaves in the register a cello lives in, with the root doubled an
+       octave down as a drone. Any subset of those notes is consonant, so
+       there is no bearing in no city that can produce a dissonance,
+       because the dissonant intervals are not in the instrument. */
+    // Triad plus the sixth, not the seventh. A major seventh sits one
+    // semitone under the octave root, so [0,2,4,6] on a seven-note mode put
+    // a minor second into an instrument advertised as incapable of one.
+    var chord = [0, 2, 4, 5].filter(function (d) { return d < st.length; });
+    pitch.push(rootHz / 2);                      // the drone
+    for (var oc = 0; oc < 3; oc++) {
+      for (var ci = 0; ci < chord.length; ci++) {
+        var semi = st[chord[ci]];
+        var f = rootHz * Math.pow(2, oc + semi / 12);
+        if (f < 1500) pitch.push(f);             // nothing shrill, ever
       }
     }
+
     pitch.sort(function (a, b) { return a - b; });
-    /* Whatever the mode produced, no two pitches may end up closer than a
-       whole tone. Building the ladder from consonant degrees is not the same
-       as proving the assembled ladder is consonant, and the difference is
-       exactly where the semitone got in. */
-    // Musical keeps nothing closer than a minor third, so every pair of
-    // sounding partials is a third or wider and the instrument is chordal by
-    // construction. Realistic allows a whole tone, which is tense rather than
-    // painful, and is the point of the setting.
-    var minSemi = S.mode === 'musical' ? 2.9 : 1.9;
+    /* Nothing closer than a minor third. Building the ladder from consonant
+       degrees is not the same as proving the assembled ladder is consonant,
+       and the difference is exactly where the semitone got in. Every pair of
+       sounding partials is a third or wider, so the instrument is chordal by
+       construction. */
+    var minSemi = 2.9;
     var clean = [];
     for (var q = 0; q < pitch.length; q++) {
       if (!clean.length ||
@@ -403,8 +386,8 @@ canvas, #gl, #view, #stage { touch-action: none; }
     }
     if (lpf) {
       var tc = actx.currentTime;
-      lpf.frequency.setTargetAtTime(S.mode === 'musical' ? 2400 : 3600, tc, .1);
-      tilt.gain.setTargetAtTime(S.mode === 'musical' ? -12 : -8, tc, 0.1);
+      lpf.frequency.setTargetAtTime(2400, tc, .1);
+      tilt.gain.setTargetAtTime(-12, tc, 0.1);
     }
     if (!actx) return;
     var t = actx.currentTime;
@@ -429,7 +412,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
        nobody wrote; keeping only the loudest few turns it back into a chord
        somebody might have. This is also the single most effective thing here
        against harshness, because harshness is mostly density. */
-    var VOICES = S.mode === 'musical' ? 7 : 14;
+    var VOICES = 7;
     var idx = [];
     for (var j3 = 0; j3 < pitch.length; j3++) idx.push(j3);
     idx.sort(function (p, q) { return acc[q] - acc[p]; });
@@ -453,7 +436,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
     }
     var norm = sum > 0 ? 0.46 / Math.sqrt(sum) : 0;
 
-    var slew = S.mode === 'musical' ? 0.22 : 0.07;   // pad, or something quicker
+    var slew = 0.22;                 // a pad, not a plucked thing
     for (var j2 = 0; j2 < parts.length; j2++) {
       parts[j2].g.gain.setTargetAtTime(want[j2] * norm, t, slew);
     }
@@ -520,8 +503,8 @@ canvas, #gl, #view, #stage { touch-action: none; }
     var ring = c.ring;
     var order = [];
     for (i = 0; i < ring.length; i++) {
-      // realistic uses the true bearing, musical the equalised slot
-      var ang = S.mode === 'musical' ? ring[i][0] : ring[i][6];
+      // the equalised slot, not the true bearing
+      var ang = ring[i][0];
       var ph = (ang - S.az) * Math.PI / 180;
       order.push({ b: ring[i], s: Math.sin(ph), z: Math.cos(ph) });
     }
@@ -610,27 +593,39 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
     // the towers worth naming, labelled in place, biggest first and dropped
     // rather than stacked when they collide
+    /* Names ran into each other before, because the test for a collision
+       used the width of the label being placed against the *centres* of the
+       ones already down, and the clamp that keeps a name on the canvas ran
+       after the test rather than before it. Two long names near an edge both
+       got clamped inward and printed on top of one another. Widths are now
+       measured rather than guessed from the character count, the clamp runs
+       first, and two labels clash when their boxes overlap. */
     ctx.textAlign = 'center';
-    ctx.font = (11 * dpr) + 'px ui-sans-serif, system-ui, sans-serif';
-    var taken = [];
-    // label the tallest towers on the near face of the wheel
+    var fpx = (W < 560 * dpr ? 10 : 11) * dpr;
+    ctx.font = fpx + 'px ui-sans-serif, system-ui, sans-serif';
+    var maxLabels = W < 560 * dpr ? 3 : (W < 900 * dpr ? 4 : 6);
+    var gap = 14 * dpr;
+    var placed = [];
+    // the tallest towers on the near face of the wheel, biggest first
     var seen = ring.slice().filter(function (r) {
-      return r[4] && Math.cos(((S.mode === 'musical' ? r[0] : r[6]) - S.az) *
-                              Math.PI / 180) > 0.25;
-    }).sort(function (p, q) { return q[3] - p[3]; }).slice(0, 6);
-    for (i = 0; i < seen.length; i++) {
-      var tw = { n: seen[i][4], h: seen[i][3] };
-      var tx = cx + Rx * Math.sin(((S.mode === 'musical' ? seen[i][0]
-                                    : seen[i][6]) - S.az) * Math.PI / 180);
-      var wpx2 = (tw.n.length + 2) * 5.4 * dpr;
+      return r[4] && Math.cos((r[0] - S.az) * Math.PI / 180) > 0.25;
+    }).sort(function (p, q) { return q[3] - p[3]; }).slice(0, 12);
+    for (i = 0; i < seen.length && placed.length < maxLabels; i++) {
+      var nm = seen[i][4];
+      var half = ctx.measureText(nm).width / 2;
+      if (half * 2 > W - 8 * dpr) continue;         // no room for it at all
+      var tx = cx + Rx * Math.sin((seen[i][0] - S.az) * Math.PI / 180);
+      tx = Math.min(W - half - 4 * dpr, Math.max(half + 4 * dpr, tx));
       var clash = false;
-      for (var j = 0; j < taken.length; j++)
-        if (Math.abs(tx - taken[j]) < (wpx2 + 60 * dpr) / 2) { clash = true; break; }
+      for (var j = 0; j < placed.length; j++) {
+        if (Math.abs(tx - placed[j].x) < half + placed[j].half + gap) {
+          clash = true; break;
+        }
+      }
       if (clash) continue;
-      taken.push(tx);
+      placed.push({ x: tx, half: half });
       ctx.fillStyle = dim;
-      ctx.fillText(tw.n, Math.min(W - wpx2 / 2 - 4, Math.max(wpx2 / 2 + 4, tx)),
-                   splitY + 18 * dpr);
+      ctx.fillText(nm, tx, splitY + 18 * dpr);
     }
   }
 
@@ -695,16 +690,6 @@ canvas, #gl, #view, #stage { touch-action: none; }
         (c.hand ? ', ' + c.hand + ' hand-entered' : '') + '</dd>' +
       '<dt>Standing</dt><dd>in the middle of it</dd>';
 
-    document.getElementById('modenote').innerHTML = S.mode === 'musical'
-      ? 'Only the first, third, fifth and seventh of the mode sound, over two '
-        + 'and a half octaves, seven voices at a time. Every subset of those '
-        + 'notes is consonant, so no bearing in any city can produce a '
-        + 'dissonance &mdash; the dissonant intervals are not in the '
-        + 'instrument. Spacing on the wheel is equalised.'
-      : 'The whole mode, four octaves, fourteen voices, and the true angular '
-        + 'spacing of the buildings. Closer to what the skyline literally '
-        + 'says, and correspondingly less kind &mdash; austere is allowed, '
-        + 'painful is not.';
     document.getElementById('why').innerHTML =
       '<b>' + esc(c.key.label) + '</b>, from ' + esc(c.key.why) + '. ' +
       '<span class="tier">' + c.key.tier.toLowerCase() + '</span>';
@@ -715,8 +700,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
     var named = c.ring.filter(function (r) { return r[4]; })
                  .sort(function (p, q) { return q[3] - p[3]; }).slice(0, 40);
     document.getElementById('towers').innerHTML = named.map(function (r) {
-      var front = Math.cos(((S.mode === 'musical' ? r[0] : r[6]) -
-                            S.az) * Math.PI / 180) > 0;
+      var front = Math.cos((r[0] - S.az) * Math.PI / 180) > 0;
       /* A building links to the record it came from where there is one.
          The hand-entered supplements have no entity, so they are plain text
          rather than a link that goes nowhere. */
@@ -822,19 +806,6 @@ canvas, #gl, #view, #stage { touch-action: none; }
     pushAudio();
   });
 
-  var modeSeg = document.getElementById('modeSeg');
-  modeSeg.addEventListener('click', function (e) {
-    var b = e.target.closest('button');
-    if (!b || b.dataset.k === S.mode) return;
-    S.mode = b.dataset.k;
-    [].forEach.call(modeSeg.querySelectorAll('button'), function (x) {
-      x.classList.toggle('on', x.dataset.k === S.mode);
-    });
-    peakCache = {};
-    lvl.fill(0); pk.fill(0); pkv.fill(0);
-    setKey(); touch(); panel();
-  });
-
   var spinBtn = document.getElementById('spin');
   spinBtn.addEventListener('click', function () {
     S.spin = S.spin ? 0 : 1;
@@ -861,7 +832,6 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
   window.__sky = {
     S: S, cities: C, bars: bars, peak: peak, freqOf: freqOf, setKey: setKey,
-    setMode: function (m) { S.mode = m; peakCache = {}; setKey(); touch(); },
     root: function () { return rootHz; }, draw: draw, panel: panel,
     pitches: function () { return pitch; },
     barOf: function (k) { return barTo[k]; },
