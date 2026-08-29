@@ -28,9 +28,9 @@
   var host = document.getElementById('hero');
   if (!host || !window.HERO) return;
 
-  var still = window.matchMedia &&
-              window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (still) return;                    // 2D already drew a static frame
+  /* Same gate as hero.js. Returning here is also what makes "off" mean
+     "not downloaded": the three.js request below never happens. */
+  if (document.documentElement.dataset.motion !== 'on') return;
 
   /* ---- is WebGL actually available? ----------------------------------- */
   function webglOK() {
@@ -298,6 +298,13 @@
     }
     function start() { if (!running) { running = true; last = 0; raf = requestAnimationFrame(frame); } }
     function stop() { running = false; if (raf) cancelAnimationFrame(raf); }
+
+    /* The footer control needs to tear a running context down, not just keep
+       a new one from starting. */
+    window.HEROGL = { start: start, stop: stop };
+    document.addEventListener('motionchange', function (e) {
+      if (e.detail === 'on') { start(); } else { stop(); }
+    });
 
     var rt;
     window.addEventListener('resize', function () {

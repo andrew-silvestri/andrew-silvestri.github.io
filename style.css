@@ -399,6 +399,34 @@ footer {
 
 .grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
 
+/* -------------------------------------------------------------- motion --- */
+/* The attribute is the single gate. prefers-reduced-motion sets its default in
+   a blocking <head> snippet; the footer control overrides it. Gating on the
+   media query here as well would make that override impossible to express. */
+[data-motion="off"] *,
+[data-motion="off"] *::before,
+[data-motion="off"] *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* A button, not a link: it changes this page rather than going anywhere. Plain
+   words rather than an icon, because an icon for this has no convention to lean
+   on. Hidden until motion.js reveals it, so it never appears without JS. */
+.motion-toggle {
+  font: inherit;
+  color: var(--dim);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--faint);
+  padding: 0;
+  cursor: pointer;
+}
+.motion-toggle:hover { color: var(--ink); border-bottom-color: var(--acc); }
+.motion-toggle .motion-state { color: var(--acc); }
+
 /* ------------------------------------------------------------- mobile --- */
 @media (max-width: 760px) {
   main { grid-template-columns: [full-start wide-start text-start] 1fr

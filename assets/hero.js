@@ -30,8 +30,9 @@
 
   var D = window.HERO;
   var RAD = Math.PI / 180;
-  var still = window.matchMedia &&
-              window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* The contract, not the media query: prefers-reduced-motion is only the
+     default behind this attribute, and the footer control overrides it. */
+  var still = document.documentElement.dataset.motion !== 'on';
 
   /* node colours by kind, in the order build_hero.py wrote them */
   var COLOR = {
@@ -292,5 +293,9 @@
   }
   document.addEventListener('visibilitychange', function () {
     document.hidden ? stop() : start();
+  });
+  document.addEventListener('motionchange', function (e) {
+    still = e.detail !== 'on';
+    if (still) { stop(); } else { start(); }
   });
 })();
