@@ -23,6 +23,7 @@
   --moss:    #4f9d84;   /* dark green, second data accent */
   --cool:    #5aa8d8;   /* blue, for data */
   --shadow:  0 18px 50px rgba(2, 4, 12, .62);
+  --grid-line: rgba(227, 230, 242, .035);
   /* Three widths, not one. Prose stays at a readable measure because line
      length is a legibility constraint, not a stylistic one — past about 80
      characters the eye loses the return sweep. Everything that is not prose
@@ -53,6 +54,7 @@
     --cool:    #2a6a96;
     --moss:    #2f6f5c;
     --shadow:  0 14px 34px rgba(30, 34, 60, .12);
+    --grid-line: rgba(22, 26, 38, .045);
   }
 }
 
@@ -173,8 +175,8 @@ main {
     minmax(34px, 1fr) [full-end];
 }
 main > * { grid-column: text; min-width: 0; }
-main > .wide, main > table, main > img.fig, main > #hero,
-main > .cardgrid { grid-column: wide; }
+main > .wide, main > table, main > img.fig, main > video.fig, main > #hero,
+main > .cardgrid, main > .mosaic { grid-column: wide; }
 main > .full { grid-column: full; }
 
 h1 {
@@ -257,7 +259,7 @@ tr:hover td { background: var(--bg-lift); }
 th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* --------------------------------------------------------------- figs --- */
-img.fig {
+img.fig, video.fig {
   width: 100%;
   max-width: 100%;
   border: 1px solid var(--rule);
@@ -398,6 +400,75 @@ footer {
 }
 
 .grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
+
+/* --------------------------------------------------------------- mosaic --- */
+/* A strip of already-generated figures at thumbnail scale - real data used
+   as a graphic, not a new render. Links to the library, not a data source
+   in its own right. */
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 4px 0 6px;
+}
+.mosaic a {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--card);
+}
+.mosaic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(.9);
+  transition: transform .25s ease, filter .25s ease;
+}
+.mosaic a:hover img { transform: scale(1.04); filter: saturate(1); }
+
+/* ---------------------------------------------------------- method --- */
+/* A very faint coordinate-grid wash behind the model's own method section -
+   same restrained-wash technique as body::before, signalling worked math
+   without competing with the text it sits behind. */
+.method-panel {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 34px 34px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
+}
+.method-panel > :first-child { margin-top: 0; }
+
+/* ------------------------------------------------------------- sys-log --- */
+/* A monospace readout restating numbers already given in prose above it -
+   decorative and aria-hidden, never a second source of truth. */
+.sys-log {
+  list-style: none;
+  margin: -14px 0 22px;
+  padding: 14px 18px;
+  background: var(--bg-lift);
+  border: 1px solid var(--faint);
+  border-radius: 2px;
+  font: 12.5px/1.7 var(--mono);
+  color: var(--cool);
+}
+.sys-log li { opacity: 1; transition: opacity .3s ease; }
+.sys-log li::before { content: "$ "; color: var(--dim); }
+.sys-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  margin-left: 2px;
+  background: var(--cool);
+  vertical-align: -2px;
+  animation: sys-blink 1s steps(1) infinite;
+}
+.sys-cursor[hidden] { display: none; }
+@keyframes sys-blink { 50% { opacity: 0; } }
 
 /* -------------------------------------------------------------- motion --- */
 /* The attribute is the single gate. prefers-reduced-motion sets its default in

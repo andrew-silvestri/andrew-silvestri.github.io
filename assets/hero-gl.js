@@ -56,6 +56,9 @@
     if (!THREE) return;
 
     var D = window.HERO, RAD = Math.PI / 180;
+    // --acc #8b7ff2 (violet, trail head) and --cool #5aa8d8 (blue, trail tail)
+    var ACC_R = 0.545, ACC_G = 0.498, ACC_B = 0.949;
+    var COOL_R = 0.353, COOL_G = 0.659, COOL_B = 0.847;
     var box = host.getBoundingClientRect();
     var W = Math.max(240, box.width), H = Math.max(240, box.height);
 
@@ -253,15 +256,18 @@
           fpos[w + 3] = jump ? hist[a] : hist[b];
           fpos[w + 4] = jump ? hist[a + 1] : hist[b + 1];
           fpos[w + 5] = jump ? hist[a + 2] : hist[b + 2];
-          /* Sky blue, #65B2CC. Under additive blending the red
-             channel is the first to reach 1 where trails overlap,
-             so a bright sky blue stacks into white exactly where
-             the trails are densest. The brightness is held low
-             enough that the hue survives the overlap; the weight
-             comes from the number of trails, not from each one. */
+          /* Violet at the head fading to cool blue at the tail - the site's
+             own --acc and --cool, not a new hue. Under additive blending the
+             red channel is the first to reach 1 where trails overlap, so
+             brightness is held low enough that the hue survives the overlap;
+             the weight comes from the number of trails, not from each one. */
+          var far2 = 1 - (h2 + 1) / (TAIL - 1);
+          var r1 = COOL_R + (ACC_R - COOL_R) * far, r2 = COOL_R + (ACC_R - COOL_R) * far2,
+              g1c = COOL_G + (ACC_G - COOL_G) * far, g2c = COOL_G + (ACC_G - COOL_G) * far2,
+              b1c = COOL_B + (ACC_B - COOL_B) * far, b2c = COOL_B + (ACC_B - COOL_B) * far2;
           var g1 = 0.72 * env * far, g2 = 0.72 * env * far * 0.75;
-          fcol[w] = g1 * 0.396; fcol[w + 1] = g1 * 0.698; fcol[w + 2] = g1 * 0.800;
-          fcol[w + 3] = g2 * 0.396; fcol[w + 4] = g2 * 0.698; fcol[w + 5] = g2 * 0.800;
+          fcol[w] = g1 * r1; fcol[w + 1] = g1 * g1c; fcol[w + 2] = g1 * b1c;
+          fcol[w + 3] = g2 * r2; fcol[w + 4] = g2 * g2c; fcol[w + 5] = g2 * b2c;
           w += 6;
         }
         if (page[i] > plife[i]) spawn(i, false);

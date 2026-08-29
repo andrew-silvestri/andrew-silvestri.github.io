@@ -166,7 +166,12 @@
         var envelope = Math.sin(Math.PI * Math.min(a, 1));
         var alpha = 0.78 * limb * envelope;
         if (alpha > 0.004) {
-          fc.strokeStyle = 'rgba(101,178,204,' + alpha.toFixed(3) + ')';
+          // born violet (--acc), fades to cool blue (--cool) as it ages -
+          // the same head-to-tail story as the GL path's per-vertex gradient
+          var tr = Math.round(90 + (139 - 90) * (1 - a));
+          var tg = Math.round(168 + (127 - 168) * (1 - a));
+          var tb = Math.round(216 + (242 - 216) * (1 - a));
+          fc.strokeStyle = 'rgba(' + tr + ',' + tg + ',' + tb + ',' + alpha.toFixed(3) + ')';
           fc.beginPath();
           fc.moveTo(p0[0], p0[1]);
           fc.lineTo(p1[0], p1[1]);
