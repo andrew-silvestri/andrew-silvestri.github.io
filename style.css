@@ -66,12 +66,19 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font: 17.5px/1.72 var(--serif);
+  /* Fluid, not a jump at one breakpoint: 16.5px at a 375px phone up to
+     17.5px past a 900px tablet, and a fixed value at either end. */
+  font: clamp(16.5px, 15.8px + .19vw, 17.5px)/1.72 var(--serif);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* a barely-there wash so the black is not a void */
+/* A barely-there wash so the black is not a void, plus a sparse node/edge
+   graph tiled underneath it - static, zero JS, present on every page rather
+   than only where the hero happens to draw one. Representative of the site
+   without costing anything a browser has to compute: it's one small inline
+   SVG, not a canvas, and there's nothing here for [data-motion="off"] to
+   turn off because nothing here moves. */
 body::before {
   content: "";
   position: fixed;
@@ -82,7 +89,9 @@ body::before {
     radial-gradient(1100px 640px at 50% -8%,
                     rgba(110, 128, 240, .075), transparent 70%),
     radial-gradient(900px 520px at 86% 6%,
-                    rgba(79, 157, 132, .05), transparent 68%);
+                    rgba(79, 157, 132, .05), transparent 68%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900' viewBox='0 0 900 900'%3E%3Cg fill='none' stroke='%238b93b0' stroke-width='1' stroke-opacity='.16'%3E%3Cline x1='70' y1='90' x2='240' y2='60'/%3E%3Cline x1='240' y1='60' x2='410' y2='140'/%3E%3Cline x1='410' y1='140' x2='550' y2='90'/%3E%3Cline x1='550' y1='90' x2='680' y2='200'/%3E%3Cline x1='150' y1='230' x2='70' y2='90'/%3E%3Cline x1='150' y1='230' x2='320' y2='280'/%3E%3Cline x1='320' y1='280' x2='410' y2='140'/%3E%3Cline x1='680' y1='200' x2='780' y2='340'/%3E%3Cline x1='320' y1='280' x2='430' y2='410'/%3E%3Cline x1='430' y1='410' x2='250' y2='450'/%3E%3Cline x1='250' y1='450' x2='60' y2='400'/%3E%3Cline x1='430' y1='410' x2='600' y2='480'/%3E%3Cline x1='600' y1='480' x2='780' y2='340'/%3E%3Cline x1='250' y1='450' x2='120' y2='600'/%3E%3Cline x1='430' y1='410' x2='520' y2='620'/%3E%3C/g%3E%3Cg fill='%238b93b0' fill-opacity='.22'%3E%3Ccircle cx='70' cy='90' r='2.6'/%3E%3Ccircle cx='240' cy='60' r='2.6'/%3E%3Ccircle cx='410' cy='140' r='2.6'/%3E%3Ccircle cx='150' cy='230' r='2.6'/%3E%3Ccircle cx='550' cy='90' r='2.6'/%3E%3Ccircle cx='680' cy='200' r='2.6'/%3E%3Ccircle cx='60' cy='400' r='2.6'/%3E%3Ccircle cx='320' cy='280' r='2.6'/%3E%3Ccircle cx='430' cy='410' r='2.6'/%3E%3Ccircle cx='250' cy='450' r='2.6'/%3E%3Ccircle cx='780' cy='340' r='2.6'/%3E%3Ccircle cx='600' cy='480' r='2.6'/%3E%3Ccircle cx='120' cy='600' r='2.6'/%3E%3Ccircle cx='520' cy='620' r='2.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat, repeat;
 }
 @media (prefers-color-scheme: light) { body::before { opacity: .5; } }
 
@@ -165,7 +174,10 @@ nav.top .dd { margin: 0; }
 main {
   display: grid;
   margin: 0 auto;
-  padding: 40px 0 120px;
+  /* Fluid top/bottom padding: 30/90px at a phone width, 40/120px past
+     tablet, rather than jumping between just those two states. */
+  padding: clamp(30px, 22.9px + 1.9vw, 40px) 0
+           clamp(90px, 68.6px + 5.71vw, 120px);
   max-width: var(--shell);
   grid-template-columns:
     [full-start] minmax(34px, 1fr)
@@ -180,7 +192,8 @@ main > .cardgrid, main > .mosaic { grid-column: wide; }
 main > .full { grid-column: full; }
 
 h1 {
-  font-size: 34px;
+  /* Same fluid idea as body: 27px at a phone width, 34px past tablet. */
+  font-size: clamp(27px, 22px + 1.33vw, 34px);
   font-weight: 500;
   letter-spacing: -.015em;
   line-height: 1.16;
@@ -329,7 +342,9 @@ img.fig, video.fig {
 #hero {
   position: relative;
   width: 100%;
-  height: clamp(320px, 46vh, 560px);
+  /* One fluid rule, not a floor plus a smaller fixed override at 620px -
+     46vh already gets smaller on a short phone screen without help. */
+  height: clamp(300px, 46vh, 560px);
   /* The h1 sits directly under the globe and needs air, or the name reads
      as a caption on the image rather than the top of the page. */
   margin: 18px 0 30px;
@@ -347,7 +362,6 @@ img.fig, video.fig {
   letter-spacing: .05em;
   margin: 10px 0 0;
 }
-@media (max-width: 620px) { #hero { height: 300px; } }
 
 /* ------------------------------------------------------------- footer --- */
 /* ----------------------------------------------------------- citations --- */
@@ -422,7 +436,10 @@ footer {
 .mosaic img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* contain, not cover: these figures range from 1.15:1 to 1.83:1 against a
+     4:3 tile, and a centred cover-crop was cutting whole panels and axis
+     labels off rather than showing a recognisable slice of the chart. */
+  object-fit: contain;
   display: block;
   filter: saturate(.9);
   transition: transform .25s ease, filter .25s ease;
@@ -516,10 +533,8 @@ footer {
   pre, code { overflow-x: auto; word-break: break-word; }
 }
 @media (max-width: 620px) {
-  body { font-size: 16.5px; }
-  main { padding-top: 30px; padding-bottom: 90px; }
-  nav.top { padding: 20px 20px 0; }
-  h1 { font-size: 27px; }
+  /* body/h1 size and main's top/bottom padding are handled by the fluid
+     clamp() rules above now - nothing left to jump here. */
   /* On a phone the dropdowns used to be forced open — position:static plus
      display:block — so every page began with the whole site map spilled down
      the screen and the content pushed below the fold. They stay closed here

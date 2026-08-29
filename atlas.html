@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/atlas.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=a5c41a87">
+<link rel="stylesheet" href="style.css?v=9dbd14f9">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html" class="on">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -22,12 +22,6 @@ parameter from a public data set.</p>
 Every node holds one measured quantity and names where it came from. Apply a
 change anywhere and the effect propagates along the links until it settles,
 which takes between twenty and fifty steps.</p>
-
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/propagation_loop_poster.png?v=f93491ca"
- data-src="assets/propagation_loop.mp4?v=9b72047f"></video>
-<p class="small">A generic graph, not the atlas itself, showing the shape of
-one propagation: a change reaches its neighbours, then theirs.</p>
 
 <h2>The nine layers</h2>
 
@@ -223,6 +217,4 @@ The threshold changes the view, not the answer.</p>
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-</body></html>
+<script src="assets/motion.js?v=4cbbdec3"></script></body></html>

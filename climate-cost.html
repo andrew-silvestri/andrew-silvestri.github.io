@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/climate-cost.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=a5c41a87">
+<link rel="stylesheet" href="style.css?v=9dbd14f9">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html" class="on">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -44,42 +44,6 @@ including the absurd ones. Those are often the instructive ones.</p>
 <a class="btn" href="climate-cost-app.html" target="_blank" rel="noopener">Open the calculator</a>
 <a class="btn ghost" href="downloads/climate-cost-code.zip">Download code and data</a>
 </div>
-
-<h2>Allocation, which is where the disagreement lives</h2>
-
-<p>Every branch carries a multiplier saying what share of that process belongs
-to the product in the model. A slaughterhouse also makes leather and tallow.
-A dairy cow also becomes beef. A coffee mill also sells pulp. Charging the whole
-burden to the one output you happen to care about is a choice, and in almost
-every published footprint it is an invisible one.</p>
-
-<p>Two careful studies of the same cheese can differ twofold without either
-being wrong, because one split the cow's methane between milk and meat by
-economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
-judgement, it changes the answer, and it should be visible. Here it sits on
-every edge, and it compounds down the chain, so a process four levels deep may
-contribute only a third of what it emits.</p>
-
-<h2>Lifetime, which is allocation wearing a different hat</h2>
-
-<p>A car&rsquo;s factory does not belong to any one journey. Neither does an
-airframe. What a per-kilometre figure actually charges you is one part in a
-lifetime &mdash; the vehicle divided by the distance it will cover before it
-is scrapped &mdash; and that lifetime is an assumption rather than a
-measurement. It is also the assumption those figures are most sensitive to,
-and the one most often buried in a constant.</p>
-
-<p>So for the vehicles it is a control. Move it and the manufacturing share
-moves inversely: a petrol car retired at a hundred thousand kilometres carries
-roughly twice the factory per kilometre as the same car driven to four
-hundred thousand. The effect is larger for an electric car, which carries more
-of its burden in manufacture and less in fuel, which is exactly why the
-lifetime question matters more there. For a flight the same control is the
-airframe&rsquo;s life in passenger-kilometres &mdash; seats times load factor
-times distance flown &mdash; so what the model charges you is your share of
-building the aircraft, divided the same way your share of the fuel is. Every
-default reproduces the published figure exactly; the control exists so the
-assumption can be argued with rather than inherited.</p>
 
 <h2>What the model says</h2>
 
@@ -141,6 +105,42 @@ not.</p>
 happen before the animal leaves the farm, so the route is noise against them.
 No packaging decision and no shipping choice touches a number that is
 three-quarters methane and cleared forest.</p>
+
+<h2>Allocation, which is where the disagreement lives</h2>
+
+<p>Every branch carries a multiplier saying what share of that process belongs
+to the product in the model. A slaughterhouse also makes leather and tallow.
+A dairy cow also becomes beef. A coffee mill also sells pulp. Charging the whole
+burden to the one output you happen to care about is a choice, and in almost
+every published footprint it is an invisible one.</p>
+
+<p>Two careful studies of the same cheese can differ twofold without either
+being wrong, because one split the cow's methane between milk and meat by
+economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
+judgement, it changes the answer, and it should be visible. Here it sits on
+every edge, and it compounds down the chain, so a process four levels deep may
+contribute only a third of what it emits.</p>
+
+<h2>Lifetime, which is allocation wearing a different hat</h2>
+
+<p>A car&rsquo;s factory does not belong to any one journey. Neither does an
+airframe. What a per-kilometre figure actually charges you is one part in a
+lifetime &mdash; the vehicle divided by the distance it will cover before it
+is scrapped &mdash; and that lifetime is an assumption rather than a
+measurement. It is also the assumption those figures are most sensitive to,
+and the one most often buried in a constant.</p>
+
+<p>So for the vehicles it is a control. Move it and the manufacturing share
+moves inversely: a petrol car retired at a hundred thousand kilometres carries
+roughly twice the factory per kilometre as the same car driven to four
+hundred thousand. The effect is larger for an electric car, which carries more
+of its burden in manufacture and less in fuel, which is exactly why the
+lifetime question matters more there. For a flight the same control is the
+airframe&rsquo;s life in passenger-kilometres &mdash; seats times load factor
+times distance flown &mdash; so what the model charges you is your share of
+building the aircraft, divided the same way your share of the fuel is. Every
+default reproduces the published figure exactly; the control exists so the
+assumption can be argued with rather than inherited.</p>
 
 <h2>How it is checked</h2>
 

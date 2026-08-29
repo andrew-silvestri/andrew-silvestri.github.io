@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/longevity.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=a5c41a87">
+<link rel="stylesheet" href="style.css?v=9dbd14f9">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html" class="on">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -58,34 +58,6 @@ member or species count. Click a group to drop into the species inside it.</p>
 <p class="small">Lifespan against body mass. The dashed line is the fit across
 every animal in the table. Distance above or below that line, measured within a
 species' own class, is the quotient.</p>
-
-<h2>Fitting the baseline</h2>
-
-<p>An ordinary least squares regression of log lifespan on log body mass, run
-globally and within each group. Fitting inside a group matters. Birds come out
-about 1.8 times longer-lived than mammals of equal mass, which matches what the
-comparative literature reports, so a single fit across every animal charges
-every bird a bonus it did not earn and every mammal a penalty it does not
-deserve. Fish classes are pooled together, and the many small invertebrate
-classes are pooled into one baseline, because separately they are too thin to
-fit.</p>
-
-<table>
-<tr><th>Baseline</th><th>Species in fit</th><th>Slope b</th><th>r&sup2;</th><th>Predicted at 1 kg</th></tr>
-<tr><td>All animals</td><td>6,398</td><td>0.191</td><td>0.30</td><td>13.8 yr</td></tr>
-<tr><td>Mammals</td><td>2,583</td><td>0.222</td><td>0.37</td><td>9.7 yr</td></tr>
-<tr><td>Birds</td><td>1,883</td><td>0.215</td><td>0.41</td><td>22.3 yr</td></tr>
-<tr><td>Reptiles</td><td>916</td><td>0.214</td><td>0.33</td><td>16.9 yr</td></tr>
-<tr><td>Fish</td><td>876</td><td>0.241</td><td>0.54</td><td>12.7 yr</td></tr>
-<tr><td>Amphibians</td><td colspan="4" class="dim">rejected, falls back to the global baseline</td></tr>
-<tr><td>Invertebrates</td><td>57</td><td>0.256</td><td>0.41</td><td>23.0 yr</td></tr>
-</table>
-
-<p>The amphibian regression returns an r² of 0.12 across twenty-four species,
-which is not a relationship. Any group fit with a non-positive slope or an r²
-below 0.15 is rejected, and that group falls back to the global baseline. The
-model reports which groups were rejected and why. Amphibians are currently the
-only one.</p>
 
 <h2>Comparing whole groups</h2>
 
@@ -143,6 +115,34 @@ it appears the moment body mass is divided out.</p>
  alt="Dumbbell chart comparing wild and captive maximum lifespan by species">
 <p class="small">Wild against captive, sorted by the size of the gap. Where
 protection helps most, and where it does not help at all.</p>
+
+<h2>Fitting the baseline</h2>
+
+<p>An ordinary least squares regression of log lifespan on log body mass, run
+globally and within each group. Fitting inside a group matters. Birds come out
+about 1.8 times longer-lived than mammals of equal mass, which matches what the
+comparative literature reports, so a single fit across every animal charges
+every bird a bonus it did not earn and every mammal a penalty it does not
+deserve. Fish classes are pooled together, and the many small invertebrate
+classes are pooled into one baseline, because separately they are too thin to
+fit.</p>
+
+<table>
+<tr><th>Baseline</th><th>Species in fit</th><th>Slope b</th><th>r&sup2;</th><th>Predicted at 1 kg</th></tr>
+<tr><td>All animals</td><td>6,398</td><td>0.191</td><td>0.30</td><td>13.8 yr</td></tr>
+<tr><td>Mammals</td><td>2,583</td><td>0.222</td><td>0.37</td><td>9.7 yr</td></tr>
+<tr><td>Birds</td><td>1,883</td><td>0.215</td><td>0.41</td><td>22.3 yr</td></tr>
+<tr><td>Reptiles</td><td>916</td><td>0.214</td><td>0.33</td><td>16.9 yr</td></tr>
+<tr><td>Fish</td><td>876</td><td>0.241</td><td>0.54</td><td>12.7 yr</td></tr>
+<tr><td>Amphibians</td><td colspan="4" class="dim">rejected, falls back to the global baseline</td></tr>
+<tr><td>Invertebrates</td><td>57</td><td>0.256</td><td>0.41</td><td>23.0 yr</td></tr>
+</table>
+
+<p>The amphibian regression returns an r² of 0.12 across twenty-four species,
+which is not a relationship. Any group fit with a non-positive slope or an r²
+below 0.15 is rejected, and that group falls back to the global baseline. The
+model reports which groups were rejected and why. Amphibians are currently the
+only one.</p>
 
 <h2>Data</h2>
 
@@ -231,11 +231,7 @@ therefore a poor way to escape the prediction: an animal a thousand times
 heavier than another is predicted to live only about
 3.8 times longer.</p>
 
-
-
-
-
-
+<hr>
 <h2>An honourable mention</h2>
 
 <p>Steven Austad&rsquo;s <i>Methuselah&rsquo;s Zoo: What Nature Can Teach Us
@@ -247,8 +243,6 @@ interesting cases are precisely the ones a body-mass expectation fails to
 explain. The quotient computed here is a way of putting a number on that
 observation; the observation, and the case for taking it seriously, are his.
 It is worth reading whether or not you care about the arithmetic.</p>
-
-
 
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>

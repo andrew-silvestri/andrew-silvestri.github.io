@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/storage.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=a5c41a87">
+<link rel="stylesheet" href="style.css?v=9dbd14f9">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -26,13 +26,7 @@ fat it can carry. The battery's is how many hours of energy it can hold. The
 question is the same in both cases. At what point does carrying more stop paying
 for itself?</p>
 
-<p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
-linear programming<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, in monthly blocks with the state of charge carried across
-the joins. Every megawatt hour of throughput is charged a cycling cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so the
-optimiser cannot trade for free, and round-trip efficiency is split
-symmetrically as the square root per leg.</p>
-
-<h2>Duration value flattens</h2>
+<h2>What the model finds</h2>
 <table>
 <tr><th>Duration</th><th>Net revenue, $/kW-year</th><th>Equivalent cycles</th>
  <th>Hours at rated output</th></tr>
@@ -63,6 +57,14 @@ over about a third as many equivalent cycles as the two-hour case.</p>
 <img class="fig wide" src="assets/storage_fig1_prices.png?v=9dad5ac5" alt="The price series: duration curve and average daily shape.">
 <p class="small">The price series: duration curve and average daily shape.</p>
 
+<h2>Method</h2>
+<p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
+linear programming<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, in monthly blocks with the state of charge carried across
+the joins. Every megawatt hour of throughput is charged a cycling cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so the
+optimiser cannot trade for free, and round-trip efficiency is split
+symmetrically as the square root per leg.</p>
+
+<hr>
 <h2>The code</h2>
 <p>Python reference implementation using an open solver, a JuMP and HiGHS port, an Octave port, and the dispatch workbook. The archive holds the source only: no generated figures, no bulk
 data. Each model runs from its own <code>README.md</code>.</p>
