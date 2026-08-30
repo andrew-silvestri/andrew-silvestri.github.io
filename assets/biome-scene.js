@@ -68,9 +68,11 @@
     var mainLeft = rect.left;
     var textLeft = mainLeft + outerL + padL;
     var textRight = textLeft + text;
-    var mainRight = textRight + padR + outerR;
-    leftBand  = (textLeft - mainLeft)   > 60 ? { x0: mainLeft,  x1: textLeft  } : null;
-    rightBand = (mainRight - textRight) > 60 ? { x0: textRight, x1: mainRight } : null;
+    // Run the band all the way to the actual browser edge, not just to the
+    // edge of main's own (shell-capped) box - on a screen wider than the
+    // 1440px shell there is real, unused window past main's box.
+    leftBand  = (textLeft - 0)  > 60 ? { x0: 0,        x1: textLeft } : null;
+    rightBand = (W - textRight) > 60 ? { x0: textRight, x1: W       } : null;
   }
 
   /* ---- the page's own three section boundaries -------------------------

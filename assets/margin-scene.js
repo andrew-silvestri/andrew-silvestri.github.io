@@ -95,9 +95,12 @@
     var mainLeft = rect.left;
     var textLeft = mainLeft + outerL + padL;
     var textRight = textLeft + text;
-    var mainRight = textRight + padR + outerR;
-    leftBand  = (textLeft - mainLeft)   > 60 ? { x0: mainLeft,  x1: textLeft  } : null;
-    rightBand = (mainRight - textRight) > 60 ? { x0: textRight, x1: mainRight } : null;
+    // The band runs all the way to the actual browser edge, not just to the
+    // edge of main's own (shell-capped) box - on a screen wider than the
+    // 1440px shell there is real, unused window past main's box, and the
+    // animation should fill it rather than stop short.
+    leftBand  = (textLeft - 0)     > 60 ? { x0: 0,        x1: textLeft } : null;
+    rightBand = (W - textRight)    > 60 ? { x0: textRight, x1: W       } : null;
   }
 
   function resize() {

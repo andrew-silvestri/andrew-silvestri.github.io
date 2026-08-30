@@ -27,7 +27,7 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib cumulative curve</div>
 <h3 style="margin-top:4px">How world electricity demand is distributed and concentrated</h3>
-<img class="fig wide" src="assets/02_demand_distribution.png?v=107cb4ff" alt="How world electricity demand is distributed and concentrated">
+<img class="fig wide" src="assets/02_demand_distribution.png?v=cfe7dbe1" alt="How world electricity demand is distributed and concentrated">
 <p>The left panel counts countries by their average electricity demand. The scale is logarithmic because the range is very wide. The right panel adds the countries together, starting with the largest. It shows how few countries hold most of the world demand. This concentration is the reason a change in one large system can move the world total.</p>
 
 </div><div class="card">
@@ -39,37 +39,37 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">seaborn box plot</div>
 <h3 style="margin-top:4px">How strongly each type of node resists change</h3>
-<img class="fig wide" src="assets/04_inertia_by_type.png?v=ab8f6f63" alt="How strongly each type of node resists change">
+<img class="fig wide" src="assets/04_inertia_by_type.png?v=374d9823" alt="How strongly each type of node resists change">
 <p>Inertia controls the speed of a node. A recorded event has the lowest inertia because a disaster happens at once. Behaviour channels have the highest inertia because habits change over years. Price benchmarks cover a range, because each one takes its value from its own measured volatility. This single parameter produces the order in which effects arrive across the model.</p>
 
 </div><div class="card">
 <div class="tag">seaborn histogram and matplotlib bar</div>
 <h3 style="margin-top:4px">The structure of the links between nodes</h3>
-<img class="fig wide" src="assets/05_link_structure.png?v=d5cf8e91" alt="The structure of the links between nodes">
+<img class="fig wide" src="assets/05_link_structure.png?v=4bd0ae10" alt="The structure of the links between nodes">
 <p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 197,068 links in total, of which 1,144 are negative. A negative link carries relief rather than stress.</p>
 
 </div><div class="card">
 <div class="tag">seaborn heat map with annotations</div>
 <h3 style="margin-top:4px">How far one change travels, by the layer it starts in</h3>
-<img class="fig wide" src="assets/06_scenario_reach.png?v=114d30c3" alt="How far one change travels, by the layer it starts in">
+<img class="fig wide" src="assets/06_scenario_reach.png?v=7b7b295c" alt="How far one change travels, by the layer it starts in">
 <p>Each bar is a change applied to the most connected node in one layer, and its length is the number of other nodes that finished more than 0.02 away from where they started. The axis is logarithmic because the answers span five orders of magnitude: a change at the most connected power plant in the world moves one other node, and a change at the climate moves seventy-eight thousand. The climate is the only node in the model that connects to every country. The spread is the evidence that the propagation discriminates rather than floods.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, logarithmic count axis</div>
 <h3 style="margin-top:4px">When the effect arrives</h3>
-<img class="fig wide" src="assets/07_arrival_order.png?v=425fc719" alt="When the effect arrives, by the layer the change starts in">
+<img class="fig wide" src="assets/07_arrival_order.png?v=a4bb976c" alt="When the effect arrives, by the layer the change starts in">
 <p>One line per starting layer. Each point counts the nodes reached for the first time at that step, so the area under a line is that layer&rsquo;s total reach. A grid delivers almost everything it is going to deliver in the first two steps, because its plants and districts are its immediate neighbours. A price works through the fuel supplies and the grids behind them and is still reaching new nodes twenty steps later. Physical coupling is fast and shallow; market coupling is slow and deep.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib with twin axes</div>
 <h3 style="margin-top:4px">The model saturates rather than growing without limit</h3>
-<img class="fig wide" src="assets/08_response_curve.png?v=437f4faf" alt="The model saturates rather than growing without limit">
+<img class="fig wide" src="assets/08_response_curve.png?v=b639c342" alt="The model saturates rather than growing without limit">
 <p>A change is applied to the climate, the most widely connected node in the model, and its size is raised in steps from a twentieth to the maximum. The violet line counts the nodes that moved; the gold line gives the mean effect among them. The violet line is nearly vertical and then flat: past about a fifth of full size the change already reaches everything it is ever going to reach, and pushing harder only pushes those same nodes further. The gold line keeps climbing, but with a bend, because the tanh in the calculation bounds every node inside (&minus;1, 1). A price cannot rise without end and a grid cannot fail more than completely.</p>
 
 </div><div class="card">
 <div class="tag">plotnine, grammar of graphics</div>
 <h3 style="margin-top:4px">System size against low carbon share</h3>
-<img class="fig wide" src="assets/09_size_vs_lowcarbon.png?v=979dc8b0" alt="System size against low carbon share">
+<img class="fig wide" src="assets/09_size_vs_lowcarbon.png?v=db38614b" alt="System size against low carbon share">
 <p>Each point is one country. The horizontal position is the size of its power system. The vertical position is the share of its electricity that comes from nuclear, hydro or other renewable sources. The grey line is a smoothed trend. The plot shows that size alone does not decide the low carbon share. Small systems occupy the full range, because a single large hydro station can supply most of a small country.</p>
 
 </div><div class="card">
@@ -82,25 +82,25 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">matplotlib, stacked time series</div>
 <h3 style="margin-top:4px">The two climate series that set the state of the model</h3>
-<img class="fig wide" src="assets/11_climate_record.png?v=f3c15d6f" alt="The two climate series that set the state of the model">
+<img class="fig wide" src="assets/11_climate_record.png?v=40ff5450" alt="The two climate series that set the state of the model">
 <p>The upper panel is the carbon dioxide record from Mauna Loa. The saw pattern is the growing season of the northern hemisphere. The lower panel is the global temperature anomaly. Both series are read directly into the model. They set the starting state of the two climate nodes. The climate nodes then connect to every national grid, and to the gas and electricity prices, through heating and cooling demand.</p>
 
 </div><div class="card">
 <div class="tag">pandas plotting on matplotlib axes</div>
 <h3 style="margin-top:4px">Recorded disasters that the model contains</h3>
-<img class="fig wide" src="assets/12_recorded_events.png?v=3f8b12eb" alt="Recorded disasters that the model contains">
+<img class="fig wide" src="assets/12_recorded_events.png?v=451b14ca" alt="Recorded disasters that the model contains">
 <p>The left panel adds the adjusted damage of every energy relevant disaster in each decade, and separates the total by disaster type. The right panel names the twelve costliest single events. These records come from the international disaster database. In the model, each event is a node. The recorded damage sets the strength of the link from that event to the national grid of the country it struck.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, computed field and measured series</div>
 <h3 style="margin-top:4px">The space layer</h3>
-<img class="fig wide" src="assets/14_space_layer.png?v=ef648f89" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
+<img class="fig wide" src="assets/14_space_layer.png?v=eac55590" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
 <p>On the left, the annual mean sunlight arriving above the atmosphere at each latitude. This is not data. It is computed from the measured solar constant, the obliquity of 23.44 degrees and the eccentricity of the orbit, integrated over 365 days. The dashed line is the solar constant divided by four, which is what the area-weighted mean of the curve has to equal &mdash; the disc the Earth intercepts over the sphere it radiates from. It agrees to one part in ten thousand, which is the check that the integration is right rather than merely plausible. The equator receives 416 W/m&sup2; and the poles about 174.</p>
 <p>On the right, the measured total solar irradiance, NRLTSI2, with its stated uncertainty as the shaded band. Four solar cycles are visible. The whole vertical range of the panel is two watts in thirteen hundred and sixty, which is the honest scale of the thing the solar minimum scenario perturbs.</p>
 
 <div class="tag">matplotlib, horizontal bar, log scale</div>
 <h3 style="margin-top:4px">Every node names its source</h3>
-<img class="fig wide" src="assets/13_provenance.png?v=c487cf8a" alt="Every node names its source">
+<img class="fig wide" src="assets/13_provenance.png?v=feec08cf" alt="Every node names its source">
 <p>The model records where each node came from. This chart counts the nodes by source. The largest groups are the settlement list from GeoNames and the plant list from the World Resources Institute. The group marked as published studies holds the consumer response values. These values are the only assumed parameters in the model, and they are labelled so that a reader can find them.</p>
 
 </div>
