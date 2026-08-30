@@ -232,4 +232,19 @@ The check file is <code>calibrate/out/parity_target.json</code>.</p>
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script>
+/* this page's own real link-weight table - pulse speed set by each named
+   path's real weight, so low-inertia coupling visibly moves faster */
+window.MARGIN_SCENE = { kind: 'flowpulse', paths: [
+  { label: 'climate to temperature', weight: 0.85 },
+  { label: 'grid to district',       weight: 0.60 },
+  { label: 'fuel supply to grid',    weight: 0.55 },
+  { label: 'district to consumer',   weight: 0.50 },
+  { label: 'plant to grid',          weight: 0.45 },
+  { label: 'event to grid',          weight: 0.28 },
+  { label: 'temperature to grid',    weight: 0.30 },
+  { label: 'temperature to price',   weight: 0.18 }
+] };
+</script>
+<script src="assets/margin-scene.js"></script>
 </body></html>

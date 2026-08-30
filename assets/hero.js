@@ -217,12 +217,14 @@
       gc.stroke();
     }
 
-    // nodes
+    // nodes - each entry is [lon, lat, kindIndex], same nested-array shape
+    // D.coast already uses below, not a flat lon/lat/kind run
     var nodes = D.nodes;
-    for (var k = 0; k < nodes.length; k += 3) {
-      project(nodes[k], nodes[k + 1], pt);
+    for (var k = 0; k < nodes.length; k++) {
+      var n = nodes[k];
+      project(n[0], n[1], pt);
       if (pt[2] <= 0.015) continue;
-      var ki = nodes[k + 2];
+      var ki = n[2];
       var c = kindColor[ki];
       var limb = Math.min(1, pt[2] * 2.2);
       gc.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ','

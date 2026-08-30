@@ -135,10 +135,11 @@
       weather: 0x4f9d84
     };
     var np = [], nc = [], ns = [], n = D.nodes, col = new THREE.Color();
-    for (var k = 0; k < n.length; k += 3) {
-      var v = vec(n[k], n[k + 1], 1.006);
+    for (var k = 0; k < n.length; k++) {
+      var node = n[k];
+      var v = vec(node[0], node[1], 1.006);
       np.push(v.x, v.y, v.z);
-      var kind = D.kinds[n[k + 2]];
+      var kind = D.kinds[node[2]];
       col.setHex(COLOR[kind] || 0xa0a0a0);
       nc.push(col.r, col.g, col.b);
       ns.push(kind === 'event' ? 26 : kind === 'grid' ? 22

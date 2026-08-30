@@ -188,4 +188,31 @@ draws power from the wrong grid.</p>
 </script>
 <script src="assets/motion.js?v=4cbbdec3"></script>
 <script src="assets/bgloop.js"></script>
+<script>
+/* this page's own 20-item table, real kg CO2e per item and its real
+   origin->destination route, in the page's own table order */
+window.MARGIN_SCENE = { kind: 'arcroute', items: [
+  { label: 'beef, Brazil to Texas',        weight: 75.49 },
+  { label: 'jeans, China to California',   weight: 14.85 },
+  { label: 'cheese, France to New York',   weight: 12.86 },
+  { label: 'trainers, Vietnam to New York',weight: 10.09 },
+  { label: 'car, petrol, DE to Texas',     weight: 23.47 },
+  { label: 'flight, short haul, FR to IT', weight: 21.40 },
+  { label: 'flight, long haul, NY to CN',  weight: 15.81 },
+  { label: 'car, electric, CN to Texas',   weight: 12.66 },
+  { label: 'bus, DE to Texas',             weight: 9.52 },
+  { label: 't-shirt, cotton, India to TX', weight: 7.09 },
+  { label: 'chicken, Brazil to Texas',     weight: 5.02 },
+  { label: 't-shirt, poly, China to TX',   weight: 4.69 },
+  { label: 'rice, India to California',    weight: 3.39 },
+  { label: 'shoes, leather, IT to NY',     weight: 3.66 },
+  { label: 'coffee, Colombia to Texas',    weight: 3.05 },
+  { label: 'tomato, heated, NL to NY',     weight: 2.99 },
+  { label: 'almonds, CA to New York',      weight: 1.74 },
+  { label: 'banana, Peru to New York',     weight: 0.89 },
+  { label: 'tomato, field, Spain to TX',   weight: 0.67 },
+  { label: 'train, France to France',      weight: 0.56 }
+] };
+</script>
+<script src="assets/margin-scene.js"></script>
 </body></html>

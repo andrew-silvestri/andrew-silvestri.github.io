@@ -121,4 +121,15 @@ data. Each model runs from its own <code>README.md</code>.</p>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
 <script src="assets/bgloop.js"></script>
+<script>
+/* this page's own break-even numbers: the flat gas line and the rising
+   electric line, speed set by the real crossing (1.53) and real operating
+   point (6.5) so the electric path visibly moves faster past break-even */
+window.MARGIN_SCENE = { kind: 'flowpulse', paths: [
+  { label: 'gas: 5.13 dollars/MMBtu',        weight: 0.20 },
+  { label: 'break-even: 1.53 cents/kWh',     weight: 0.35 },
+  { label: 'today: 6.5 cents to $20.00',     weight: 0.55 }
+] };
+</script>
+<script src="assets/margin-scene.js"></script>
 </body></html>

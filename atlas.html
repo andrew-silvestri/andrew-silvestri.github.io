@@ -217,4 +217,21 @@ The threshold changes the view, not the answer.</p>
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script></body></html>
+<script src="assets/motion.js?v=4cbbdec3"></script>
+<script>
+/* the atlas's own 9-layer table, real node counts, top to bottom as printed
+   on this page - scrolling the page is scrolling down through the stack */
+window.MARGIN_SCENE = { kind: 'strata', layers: [
+  { label: 'Space',            n: 19 },
+  { label: 'Weather',          n: 2 },
+  { label: 'Climate',          n: 2 },
+  { label: 'Events',           n: 9259 },
+  { label: 'Markets and fuel', n: 3627 },
+  { label: 'Grids',            n: 3546 },
+  { label: 'Power plants',     n: 34936 },
+  { label: 'Demand',           n: 35207 },
+  { label: 'Behaviour',        n: 24 }
+] };
+</script>
+<script src="assets/margin-scene.js"></script>
+</body></html>
