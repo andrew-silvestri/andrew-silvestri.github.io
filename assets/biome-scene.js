@@ -113,6 +113,44 @@
     return b;
   }
 
+  /* ---- real creature icons ------------------------------------------
+     octopus/bat/nautilus/quahog use real OpenMoji line-icon art (CC BY-SA
+     4.0, https://openmoji.org - credited on the page itself), recolored
+     per creature to the site's own palette by swapping the SVG's single
+     stroke color before rasterizing. Chameleon and tubeworm have no real
+     emoji equivalent, so they stay hand-drawn below, restyled to the same
+     pure-outline weight so all six read as one set rather than a mismatch
+     of styles. */
+  function toHex(rgb) {
+    return '#' + rgb.map(function (v) {
+      return ('0' + v.toString(16)).slice(-2);
+    }).join('');
+  }
+  var ICON_SRC = {
+    octopus:  { file: 'assets/openmoji/1F419.svg', color: 'cool' },
+    bat:      { file: 'assets/openmoji/1F987.svg', color: 'acc' },
+    nautilus: { file: 'assets/openmoji/1F40C.svg', color: 'dim' },
+    quahog:   { file: 'assets/openmoji/1F41A.svg', color: 'acc' }
+  };
+  var ICONS = {};
+  Object.keys(ICON_SRC).forEach(function (kind) {
+    var spec = ICON_SRC[kind];
+    fetch(spec.file).then(function (r) { return r.text(); })
+      .then(function (svgText) {
+        var recolored = svgText.replace(/#000000/g, toHex(PAL[spec.color]));
+        var img = new Image();
+        img.src = 'data:image/svg+xml;charset=utf-8,' +
+          encodeURIComponent(recolored);
+        ICONS[kind] = img;
+      })
+      .catch(function () { /* icon missing; that creature just skips a frame */ });
+  });
+  function drawIcon(kind, x, y, s) {
+    var img = ICONS[kind];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    ctx.drawImage(img, x - s, y - s, s * 2, s * 2);
+  }
+
   /* ---- creatures --------------------------------------------------------
      Each: kind (how it's drawn), label (real name + real quotient/lifespan,
      verbatim from the page), biome it belongs to, a closed waypoint loop in
@@ -201,26 +239,19 @@
   ];
 
   /* ---- drawing ------------------------------------------------------- */
-  function drawBat(x, y, s, t) {
-    var flap = Math.sin(t * 6) * 0.5 + 0.5;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.quadraticCurveTo(x - s * (0.6 + flap * 0.4), y - s * 0.3, x - s * 1.1, y);
-    ctx.quadraticCurveTo(x - s * 0.5, y + s * 0.15, x, y);
-    ctx.quadraticCurveTo(x + s * (0.6 + flap * 0.4), y - s * 0.3, x + s * 1.1, y);
-    ctx.quadraticCurveTo(x + s * 0.5, y + s * 0.15, x, y);
-    ctx.fill();
-  }
   function drawChameleon(x, y, s, t) {
+    // Pure outline, to match the OpenMoji line-icon weight used by the
+    // other four - was a filled shape, which read as a different, heavier
+    // style next to the icon-drawn creatures.
+    ctx.lineWidth = s * 0.14;
+    ctx.strokeStyle = ctx.fillStyle;
     ctx.beginPath();
     ctx.ellipse(x, y, s * 0.9, s * 0.45, 0, 0, 6.2832);
-    ctx.fill();
-    ctx.beginPath();
+    ctx.stroke();
     var curl = Math.sin(t * 1.5) * 0.3;
+    ctx.beginPath();
     ctx.moveTo(x - s * 0.8, y);
     ctx.quadraticCurveTo(x - s * 1.4, y + s * (0.3 + curl), x - s * 1.1, y + s * 0.9);
-    ctx.lineWidth = s * 0.18;
-    ctx.strokeStyle = ctx.fillStyle;
     ctx.stroke();
   }
   function drawTubeworm(x, y, s, t) {
@@ -228,53 +259,18 @@
     ctx.beginPath();
     ctx.moveTo(x, y + s * 1.2);
     ctx.quadraticCurveTo(x + sway, y, x, y - s * 1.2);
-    ctx.lineWidth = s * 0.35;
+    ctx.lineWidth = s * 0.28;
     ctx.strokeStyle = ctx.fillStyle;
     ctx.lineCap = 'round';
     ctx.stroke();
   }
-  function drawQuahog(x, y, s) {
-    ctx.beginPath();
-    ctx.arc(x, y, s * 0.8, Math.PI, 0);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(x, y, s * 0.8, 0, Math.PI);
-    ctx.globalAlpha *= 0.6;
-    ctx.fill();
-    ctx.globalAlpha /= 0.6;
-  }
-  function drawOctopus(x, y, s, t) {
-    ctx.beginPath();
-    ctx.arc(x, y, s * 0.6, 0, 6.2832);
-    ctx.fill();
-    for (var i = 0; i < 4; i++) {
-      var a = (i / 4) * Math.PI + Math.PI * 0.15;
-      var wob = Math.sin(t * 2 + i) * s * 0.25;
-      ctx.beginPath();
-      ctx.moveTo(x + Math.cos(a) * s * 0.5, y + Math.sin(a) * s * 0.3 + s * 0.3);
-      ctx.quadraticCurveTo(
-        x + Math.cos(a) * s * 1.1 + wob, y + s * 1.0,
-        x + Math.cos(a) * s * 0.8, y + s * 1.5);
-      ctx.lineWidth = s * 0.12;
-      ctx.strokeStyle = ctx.fillStyle;
-      ctx.stroke();
-    }
-  }
-  function drawNautilus(x, y, s, t) {
-    ctx.beginPath();
-    var turns = 2.2;
-    for (var a = 0; a <= turns * 6.2832; a += 0.35) {
-      var r = s * 0.08 * a;
-      var px = x + Math.cos(a + t * 0.3) * r, py = y + Math.sin(a + t * 0.3) * r;
-      if (a === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-    }
-    ctx.lineWidth = s * 0.16;
-    ctx.strokeStyle = ctx.fillStyle;
-    ctx.stroke();
-  }
   var DRAW = {
-    bat: drawBat, chameleon: drawChameleon, tubeworm: drawTubeworm,
-    quahog: drawQuahog, octopus: drawOctopus, nautilus: drawNautilus
+    bat: function (x, y, s) { drawIcon('bat', x, y, s); },
+    chameleon: drawChameleon,
+    tubeworm: drawTubeworm,
+    quahog: function (x, y, s) { drawIcon('quahog', x, y, s); },
+    octopus: function (x, y, s) { drawIcon('octopus', x, y, s); },
+    nautilus: function (x, y, s) { drawIcon('nautilus', x, y, s); }
   };
 
   function drawBiomeBackdrop(band, biomeFloat) {

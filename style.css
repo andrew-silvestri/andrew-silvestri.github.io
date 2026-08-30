@@ -113,6 +113,19 @@ body.bg-curve-storage::before {
 }
 /* @end:bg-curve-storage */
 
+/* The static SVG wash is the graceful-degradation fallback for a page
+   carrying assets/force-bg.js: shown as-is when motion is off, the CDN is
+   blocked, or JS is disabled entirely. force-bg.js adds force-graph-live to
+   <body> only once its own real physics graph has actually started, and
+   only then does the static pattern step aside so the two don't layer into
+   visual noise - the radial wash underneath stays either way. */
+body.bg-force-graph.force-graph-live::before {
+  background: radial-gradient(1100px 640px at 50% -8%,
+                rgba(110, 128, 240, .075), transparent 70%),
+              radial-gradient(900px 520px at 86% 6%,
+                rgba(79, 157, 132, .05), transparent 68%);
+}
+
 main, nav.top { position: relative; z-index: 1; }
 
 /* ---------------------------------------------------------------- nav --- */
