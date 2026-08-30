@@ -66,9 +66,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  /* Fluid, not a jump at one breakpoint: 16.5px at a 375px phone up to
-     17.5px past a 900px tablet, and a fixed value at either end. */
-  font: clamp(16.5px, 15.8px + .19vw, 17.5px)/1.72 var(--serif);
+  /* Plain fixed fallback for a browser without container query support -
+     main below overrides this for everything that reads it. */
+  font: 17px/1.72 var(--serif);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -90,10 +90,28 @@ body::before {
                     rgba(110, 128, 240, .075), transparent 70%),
     radial-gradient(900px 520px at 86% 6%,
                     rgba(79, 157, 132, .05), transparent 68%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900' viewBox='0 0 900 900'%3E%3Cg fill='none' stroke='%238b93b0' stroke-width='1' stroke-opacity='.16'%3E%3Cline x1='70' y1='90' x2='240' y2='60'/%3E%3Cline x1='240' y1='60' x2='410' y2='140'/%3E%3Cline x1='410' y1='140' x2='550' y2='90'/%3E%3Cline x1='550' y1='90' x2='680' y2='200'/%3E%3Cline x1='150' y1='230' x2='70' y2='90'/%3E%3Cline x1='150' y1='230' x2='320' y2='280'/%3E%3Cline x1='320' y1='280' x2='410' y2='140'/%3E%3Cline x1='680' y1='200' x2='780' y2='340'/%3E%3Cline x1='320' y1='280' x2='430' y2='410'/%3E%3Cline x1='430' y1='410' x2='250' y2='450'/%3E%3Cline x1='250' y1='450' x2='60' y2='400'/%3E%3Cline x1='430' y1='410' x2='600' y2='480'/%3E%3Cline x1='600' y1='480' x2='780' y2='340'/%3E%3Cline x1='250' y1='450' x2='120' y2='600'/%3E%3Cline x1='430' y1='410' x2='520' y2='620'/%3E%3C/g%3E%3Cg fill='%238b93b0' fill-opacity='.22'%3E%3Ccircle cx='70' cy='90' r='2.6'/%3E%3Ccircle cx='240' cy='60' r='2.6'/%3E%3Ccircle cx='410' cy='140' r='2.6'/%3E%3Ccircle cx='150' cy='230' r='2.6'/%3E%3Ccircle cx='550' cy='90' r='2.6'/%3E%3Ccircle cx='680' cy='200' r='2.6'/%3E%3Ccircle cx='60' cy='400' r='2.6'/%3E%3Ccircle cx='320' cy='280' r='2.6'/%3E%3Ccircle cx='430' cy='410' r='2.6'/%3E%3Ccircle cx='250' cy='450' r='2.6'/%3E%3Ccircle cx='780' cy='340' r='2.6'/%3E%3Ccircle cx='600' cy='480' r='2.6'/%3E%3Ccircle cx='120' cy='600' r='2.6'/%3E%3Ccircle cx='520' cy='620' r='2.6'/%3E%3C/g%3E%3C/svg%3E");
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900' viewBox='0 0 900 900'><g fill='none' stroke='%238b93b0' stroke-width='1' stroke-opacity='.16'><line x1='452.5' y1='147.5' x2='208.0' y2='270.0'/><line x1='452.5' y1='147.5' x2='205.0' y2='255.0'/><line x1='452.5' y1='147.5' x2='257.5' y2='255.5'/><line x1='452.5' y1='147.5' x2='272.2' y2='388.1'/><line x1='452.5' y1='147.5' x2='619.0' y2='270.1'/><line x1='452.5' y1='147.5' x2='622.0' y2='280.3'/><line x1='452.5' y1='147.5' x2='489.0' y2='505.9'/><line x1='452.5' y1='147.5' x2='291.9' y2='636.9'/><line x1='452.5' y1='147.5' x2='282.8' y2='639.2'/><line x1='452.5' y1='147.5' x2='25.8' y2='516.7'/><line x1='452.5' y1='147.5' x2='299.9' y2='364.5'/><line x1='452.5' y1='147.5' x2='782.5' y2='571.1'/><line x1='452.5' y1='147.5' x2='786.9' y2='570.2'/><line x1='452.5' y1='147.5' x2='484.8' y2='209.7'/><line x1='452.5' y1='147.5' x2='527.1' y2='466.5'/></g><g fill-opacity='.28'><circle cx='452.5' cy='147.5' r='2.6' fill='%234f9d84'/><circle cx='208.0' cy='270.0' r='2.6' fill='%234f9d84'/><circle cx='205.0' cy='255.0' r='2.6' fill='%234f9d84'/><circle cx='257.5' cy='255.5' r='2.6' fill='%234f9d84'/><circle cx='272.2' cy='388.1' r='2.6' fill='%236f7fd8'/><circle cx='619.0' cy='270.1' r='2.6' fill='%236f7fd8'/><circle cx='622.0' cy='280.3' r='2.6' fill='%236f7fd8'/><circle cx='489.0' cy='505.9' r='2.6' fill='%236f7fd8'/><circle cx='291.9' cy='636.9' r='2.6' fill='%236f7fd8'/><circle cx='282.8' cy='639.2' r='2.6' fill='%236f7fd8'/><circle cx='25.8' cy='516.7' r='2.6' fill='%236f7fd8'/><circle cx='299.9' cy='364.5' r='2.6' fill='%236f7fd8'/><circle cx='782.5' cy='571.1' r='2.6' fill='%236f7fd8'/><circle cx='786.9' cy='570.2' r='2.6' fill='%236f7fd8'/><circle cx='484.8' cy='209.7' r='2.6' fill='%236f7fd8'/><circle cx='527.1' cy='466.5' r='2.6' fill='%236f7fd8'/></g></svg>");
   background-repeat: no-repeat, no-repeat, repeat;
 }
 @media (prefers-color-scheme: light) { body::before { opacity: .5; } }
+/* @generated:bg-curve-heat */
+body.bg-curve-heat::before {
+  background: radial-gradient(1100px 640px at 50% -8%,rgba(110, 128, 240, .075), transparent 70%),radial-gradient(900px 520px at 86% 6%,rgba(79, 157, 132, .05), transparent 68%),
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='260' viewBox='0 0 900 260'><g fill='none' stroke-opacity='.15' stroke-width='2'><path stroke='%234f9d84' d='M0.0 204.4 L900.0 204.4'/><path stroke='%238b7ff2' d='M0.0 254.0 L900.0 -5.3'/></g><circle cx='172.1' cy='204.4' r='3.5' fill='%238b93b0' fill-opacity='.22'/><circle cx='731.2' cy='43.3' r='3.5' fill='%238b7ff2' fill-opacity='.22'/></svg>");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: 0 0, 0 0, center 120px;
+  background-size: auto, auto, min(900px, 100%) auto;
+}
+/* @end:bg-curve-heat */
+/* @generated:bg-curve-storage */
+body.bg-curve-storage::before {
+  background: radial-gradient(1100px 640px at 50% -8%,rgba(110, 128, 240, .075), transparent 70%),radial-gradient(900px 520px at 86% 6%,rgba(79, 157, 132, .05), transparent 68%),
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='260' viewBox='0 0 900 260'><path fill='none' stroke='%238b7ff2' stroke-opacity='.15' stroke-width='2' d='M27.0 431.9 L48.8 351.9 L70.6 302.0 L92.5 265.7 L114.3 237.1 L136.1 213.5 L157.9 193.4 L179.8 175.9 L201.6 160.5 L223.4 146.6 L245.2 134.0 L267.1 122.5 L288.9 111.9 L310.7 102.0 L332.5 92.9 L354.4 84.3 L376.2 76.2 L398.0 68.6 L419.9 61.4 L441.7 54.5 L463.5 48.0 L485.3 41.8 L507.1 35.9 L529.0 30.2 L550.8 24.7 L572.6 19.5 L594.4 14.4 L616.3 9.6 L638.1 4.9 L659.9 0.3 L681.8 -4.1 L703.6 -8.3 L725.4 -12.4 L747.2 -16.5 L769.1 -20.3 L790.9 -24.1 L812.7 -27.8 L834.5 -31.4 L856.4 -34.9 L878.2 -38.3 L900.0 -41.6'/><circle cx='180.0' cy='175.8' r='3.5' fill='%238b7ff2' fill-opacity='.22'/><circle cx='360.0' cy='82.2' r='3.5' fill='%238b7ff2' fill-opacity='.22'/><circle cx='720.0' cy='41.6' r='3.5' fill='%238b7ff2' fill-opacity='.22'/></svg>");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: 0 0, 0 0, center 120px;
+  background-size: auto, auto, min(900px, 100%) auto;
+}
+/* @end:bg-curve-storage */
 
 main, nav.top { position: relative; z-index: 1; }
 
@@ -179,6 +197,10 @@ main {
   padding: clamp(30px, 22.9px + 1.9vw, 40px) 0
            clamp(90px, 68.6px + 5.71vw, 120px);
   max-width: var(--shell);
+  /* Type sizes off main's own rendered width, not the raw viewport - a
+     narrow browser window on a huge monitor and the same window width on a
+     small laptop now read identically, which a vw unit cannot express. */
+  container-type: inline-size;
   grid-template-columns:
     [full-start] minmax(34px, 1fr)
     [wide-start] minmax(0, calc((var(--wide) - var(--text)) / 2))
@@ -186,14 +208,22 @@ main {
     minmax(0, calc((var(--wide) - var(--text)) / 2)) [wide-end]
     minmax(34px, 1fr) [full-end];
 }
-main > * { grid-column: text; min-width: 0; }
+/* cqw has to be set on a descendant of the container, not the container
+   itself - main sizing its own font off its own inline-size is circular,
+   so the fluid size lives here instead and main's children inherit it. */
+main > * {
+  grid-column: text;
+  min-width: 0;
+  font-size: clamp(16.5px, 15.99px + .152cqw, 17.5px);
+}
 main > .wide, main > table, main > img.fig, main > video.fig, main > #hero,
 main > .cardgrid, main > .mosaic { grid-column: wide; }
 main > .full { grid-column: full; }
 
 h1 {
-  /* Same fluid idea as body: 27px at a phone width, 34px past tablet. */
-  font-size: clamp(27px, 22px + 1.33vw, 34px);
+  /* Same container-based idea as main's own text: 27px at a narrow column,
+     34px past roughly a tablet-width column. */
+  font-size: clamp(27px, 23.4px + 1.06cqw, 34px);
   font-weight: 500;
   letter-spacing: -.015em;
   line-height: 1.16;

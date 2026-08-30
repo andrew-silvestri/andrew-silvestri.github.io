@@ -10,8 +10,8 @@
 <link rel="canonical" href="https://andrewsilvestri.com/heat.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=9dbd14f9">
-</head><body>
+<link rel="stylesheet" href="style.css?v=e7875beb">
+</head><body class="bg-curve-heat">
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
@@ -47,6 +47,13 @@ gas boiler only when the grid carbon intensity<sup class="cite" id="cr3"><a href
 <strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The eGRID
 average for the Texas grid is about 0.365. On average grid power, electrifying
 this heat increases emissions.</p>
+
+<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
+ poster="assets/heat_breakeven_poster.png?v=eafd2e61"
+ data-src="assets/heat_breakeven.mp4?v=8518afe1"></video>
+<p class="small">The crossing, traced: gas cost flat at $5.13, electric cost
+rising with price to the real break-even at 1.53&cent;/kWh, then on to
+today's real operating point at 6.5&cent; and $20.00.</p>
 
 <img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=e714947e" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p class="small">Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.</p>
@@ -113,4 +120,5 @@ data. Each model runs from its own <code>README.md</code>.</p>
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/bgloop.js"></script>
 </body></html>

@@ -10,8 +10,8 @@
 <link rel="canonical" href="https://andrewsilvestri.com/storage.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=9dbd14f9">
-</head><body>
+<link rel="stylesheet" href="style.css?v=e7875beb">
+</head><body class="bg-curve-storage">
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
@@ -44,6 +44,13 @@ and a longer battery cannot manufacture more of them.</p>
 <p>The longer battery also cycles far less, which matters for a warranty
 argument even where it does not matter for revenue. The eight-hour case turns
 over about a third as many equivalent cycles as the two-hour case.</p>
+
+<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
+ poster="assets/storage_duration_poster.png?v=baab3b80"
+ data-src="assets/storage_duration.mp4?v=de7cbd29"></video>
+<p class="small">The bend, traced through the table's own three points,
+against a dashed line showing what linear growth from the first two would
+have looked like.</p>
 
 <img class="fig wide" src="assets/storage_fig3_duration_value.png?v=b54d5a77" alt="Revenue against storage duration. The curve bends at about four hours.">
 <p class="small">Revenue against storage duration. The curve bends at about four hours.</p>
@@ -99,4 +106,5 @@ data. Each model runs from its own <code>README.md</code>.</p>
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/bgloop.js"></script>
 </body></html>
