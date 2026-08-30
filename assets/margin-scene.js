@@ -125,7 +125,7 @@
   var barsCells = null;     // bars: [{x0,x1,label,n}]
   var flowPaths = null;     // flowpulse: [{label,speed,color,pts:[{fx,fy}...]}]
   var cardItems = null;     // cards: [{text,y (px, recycled)}]
-  var arcRows = null;       // arcroute: [{label,weight,color,revealAt}]
+  var arcRows = null;       // arcroute: [{label,weight,color,y0}]
 
   function layoutScene() {
     if (SCENE.kind === 'strata') layoutStrata();
@@ -185,10 +185,20 @@
   }
 
   function layoutArcs() {
+    // Rows are placed in document space, the way strataBands and cardItems
+    // already are. They used to carry no y at all and were stacked from the
+    // top of the viewport at a fixed 30px pitch, which meant all twenty routes
+    // had finished revealing inside the first screen of scroll and the rest of
+    // the page scrolled past nothing.
     var items = SCENE.items || [];
+    var n = items.length;
+    var doc = docH || 2000;
+    var pad = Math.min(H * 0.6, doc * 0.12);
+    var span = Math.max(0, doc - pad * 2);
     arcRows = items.map(function (d, i) {
       return { label: d.label, from: d.from, to: d.to, weight: d.weight,
-               color: CYCLE[i % CYCLE.length], rowIndex: i };
+               color: CYCLE[i % CYCLE.length], rowIndex: i,
+               y0: pad + (n > 1 ? i / (n - 1) : 0.5) * span };
     });
   }
 
@@ -311,13 +321,16 @@
   function drawArcs(t) {
     if (!arcRows) return;
     var maxW = Math.max.apply(null, arcRows.map(function (r) { return r.weight; })) || 1;
+    var rowH = 30;                 // the arc's drawn height, no longer its pitch
     eachBand(function (band) {
-      var bw = band.x1 - band.x0, rowH = 30;
-      var top = -scrollY + 60;
-      arcRows.forEach(function (r, i) {
-        var y = top + i * rowH;
+      var bw = band.x1 - band.x0;
+      arcRows.forEach(function (r) {
+        var y = r.y0 - scrollY;    // document space -> viewport
         if (y < -rowH || y > H) return;
-        var reveal = Math.max(0, Math.min(1, (H * 0.85 - y) / 40));
+        // eases in over the lower fifth of the viewport as the row rises into
+        // it, so each route arrives on its own rather than the set arriving
+        // together in the first 40px
+        var reveal = Math.max(0, Math.min(1, (H * 0.85 - y) / (H * 0.2)));
         if (reveal <= 0) return;
         var thick = 0.6 + (r.weight / maxW) * 3.5;
         ctx.beginPath();
@@ -379,6 +392,22 @@
     clearTimeout(rt);
     rt = setTimeout(function () { resize(); draw(tAcc); }, 180);
   });
+
+  // docH is read once per resize, but the page's own height settles after
+  // load - a calculator renders, a figure loads, a details block collapses -
+  // and every document-space layout here (strata bands, drifting cards, arc
+  // rows) is computed against it. Left stale, the arcs on the climate-cost
+  // page were spread over a document taller than the one that exists, and
+  // the last two never came into view at all. Watch the height instead of
+  // assuming the window is the only thing that changes it.
+  if (typeof ResizeObserver === 'function') {
+    var dt;
+    new ResizeObserver(function () {
+      if (document.documentElement.scrollHeight === docH) return;
+      clearTimeout(dt);
+      dt = setTimeout(function () { resize(); draw(tAcc); }, 120);
+    }).observe(document.body);
+  }
 
   if (still) return; // one settled frame, already drawn above, no loop
 

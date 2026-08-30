@@ -12,7 +12,7 @@
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
 <link rel="stylesheet" href="style.css?v=24150b10">
 </head><body class="bg-curve-heat">
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Industrial heat electrification break-even</h1>
@@ -44,9 +44,11 @@ Arguments about equipment cost are arguments about the wrong variable.</p>
 
 <p>Emissions give a second threshold. The electric boiler emits less than the
 gas boiler only when the grid carbon intensity<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> is at or below
-<strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The eGRID
-average for the Texas grid is about 0.365. On average grid power, electrifying
-this heat increases emissions.</p>
+<strong>0.209 tonnes of carbon dioxide per megawatt hour</strong>. The ERCOT
+average is 0.333, from the most recent eGRID release, which reports 733.862
+pounds per megawatt hour for the subregion. That is well above the threshold, so
+on average grid power electrifying this heat increases emissions: 99.6 kilograms
+per million Btu against the gas boiler&rsquo;s 62.4.</p>
 
 <video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
  poster="assets/heat_breakeven_poster.png?v=eafd2e61"
@@ -55,16 +57,23 @@ this heat increases emissions.</p>
 rising with price to the real break-even at 1.53&cent;/kWh, then on to
 today's real operating point at 6.5&cent; and $20.00.</p>
 
+<img class="fig wide" src="assets/heat_fig2_lcoh_stacked.png?v=c07a8981" alt="Levelised cost of heat for the gas and electric boilers as stacked bars, split into fuel, levelised capital and fixed operations.">
+<p class="small">Where the money goes in each route. Fuel is almost the whole
+bar on both sides: $4.12 of the gas boiler&rsquo;s $5.13, and $19.44 of the
+electric boiler&rsquo;s $20.00. Capital and fixed operations come to $1.02 on
+the gas side and $0.56 on the electric, which is why the break-even below moves
+with the two fuel prices and almost nothing else.</p>
+
 <img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=4dfe72c4" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p class="small">Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.</p>
 
-<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=5717fe3b" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
+<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=4c493ec6" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
 <p class="small">Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.</p>
 
-<img class="fig wide" src="assets/heat_fig4_tornado.png?v=f4c194c4" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
+<img class="fig wide" src="assets/heat_fig4_tornado.png?v=85fda2ae" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
 <p class="small">Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.</p>
 
-<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=a425c7d2" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
+<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=4fbadca5" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
 <p class="small">Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.</p>
 
 
@@ -113,14 +122,14 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
-<ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">Texas industrial electricity and gas prices.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID</i> 2022, ERCOT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity and the natural gas emission factor.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">Texas industrial electricity and gas prices.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID2023</i> (revised 12 June 2025), ERCT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity, 733.862 lb CO&#8322;/MWh or 0.333 t/MWh, and the natural gas emission factor. The CO&#8322; rate is used rather than the CO&#8322;e rate, because the gas factor it is compared against is also carbon dioxide only.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
-<script src="assets/bgloop.js"></script>
+<script src="assets/bgloop.js?v=d269be40"></script>
 <script>
 /* this page's own break-even numbers: the flat gas line and the rising
    electric line, speed set by the real crossing (1.53) and real operating
@@ -131,5 +140,5 @@ window.MARGIN_SCENE = { kind: 'flowpulse', paths: [
   { label: 'today: 6.5 cents to $20.00',     weight: 0.55 }
 ] };
 </script>
-<script src="assets/margin-scene.js"></script>
+<script src="assets/margin-scene.js?v=c28ceecf"></script>
 </body></html>

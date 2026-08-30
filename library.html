@@ -11,7 +11,7 @@
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
 <link rel="stylesheet" href="style.css?v=24150b10">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html" class="on">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><a href="climate-cost.html">Climate cost calculator</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html" class="on">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
 
 <h1>Figures</h1>
@@ -19,37 +19,25 @@ try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(p
 drawn by hand.</p>
 <div class="grid">
 <div class="card">
-<div class="tag">matplotlib, stacked horizontal bar</div>
-<h3 style="margin-top:4px">Electricity fuel mix of the 28 largest power systems</h3>
-<img class="fig wide" src="assets/01_world_fuel_mix.png?v=c9da749e" alt="Electricity fuel mix of the 28 largest power systems">
-<p>Each bar is one country, split by the share of its electricity that comes from each fuel. The countries are ordered by average demand, with the largest at the top. The shares are measured, not estimated. They come from the Energy Institute Statistical Review and from Our World in Data. In the model, this share sets the strength of the link between a fuel supply and its national grid. A country with a high coal share therefore reacts more to a coal supply problem.</p>
+<div class="tag">matplotlib histogram, logarithmic on both axes</div>
+<h3 style="margin-top:4px">Plant capacity spans five orders of magnitude</h3>
+<img class="fig wide" src="assets/02_demand_distribution.png?v=cfe7dbe1" alt="Histogram of generating unit capacity on logarithmic axes">
+<p>Every generating unit in the model counted by its capacity. Both axes are logarithmic, because the range runs from a hundred-kilowatt rooftop array to a gigawatt station, and a linear axis would draw all but the largest as a single bar against the origin. The shape is the ordinary one for infrastructure: most units are small, and the few large ones carry a disproportionate share of the total. Capacity is what weights a plant&rsquo;s link to its grid, so this is also the distribution of how much any one plant can matter.</p>
 
 </div><div class="card">
-<div class="tag">seaborn histogram and matplotlib cumulative curve</div>
-<h3 style="margin-top:4px">How world electricity demand is distributed and concentrated</h3>
-<img class="fig wide" src="assets/02_demand_distribution.png?v=cfe7dbe1" alt="How world electricity demand is distributed and concentrated">
-<p>The left panel counts countries by their average electricity demand. The scale is logarithmic because the range is very wide. The right panel adds the countries together, starting with the largest. It shows how few countries hold most of the world demand. This concentration is the reason a change in one large system can move the world total.</p>
-
-</div><div class="card">
-<div class="tag">matplotlib, small multiples</div>
-<h3 style="margin-top:4px">The four price series that set market inertia in the model</h3>
-<img class="fig wide" src="assets/03_price_histories.png?v=a959c533" alt="The four price series that set market inertia in the model">
-<p>Each panel is one traded price, taken from the Federal Reserve Economic Data service. The model uses the variation in these series, not the prices themselves. A price that moves a great deal in the record is given a low inertia value, so it reacts quickly in the model. A steady price is given a high inertia value. This is how the real behaviour of each market enters the model.</p>
-
-</div><div class="card">
-<div class="tag">seaborn box plot</div>
+<div class="tag">matplotlib box plot</div>
 <h3 style="margin-top:4px">How strongly each type of node resists change</h3>
 <img class="fig wide" src="assets/04_inertia_by_type.png?v=374d9823" alt="How strongly each type of node resists change">
 <p>Inertia controls the speed of a node. A recorded event has the lowest inertia because a disaster happens at once. Behaviour channels have the highest inertia because habits change over years. Price benchmarks cover a range, because each one takes its value from its own measured volatility. This single parameter produces the order in which effects arrive across the model.</p>
 
 </div><div class="card">
-<div class="tag">seaborn histogram and matplotlib bar</div>
+<div class="tag">matplotlib scatter, logarithmic on both axes</div>
 <h3 style="margin-top:4px">The structure of the links between nodes</h3>
 <img class="fig wide" src="assets/05_link_structure.png?v=4bd0ae10" alt="The structure of the links between nodes">
-<p>The left panel counts links by their weight. Most links are weak. A small number are strong. This shape is expected, because each node connects strongly to a few neighbours and weakly to many others. The right panel shows which pairs of node types are joined most often. The model contains 197,068 links in total, of which 1,144 are negative. A negative link carries relief rather than stress.</p>
+<p>Each point counts how many nodes hold a given number of links. Both axes are logarithmic, and the result falls close to a straight line: a great many nodes with one or two links, a very small number with thousands. The model contains 197,068 links in total, of which 1,144 are negative, and a negative link carries relief rather than stress. The title records how many nodes hold no links at all, which is the honest measure of how much of the atlas a change can never reach.</p>
 
 </div><div class="card">
-<div class="tag">seaborn heat map with annotations</div>
+<div class="tag">matplotlib horizontal bar, annotated, log scale</div>
 <h3 style="margin-top:4px">How far one change travels, by the layer it starts in</h3>
 <img class="fig wide" src="assets/06_scenario_reach.png?v=7b7b295c" alt="How far one change travels, by the layer it starts in">
 <p>Each bar is a change applied to the most connected node in one layer, and its length is the number of other nodes that finished more than 0.02 away from where they started. The axis is logarithmic because the answers span five orders of magnitude: a change at the most connected power plant in the world moves one other node, and a change at the climate moves seventy-eight thousand. The climate is the only node in the model that connects to every country. The spread is the evidence that the propagation discriminates rather than floods.</p>
@@ -69,8 +57,14 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">plotnine, grammar of graphics</div>
 <h3 style="margin-top:4px">System size against low carbon share</h3>
-<img class="fig wide" src="assets/09_size_vs_lowcarbon.png?v=db38614b" alt="System size against low carbon share">
-<p>Each point is one country. The horizontal position is the size of its power system. The vertical position is the share of its electricity that comes from nuclear, hydro or other renewable sources. The grey line is a smoothed trend. The plot shows that size alone does not decide the low carbon share. Small systems occupy the full range, because a single large hydro station can supply most of a small country.</p>
+<img class="fig wide" src="assets/09_size_vs_lowcarbon.png?v=4f6c49b3" alt="System size against low carbon share">
+<p>Each of the 184 points is one country whose average load is large enough to place on a logarithmic axis. The horizontal position is the size of its power system. The vertical position is the share of its electricity that comes from nuclear, hydro or other renewable sources. The grey line is a loess trend through the cloud. The plot shows that size alone does not decide the low carbon share. Small systems occupy the full range, because a single large hydro station can supply most of a small country.</p>
+
+</div><div class="card">
+<div class="tag">matplotlib, horizontal bar with written values</div>
+<h3 style="margin-top:4px">Where the world&rsquo;s generating capacity sits, by fuel</h3>
+<img class="fig wide" src="assets/10_capacity_by_fuel.png?v=db38614b" alt="The nine largest fuel types by installed capacity, as horizontal bars with the gigawatts and the unit count written beside each">
+<p>The nine largest fuel types in the plant layer, by the capacity installed against each. The figure beside every bar is the total in gigawatts and the number of units carrying it, because the two do not move together: a fuel can hold a great deal of capacity in a few large stations, or the same capacity spread across thousands of small ones. That difference is what decides whether losing one unit matters. This is the same station layer the scatter above aggregates by country, counted by fuel instead.</p>
 
 </div><div class="card">
 <div class="tag">the atlas itself</div>
@@ -86,10 +80,10 @@ drawn by hand.</p>
 <p>The upper panel is the carbon dioxide record from Mauna Loa. The saw pattern is the growing season of the northern hemisphere. The lower panel is the global temperature anomaly. Both series are read directly into the model. They set the starting state of the two climate nodes. The climate nodes then connect to every national grid, and to the gas and electricity prices, through heating and cooling demand.</p>
 
 </div><div class="card">
-<div class="tag">pandas plotting on matplotlib axes</div>
-<h3 style="margin-top:4px">Recorded disasters that the model contains</h3>
-<img class="fig wide" src="assets/12_recorded_events.png?v=451b14ca" alt="Recorded disasters that the model contains">
-<p>The left panel adds the adjusted damage of every energy relevant disaster in each decade, and separates the total by disaster type. The right panel names the twelve costliest single events. These records come from the international disaster database. In the model, each event is a node. The recorded damage sets the strength of the link from that event to the national grid of the country it struck.</p>
+<div class="tag">matplotlib histogram, logarithmic count axis</div>
+<h3 style="margin-top:4px">The earthquakes the model carries</h3>
+<img class="fig wide" src="assets/12_recorded_events.png?v=451b14ca" alt="Histogram of earthquake moment magnitude, logarithmic count axis">
+<p>Every recorded earthquake that reaches infrastructure, counted by moment magnitude. The count axis is logarithmic because the record follows the usual magnitude and frequency law: each step up in magnitude is roughly an order of magnitude rarer, so a linear axis would show the small events and almost nothing else. In the model each of these is a node, and its magnitude sets the strength of the link from the event to the national grid of the country it struck.</p>
 
 </div><div class="card">
 <div class="tag">matplotlib, computed field and measured series</div>
@@ -98,6 +92,7 @@ drawn by hand.</p>
 <p>On the left, the annual mean sunlight arriving above the atmosphere at each latitude. This is not data. It is computed from the measured solar constant, the obliquity of 23.44 degrees and the eccentricity of the orbit, integrated over 365 days. The dashed line is the solar constant divided by four, which is what the area-weighted mean of the curve has to equal &mdash; the disc the Earth intercepts over the sphere it radiates from. It agrees to one part in ten thousand, which is the check that the integration is right rather than merely plausible. The equator receives 416 W/m&sup2; and the poles about 174.</p>
 <p>On the right, the measured total solar irradiance, NRLTSI2, with its stated uncertainty as the shaded band. Four solar cycles are visible. The whole vertical range of the panel is two watts in thirteen hundred and sixty, which is the honest scale of the thing the solar minimum scenario perturbs.</p>
 
+</div><div class="card">
 <div class="tag">matplotlib, horizontal bar, log scale</div>
 <h3 style="margin-top:4px">Every node names its source</h3>
 <img class="fig wide" src="assets/13_provenance.png?v=feec08cf" alt="Every node names its source">
@@ -107,9 +102,10 @@ drawn by hand.</p>
 </div>
 <hr>
 <h2>Method</h2>
-<p class="small">Statistical panels use matplotlib and seaborn. The grammar of
-graphics panel uses plotnine. The interactive map uses plotly. Each figure names
-its method above the title.</p>
+<p class="small">Every static panel here is drawn with matplotlib, from the same
+payload the atlas itself loads, by <code>build_atlas_figures.py</code>. The one
+grammar of graphics panel uses plotnine. The atlas is not a plotted figure at
+all; it is drawn live in WebGL. Each figure names its method above the title.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
@@ -117,24 +113,24 @@ its method above the title.</p>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
 <script>
-/* this page's own 14 figure cards, real method tag + real title, in the
-   page's own order - drifting motes, not a data claim */
+/* this page's own 13 figure cards, real method tag + real title, in the
+   page's own order - drifting motes, not a data claim. Each line is a
+   copy of a tag above; change a card's method and change it here too. */
 window.MARGIN_SCENE = { kind: 'cards', items: [
-  { text: 'matplotlib, stacked horizontal bar', sub: 'Fuel mix, 28 largest power systems' },
-  { text: 'seaborn + matplotlib cumulative', sub: 'How world demand is distributed' },
-  { text: 'matplotlib, small multiples', sub: 'The four prices that set market inertia' },
-  { text: 'seaborn box plot', sub: 'How strongly each node type resists change' },
-  { text: 'seaborn histogram + matplotlib bar', sub: 'The structure of the links' },
-  { text: 'seaborn heat map, annotated', sub: 'How far one change travels' },
+  { text: 'matplotlib histogram, log-log', sub: 'Plant capacity spans five orders' },
+  { text: 'matplotlib box plot', sub: 'How strongly each node type resists change' },
+  { text: 'matplotlib scatter, log-log', sub: 'The structure of the links' },
+  { text: 'matplotlib bar, annotated, log', sub: 'How far one change travels' },
   { text: 'matplotlib, log count axis', sub: 'When the effect arrives' },
   { text: 'matplotlib, twin axes', sub: 'The model saturates' },
   { text: 'plotnine, grammar of graphics', sub: 'Size against low-carbon share' },
+  { text: 'matplotlib, horizontal bar', sub: 'Where capacity sits, by fuel' },
   { text: 'the atlas itself', sub: 'Every power plant in the model' },
   { text: 'matplotlib, stacked time series', sub: 'The two climate series' },
-  { text: 'pandas on matplotlib axes', sub: 'Recorded disasters' },
+  { text: 'matplotlib histogram, log count', sub: 'The earthquakes the model carries' },
   { text: 'matplotlib, computed field', sub: 'The space layer' },
   { text: 'matplotlib, log-scale bar', sub: 'Every node names its source' }
 ] };
 </script>
-<script src="assets/margin-scene.js"></script>
+<script src="assets/margin-scene.js?v=c28ceecf"></script>
 </body></html>
