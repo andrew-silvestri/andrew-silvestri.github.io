@@ -96,11 +96,15 @@
      across the full scroll, and every opacity below is read from position
      rather than accumulated over time. Scrolling back up retraces exactly;
      scrolling fast crosses the same fades, just sooner. */
+  /* Ordered as the descent is read, top of the page to bottom: canopy, then
+     open water, then the deep, then the floor. Canopy sits at 0 because the
+     page opens over land animals - bats, ants, a chameleon, an elephant - and
+     the tint should agree with what is drawn on top of it. */
   var BIOME = {
-    0: { top: '#0a1020', bot: '#070c16' }, // open water, just off the page bg
-    1: { top: '#151027', bot: '#0a0e1c' }, // dusk canopy, violet-leaning
-    2: { top: '#060a10', bot: '#04070a' }, // near-black abyssal floor
-    3: { top: '#081a1c', bot: '#050f14' }  // reef / tide, teal-leaning
+    0: { top: '#151027', bot: '#0a0e1c' }, // dusk canopy, violet-leaning
+    1: { top: '#0a1020', bot: '#070c16' }, // open water, just off the page bg
+    2: { top: '#060a10', bot: '#04070a' }, // near-black abyssal
+    3: { top: '#081a1c', bot: '#050f14' }  // reef / floor, teal-leaning
   };
   var LAST_BIOME = 3;
 
@@ -126,30 +130,49 @@
   }
 
   /* ---- real creature icons ------------------------------------------
-     octopus/bat/nautilus/quahog use real OpenMoji line-icon art (CC BY-SA
-     4.0, https://openmoji.org - credited on the page itself), recolored
-     per creature to the site's own palette by swapping the SVG's single
-     stroke color before rasterizing. Chameleon and tubeworm have no real
+     Twelve of the fourteen use real OpenMoji line-icon art (CC BY-SA 4.0,
+     https://openmoji.org - credited on the page itself), recolored per
+     creature to the site's own palette by swapping the SVG's single stroke
+     color before rasterizing. The chameleon and the tubeworm have no
      emoji equivalent, so they stay hand-drawn below, restyled to the same
-     pure-outline weight so all six read as one set rather than a mismatch
-     of styles. */
+     pure-outline weight so the whole set reads as one family rather than a
+     mismatch of styles.
+
+     Icons are extracted from the OpenMoji release archive's black/svg set,
+     which is the outline-only variant - the color set would fight the
+     palette. */
   function toHex(rgb) {
     return '#' + rgb.map(function (v) {
       return ('0' + v.toString(16)).slice(-2);
     }).join('');
   }
   var ICON_SRC = {
-    octopus:  { file: 'assets/openmoji/1F419.svg', color: 'cool' },
     bat:      { file: 'assets/openmoji/1F987.svg', color: 'acc' },
-    nautilus: { file: 'assets/openmoji/1F40C.svg', color: 'dim' },
-    quahog:   { file: 'assets/openmoji/1F41A.svg', color: 'acc' }
+    ant:      { file: 'assets/openmoji/1F41C.svg', color: 'moss' },
+    elephant: { file: 'assets/openmoji/1F418.svg', color: 'dim' },
+    molerat:  { file: 'assets/openmoji/1F400.svg', color: 'acc' },
+    tortoise: { file: 'assets/openmoji/1F422.svg', color: 'moss' },
+    whale:    { file: 'assets/openmoji/1F40B.svg', color: 'cool' },
+    shark:    { file: 'assets/openmoji/1F988.svg', color: 'cool' },
+    rockfish: { file: 'assets/openmoji/1F41F.svg', color: 'cool' },
+    mussel:   { file: 'assets/openmoji/1F9AA.svg', color: 'dim' },
+    quahog:   { file: 'assets/openmoji/1F41A.svg', color: 'acc' },
+    octopus:  { file: 'assets/openmoji/1F419.svg', color: 'cool' },
+    nautilus: { file: 'assets/openmoji/1F40C.svg', color: 'dim' }
   };
   var ICONS = {};
   Object.keys(ICON_SRC).forEach(function (kind) {
     var spec = ICON_SRC[kind];
     fetch(spec.file).then(function (r) { return r.text(); })
       .then(function (svgText) {
-        var recolored = svgText.replace(/#000000/g, toHex(PAL[spec.color]));
+        /* OpenMoji writes its single stroke colour as either #000000 or
+           #000 depending on the icon, and an unmatched one would draw the
+           creature in black on a near-black page - invisible rather than
+           obviously broken. Both forms are matched here, and the icons are
+           normalised to the long form when they are extracted, so this is a
+           belt-and-braces guard for the next icon somebody adds by hand. */
+        var recolored = svgText.replace(
+          /#000000|#000(?![0-9A-Fa-f])/g, toHex(PAL[spec.color]));
         var img = new Image();
         img.src = 'data:image/svg+xml;charset=utf-8,' +
           encodeURIComponent(recolored);
@@ -199,60 +222,142 @@
     };
   }
 
+  /* Fourteen real species, in the order a descent meets them: canopy and
+     ground, then open water, then the deep, then the floor. Every quotient
+     below is the species' own lq_class_maximum from
+     longevity-quotient/outputs/lq_table.csv - the same table the page's
+     figures are drawn from - rounded to two figures, and every lifespan is
+     that row's `maximum`. Three of these labels were previously wrong: the
+     bat carried the order-level 2.5x when Chiroptera is 2.68 and Brandt's
+     bat itself is 12.75, the tubeworm said 22x against a real 23.41, and the
+     quahog said 45x against a real 47.48. `at` is where on the page the
+     creature lives, `span` how far either side it fades. */
   var CREATURES = [
     {
-      kind: 'bat', biome: 1, color: 'acc',
-      at: 0.07, span: 0.26,
-      label: 'Chiroptera (bats) · 2.5× prediction',
+      kind: 'bat', biome: 0, color: 'acc',
+      at: 0.03, span: 0.15,
+      label: "Brandt's bat · 12.75× prediction (41 years at 7 grams)",
       motion: loop([
         { x: 0.15, y: 0.20 }, { x: 0.45, y: 0.10 }, { x: 0.75, y: 0.22 },
         { x: 0.60, y: 0.35 }, { x: 0.30, y: 0.30 }
       ], 110)
     },
     {
-      kind: 'chameleon', biome: 1, color: 'moss',
-      at: 0.24, span: 0.26,
-      label: "Labord's chameleon · 4-5 real months, size predicts 8 yr",
+      kind: 'ant', biome: 0, color: 'moss',
+      at: 0.11, span: 0.15,
+      label: 'black garden ant queen · 28.72× prediction (29 years)',
+      motion: loop([
+        { x: 0.20, y: 0.42 }, { x: 0.52, y: 0.38 }, { x: 0.72, y: 0.46 },
+        { x: 0.40, y: 0.50 }
+      ], 125)
+    },
+    {
+      kind: 'chameleon', biome: 0, color: 'moss',
+      at: 0.19, span: 0.15,
+      label: "Labord's chameleon · 0.13× prediction (one year, size predicts eight)",
       motion: loop([
         { x: 0.20, y: 0.55 }, { x: 0.40, y: 0.58 }, { x: 0.62, y: 0.53 },
         { x: 0.45, y: 0.60 }
       ], 140)
     },
     {
+      kind: 'elephant', biome: 0, color: 'dim',
+      at: 0.27, span: 0.15,
+      label: 'African bush elephant · 1.31× prediction (80 years)',
+      motion: loop([
+        { x: 0.25, y: 0.68 }, { x: 0.48, y: 0.66 }, { x: 0.66, y: 0.70 },
+        { x: 0.42, y: 0.72 }
+      ], 155)
+    },
+    {
+      kind: 'molerat', biome: 1, color: 'acc',
+      at: 0.35, span: 0.15,
+      label: 'naked mole-rat · 6.75× prediction (31 years at 35 grams)',
+      motion: loop([
+        { x: 0.30, y: 0.30 }, { x: 0.55, y: 0.26 }, { x: 0.70, y: 0.34 },
+        { x: 0.44, y: 0.38 }
+      ], 100)
+    },
+    {
+      kind: 'tortoise', biome: 1, color: 'moss',
+      at: 0.43, span: 0.15,
+      label: 'Galapagos tortoise · 3.21× prediction (177 years)',
+      motion: loop([
+        { x: 0.22, y: 0.60 }, { x: 0.44, y: 0.62 }, { x: 0.64, y: 0.58 },
+        { x: 0.40, y: 0.64 }
+      ], 160)
+    },
+    {
+      kind: 'whale', biome: 1, color: 'cool',
+      at: 0.51, span: 0.15,
+      label: 'bowhead whale · 1.78× prediction (211 years)',
+      motion: loop([
+        { x: 0.18, y: 0.24 }, { x: 0.50, y: 0.18 }, { x: 0.78, y: 0.26 },
+        { x: 0.46, y: 0.32 }
+      ], 150)
+    },
+    {
+      kind: 'shark', biome: 2, color: 'cool',
+      at: 0.59, span: 0.15,
+      label: 'Greenland shark · 6.34× prediction (392 years)',
+      motion: loop([
+        { x: 0.20, y: 0.40 }, { x: 0.52, y: 0.34 }, { x: 0.76, y: 0.42 },
+        { x: 0.44, y: 0.48 }
+      ], 135)
+    },
+    {
+      kind: 'rockfish', biome: 2, color: 'cool',
+      at: 0.67, span: 0.15,
+      label: 'rougheye rockfish · 12.90× prediction (205 years)',
+      motion: loop([
+        { x: 0.28, y: 0.56 }, { x: 0.54, y: 0.52 }, { x: 0.72, y: 0.58 },
+        { x: 0.46, y: 0.62 }
+      ], 115)
+    },
+    {
       kind: 'tubeworm', biome: 2, color: 'cool',
-      at: 0.44, span: 0.26,
-      label: 'cold-seep tubeworm · 22× prediction',
+      at: 0.75, span: 0.15,
+      label: 'cold-seep tubeworm · 23.41× prediction (250 years)',
       motion: loop([
         { x: 0.30, y: 0.70 }, { x: 0.30, y: 0.60 }, { x: 0.30, y: 0.70 },
         { x: 0.30, y: 0.78 }
       ], 90)
     },
     {
-      kind: 'quahog', biome: 3, color: 'acc',
-      at: 0.93, span: 0.26,
-      label: 'ocean quahog · 45× prediction (a real 507-year lifespan)',
+      kind: 'mussel', biome: 3, color: 'dim',
+      at: 0.83, span: 0.15,
+      label: 'freshwater pearl mussel · 15.78× prediction (190 years)',
       motion: loop([
-        { x: 0.25, y: 0.75 }, { x: 0.27, y: 0.76 }, { x: 0.25, y: 0.75 },
-        { x: 0.23, y: 0.74 }
-      ], 160)
+        { x: 0.34, y: 0.74 }, { x: 0.38, y: 0.72 }, { x: 0.36, y: 0.76 },
+        { x: 0.32, y: 0.75 }
+      ], 145)
     },
     {
-      kind: 'octopus', biome: 3, color: 'cool',
-      at: 0.62, span: 0.26,
-      label: 'giant Pacific octopus · ~1/20 prediction, dead in 5 real years',
+      kind: 'quahog', biome: 3, color: 'acc',
+      at: 0.91, span: 0.15,
+      label: 'ocean quahog · 47.48× prediction (a real 507-year lifespan)',
       motion: loop([
-        { x: 0.55, y: 0.60 }, { x: 0.70, y: 0.68 }, { x: 0.60, y: 0.80 },
-        { x: 0.40, y: 0.74 }, { x: 0.45, y: 0.62 }
+        { x: 0.55, y: 0.80 }, { x: 0.58, y: 0.78 }, { x: 0.56, y: 0.82 },
+        { x: 0.52, y: 0.81 }
       ], 130)
     },
     {
-      kind: 'nautilus', biome: 3, color: 'dim',
-      at: 0.79, span: 0.26,
-      label: 'chambered nautilus · lives 20 real years',
+      kind: 'octopus', biome: 3, color: 'cool',
+      at: 0.95, span: 0.15,
+      label: 'common octopus · 0.07× prediction (two years)',
       motion: loop([
-        { x: 0.65, y: 0.30 }, { x: 0.75, y: 0.42 }, { x: 0.65, y: 0.50 },
-        { x: 0.55, y: 0.40 }
-      ], 150)
+        { x: 0.24, y: 0.46 }, { x: 0.50, y: 0.40 }, { x: 0.70, y: 0.50 },
+        { x: 0.42, y: 0.54 }
+      ], 120)
+    },
+    {
+      kind: 'nautilus', biome: 3, color: 'dim',
+      at: 1.00, span: 0.15,
+      label: 'chambered nautilus · 0.81× prediction (20 years)',
+      motion: loop([
+        { x: 0.60, y: 0.62 }, { x: 0.68, y: 0.58 }, { x: 0.64, y: 0.66 },
+        { x: 0.56, y: 0.64 }
+      ], 140)
     }
   ];
 
@@ -282,14 +387,26 @@
     ctx.lineCap = 'round';
     ctx.stroke();
   }
-  var DRAW = {
-    bat: function (x, y, s) { drawIcon('bat', x, y, s); },
-    chameleon: drawChameleon,
-    tubeworm: drawTubeworm,
-    quahog: function (x, y, s) { drawIcon('quahog', x, y, s); },
-    octopus: function (x, y, s) { drawIcon('octopus', x, y, s); },
-    nautilus: function (x, y, s) { drawIcon('nautilus', x, y, s); }
-  };
+  /* Every icon-backed kind draws the same way, so the table is built from
+     ICON_SRC rather than listed by hand - a creature added to ICON_SRC and
+     CREATURES without a matching entry here used to throw
+     "DRAW[c.kind] is not a function" on the first frame, which kills the
+     animation loop for the whole scene, not just that creature. The two
+     hand-drawn kinds are added after. */
+  var DRAW = {};
+  Object.keys(ICON_SRC).forEach(function (kind) {
+    DRAW[kind] = function (x, y, s) { drawIcon(kind, x, y, s); };
+  });
+  DRAW.chameleon = drawChameleon;
+  DRAW.tubeworm = drawTubeworm;
+
+  /* A creature naming a kind nothing can draw is a content error, and it
+     should be loud in development rather than silently blanking the scene. */
+  CREATURES.forEach(function (c) {
+    if (typeof DRAW[c.kind] !== 'function') {
+      throw new Error('biome-scene: no way to draw creature kind ' + c.kind);
+    }
+  });
 
   function drawBiomeBackdrop(band, biomeFloat) {
     var lo = Math.floor(biomeFloat), hi = Math.ceil(biomeFloat);
@@ -335,9 +452,19 @@
       ctx.globalAlpha = 0.55 * active;
       ctx.font = '10px ui-sans-serif, system-ui, sans-serif';
       ctx.fillStyle = rgba('ink', 1);
-      var lx = x + s * 1.6;
-      if (lx + 140 > band.x1) lx = x - s * 1.6 - 140;
-      ctx.fillText(c.label, Math.max(band.x0 + 4, Math.min(lx, band.x1 - 140)), y);
+      /* Measured, not assumed. This used to reserve a flat 140px for every
+         label, which was near enough while the labels were "octopus" plus a
+         quotient; once they carried a species name, a quotient and a real
+         lifespan they ran past 200px, so the flip-to-the-left test fired too
+         late and the text was drawn straight through its own creature. */
+      var lw = ctx.measureText(c.label).width;
+      var gap = s * 1.6;
+      var lx = x + gap;                       // preferred: to the right
+      if (lx + lw > band.x1 - 4) lx = x - gap - lw;   // else flip left
+      lx = Math.max(band.x0 + 4, Math.min(lx, band.x1 - lw - 4));
+      /* If the band is too narrow to hold the label anywhere without sitting
+         on the creature, the creature is the thing worth keeping. */
+      if (lw + gap * 2 < band.x1 - band.x0) ctx.fillText(c.label, lx, y);
     }
     ctx.globalAlpha = 1;
   }
