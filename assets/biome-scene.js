@@ -130,7 +130,7 @@
   }
 
   /* ---- real creature icons ------------------------------------------
-     Twelve of the fourteen use real OpenMoji line-icon art (CC BY-SA 4.0,
+     Twenty-two of the twenty-four use real OpenMoji line-icon art (CC BY-SA 4.0,
      https://openmoji.org - credited on the page itself), recolored per
      creature to the site's own palette by swapping the SVG's single stroke
      color before rasterizing. The chameleon and the tubeworm have no
@@ -147,18 +147,28 @@
     }).join('');
   }
   var ICON_SRC = {
-    bat:      { file: 'assets/openmoji/1F987.svg', color: 'acc' },
-    ant:      { file: 'assets/openmoji/1F41C.svg', color: 'moss' },
-    elephant: { file: 'assets/openmoji/1F418.svg', color: 'dim' },
-    molerat:  { file: 'assets/openmoji/1F400.svg', color: 'acc' },
-    tortoise: { file: 'assets/openmoji/1F422.svg', color: 'moss' },
-    whale:    { file: 'assets/openmoji/1F40B.svg', color: 'cool' },
-    shark:    { file: 'assets/openmoji/1F988.svg', color: 'cool' },
-    rockfish: { file: 'assets/openmoji/1F41F.svg', color: 'cool' },
-    mussel:   { file: 'assets/openmoji/1F9AA.svg', color: 'dim' },
-    quahog:   { file: 'assets/openmoji/1F41A.svg', color: 'acc' },
-    octopus:  { file: 'assets/openmoji/1F419.svg', color: 'cool' },
-    nautilus: { file: 'assets/openmoji/1F40C.svg', color: 'dim' }
+    bat:       { file: 'assets/openmoji/1F987.svg', color: 'acc' },
+    honeybee:  { file: 'assets/openmoji/1F41D.svg', color: 'moss' },
+    parrot:    { file: 'assets/openmoji/1F99C.svg', color: 'acc' },
+    albatross: { file: 'assets/openmoji/1F426.svg', color: 'dim' },
+    ant:       { file: 'assets/openmoji/1F41C.svg', color: 'moss' },
+    spider:    { file: 'assets/openmoji/1F577.svg', color: 'dim' },
+    elephant:  { file: 'assets/openmoji/1F418.svg', color: 'dim' },
+    giraffe:   { file: 'assets/openmoji/1F992.svg', color: 'moss' },
+    molerat:   { file: 'assets/openmoji/1F400.svg', color: 'acc' },
+    tortoise:  { file: 'assets/openmoji/1F422.svg', color: 'moss' },
+    snail:     { file: 'assets/openmoji/1F40C.svg', color: 'dim' },
+    penguin:   { file: 'assets/openmoji/1F427.svg', color: 'cool' },
+    seal:      { file: 'assets/openmoji/1F9AD.svg', color: 'cool' },
+    whale:     { file: 'assets/openmoji/1F40B.svg', color: 'cool' },
+    shark:     { file: 'assets/openmoji/1F988.svg', color: 'cool' },
+    rockfish:  { file: 'assets/openmoji/1F41F.svg', color: 'cool' },
+    jellyfish: { file: 'assets/openmoji/1FABC.svg', color: 'acc' },
+    lobster:   { file: 'assets/openmoji/1F99E.svg', color: 'acc' },
+    mussel:    { file: 'assets/openmoji/1F9AA.svg', color: 'dim' },
+    quahog:    { file: 'assets/openmoji/1F41A.svg', color: 'acc' },
+    octopus:   { file: 'assets/openmoji/1F419.svg', color: 'cool' },
+    coral:     { file: 'assets/openmoji/1FAB8.svg', color: 'moss' }
   };
   var ICONS = {};
   Object.keys(ICON_SRC).forEach(function (kind) {
@@ -222,142 +232,207 @@
     };
   }
 
-  /* Fourteen real species, in the order a descent meets them: canopy and
-     ground, then open water, then the deep, then the floor. Every quotient
-     below is the species' own lq_class_maximum from
+  /* Twenty-four real species, in the order a descent meets them: canopy and
+     ground, then open water, then the deep, then the floor. Every quotient is
+     the species' own lq_class_maximum from
      longevity-quotient/outputs/lq_table.csv - the same table the page's
-     figures are drawn from - rounded to two figures, and every lifespan is
-     that row's `maximum`. Three of these labels were previously wrong: the
-     bat carried the order-level 2.5x when Chiroptera is 2.68 and Brandt's
-     bat itself is 12.75, the tubeworm said 22x against a real 23.41, and the
-     quahog said 45x against a real 47.48. `at` is where on the page the
-     creature lives, `span` how far either side it fades. */
+     figures are drawn from - and every lifespan is that row's `maximum`.
+     `at` is where on the page the creature lives, `span` how far either side
+     it fades, and `side` which margin it takes: strictly alternating, so
+     consecutive creatures land opposite each other and the two margins never
+     mirror. Colour is taken from the icon's own entry in ICON_SRC. */
   var CREATURES = [
     {
-      kind: 'bat', biome: 0, color: 'acc',
-      at: 0.03, span: 0.15,
+      kind: 'bat', color: null, side: 'l',
+      at: 0.020, span: 0.09,
       label: "Brandt's bat · 12.75× prediction (41 years at 7 grams)",
       motion: loop([
-        { x: 0.15, y: 0.20 }, { x: 0.45, y: 0.10 }, { x: 0.75, y: 0.22 },
-        { x: 0.60, y: 0.35 }, { x: 0.30, y: 0.30 }
+        { x: 0.22, y: 0.20 }, { x: 0.50, y: 0.14 }, { x: 0.70, y: 0.25 }, { x: 0.38, y: 0.22 }
       ], 110)
     },
     {
-      kind: 'ant', biome: 0, color: 'moss',
-      at: 0.11, span: 0.15,
+      kind: 'honeybee', color: null, side: 'r',
+      at: 0.062, span: 0.09,
+      label: 'honey bee queen · 1.98× prediction (5 years)',
+      motion: loop([
+        { x: 0.40, y: 0.14 }, { x: 0.70, y: 0.08 }, { x: 0.70, y: 0.19 }, { x: 0.66, y: 0.16 }
+      ], 118)
+    },
+    {
+      kind: 'parrot', color: null, side: 'l',
+      at: 0.104, span: 0.09,
+      label: 'pink cockatoo · 4.55× prediction (83 years)',
+      motion: loop([
+        { x: 0.58, y: 0.26 }, { x: 0.60, y: 0.20 }, { x: 0.70, y: 0.31 }, { x: 0.52, y: 0.28 }
+      ], 126)
+    },
+    {
+      kind: 'albatross', color: null, side: 'r',
+      at: 0.147, span: 0.09,
+      label: 'Laysan albatross · 2.60× prediction (74 years)',
+      motion: loop([
+        { x: 0.22, y: 0.18 }, { x: 0.50, y: 0.12 }, { x: 0.70, y: 0.23 }, { x: 0.38, y: 0.20 }
+      ], 134)
+    },
+    {
+      kind: 'ant', color: null, side: 'l',
+      at: 0.189, span: 0.09,
       label: 'black garden ant queen · 28.72× prediction (29 years)',
       motion: loop([
-        { x: 0.20, y: 0.42 }, { x: 0.52, y: 0.38 }, { x: 0.72, y: 0.46 },
-        { x: 0.40, y: 0.50 }
+        { x: 0.40, y: 0.44 }, { x: 0.70, y: 0.38 }, { x: 0.70, y: 0.49 }, { x: 0.66, y: 0.46 }
       ], 125)
     },
     {
-      kind: 'chameleon', biome: 0, color: 'moss',
-      at: 0.19, span: 0.15,
+      kind: 'spider', color: null, side: 'r',
+      at: 0.231, span: 0.09,
+      label: 'Mexican redknee tarantula · 3.55× prediction (30 years)',
+      motion: loop([
+        { x: 0.58, y: 0.52 }, { x: 0.60, y: 0.46 }, { x: 0.70, y: 0.57 }, { x: 0.52, y: 0.54 }
+      ], 142)
+    },
+    {
+      kind: 'chameleon', color: null, side: 'l',
+      at: 0.273, span: 0.09,
       label: "Labord's chameleon · 0.13× prediction (one year, size predicts eight)",
       motion: loop([
-        { x: 0.20, y: 0.55 }, { x: 0.40, y: 0.58 }, { x: 0.62, y: 0.53 },
-        { x: 0.45, y: 0.60 }
+        { x: 0.22, y: 0.56 }, { x: 0.50, y: 0.50 }, { x: 0.70, y: 0.61 }, { x: 0.38, y: 0.58 }
       ], 140)
     },
     {
-      kind: 'elephant', biome: 0, color: 'dim',
-      at: 0.27, span: 0.15,
+      kind: 'elephant', color: null, side: 'r',
+      at: 0.315, span: 0.09,
       label: 'African bush elephant · 1.31× prediction (80 years)',
       motion: loop([
-        { x: 0.25, y: 0.68 }, { x: 0.48, y: 0.66 }, { x: 0.66, y: 0.70 },
-        { x: 0.42, y: 0.72 }
+        { x: 0.40, y: 0.66 }, { x: 0.70, y: 0.60 }, { x: 0.70, y: 0.71 }, { x: 0.66, y: 0.68 }
       ], 155)
     },
     {
-      kind: 'molerat', biome: 1, color: 'acc',
-      at: 0.35, span: 0.15,
-      label: 'naked mole-rat · 6.75× prediction (31 years at 35 grams)',
+      kind: 'giraffe', color: null, side: 'l',
+      at: 0.357, span: 0.09,
+      label: 'giraffe · 0.84× prediction (39 years)',
       motion: loop([
-        { x: 0.30, y: 0.30 }, { x: 0.55, y: 0.26 }, { x: 0.70, y: 0.34 },
-        { x: 0.44, y: 0.38 }
-      ], 100)
-    },
-    {
-      kind: 'tortoise', biome: 1, color: 'moss',
-      at: 0.43, span: 0.15,
-      label: 'Galapagos tortoise · 3.21× prediction (177 years)',
-      motion: loop([
-        { x: 0.22, y: 0.60 }, { x: 0.44, y: 0.62 }, { x: 0.64, y: 0.58 },
-        { x: 0.40, y: 0.64 }
-      ], 160)
-    },
-    {
-      kind: 'whale', biome: 1, color: 'cool',
-      at: 0.51, span: 0.15,
-      label: 'bowhead whale · 1.78× prediction (211 years)',
-      motion: loop([
-        { x: 0.18, y: 0.24 }, { x: 0.50, y: 0.18 }, { x: 0.78, y: 0.26 },
-        { x: 0.46, y: 0.32 }
+        { x: 0.58, y: 0.62 }, { x: 0.60, y: 0.56 }, { x: 0.70, y: 0.67 }, { x: 0.52, y: 0.64 }
       ], 150)
     },
     {
-      kind: 'shark', biome: 2, color: 'cool',
-      at: 0.59, span: 0.15,
+      kind: 'molerat', color: null, side: 'r',
+      at: 0.400, span: 0.09,
+      label: 'naked mole-rat · 6.75× prediction (31 years at 35 grams)',
+      motion: loop([
+        { x: 0.22, y: 0.34 }, { x: 0.50, y: 0.28 }, { x: 0.70, y: 0.39 }, { x: 0.38, y: 0.36 }
+      ], 100)
+    },
+    {
+      kind: 'tortoise', color: null, side: 'l',
+      at: 0.442, span: 0.09,
+      label: 'Galapagos tortoise · 3.21× prediction (177 years)',
+      motion: loop([
+        { x: 0.40, y: 0.60 }, { x: 0.70, y: 0.54 }, { x: 0.70, y: 0.65 }, { x: 0.66, y: 0.62 }
+      ], 160)
+    },
+    {
+      kind: 'snail', color: null, side: 'r',
+      at: 0.484, span: 0.09,
+      label: 'Roman snail · 3.91× prediction (35 years)',
+      motion: loop([
+        { x: 0.58, y: 0.72 }, { x: 0.60, y: 0.66 }, { x: 0.70, y: 0.77 }, { x: 0.52, y: 0.74 }
+      ], 152)
+    },
+    {
+      kind: 'penguin', color: null, side: 'l',
+      at: 0.526, span: 0.09,
+      label: 'African penguin · 1.41× prediction (40 years)',
+      motion: loop([
+        { x: 0.22, y: 0.30 }, { x: 0.50, y: 0.24 }, { x: 0.70, y: 0.35 }, { x: 0.38, y: 0.32 }
+      ], 128)
+    },
+    {
+      kind: 'seal', color: null, side: 'r',
+      at: 0.568, span: 0.09,
+      label: 'Baikal seal · 2.13× prediction (56 years)',
+      motion: loop([
+        { x: 0.40, y: 0.36 }, { x: 0.70, y: 0.30 }, { x: 0.70, y: 0.41 }, { x: 0.66, y: 0.38 }
+      ], 136)
+    },
+    {
+      kind: 'whale', color: null, side: 'l',
+      at: 0.610, span: 0.09,
+      label: 'bowhead whale · 1.78× prediction (211 years)',
+      motion: loop([
+        { x: 0.58, y: 0.24 }, { x: 0.60, y: 0.18 }, { x: 0.70, y: 0.29 }, { x: 0.52, y: 0.26 }
+      ], 150)
+    },
+    {
+      kind: 'shark', color: null, side: 'r',
+      at: 0.653, span: 0.09,
       label: 'Greenland shark · 6.34× prediction (392 years)',
       motion: loop([
-        { x: 0.20, y: 0.40 }, { x: 0.52, y: 0.34 }, { x: 0.76, y: 0.42 },
-        { x: 0.44, y: 0.48 }
+        { x: 0.22, y: 0.40 }, { x: 0.50, y: 0.34 }, { x: 0.70, y: 0.45 }, { x: 0.38, y: 0.42 }
       ], 135)
     },
     {
-      kind: 'rockfish', biome: 2, color: 'cool',
-      at: 0.67, span: 0.15,
+      kind: 'rockfish', color: null, side: 'l',
+      at: 0.695, span: 0.09,
       label: 'rougheye rockfish · 12.90× prediction (205 years)',
       motion: loop([
-        { x: 0.28, y: 0.56 }, { x: 0.54, y: 0.52 }, { x: 0.72, y: 0.58 },
-        { x: 0.46, y: 0.62 }
+        { x: 0.40, y: 0.56 }, { x: 0.70, y: 0.50 }, { x: 0.70, y: 0.61 }, { x: 0.66, y: 0.58 }
       ], 115)
     },
     {
-      kind: 'tubeworm', biome: 2, color: 'cool',
-      at: 0.75, span: 0.15,
+      kind: 'jellyfish', color: null, side: 'r',
+      at: 0.737, span: 0.09,
+      label: 'moon jellyfish · 0.07× prediction (one year)',
+      motion: loop([
+        { x: 0.58, y: 0.46 }, { x: 0.60, y: 0.40 }, { x: 0.70, y: 0.51 }, { x: 0.52, y: 0.48 }
+      ], 122)
+    },
+    {
+      kind: 'tubeworm', color: null, side: 'l',
+      at: 0.779, span: 0.09,
       label: 'cold-seep tubeworm · 23.41× prediction (250 years)',
       motion: loop([
-        { x: 0.30, y: 0.70 }, { x: 0.30, y: 0.60 }, { x: 0.30, y: 0.70 },
-        { x: 0.30, y: 0.78 }
+        { x: 0.22, y: 0.70 }, { x: 0.50, y: 0.64 }, { x: 0.70, y: 0.75 }, { x: 0.38, y: 0.72 }
       ], 90)
     },
     {
-      kind: 'mussel', biome: 3, color: 'dim',
-      at: 0.83, span: 0.15,
+      kind: 'lobster', color: null, side: 'r',
+      at: 0.821, span: 0.09,
+      label: 'American lobster · 3.04× prediction (70 years)',
+      motion: loop([
+        { x: 0.40, y: 0.74 }, { x: 0.70, y: 0.68 }, { x: 0.70, y: 0.79 }, { x: 0.66, y: 0.76 }
+      ], 144)
+    },
+    {
+      kind: 'mussel', color: null, side: 'l',
+      at: 0.863, span: 0.09,
       label: 'freshwater pearl mussel · 15.78× prediction (190 years)',
       motion: loop([
-        { x: 0.34, y: 0.74 }, { x: 0.38, y: 0.72 }, { x: 0.36, y: 0.76 },
-        { x: 0.32, y: 0.75 }
+        { x: 0.58, y: 0.76 }, { x: 0.60, y: 0.70 }, { x: 0.70, y: 0.81 }, { x: 0.52, y: 0.78 }
       ], 145)
     },
     {
-      kind: 'quahog', biome: 3, color: 'acc',
-      at: 0.91, span: 0.15,
+      kind: 'quahog', color: null, side: 'r',
+      at: 0.906, span: 0.09,
       label: 'ocean quahog · 47.48× prediction (a real 507-year lifespan)',
       motion: loop([
-        { x: 0.55, y: 0.80 }, { x: 0.58, y: 0.78 }, { x: 0.56, y: 0.82 },
-        { x: 0.52, y: 0.81 }
+        { x: 0.22, y: 0.80 }, { x: 0.50, y: 0.74 }, { x: 0.70, y: 0.85 }, { x: 0.38, y: 0.82 }
       ], 130)
     },
     {
-      kind: 'octopus', biome: 3, color: 'cool',
-      at: 0.95, span: 0.15,
+      kind: 'octopus', color: null, side: 'l',
+      at: 0.948, span: 0.09,
       label: 'common octopus · 0.07× prediction (two years)',
       motion: loop([
-        { x: 0.24, y: 0.46 }, { x: 0.50, y: 0.40 }, { x: 0.70, y: 0.50 },
-        { x: 0.42, y: 0.54 }
+        { x: 0.40, y: 0.48 }, { x: 0.70, y: 0.42 }, { x: 0.70, y: 0.53 }, { x: 0.66, y: 0.50 }
       ], 120)
     },
     {
-      kind: 'nautilus', biome: 3, color: 'dim',
-      at: 1.00, span: 0.15,
-      label: 'chambered nautilus · 0.81× prediction (20 years)',
+      kind: 'coral', color: null, side: 'r',
+      at: 0.990, span: 0.09,
+      label: 'black coral · 122.84× prediction (4,265 years)',
       motion: loop([
-        { x: 0.60, y: 0.62 }, { x: 0.68, y: 0.58 }, { x: 0.64, y: 0.66 },
-        { x: 0.56, y: 0.64 }
-      ], 140)
+        { x: 0.58, y: 0.82 }, { x: 0.60, y: 0.76 }, { x: 0.70, y: 0.87 }, { x: 0.52, y: 0.84 }
+      ], 158)
     }
   ];
 
@@ -387,6 +462,15 @@
     ctx.lineCap = 'round';
     ctx.stroke();
   }
+  /* Colour lives in ICON_SRC, so a creature does not carry a second copy
+     that can drift from the icon it is drawn with. The two hand-drawn kinds
+     have no icon entry and name their own. */
+  var HAND_COLOR = { chameleon: 'moss', tubeworm: 'cool' };
+  CREATURES.forEach(function (c) {
+    c.color = (ICON_SRC[c.kind] && ICON_SRC[c.kind].color) ||
+              HAND_COLOR[c.kind] || 'dim';
+  });
+
   /* Every icon-backed kind draws the same way, so the table is built from
      ICON_SRC rather than listed by hand - a creature added to ICON_SRC and
      CREATURES without a matching entry here used to throw
@@ -444,7 +528,7 @@
     var bw = band.x1 - band.x0, bh = H;
     var x = band.x0 + pose.x * bw;
     var y = pose.y * bh;
-    var s = Math.max(7, Math.min(16, bw * 0.09));
+    var s = Math.max(11, Math.min(24, bw * 0.13));
     ctx.globalAlpha = 0.5 * active;
     ctx.fillStyle = rgba(c.color, 1);
     DRAW[c.kind](x, y, s, elapsed);
@@ -512,7 +596,18 @@
     [leftBand, rightBand].forEach(function (band) {
       if (!band) return;
       drawBiomeBackdrop(band, biomeFloat);
-      CREATURES.forEach(function (c) { drawCreature(c, band, p, elapsed); });
+      CREATURES.forEach(function (c) {
+        /* Each creature takes one margin, alternating down the page, so the
+           two sides never draw the same animal at the same moment - which is
+           what made the scene read as a mirror rather than as a place. When
+           only one band exists (a window too narrow for two), it takes every
+           creature, so nothing silently vanishes at that width. */
+        if (leftBand && rightBand) {
+          var isLeft = band === leftBand;
+          if ((c.side === 'l') !== isLeft) return;
+        }
+        drawCreature(c, band, p, elapsed);
+      });
     });
   }
 
