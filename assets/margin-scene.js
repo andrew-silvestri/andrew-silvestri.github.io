@@ -198,14 +198,16 @@
      `hold` and `span` are both expressed in item-spacings (1/n of the
      document), so the feel is the same whether a page hands over ten items
      or forty-four. An item is fully opaque across two spacings - one either
-     side of its own slot - and then fades over another two, so it is
-     somewhere on screen for six spacings in all. That is deliberately slower
-     than it was: at `span = 2/n` with no plateau, an item reached full
+     side of its own slot - and then fades over three and a half more on each
+     side, so it is somewhere on screen for nine spacings in all. That is
+     deliberately slow: at `span = 2/n` with no plateau, an item reached full
      opacity at exactly one scroll position and was visibly on its way in or
-     out everywhere else.
+     out everywhere else, and even a two-spacing fade still read as brisk.
+     The plateau is unchanged here; it is only the tails that lengthened, so
+     what grew is the approach and the departure rather than the time an item
+     spends asserting itself.
 
-     Six spacings live at once needs more rows than five to sit in, hence
-     ROWS below. Side alternates by index so consecutive items - the ones
+     Nine spacings live at once needs a row for each, hence ROWS below. Side alternates by index so consecutive items - the ones
      simultaneously in view - land in opposite margins rather than
      mirroring each other. */
   function assignAtSpan(items) {
@@ -216,7 +218,7 @@
       /* Capped so a scene with very few items does not end up with every one
          of them permanently on screen. */
       item.hold = Math.min(0.16, 1 / n);
-      item.span = Math.min(0.42, 3 / n);
+      item.span = Math.min(0.55, 4.5 / n);
       item.side = i % 2 === 0 ? 'l' : 'r';
       /* Stamped here rather than read from a loop index at draw time: the
          collage kind draws several item lists in one frame, so an item's
@@ -276,11 +278,12 @@
      present together (see assignAtSpan), and items are far enough apart in
      `at` that two sharing a row index are never both visible at once.
 
-     Seven, not five: with the trapezoid profile an item is live across six
-     item-spacings, so up to six can be on screen together. Two items sharing
-     a row are seven spacings apart, which is wider than that window, so a
-     row is never asked to hold two visible items. */
-  var ROWS = 7;
+     Ten, not five: with the trapezoid profile and its lengthened tails an
+     item is live across nine item-spacings, so up to nine can be on screen
+     together - most of them faint, out in a tail. Two items sharing a row are
+     ten spacings apart, wider than that window, so a row is never asked to
+     hold two visible items. */
+  var ROWS = 10;
 
   /* The top and bottom of the drawable column, in viewport pixels. The top
      starts below nav.top so an item never begins underneath it. */
