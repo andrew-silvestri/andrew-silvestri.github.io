@@ -442,9 +442,11 @@
     }).observe(document.body);
   }
 
-  if (still) return; // one settled frame, already drawn above, no loop
-
-  start();
+  /* Registered whether or not the scene is currently moving. Behind an
+     `if (still) return;` a reader who arrived with motion off never got the
+     motionchange listener, so the footer control did nothing until a reload
+     - against motion.js's contract that it overrides the default without
+     one. start() already refuses to run while still. */
   document.addEventListener('visibilitychange', function () {
     document.hidden ? stop() : start();
   });
@@ -452,4 +454,6 @@
     still = e.detail !== 'on';
     if (still) { stop(); draw(tAcc); } else { start(); }
   });
+
+  if (!still) start(); // still: the one settled frame drawn above is enough
 })();

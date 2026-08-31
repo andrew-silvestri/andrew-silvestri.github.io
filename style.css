@@ -534,10 +534,25 @@ footer {
 .grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
 /* library.html's cards sit inside .grid.wide so their figures can reach the
    full wide track (main > .wide promotes the grid itself, not the images
-   nested two levels inside it) - but a figure caption is still prose, so it
-   keeps the 72ch measure a wide figure is exempt from. */
-.grid.wide .card > p, .grid.wide .card > h3, .grid.wide .card > .tag {
+   nested two levels inside it). A heading keeps a short measure. A caption
+   cannot: capping it at 72ch left every caption in the left half of a 1082px
+   card with the right half empty, which reads as a layout fault rather than
+   as margin. Setting it in two columns uses the width the figure already
+   claims and keeps each line about 55 characters, which is a better measure
+   than the 72 it had. These captions run 186 to 636 characters, so every one
+   of them has the body to fill two columns. */
+.grid.wide .card > h3, .grid.wide .card > .tag {
   max-width: 72ch;
+}
+.grid.wide .card > p {
+  columns: 2;
+  column-gap: 44px;
+  orphans: 2;
+  widows: 2;
+}
+@media (max-width: 760px) {
+  /* the grid is one column here and the card is back to prose width */
+  .grid.wide .card > p { columns: 1; }
 }
 
 /* --------------------------------------------------------------- mosaic --- */

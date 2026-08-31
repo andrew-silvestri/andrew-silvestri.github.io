@@ -1,10 +1,16 @@
-/* longevity.html's own margin scene: a canopy-to-ocean-floor strip that pans
- * as the reader crosses this page's own section boundaries, carrying real
- * named species from this page's own prose, each labeled with its real
- * longevity quotient. Nothing here is invented: every creature, habitat
- * assignment and number is lifted straight from the page's own "Comparing
- * whole groups", "Colonies are not individuals" and "What comes out"
- * sections.
+/* longevity.html's own margin scene: a canopy-to-ocean-floor descent that
+ * runs the whole length of the page, carrying real named species from this
+ * page's own prose, each labeled with its real longevity quotient. Nothing
+ * here is invented: every creature, habitat assignment and number is lifted
+ * straight from the page's own "Comparing whole groups", "Colonies are not
+ * individuals" and "What comes out" sections.
+ *
+ * Depth is a function of scroll position and nothing else. Both the
+ * background gradient and every creature's opacity are read from how far
+ * down the document the reader is, so the scene is present from the first
+ * screen to the last, a fade is a distance rather than a duration, and
+ * scrolling back up retraces exactly what scrolling down drew. See the
+ * comment above BIOME for what this replaced and why.
  *
  * Motion is hand-authored, not simulated: each creature is a short closed
  * loop of waypoints, walked with eased interpolation for organic movement.
@@ -75,42 +81,48 @@
     rightBand = (W - textRight) > 60 ? { x0: textRight, x1: W       } : null;
   }
 
-  /* ---- the page's own three section boundaries -------------------------
-     Found by matching real h2 text, not a hardcoded index, so the scene
-     keeps working if a section is reworded elsewhere but stays keyed to
-     these headings. */
-  var SECTION_HEADINGS = [
-    'Comparing whole groups',      // -> canopy
-    'Colonies are not individuals', // -> deep ocean floor
-    'What comes out'                // -> reef / tide line
-  ];
-  var sectionY = [];
+  /* ---- the descent, mapped onto the whole document ----------------------
+     This used to key the biome to three of the page's h2 positions and step
+     between them, which had two consequences. The first tracked heading sits
+     about a quarter of the way down, so the top quarter of the page rendered
+     biome 0 - whose colours were the page background - and the scene simply
+     was not there. And because the step was discrete, the only thing making
+     the change gradual was a per-frame lerp toward it, which is a timer: at
+     reading pace it eased, and on a fast scroll it was outrun, so creatures
+     blinked out rather than fading.
 
-  function measureSections() {
-    var h2s = Array.prototype.slice.call(document.querySelectorAll('h2'));
-    sectionY = SECTION_HEADINGS.map(function (text) {
-      var el = h2s.filter(function (h) { return h.textContent.trim() === text; })[0];
-      if (!el) return null;
-      return el.getBoundingClientRect().top + window.scrollY;
-    });
-  }
-
-  /* biome 0 = default open water (before the first tracked section),
-     1 = canopy, 2 = deep floor, 3 = reef */
+     Both are gone. The biome axis is now a continuous function of how far
+     down the document the reader is, so the descent runs canopy to reef
+     across the full scroll, and every opacity below is read from position
+     rather than accumulated over time. Scrolling back up retraces exactly;
+     scrolling fast crosses the same fades, just sooner. */
   var BIOME = {
-    0: { top: '#070a12', bot: '#0a0f1c' },
+    0: { top: '#0a1020', bot: '#070c16' }, // open water, just off the page bg
     1: { top: '#151027', bot: '#0a0e1c' }, // dusk canopy, violet-leaning
     2: { top: '#060a10', bot: '#04070a' }, // near-black abyssal floor
     3: { top: '#081a1c', bot: '#050f14' }  // reef / tide, teal-leaning
   };
+  var LAST_BIOME = 3;
 
-  function currentBiomeFloat(scrollY) {
-    var y = scrollY + window.innerHeight * 0.5;
-    var b = 0;
-    for (var i = 0; i < sectionY.length; i++) {
-      if (sectionY[i] != null && y >= sectionY[i]) b = i + 1;
-    }
-    return b;
+  /* Cached because scrollHeight forces layout, and this is read every frame.
+     Refreshed by resize() and by the ResizeObserver on body below, which is
+     what catches a figure loading in and making the document taller. */
+  var scrollSpan = 1;
+  function measureScrollSpan() {
+    scrollSpan = Math.max(
+      1, document.documentElement.scrollHeight - window.innerHeight);
+  }
+
+  /* 0 at the top of the document, 1 at the bottom. */
+  function progress() {
+    return Math.min(1, Math.max(0, scrollY / scrollSpan));
+  }
+
+  /* Smoothstep, so a fade eases in and out of its endpoints instead of
+     arriving and leaving at a constant rate. */
+  function ease(k) {
+    k = Math.min(1, Math.max(0, k));
+    return k * k * (3 - 2 * k);
   }
 
   /* ---- real creature icons ------------------------------------------
@@ -190,6 +202,7 @@
   var CREATURES = [
     {
       kind: 'bat', biome: 1, color: 'acc',
+      at: 0.07, span: 0.26,
       label: 'Chiroptera (bats) · 2.5× prediction',
       motion: loop([
         { x: 0.15, y: 0.20 }, { x: 0.45, y: 0.10 }, { x: 0.75, y: 0.22 },
@@ -198,6 +211,7 @@
     },
     {
       kind: 'chameleon', biome: 1, color: 'moss',
+      at: 0.24, span: 0.26,
       label: "Labord's chameleon · 4-5 real months, size predicts 8 yr",
       motion: loop([
         { x: 0.20, y: 0.55 }, { x: 0.40, y: 0.58 }, { x: 0.62, y: 0.53 },
@@ -206,6 +220,7 @@
     },
     {
       kind: 'tubeworm', biome: 2, color: 'cool',
+      at: 0.44, span: 0.26,
       label: 'cold-seep tubeworm · 22× prediction',
       motion: loop([
         { x: 0.30, y: 0.70 }, { x: 0.30, y: 0.60 }, { x: 0.30, y: 0.70 },
@@ -214,6 +229,7 @@
     },
     {
       kind: 'quahog', biome: 3, color: 'acc',
+      at: 0.93, span: 0.26,
       label: 'ocean quahog · 45× prediction (a real 507-year lifespan)',
       motion: loop([
         { x: 0.25, y: 0.75 }, { x: 0.27, y: 0.76 }, { x: 0.25, y: 0.75 },
@@ -222,6 +238,7 @@
     },
     {
       kind: 'octopus', biome: 3, color: 'cool',
+      at: 0.62, span: 0.26,
       label: 'giant Pacific octopus · ~1/20 prediction, dead in 5 real years',
       motion: loop([
         { x: 0.55, y: 0.60 }, { x: 0.70, y: 0.68 }, { x: 0.60, y: 0.80 },
@@ -230,6 +247,7 @@
     },
     {
       kind: 'nautilus', biome: 3, color: 'dim',
+      at: 0.79, span: 0.26,
       label: 'chambered nautilus · lives 20 real years',
       motion: loop([
         { x: 0.65, y: 0.30 }, { x: 0.75, y: 0.42 }, { x: 0.65, y: 0.50 },
@@ -292,9 +310,18 @@
     ctx.globalAlpha = 1;
   }
 
-  var docTop = 0; // scrollY at draw time
-  function drawCreature(c, band, biomeFloat, elapsed) {
-    var active = 1 - Math.min(1, Math.abs(biomeFloat - c.biome) * 1.6);
+  /* How present a creature is, read straight off where the reader is in the
+     document: full at its own `at`, gone `span` away on either side. span is
+     0.26 of the document, so on this page each creature fades over roughly
+     3,700px of scroll - far enough that flicking the wheel crosses a visible
+     fade instead of a blink. Neighbouring ranges overlap by design, so the
+     margins are never empty between one creature and the next. */
+  function presence(c, p) {
+    return ease(1 - Math.abs(p - c.at) / c.span);
+  }
+
+  function drawCreature(c, band, p, elapsed) {
+    var active = presence(c, p);
     if (active <= 0.02) return;
     var pose = c.motion.pose(elapsed);
     var bw = band.x1 - band.x0, bh = H;
@@ -325,23 +352,40 @@
     canvas.style.height = H + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     measureBands();
-    measureSections();
+    measureScrollSpan();
   }
 
   var scrollY = 0;
-  function onScroll() { scrollY = window.scrollY || window.pageYOffset || 0; }
-
-  var biomeShown = 0; // smoothed, lerped toward the real section each frame
+  /* With motion off the loop is not running, so a scroll would otherwise
+     leave the last painted frame on screen while the reader moves past it -
+     a backdrop belonging to a part of the page they have left. Repainting on
+     scroll keeps the scene correct for where they are without animating
+     anything: creature poses stay frozen at their start, and only the
+     position-derived opacities and the gradient move. */
+  var stillRaf = 0;
+  function onScroll() {
+    scrollY = window.scrollY || window.pageYOffset || 0;
+    if (still && !stillRaf) {
+      stillRaf = requestAnimationFrame(function () {
+        stillRaf = 0;
+        draw(0);
+      });
+    }
+  }
 
   function draw(elapsed) {
     ctx.clearRect(0, 0, W, H);
     if (!leftBand && !rightBand) return;
-    var target = currentBiomeFloat(scrollY);
-    biomeShown += (target - biomeShown) * 0.04;
+    /* One read of position, shared by the backdrop and every creature. No
+       smoothing state is carried between frames: what is drawn depends only
+       on where the page is, which is what makes a fast scroll cross the same
+       fades a slow one does. */
+    var p = progress();
+    var biomeFloat = p * LAST_BIOME;
     [leftBand, rightBand].forEach(function (band) {
       if (!band) return;
-      drawBiomeBackdrop(band, biomeShown);
-      CREATURES.forEach(function (c) { drawCreature(c, band, biomeShown, elapsed); });
+      drawBiomeBackdrop(band, biomeFloat);
+      CREATURES.forEach(function (c) { drawCreature(c, band, p, elapsed); });
     });
   }
 
@@ -366,9 +410,27 @@
     rt = setTimeout(function () { resize(); draw(tAcc); }, 180);
   });
 
-  if (still) return;
+  /* Every opacity here is a fraction of the document's height, so the
+     document getting taller - a lazy figure arriving, the group view
+     redrawing - moves every fade. Same watcher margin-scene.js uses. */
+  if (window.ResizeObserver) {
+    var lastH = document.documentElement.scrollHeight;
+    new ResizeObserver(function () {
+      var h = document.documentElement.scrollHeight;
+      if (h === lastH) return;
+      lastH = h;
+      measureScrollSpan();
+      draw(tAcc);
+    }).observe(document.body);
+  }
 
-  start();
+  /* These two are registered whether or not the scene is currently moving.
+     They used to sit behind an `if (still) return;`, which meant a reader who
+     arrived with motion off never got the motionchange listener at all: the
+     footer control then did nothing on this page until a reload, against the
+     contract in motion.js that the control overrides the default without
+     one. start() already refuses to run while still, so there is nothing to
+     guard against here. */
   document.addEventListener('visibilitychange', function () {
     document.hidden ? stop() : start();
   });
@@ -376,4 +438,6 @@
     still = e.detail !== 'on';
     if (still) { stop(); draw(tAcc); } else { start(); }
   });
+
+  if (!still) start();
 })();
