@@ -80,6 +80,18 @@
   var W = 0, H = 0, dpr = 1, docH = 0;
   var leftBand = null, rightBand = null; // {x0,x1} in viewport px, or null
 
+  // nav.top has no background (style.css:132-147), so with no clamp at all a
+  // drifting item drawn near the top of the document - desktop.html's book
+  // cards, in particular - passes straight through it rather than being
+  // hidden by it the way an opaque header would hide it for free. nav.top is
+  // in normal flow, not fixed, so its bottom edge moves in viewport space as
+  // the page scrolls; read it live rather than caching one number.
+  var navEl = document.querySelector('nav.top');
+  var navBottom = 0;
+  function updateNavBottom() {
+    navBottom = navEl ? navEl.getBoundingClientRect().bottom : 0;
+  }
+
   function measureBands() {
     var rect = main.getBoundingClientRect();
     var cs = getComputedStyle(main);
@@ -93,14 +105,21 @@
     var outerL = tracks[0], padL = tracks[1], text = tracks[2], padR = tracks[3],
         outerR = tracks[4];
     var mainLeft = rect.left;
-    var textLeft = mainLeft + outerL + padL;
-    var textRight = textLeft + text;
+    // Anchored to wide-start/wide-end, not text-start/text-end: main > .wide
+    // (and > table, > img.fig, > .cardgrid...) already lets a figure, a table
+    // or a card grid occupy the whole wide track, wider than the text column
+    // these bands used to stop at - which is exactly why the archive-size
+    // bars on code.html used to draw underneath the table rows. A 24px
+    // gutter on top keeps the art from touching the wide content's own edge.
+    var GUTTER = 24;
+    var wideLeft = mainLeft + outerL;
+    var wideRight = wideLeft + padL + text + padR;
     // The band runs all the way to the actual browser edge, not just to the
     // edge of main's own (shell-capped) box - on a screen wider than the
     // 1440px shell there is real, unused window past main's box, and the
     // animation should fill it rather than stop short.
-    leftBand  = (textLeft - 0)     > 60 ? { x0: 0,        x1: textLeft } : null;
-    rightBand = (W - textRight)    > 60 ? { x0: textRight, x1: W       } : null;
+    leftBand  = (wideLeft - GUTTER)        > 60 ? { x0: 0, x1: wideLeft - GUTTER }     : null;
+    rightBand = (W - (wideRight + GUTTER)) > 60 ? { x0: wideRight + GUTTER, x1: W }    : null;
   }
 
   function resize() {
@@ -114,11 +133,15 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     docH = document.documentElement.scrollHeight;
     measureBands();
+    updateNavBottom();
     layoutScene();
   }
 
   var scrollY = 0;
-  function onScroll() { scrollY = window.scrollY || window.pageYOffset || 0; }
+  function onScroll() {
+    scrollY = window.scrollY || window.pageYOffset || 0;
+    updateNavBottom();
+  }
 
   /* ---- per-kind precomputed layout (dot fields etc, seeded once) ------- */
   var strataBands = null;   // strata: [{y0,y1,layer,dots:[{fx,fy}]}]
@@ -352,11 +375,21 @@
   function draw(t) {
     ctx.clearRect(0, 0, W, H);
     if (!leftBand && !rightBand) return;
+    ctx.save();
+    // Clip everything below nav.top's own bottom edge - a hard cull, not a
+    // fade, because nav has no background to fade into; anything drawn above
+    // this line would otherwise show through it rather than behind it.
+    if (navBottom > 0) {
+      ctx.beginPath();
+      ctx.rect(0, navBottom, W, Math.max(0, H - navBottom));
+      ctx.clip();
+    }
     if (SCENE.kind === 'strata') drawStrata(t);
     else if (SCENE.kind === 'bars') drawBars(t);
     else if (SCENE.kind === 'flowpulse') drawFlow(t);
     else if (SCENE.kind === 'cards') drawCards(t);
     else if (SCENE.kind === 'arcroute') drawArcs(t);
+    ctx.restore();
   }
 
   /* ---- loop -------------------------------------------------------------- */

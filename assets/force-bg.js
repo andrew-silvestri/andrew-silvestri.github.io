@@ -30,6 +30,58 @@
     'position:fixed;inset:0;z-index:0;pointer-events:none';
   document.body.appendChild(host);
 
+  /* ---- cut a hole over the text column ---------------------------------
+   * The graph paints at ctx.globalAlpha=0.5 (below) with nothing opaque in
+   * main's prose above it, so without this the node/link mesh reads straight
+   * through every serif glyph for the whole scroll. A CSS mask on the host
+   * div is cheaper than teaching the canvas renderer to avoid a region, and
+   * it can be feathered for free.
+   *
+   * The geometry here is the same parse margin-scene.js does at its
+   * measureBands() (~line 83) - read the live track widths off main's own
+   * grid rather than hard-code a column width. Duplicated rather than lifted
+   * into a shared file: the two scripts are loaded independently by
+   * different page sets (force-bg.js only on atlas.html/model.html,
+   * margin-scene.js on the rest) and there is no existing shared-helper
+   * script tag on any page to hang a third file off without editing every
+   * page that loads either one, which is outside this file's remit. Keep the
+   * two in sync if main's grid-template-columns ever changes shape.
+   */
+  function textColumn() {
+    var main = document.querySelector('main');
+    if (!main) return null;
+    var rect = main.getBoundingClientRect();
+    var cs = getComputedStyle(main);
+    var tracks = cs.gridTemplateColumns.split(' ')
+      .filter(function (s) { return s.indexOf('[') !== 0; })
+      .map(parseFloat);
+    if (tracks.length < 5) return null;
+    var outerL = tracks[0], padL = tracks[1], text = tracks[2];
+    var left = rect.left + outerL + padL;
+    return { left: left, right: left + text };
+  }
+
+  function applyMask() {
+    var col = textColumn();
+    var img;
+    if (!col) {
+      // Fewer than 5 tracks means the grid has collapsed to one column
+      // (mobile) and the "text" track runs edge to edge - there is no margin
+      // left to show the graph in, so hide it outright rather than let it
+      // show through the prose with nothing left to feather against.
+      img = 'linear-gradient(transparent, transparent)';
+    } else {
+      var f = 40; // feather, px, each side of the cut - no hard edge
+      var cutL = Math.max(0, col.left - f);
+      img = 'linear-gradient(to right,' +
+        ' #000 0, #000 ' + cutL + 'px,' +
+        ' transparent ' + col.left + 'px, transparent ' + col.right + 'px,' +
+        ' #000 ' + (col.right + f) + 'px, #000 100%)';
+    }
+    host.style.maskImage = img;
+    host.style.webkitMaskImage = img;
+  }
+
   var SRC = 'https://cdn.jsdelivr.net/npm/force-graph@1.51.4/dist/force-graph.min.js';
   var s = document.createElement('script');
   s.src = SRC;
@@ -71,9 +123,16 @@
     // small SVG container - at full-viewport size they collapse 70 nodes
     // into a tight clump near the center. Scale both to the real canvas so
     // the graph actually fills the page it is the background of.
-    var spread = Math.min(window.innerWidth, window.innerHeight);
-    graph.d3Force('charge').strength(-spread * 0.6);
-    graph.d3Force('link').distance(spread * 0.09);
+    //
+    // Scaled off the shorter side (min(width,height)) this clump still
+    // landed entirely inside the text column on an ordinary wide desktop
+    // window - exactly the region applyMask() now cuts away, so the graph
+    // vanished instead of framing the prose. Scaling off the width, and
+    // pushing both constants up, spreads the cluster wide enough that it
+    // actually reaches into the margins the mask leaves visible.
+    var spread = window.innerWidth;
+    graph.d3Force('charge').strength(-spread * 0.9);
+    graph.d3Force('link').distance(spread * 0.16);
 
     // Only now - graph fully constructed with no exception thrown - does
     // the static SVG fallback step aside. If anything above throws, this
@@ -87,11 +146,14 @@
       ctx.globalAlpha = 0.5;
     });
 
+    applyMask();
+
     var rt;
     window.addEventListener('resize', function () {
       clearTimeout(rt);
       rt = setTimeout(function () {
         graph.width(window.innerWidth).height(window.innerHeight);
+        applyMask();
       }, 180);
     });
 

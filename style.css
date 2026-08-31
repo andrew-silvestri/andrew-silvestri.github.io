@@ -318,11 +318,66 @@ th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
 img.fig, video.fig {
   width: 100%;
   max-width: 100%;
+  height: auto;          /* see the note on .cardgrid .card img */
   border: 1px solid var(--rule);
   border-radius: 2px;
   margin: 18px 0 8px;
   background: var(--card);
   display: block;
+}
+/* img.fig is also the lightbox trigger (assets/lightbox.js) - video.fig is
+   not, so only the image gets the affordance and the focus ring. */
+img.fig { cursor: zoom-in; }
+img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+/* ----------------------------------------------------------- lightbox --- */
+/* One overlay, built once by lightbox.js and reused for every img.fig on the
+   page. Sits above everything, including nav's z-index:50. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vw, 60px);
+  background: rgba(4, 6, 14, .88);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.on { opacity: 1; }
+.lightbox-img {
+  /* No width/height set at all: an image smaller than the viewport shows at
+     its own natural size, which is the point, and one larger is capped
+     rather than cropped. */
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  box-shadow: var(--shadow);
+  background: var(--card);
+}
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  color: var(--ink);
+  font: 22px/1 var(--sans);
+  cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.lightbox-close:hover, .lightbox-close:focus-visible {
+  border-color: var(--acc-dim);
+  color: var(--acc);
+}
+@media (max-width: 620px) {
+  .lightbox-close { top: 10px; right: 10px; width: 36px; height: 36px; }
 }
 
 /* --------------------------------------------------------------- grid --- */
@@ -349,7 +404,7 @@ img.fig, video.fig {
 }
 .card:hover { border-color: var(--acc-dim); }
 .card .tag {
-  font: 10.5px var(--sans);
+  font: 12px var(--sans);
   color: var(--acc);
   text-transform: uppercase;
   letter-spacing: .16em;
@@ -358,6 +413,26 @@ img.fig, video.fig {
 .card h3 { margin-top: 4px; }
 .card h3 a { border: 0; color: var(--ink); }
 .card h3 a:hover { color: var(--acc); }
+/* A thumbnail for a card that has an obvious hero figure - home page tool
+   cards only, not every card on the site. Sized to the card rather than
+   promoted to the wide track: two-up at 330px+ (.cardgrid above), full width
+   of one column at the 760px breakpoint below. */
+.cardgrid .card img {
+  width: 100%;
+  max-width: 100%;
+  /* The markup carries real width/height so the browser can reserve the box
+     and the page does not shift as figures arrive. Those attributes are a
+     presentational hint as well as an aspect ratio, so without this the
+     height one wins and every figure is squashed to its full pixel height
+     inside a card a third as wide. auto keeps the reservation and restores
+     the aspect. */
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  margin: 12px 0 4px;
+  background: var(--card);
+  display: block;
+}
 
 /* --------------------------------------------------------------- btns --- */
 .btn {
@@ -457,6 +532,13 @@ footer {
 }
 
 .grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
+/* library.html's cards sit inside .grid.wide so their figures can reach the
+   full wide track (main > .wide promotes the grid itself, not the images
+   nested two levels inside it) - but a figure caption is still prose, so it
+   keeps the 72ch measure a wide figure is exempt from. */
+.grid.wide .card > p, .grid.wide .card > h3, .grid.wide .card > .tag {
+  max-width: 72ch;
+}
 
 /* --------------------------------------------------------------- mosaic --- */
 /* A strip of already-generated figures at thumbnail scale - real data used
@@ -603,7 +685,10 @@ footer {
   nav.top { gap: 0; padding: 16px 20px 6px;
             flex-direction: column; align-items: stretch; }
   nav.top > a, nav.top > .dd { width: 100%; }
-  nav.top a { padding: 9px 4px; font-size: 15px; display: block; }
+  /* 14.5px top and bottom plus the 15px line box (nav.top's own font shorthand
+     sets line-height:1, so the box is exactly font-size tall) clears the
+     44px touch-target floor instead of the 33px box the old 9px padding left. */
+  nav.top a { padding: 14.5px 4px; font-size: 15px; display: block; }
   /* The current-page highlight hugs its own text rather than running the
      width of the bar, which in a column layout stretch would otherwise do. */
   nav.top a.on { align-self: flex-start; width: auto; }

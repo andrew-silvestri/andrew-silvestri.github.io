@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/longevity.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=24150b10">
+<link rel="stylesheet" href="style.css?v=9dfbc1c3">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html" class="on">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -27,7 +27,7 @@ enough to be worth dividing out. What remains is the longevity quotient:</p>
 <p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
 lifespan predicted from body mass</code></p>
 
-<img class="fig wide" src="assets/lq_explained.png?v=6c856fa3" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
+<img class="fig wide" src="assets/lq_explained.png?v=6c856fa3" loading="lazy" width="2108" height="1394" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
 <p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out.</p>
 
 <p>It is built by analogy with the encephalisation quotient<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, which does the
@@ -52,14 +52,14 @@ member or species count. Click a group to drop into the species inside it.</p>
 <a class="btn ghost" href="downloads/longevity-code.zip">Download code and data</a>
 </div>
 
-<img class="fig wide" src="assets/lq_allometry.png?v=a7a91e3c"
+<img class="fig wide" src="assets/lq_allometry.png?v=a7a91e3c" loading="lazy" width="1425" height="990"
  alt="Maximum lifespan against adult body mass on logarithmic axes, coloured by
  class, with the fitted global relationship and labelled outliers">
 <p class="small">Lifespan against body mass. The dashed line is the fit across
 every animal in the table. Distance above or below that line, measured within a
 species' own class, is the quotient.</p>
 
-<img class="fig wide" src="assets/lq_ranked.png?v=289af425"
+<img class="fig wide" src="assets/lq_ranked.png?v=289af425" loading="lazy" width="1350" height="1320"
  alt="Species ranked by longevity quotient, from the twelve furthest below
  prediction to the eighteen furthest above">
 <p class="small">The twelve species furthest below their predicted lifespan and
@@ -75,23 +75,36 @@ faint line spanning its lowest to its highest. The geometric mean is the correct
 average for ratios: a species at four times prediction and one at a quarter of
 it should average to one, not to 2.1.</p>
 
-<p>Of the 112 orders holding four or more species, the dories of Zeiformes
-top the list at 3.95 and the egg-laying Monotremata follow at 2.73 &mdash; but
+<p>Of the 112 orders holding four or more species, the dories of
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Zeiformes&amp;grade=all" target="_blank" rel="noopener">Zeiformes</a>
+top the list at 3.95 and the egg-laying
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Monotremata&amp;grade=all" target="_blank" rel="noopener">Monotremata</a>
+follow at 2.73 &mdash; but
 both rest on a handful of species, seven and four respectively, and a
 geometric mean over four animals is a claim about four animals. The two large
 groups near the top are the ones worth the weight: the bats of
-Chiroptera<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> at 2.68 across
-267 species, and the primates at 2.12 across 350. At the bottom sit the
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera&amp;grade=all" target="_blank" rel="noopener">Chiroptera</a><sup class="cite" id="cr2"><a href="#ref2">2</a></sup> at 2.68 across
+267 species, and the
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Primates&amp;grade=all" target="_blank" rel="noopener">primates</a>
+at 2.12 across 350. At the bottom sit the
 tinamous at 0.32, the needlefishes at 0.39 and the jacks at 0.43; the ground
-birds of Galliformes come in at 0.51 and the shrews, moles and hedgehogs of
-Eulipotyphla at 0.58. At family rank the bats of Vespertilionidae reach 3.43
-over 126 species, and the horseshoe bats of Rhinolophidae 3.18, while the
-rockfishes of Sebastidae<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>
+birds of
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Galliformes&amp;grade=all" target="_blank" rel="noopener">Galliformes</a>
+come in at 0.51 and the shrews, moles and hedgehogs of
+<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Eulipotyphla&amp;grade=all" target="_blank" rel="noopener">Eulipotyphla</a>
+at 0.58. At family rank the bats of
+<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Vespertilionidae&amp;grade=all" target="_blank" rel="noopener">Vespertilionidae</a>
+reach 3.43
+over 126 species, and the horseshoe bats of
+<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Rhinolophidae&amp;grade=all" target="_blank" rel="noopener">Rhinolophidae</a>
+3.18, while the
+rockfishes of
+<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Sebastidae&amp;grade=all" target="_blank" rel="noopener">Sebastidae</a><sup class="cite" id="cr3"><a href="#ref3">3</a></sup>
 sit at 2.76. Flight, burrowing, venom, armour and simply being difficult to
 swallow all register as raised quotients. Being a ground bird or a small
 terrestrial insectivore registers as the reverse.</p>
 
-<img class="fig wide" src="assets/lq_orders.png?v=6794fffe"
+<img class="fig wide" src="assets/lq_orders.png?v=6794fffe" loading="lazy" width="1950" height="1638"
  alt="Bar chart of taxonomic orders ranked by geometric mean longevity quotient">
 <p class="small">All 112 orders holding four or more species, ranked by
 geometric mean quotient and read left column first. The dashed line is parity
@@ -135,7 +148,7 @@ it appears the moment body mass is divided out.</p>
 quahog 45&times; above it (a real 507-year lifespan), the giant Pacific
 octopus about a twentieth below (dead in five real years).</p>
 
-<img class="fig wide" src="assets/lq_wild_captive.png?v=74cca569"
+<img class="fig wide" src="assets/lq_wild_captive.png?v=74cca569" loading="lazy" width="1350" height="1170"
  alt="Dumbbell chart comparing wild and captive maximum lifespan by species">
 <p class="small">Wild against captive, sorted by the size of the gap. Where
 protection helps most, and where it does not help at all.</p>
@@ -278,6 +291,7 @@ It is worth reading whether or not you care about the arithmetic.</p>
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
 <script src="assets/bgloop.js?v=d269be40"></script>
 <script src="assets/biome-scene.js?v=494be81f"></script>
 </body></html>

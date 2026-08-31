@@ -323,6 +323,14 @@ const RAW = (function () {
     const o = {};
     for (const k of plain) o[k] = C[k][i];
     for (const k of F) o[k] = D[k][C[k][i]];
+    /* AnAge's missing-value sentinel for common name arrives as the literal
+       string "-999" (127 rows); blank/whitespace-only common names show up
+       too. Normalize both to "" here, once, so label2() and the search index
+       built below never see either. */
+    if (typeof o.n === "string") {
+      const t = o.n.trim();
+      if (t === "" || t === "-999") o.n = "";
+    }
     out[i] = o;
   }
   return out;
@@ -334,6 +342,57 @@ const RANKNAME = {ki:'kingdom',ph:'phylum',cl:'class',or:'order',
 let S = {view:'sp', rank:'cl', sort:'lq', gmet:'lq', minn:3, met:'a',
          base:'c', q:'', scale:'log', fRank:'', fVal:'', col:'hide',
          dir:'desc', cap:400, names:'both', grade:'ab'};
+
+/* ---------- URL state ----------
+   The view lives in location.hash so it can be linked and survives a reload.
+   FORMAT (this is the contract other pages link against — keep it stable):
+   a URLSearchParams query string after "#", one key=value pair per S
+   property that differs from its default, e.g.
+     #fRank=or&fVal=Chiroptera&sort=life
+   for the species view filtered to order Chiroptera, sorted by longevity.
+   Keys are exactly the S property names: view, rank, sort, gmet, minn, met,
+   base, q, scale, fRank, fVal, col, dir, cap, names, grade. Any key that is
+   absent, unparseable, or outside its known set of values keeps its default,
+   so a partial or malformed hash never produces a broken view — worst case
+   it degrades to the default view plus whatever keys did parse. */
+const DEFAULTS = {...S};
+const ENUM_OPTS = {
+  view:['sp','gr'], rank:['ph','cl','or','fa','ge'], sort:['lq','life','mass','name'],
+  gmet:['lq','med','max','n'], minn:[1,3,5,10], met:['a','w','p','mx'],
+  base:['c','g'], scale:['log','lin'], fRank:['','ph','cl','or','fa','ge'],
+  col:['hide','show'], dir:['desc','asc'], cap:[200,400,1000,99999],
+  names:['both','common','sci'], grade:['ab','all'],
+};
+function encodeHash(){
+  const p=new URLSearchParams();
+  for(const k in DEFAULTS) if(S[k]!==DEFAULTS[k]) p.set(k,S[k]);
+  return p.toString();
+}
+/* Called from render(), so the hash always reflects the state currently on
+   screen. replaceState (not pushState) keeps every control tweak out of
+   browser history — only the page's own back/forward would spam otherwise. */
+function syncHash(){
+  const h=encodeHash();
+  history.replaceState(null,'',location.pathname+location.search+(h?'#'+h:''));
+}
+/* `fVal` is free text, validated later by fillVals(), which already falls
+   back to the first option when the wanted value is not present for the
+   chosen fRank — so it needs no check here. */
+function decodeHash(){
+  const next={...DEFAULTS};
+  const p=new URLSearchParams(location.hash.slice(1));
+  for(const k in DEFAULTS){
+    if(!p.has(k)) continue;
+    const raw=p.get(k), opts=ENUM_OPTS[k];
+    if(typeof DEFAULTS[k]==='number'){
+      const v=Number(raw);
+      if(Number.isFinite(v) && (!opts||opts.includes(v))) next[k]=v;
+    } else if(opts){
+      if(opts.includes(raw)) next[k]=raw;
+    } else next[k]=raw;
+  }
+  return next;
+}
 
 const chart=document.getElementById('chart'), axis=document.getElementById('axis');
 const nodes=new Map();
@@ -400,11 +459,19 @@ let _grpKey=null, _grp=null;
 function groups(){
   /* Bucketing and summarising every group is the most expensive thing this
      page does, and changing the sort metric or the bar mode does not change
-     any of it. Cached on the inputs that actually feed it. */
+     any of it. Cached on the inputs that actually feed it.
+
+     speciesPool() is called before the key is built, not after. _poolKey is
+     only refreshed inside speciesPool(), so reading it first meant a filter
+     change - grade, taxon, search - produced a key identical to the previous
+     one, hit this cache, and returned the previous groups. The bug was quiet
+     because it needs two renders in one session to show: a fresh load always
+     misses the cache and is always right. */
+  const pool=speciesPool();
   const gkey=_poolKey+'|'+S.rank+'|'+S.met+'|'+S.minn;
   if(gkey===_grpKey) return _grp;
   const rk=S.rank, buckets=new Map();
-  speciesPool().forEach(d=>{
+  pool.forEach(d=>{
     const k=d[rk]; if(!k) return;
     if(!buckets.has(k)) buckets.set(k,[]);
     buckets.get(k).push(d);
@@ -483,6 +550,7 @@ function render(){
 
   S.view==='sp' ? renderSpecies() : renderGroups();
   crumb();
+  syncHash();
 }
 
 function crumb(){
@@ -741,10 +809,15 @@ function seg(id,key,cast){
     render();
   });
 }
-seg('viewSeg','view'); seg('rankSeg','rank'); seg('sortSeg','sort');
-seg('gmetSeg','gmet'); seg('minnSeg','minn',Number); seg('metSeg','met');
-seg('baseSeg','base'); seg('scaleSeg','scale'); seg('colSeg','col');
-seg('dirSeg','dir'); seg('capSeg','cap',Number); seg('namesSeg','names'); seg('gradeSeg','grade');
+/* Listed once so the hash restore below can walk the same table and press
+   the right button in each group without repeating it. */
+const SEGS = [
+  ['viewSeg','view'], ['rankSeg','rank'], ['sortSeg','sort'],
+  ['gmetSeg','gmet'], ['minnSeg','minn',Number], ['metSeg','met'],
+  ['baseSeg','base'], ['scaleSeg','scale'], ['colSeg','col'],
+  ['dirSeg','dir'], ['capSeg','cap',Number], ['namesSeg','names'], ['gradeSeg','grade'],
+];
+SEGS.forEach(([id,key,cast])=>seg(id,key,cast));
 document.getElementById('q').addEventListener('input',e=>{
   S.q=e.target.value; render(); });
 
@@ -793,8 +866,24 @@ document.getElementById('filtVal').addEventListener('change',e=>{
   document.getElementById('fitTable').innerHTML=h;
 })();
 
-fillVals();
-render();
+/* Restore a linked view from the hash before the first paint, then sync
+   every control to match it. decodeHash() already guards each key, so an
+   absent or malformed hash falls back cleanly to the page's own defaults. */
+function restoreFromHash(){
+  S = decodeHash();
+  SEGS.forEach(([id,key])=>press(id,String(S[key])));
+  document.getElementById('q').value = S.q;
+  document.getElementById('filtRank').value = S.fRank;
+  fillVals(S.fVal);
+  render();
+}
+restoreFromHash();
+
+/* Arriving at a second link on a page already showing this one changes the
+   fragment without reloading the document, so the block above never runs
+   again and the view silently keeps the old state. syncHash() uses
+   replaceState, which does not fire this event, so there is no loop. */
+window.addEventListener('hashchange', restoreFromHash);
 
 /* A handle for the test harness. Top-level const does not land on window, and
    the performance checks need to measure the real pool and the real grouping

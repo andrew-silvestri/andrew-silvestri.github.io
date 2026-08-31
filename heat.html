@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/heat.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=24150b10">
+<link rel="stylesheet" href="style.css?v=9dfbc1c3">
 </head><body class="bg-curve-heat">
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -51,29 +51,29 @@ on average grid power electrifying this heat increases emissions: 99.6 kilograms
 per million Btu against the gas boiler&rsquo;s 62.4.</p>
 
 <video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/heat_breakeven_poster.png?v=eafd2e61"
- data-src="assets/heat_breakeven.mp4?v=8518afe1"></video>
+ poster="assets/heat_breakeven_poster.png?v=98a5338b"
+ data-src="assets/heat_breakeven.mp4?v=b65a7d4b"></video>
 <p class="small">The crossing, traced: gas cost flat at $5.13, electric cost
 rising with price to the real break-even at 1.53&cent;/kWh, then on to
 today's real operating point at 6.5&cent; and $20.00.</p>
 
-<img class="fig wide" src="assets/heat_fig2_lcoh_stacked.png?v=c8190bd9" alt="Levelised cost of heat for the gas and electric boilers as stacked bars, split into fuel, levelised capital and fixed operations.">
+<img class="fig wide" src="assets/heat_fig2_lcoh_stacked.png?v=c8190bd9" loading="lazy" width="1050" height="825" alt="Levelised cost of heat for the gas and electric boilers as stacked bars, split into fuel, levelised capital and fixed operations.">
 <p class="small">Where the money goes in each route. Fuel is almost the whole
 bar on both sides: $4.12 of the gas boiler&rsquo;s $5.13, and $19.44 of the
 electric boiler&rsquo;s $20.00. Capital and fixed operations come to $1.02 on
 the gas side and $0.56 on the electric, which is why the break-even below moves
 with the two fuel prices and almost nothing else.</p>
 
-<img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=16164e8f" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
+<img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=16164e8f" loading="lazy" width="1350" height="810" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p class="small">Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.</p>
 
-<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=a4cba414" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
+<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=a4cba414" loading="lazy" width="1200" height="900" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
 <p class="small">Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.</p>
 
-<img class="fig wide" src="assets/heat_fig4_tornado.png?v=57161040" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
+<img class="fig wide" src="assets/heat_fig4_tornado.png?v=57161040" loading="lazy" width="1350" height="825" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
 <p class="small">Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.</p>
 
-<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=aa76c799" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
+<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=aa76c799" loading="lazy" width="1200" height="825" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
 <p class="small">Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.</p>
 
 
@@ -129,6 +129,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 <button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
 </main>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
 <script src="assets/bgloop.js?v=d269be40"></script>
 <script>
 /* this page's own break-even numbers: the flat gas line and the rising
@@ -140,5 +141,5 @@ window.MARGIN_SCENE = { kind: 'flowpulse', paths: [
   { label: 'today: 6.5 cents to $20.00',     weight: 0.55 }
 ] };
 </script>
-<script src="assets/margin-scene.js?v=c28ceecf"></script>
+<script src="assets/margin-scene.js?v=07c1a1d1"></script>
 </body></html>

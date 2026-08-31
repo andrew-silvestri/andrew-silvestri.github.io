@@ -321,6 +321,13 @@
         W = Math.max(240, b.width); H = Math.max(240, b.height);
         camera.aspect = W / H;
         camera.updateProjectionMatrix();
+        // setPixelRatio was only ever called once, at construction (~line 66).
+        // Move the window to a monitor with a different devicePixelRatio - the
+        // one everyday way this fires - and the renderer kept rasterising at
+        // the old monitor's ratio: soft on a hi-DPI screen, oversized and slow
+        // on a lo-DPI one. Re-read it here alongside the size it already
+        // reacts to.
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(W, H);
       }, 180);
     });

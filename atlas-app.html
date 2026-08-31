@@ -53,6 +53,28 @@ header a.back:hover{color:var(--acc)}
 #nogl{position:absolute;inset:0;display:none;place-items:center;padding:40px;
   text-align:center;color:var(--dim);font:14px/1.7 var(--serif)}
 
+/* A missed click needs to look different from a dead page. The ring and the
+   note sit on top of the click point and fade on their own; nothing about
+   them is clickable, and nothing about them survives a second click, a
+   drag, or a tooltip taking over -- they are a pulse of feedback, not a
+   fixture. transform:scale animates the ring outward from the point; the
+   note fades in, holds long enough to read, then fades out. Under reduced
+   motion the JS skips both keyframe animations and times the note out with
+   a plain setTimeout instead, so nothing here moves for someone who asked
+   things not to. */
+#missnote{position:fixed;left:0;top:0;pointer-events:none;z-index:59;
+  display:none}
+#missnote .ring{position:absolute;left:-17px;top:-17px;width:34px;height:34px;
+  border:1.5px solid var(--dim);border-radius:50%;opacity:.85}
+#missnote .msg{position:absolute;left:0;top:22px;transform:translateX(-50%);
+  white-space:nowrap;font:11.5px var(--sans);color:var(--dim);
+  background:rgba(7,10,18,.82);border:1px solid var(--rule);border-radius:2px;
+  padding:4px 9px}
+#missnote.show .ring{animation:missring .5s ease-out forwards}
+#missnote.show .msg{animation:missfade 1.15s ease-out forwards}
+@keyframes missring{0%{transform:scale(.4);opacity:.85}100%{transform:scale(1.7);opacity:0}}
+@keyframes missfade{0%{opacity:0}15%{opacity:1}78%{opacity:1}100%{opacity:0}}
+
 #side{grid-area:side;border-left:1px solid var(--rule);background:var(--panel);
   overflow-y:auto;padding:18px 20px 26px;display:flex;flex-direction:column;
   gap:22px}
@@ -206,13 +228,22 @@ canvas, #gl, #view, #stage { touch-action: none; }
     <ul class="shocklist" id="shocks"></ul>
   </div>
 
-  <div class="sec">
+  <div class="sec" id="resultbox">
     <h2>Result</h2>
     <dl>
       <div><dt>Nodes changed</dt><dd id="s-touch">—</dd></div>
       <div><dt>Steps to settle</dt><dd id="s-steps">—</dd></div>
       <div><dt>Largest effect</dt><dd id="s-max">—</dd></div>
     </dl>
+  </div>
+
+  <div class="sec" id="replaybox" style="display:none">
+    <h2>Replay the spread</h2>
+    <input type="range" id="replay" min="0" max="1" step="1" value="0">
+    <p class="desc" id="replaylab">Step 0.</p>
+    <div class="row2">
+      <button id="replayplay">Play</button>
+    </div>
   </div>
 
   <div class="sec">
@@ -232,8 +263,9 @@ canvas, #gl, #view, #stage { touch-action: none; }
 </div>
 
 <div id="tip"></div>
+<div id="missnote"><div class="ring"></div><div class="msg">no node within range</div></div>
 
 <script src="assets/atlas-data.js?v=f3e392fa"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="assets/atlas-app.js?v=d2c89a81"></script>
+<script src="assets/atlas-app.js?v=3995c89f"></script>
 </body></html>

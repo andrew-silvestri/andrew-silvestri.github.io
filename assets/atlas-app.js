@@ -550,7 +550,15 @@
       if (d2 < bestD) { bestD = d2; best = L.idxs[j]; }
     }
     var tip = $('tip');
-    if (best < 0) { tip.style.display = 'none'; return; }
+    if (best < 0) {
+      tip.style.display = 'none';
+      // A hover that finds nothing is normal -- most of the globe is ocean.
+      // A CLICK that finds nothing looks like a broken page, because the
+      // copy above the button just told the reader to go click something.
+      // Only tell them about the miss when the pointer actually committed.
+      if (commit) missFeedback(clientX, clientY);
+      return;
+    }
     if (commit) { select(best); tip.style.display = 'none'; return; }
     tip.innerHTML = '<b>' + esc(D.name[best]) + '</b><span>' +
       esc(KNAME[D.kinds[D.kind[best]]] || '') +
@@ -567,6 +575,43 @@
     return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
+  }
+
+  /* This app has no [data-motion] gate of its own -- it is a standalone page
+     that never loads the site's motion.js -- so it asks the media query
+     directly rather than pretending a convention exists that doesn't. Used
+     wherever this file adds an animation: the miss-click ring below, and the
+     result-panel scroll after a run. */
+  function prefersReducedMotion() {
+    try {
+      return !!(window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    } catch (e) { return false; }
+  }
+
+  /* A ring at the click point plus a note that fades on its own. Reset the
+     class before re-showing it so a second miss in the same spot restarts
+     the animation instead of no-opping on an element that never changed
+     state; the forced reflow (reading offsetWidth) is what makes the
+     restart actually take. */
+  var missTimer = null;
+  function missFeedback(x, y) {
+    var el = $('missnote');
+    if (!el) return;
+    clearTimeout(missTimer);
+    el.className = '';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.display = 'block';
+    if (prefersReducedMotion()) {
+      missTimer = setTimeout(function () { el.style.display = 'none'; }, 900);
+    } else {
+      void el.offsetWidth; // force reflow so the animation restarts
+      el.className = 'show';
+      missTimer = setTimeout(function () {
+        el.style.display = 'none'; el.className = '';
+      }, 1200);
+    }
   }
 
   /* ================================================================== ui */
@@ -886,6 +931,79 @@
      size of the effect, so a run reads as illumination rather than a repaint */
   var pulseT = 0;
 
+  /* ===================================================== propagation replay
+     The settled state (state, above) is one frame -- the last one -- and the
+     two paragraphs this page spends arguing that a change TRAVELS have never
+     had a picture to back them up. propagate() already tracks, per node, the
+     hop at which it first moved by 0.02 or more (fh, stored below as hit);
+     that is enough to replay the wavefront without keeping a single extra
+     copy of the state array. Storing all sixty steps in full would be
+     N * 60 * 8 bytes -- about 41MB for this payload -- for a fact this array
+     already contains for free.
+
+     replayStep === null means "show the settled state", which is this app's
+     entire behaviour before this section existed. Any other value freezes
+     the view at that hop: paint() (below) hides every node the wave has not
+     reached by then, so scrubbing the slider -- or pressing play -- walks
+     the effect outward from the pushed node, one hop at a time. */
+  var replayStep = null, replayPlaying = false, replayAcc = 0;
+  var REPLAY_MS = 220; // one hop per ~fifth of a second: fast enough to read
+                        // as motion, slow enough to count
+
+  function stopReplay() {
+    replayPlaying = false;
+    var b = $('replayplay');
+    if (b) b.textContent = 'Play';
+  }
+
+  function setReplayLabel() {
+    var lab = $('replaylab');
+    if (!lab) return;
+    lab.textContent = replayStep === null
+      ? 'Showing the settled state, ' + steps + ' step' +
+        (steps === 1 ? '' : 's') + ' after the push. Drag left to replay it.'
+      : 'Step ' + replayStep + ' of ' + steps + ' -- everything lit is ' +
+        'everything the change has reached so far.';
+  }
+
+  /* Called once per run, after propagate() has filled in steps and hit.
+     Every run starts back at the settled view -- replay is something a
+     reader opts into after seeing the answer, not something sprung on them
+     mid-run. */
+  function setupReplay() {
+    var box = $('replaybox'), sl = $('replay');
+    replayStep = null; replayAcc = 0;
+    stopReplay();
+    if (!box || !sl) return;
+    box.style.display = steps > 0 ? '' : 'none';
+    sl.max = String(Math.max(steps, 1));
+    sl.value = String(steps);
+    setReplayLabel();
+  }
+
+  (function () {
+    var sl = $('replay'), btn = $('replayplay');
+    if (sl) {
+      sl.addEventListener('input', function () {
+        stopReplay();
+        var v = +this.value;
+        replayStep = v >= steps ? null : v;
+        setReplayLabel();
+      });
+    }
+    if (btn) {
+      btn.onclick = function () {
+        if (!hit) return;
+        if (replayPlaying) { stopReplay(); return; }
+        replayPlaying = true; replayAcc = 0;
+        btn.textContent = 'Pause';
+        replayStep = 0;
+        if (sl) sl.value = '0';
+        setReplayLabel();
+      };
+    }
+  })();
+
   function paint() {
     layers.forEach(function (L) {
       var col = L.pts.geometry.attributes.color;
@@ -902,6 +1020,10 @@
           siz.setX(j, L.sizeBase[j]);
         } else {
           var a = Math.min(1, Math.abs(state[n]) / 0.6);
+          // Replaying: a node the wave has not reached yet -- or never
+          // reaches at all, hit[n] < 0 -- is drawn exactly as untouched,
+          // whatever its eventual (or transient) settled value is.
+          if (replayStep !== null && (hit[n] < 0 || hit[n] > replayStep)) a = 0;
           var lift = 1 + 1.7 * a;
           col.setXYZ(j, Math.min(1, base[j * 3] * lift + 0.32 * a),
                         Math.min(1, base[j * 3 + 1] * lift + 0.08 * a),
@@ -939,7 +1061,26 @@
     $('s-steps').textContent = steps;
     $('s-max').textContent = mx.toFixed(3);
     if (sel != null && $('d-val')) $('d-val').textContent = state[sel].toFixed(4);
+    setupReplay();
     paint();
+    scrollResultIntoView();
+  }
+
+  /* RESULT is the fourth of six sections in a scrolling rail, and Run sits
+     up in the first. On a short window the result can settle below the fold
+     while the button that produced it stays in view, so the run looks like
+     it did nothing. Pull the answer up to meet the reader instead of hoping
+     they scroll for it. block:'nearest' so a result that is already visible
+     does not jitter the rail for no reason. */
+  function scrollResultIntoView() {
+    var el = $('resultbox');
+    if (!el || typeof el.scrollIntoView !== 'function') return;
+    try {
+      el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+                          block: 'nearest' });
+    } catch (e) {
+      el.scrollIntoView();
+    }
   }
 
   (function () {
@@ -956,6 +1097,8 @@
   $('run').onclick = run;
   $('reset').onclick = function () {
     shocks = {}; state = null; hit = null;
+    replayStep = null; stopReplay();
+    var rb = $('replaybox'); if (rb) rb.style.display = 'none';
     $('s-touch').textContent = '—';
     $('s-steps').textContent = '—';
     $('s-max').textContent = '—';
@@ -1048,6 +1191,21 @@
     var dt = lastT ? Math.min((now - lastT) / 1000, 0.05) : 0.016;
     lastT = now;
     if (spin && !isBrain()) { yaw -= dt * 0.055; place(); }
+    if (replayPlaying) {
+      replayAcc += dt * 1000;
+      if (replayAcc >= REPLAY_MS) {
+        replayAcc = 0;
+        replayStep++;
+        if (replayStep >= steps) {
+          replayStep = null;
+          stopReplay();
+          if ($('replay')) $('replay').value = String(steps);
+        } else if ($('replay')) {
+          $('replay').value = String(replayStep);
+        }
+        setReplayLabel();
+      }
+    }
     if (state) { pulseT += dt; paint(); }
     renderer.render(scene, camera);
   })(0);

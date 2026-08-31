@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/climate-cost.html">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=24150b10">
+<link rel="stylesheet" href="style.css?v=9dfbc1c3">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -31,6 +31,13 @@ branching tree under each stage showing where that stage's emissions came from.
 The branches have branches. A tomato needs fertiliser<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, the fertiliser needs
 ammonia, the ammonia needs natural gas, and getting that gas out of the ground
 leaks methane<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. Four levels down, and every level is a real emission somewhere.</p>
+
+<img class="fig wide" src="assets/climate_chain_tomato.png?v=e34c9b2b" loading="lazy" width="1870" height="833" alt="A tomato traced four supply-chain stages deep: cultivation at 59.8 grams of carbon dioxide equivalent, the fertiliser it needs at 5.27, the ammonia that fertiliser needs at 3.20, and the natural gas extraction behind the ammonia at 0.386, with the physical quantity flowing along each arrow.">
+<p class="small">That chain, traced by the same engine the calculator runs. Each
+box is what the tomato is actually charged for that process, and the total
+tapers by two orders of magnitude in three steps &mdash; which is why a
+footprint can look complete while a real emission four levels down is still
+inside it.</p>
 
 <div class="card">
 <div class="tag">Interactive</div>
@@ -93,8 +100,8 @@ by mass allocation, at about 7%, they would triple. Nothing about the shoe
 changes.</p>
 
 <video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/climate_allocation_poster.png?v=15a2c5f6"
- data-src="assets/climate_allocation.mp4?v=daa2e7bf"></video>
+ poster="assets/climate_allocation_poster.png?v=3b1254a6"
+ data-src="assets/climate_allocation.mp4?v=a2ffe294"></video>
 <p class="small">The same hide, the same animal, two allocation rules: 3.66 kg
 at 2.2% economic share, nearly tripled at the 7% mass share.</p>
 
@@ -187,6 +194,7 @@ draws power from the wrong grid.</p>
 })();
 </script>
 <script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
 <script src="assets/bgloop.js?v=d269be40"></script>
 <script>
 /* this page's own 20-item table, real kg CO2e per item and its real
@@ -214,5 +222,5 @@ window.MARGIN_SCENE = { kind: 'arcroute', items: [
   { label: 'train, France to France',      weight: 0.56 }
 ] };
 </script>
-<script src="assets/margin-scene.js?v=c28ceecf"></script>
+<script src="assets/margin-scene.js?v=07c1a1d1"></script>
 </body></html>
