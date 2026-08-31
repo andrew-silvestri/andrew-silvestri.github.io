@@ -172,28 +172,51 @@
   }
 
   /* How present an item is, read straight off where the reader is in the
-     document: full at its own `at`, gone `span` away on either side. No
-     state accumulates between calls - a fast scroll crosses the same fades a
-     slow one does, and scrolling back up retraces exactly. */
+     document. No state accumulates between calls - a fast scroll crosses the
+     same fades a slow one does, and scrolling back up retraces exactly.
+
+     The profile is a trapezoid, not a peak: full opacity anywhere within
+     `hold` of the item's own `at`, then a fade out to nothing at `span`.
+     With a single peak an item was only ever fully opaque at one exact
+     scroll position, so everything read as flickering past on the way to
+     somewhere else however slowly you scrolled. The plateau is what gives an
+     item a stretch of the page it simply owns, and the longer tail is what
+     stops it snapping in and out at the edges of that stretch. */
   function presence(item, p) {
-    return ease(1 - Math.abs(p - item.at) / item.span);
+    var d = Math.abs(p - item.at);
+    var hold = item.hold || 0;
+    if (d <= hold) return 1;
+    if (d >= item.span) return 0;
+    return ease(1 - (d - hold) / (item.span - hold));
   }
 
   /* Spreads a list of items evenly down the whole document and alternates
      which margin each prefers. `at` is the item's own slot, centred so the
      first and last items don't sit flush against the very top/bottom of the
-     document; `span` of 2/n means the zone where an item has any presence at
-     all is four items wide (2/n on each side), which in practice keeps
-     roughly three to five items live in a margin at once regardless of how
-     many items the page hands over - the ratio is constant, not the count.
-     Side alternates by index so consecutive items - the ones simultaneously
-     in view - land in opposite margins instead of mirroring each other. */
+     document.
+
+     `hold` and `span` are both expressed in item-spacings (1/n of the
+     document), so the feel is the same whether a page hands over ten items
+     or forty-four. An item is fully opaque across two spacings - one either
+     side of its own slot - and then fades over another two, so it is
+     somewhere on screen for six spacings in all. That is deliberately slower
+     than it was: at `span = 2/n` with no plateau, an item reached full
+     opacity at exactly one scroll position and was visibly on its way in or
+     out everywhere else.
+
+     Six spacings live at once needs more rows than five to sit in, hence
+     ROWS below. Side alternates by index so consecutive items - the ones
+     simultaneously in view - land in opposite margins rather than
+     mirroring each other. */
   function assignAtSpan(items) {
     var n = items.length;
     if (!n) return;
     items.forEach(function (item, i) {
       item.at = (i + 0.5) / n;
-      item.span = 2 / n;
+      /* Capped so a scene with very few items does not end up with every one
+         of them permanently on screen. */
+      item.hold = Math.min(0.16, 1 / n);
+      item.span = Math.min(0.42, 3 / n);
       item.side = i % 2 === 0 ? 'l' : 'r';
       /* Stamped here rather than read from a loop index at draw time: the
          collage kind draws several item lists in one frame, so an item's
@@ -251,8 +274,13 @@
      laid out in, so two items live at once don't draw on top of each other.
      Five is comfortably more than the three-to-five that are ever actually
      present together (see assignAtSpan), and items are far enough apart in
-     `at` that two sharing a row index are never both visible at once. */
-  var ROWS = 5;
+     `at` that two sharing a row index are never both visible at once.
+
+     Seven, not five: with the trapezoid profile an item is live across six
+     item-spacings, so up to six can be on screen together. Two items sharing
+     a row are seven spacings apart, which is wider than that window, so a
+     row is never asked to hold two visible items. */
+  var ROWS = 7;
 
   /* The top and bottom of the drawable column, in viewport pixels. The top
      starts below nav.top so an item never begins underneath it. */

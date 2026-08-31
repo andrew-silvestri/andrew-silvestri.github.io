@@ -94,6 +94,13 @@ body::before {
   background-repeat: no-repeat, no-repeat, repeat;
 }
 @media (prefers-color-scheme: light) { body::before { opacity: .5; } }
+/* code.html is a plain index of downloads and asked for nothing behind it:
+   no margin scene (it loads no scene script) and no background layer at all,
+   not even the soft radial wash the rest of the site carries. content:none
+   removes the pseudo-element outright rather than blanking its paint, so
+   there is nothing composited over the page at all. */
+body.bg-bare::before { content: none; }
+
 /* Pages that draw a scene of their own - longevity's biome descent, the
    bookshelf's spines, the skyline's towers - had the sitewide node/edge tile
    sitting behind that scene as a second, unrelated background competing with
