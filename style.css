@@ -94,12 +94,13 @@ body::before {
   background-repeat: no-repeat, no-repeat, repeat;
 }
 @media (prefers-color-scheme: light) { body::before { opacity: .5; } }
-/* longevity.html draws its own scene - a vertical biome gradient and real
-   animals, in the margins - and the sitewide node/edge tile read as a second,
-   unrelated background competing with it. This keeps the two soft radial
-   washes, which are what stops the black being a void, and drops only the
-   graph tile. The gradient a reader sees on that page is the scene's own. */
-body.bg-biome::before {
+/* Pages that draw a scene of their own - longevity's biome descent, the
+   bookshelf's spines, the skyline's towers - had the sitewide node/edge tile
+   sitting behind that scene as a second, unrelated background competing with
+   it. This keeps the two soft radial washes, which are what stop the black
+   being a void, and drops only the graph tile. What a reader sees behind the
+   text on those pages is the page's own scene. */
+body.bg-own-scene::before {
   background:
     radial-gradient(1100px 640px at 50% -8%,
                     rgba(110, 128, 240, .075), transparent 70%),

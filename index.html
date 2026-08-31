@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/">
 <script>/* the motion contract — set before first paint */
 try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=20489e1c">
+<link rel="stylesheet" href="style.css?v=2c8c0304">
 </head><body>
 <nav class="top"><a href="index.html" class="on">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main>
@@ -134,12 +134,42 @@ browser and never leaves it.</p>
 <script>
 /* this page's own sys-log numbers - kept to just these four real lines so
    the margin doesn't compete with the hero for attention */
-window.MARGIN_SCENE = { kind: 'cards', items: [
-  { text: '86,622 nodes', sub: '197,068 weighted links' },
-  { text: '1,144 negative links', sub: 'relief, not stress' },
-  { text: '34,936 plant units', sub: 'across 167 countries' },
-  { text: '60 prepared scenarios', sub: 'grouped by kind' }
+/* The home page indexes the site, so its margin scene indexes the other
+   pages' scenes: the atlas's own counts as cards, the code archive as bars,
+   the heat model's three prices as a flow, and the climate calculator's
+   heaviest routes as arcs. Every number here is already published on the
+   page it comes from - nothing is computed or invented for the collage. */
+window.MARGIN_SCENE = { kind: 'collage', parts: [
+  { kind: 'cards', items: [
+    { text: '86,622 nodes',          sub: '197,068 weighted links' },
+    { text: '1,144 negative links',  sub: 'relief, not stress' },
+    { text: '34,936 plant units',    sub: 'across 167 countries' },
+    { text: '60 prepared scenarios', sub: 'grouped by kind' },
+    { text: '7,873 species',         sub: 'body mass against lifespan' },
+    { text: '27 cities',             sub: 'skylines, played' }
+  ] },
+  { kind: 'bars', items: [
+    { label: 'atlas | 421 KB',        n: 421 },
+    { label: 'storage | 216 KB',      n: 216 },
+    { label: 'skyline | 109 KB',      n: 109 },
+    { label: 'longevity | 96 KB',     n: 96 },
+    { label: 'climate-cost | 24 KB',  n: 24 },
+    { label: 'heat | 23 KB',          n: 23 }
+  ] },
+  { kind: 'flowpulse', paths: [
+    { label: 'gas: 5.13 dollars/MMBtu',    weight: 0.20 },
+    { label: 'break-even: 1.53 cents/kWh', weight: 0.35 },
+    { label: 'today: 6.5 cents to $20.00', weight: 0.55 },
+    { label: '4h battery: $107.1/kW-yr',   weight: 0.45 }
+  ] },
+  { kind: 'arcroute', items: [
+    { label: 'beef, Brazil to Texas',      weight: 75.49 },
+    { label: 'jeans, China to California', weight: 14.85 },
+    { label: 'cheese, France to New York', weight: 12.86 },
+    { label: 'ocean quahog, 47.48x',       weight: 47.48 },
+    { label: 'black coral, 122.84x',       weight: 122.84 }
+  ] }
 ] };
 </script>
-<script src="assets/margin-scene.js?v=5fb307dc"></script>
+<script src="assets/margin-scene.js?v=fc15d174"></script>
 </body></html>

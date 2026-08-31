@@ -195,7 +195,56 @@
       item.at = (i + 0.5) / n;
       item.span = 2 / n;
       item.side = i % 2 === 0 ? 'l' : 'r';
+      /* Stamped here rather than read from a loop index at draw time: the
+         collage kind draws several item lists in one frame, so an item's
+         row has to belong to the item, not to its position inside whichever
+         list it happens to sit in - otherwise two kinds both start at row 0
+         and draw on top of each other. */
+      item.row = i % ROWS;
     });
+  }
+
+  /* The home page's scene is a mesh of the other pages' - a bar from the
+     code index, a card from the atlas, a route from the climate calculator,
+     a pulse from the heat model. Each part keeps its own kind and its own
+     real numbers; they are laid out with their own layout function, then the
+     union is re-assigned across the whole document in interleaved order so
+     the reader meets one kind, then the next, on the way down, rather than
+     one of every kind at every scroll position. */
+  function layoutCollage() {
+    var parts = SCENE.parts || [];
+    var byKind = {};
+    parts.forEach(function (part) {
+      var sub = { kind: part.kind, items: part.items, paths: part.paths,
+                  layers: part.layers };
+      var saved = SCENE;
+      SCENE = sub;                    // the layout functions read SCENE
+      if (part.kind === 'strata') { layoutStrata(); byKind.strata = strataBands; }
+      else if (part.kind === 'bars') { layoutBars(); byKind.bars = barsCells; }
+      else if (part.kind === 'flowpulse') { layoutFlow(); byKind.flow = flowPaths; }
+      else if (part.kind === 'cards') { layoutCards(); byKind.cards = cardItems; }
+      else if (part.kind === 'arcroute') { layoutArcs(); byKind.arcs = arcRows; }
+      SCENE = saved;
+    });
+    /* Interleave: take one item from each part in turn, so consecutive
+       positions down the page come from different pages' scenes. */
+    var lists = [byKind.strata, byKind.bars, byKind.flow, byKind.cards,
+                 byKind.arcs].filter(Boolean);
+    var union = [], k = 0, more = true;
+    while (more) {
+      more = false;
+      for (var j = 0; j < lists.length; j++) {
+        if (k < lists[j].length) { union.push(lists[j][k]); more = true; }
+      }
+      k++;
+    }
+    assignAtSpan(union);
+  }
+
+  function drawCollage(t) {
+    /* Every draw function already returns early on an item that is not live,
+       so running all five is the whole implementation. */
+    drawStrata(t); drawBars(t); drawFlow(t); drawCards(t); drawArcs(t);
   }
 
   /* Vertical slots within the viewport that simultaneously-visible items are
@@ -204,6 +253,36 @@
      present together (see assignAtSpan), and items are far enough apart in
      `at` that two sharing a row index are never both visible at once. */
   var ROWS = 5;
+
+  /* The top and bottom of the drawable column, in viewport pixels. The top
+     starts below nav.top so an item never begins underneath it. */
+  function columnTop()    { return Math.max(24, navBottom + 16); }
+  function columnHeight() { return Math.max(120, H - columnTop() - 28); }
+
+  /* Where item `i` sits vertically, and how tall its slot is.
+
+     This used to be `20 + (i % ROWS) * Math.min(CAP, (H - 40) / ROWS)`, and
+     the cap was the bug: on an 876px viewport (H - 40) / 5 is 167, so every
+     Math.min(34..70, 167) returned the constant, the five slots spanned only
+     20..190 or 20..370, and every scene on the site was glued into the top
+     quarter of the window with the rest of the margin empty. The slot height
+     is now derived from the column, so the rows always fill it. `slotFrac`
+     lets a kind ask for a shorter drawing box inside its own slot without
+     changing where the slots are. */
+  /* An item's own row if it has one (assignAtSpan stamps it), else its index
+     in the list being drawn - which is the same thing for a single-kind
+     scene, and the correct thing for a collage where one list's index says
+     nothing about where another list's items sit. */
+  function rowOf(item, i) {
+    return (item && item.row != null) ? item.row : i;
+  }
+
+  function slotY(i, slotFrac) {
+    var h = columnHeight() / ROWS;
+    var mid = columnTop() + (i % ROWS) * h + h / 2;
+    var box = h * (slotFrac || 1);
+    return { y: mid - box / 2, h: box, mid: mid };
+  }
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -253,6 +332,7 @@
     else if (SCENE.kind === 'flowpulse') layoutFlow();
     else if (SCENE.kind === 'cards') layoutCards();
     else if (SCENE.kind === 'arcroute') layoutArcs();
+    else if (SCENE.kind === 'collage') layoutCollage();
   }
 
   function layoutStrata() {
@@ -325,14 +405,14 @@
   function drawStrata(t) {
     if (!strataBands) return;
     var p = progress();
-    var rowH = Math.min(70, (H - 40) / ROWS);
+    var rowFrac = 0.62;
     strataBands.forEach(function (b, i) {
       var active = presence(b, p);
       if (active <= 0.02) return;
       var band = bandForSide(b.side);
       if (!band) return;
       var bw = band.x1 - band.x0;
-      var y0 = 20 + (i % ROWS) * rowH;
+      var slot = slotY(rowOf(b, i), rowFrac), y0 = slot.y, rowH = slot.h;
       ctx.globalAlpha = active;
       ctx.fillStyle = rgba(b.color, 0.09);
       ctx.fillRect(band.x0, y0, bw, rowH - 8);
@@ -354,7 +434,7 @@
   function drawBars(t) {
     if (!barsCells) return;
     var p = progress();
-    var rowH = Math.min(34, (H - 40) / ROWS);
+    var rowFrac = 0.34;
     barsCells.forEach(function (c, i) {
       var active = presence(c, p);
       if (active <= 0.02) return;
@@ -363,7 +443,7 @@
       var bw = band.x1 - band.x0;
       var pad = Math.min(18, bw * 0.15);
       var trackW = bw - pad * 2;
-      var y = 20 + (i % ROWS) * rowH;
+      var slot = slotY(rowOf(c, i), rowFrac), y = slot.y, rowH = slot.h;
       var breathe = 0.9 + 0.1 * Math.sin(t * 0.6 + i);
       var w = trackW * c.frac * breathe;
       ctx.globalAlpha = active;
@@ -379,14 +459,14 @@
   function drawFlow(t) {
     if (!flowPaths) return;
     var p = progress();
-    var rowH = Math.min(70, (H - 40) / ROWS);
+    var rowFrac = 0.62;
     flowPaths.forEach(function (fp, i) {
       var active = presence(fp, p);
       if (active <= 0.02) return;
       var band = bandForSide(fp.side);
       if (!band) return;
       var bw = band.x1 - band.x0;
-      var y0 = 20 + (i % ROWS) * rowH;
+      var slot = slotY(rowOf(fp, i), rowFrac), y0 = slot.y, rowH = slot.h;
       ctx.globalAlpha = active;
       ctx.beginPath();
       ctx.strokeStyle = rgba(fp.color, 0.35);
@@ -415,7 +495,7 @@
   function drawCards(t) {
     if (!cardItems) return;
     var p = progress();
-    var rowH = Math.min(50, (H - 40) / ROWS);
+    var rowFrac = 0.46;
     cardItems.forEach(function (c, i) {
       var active = presence(c, p);
       if (active <= 0.02) return;
@@ -425,7 +505,8 @@
       var pad = 6, w = Math.max(0, bw - pad * 2);
       // a small idle bob, purely decorative - the card's own presence is
       // entirely position-driven, this just keeps it from looking inert
-      var y = 20 + (i % ROWS) * rowH + Math.sin(t * 0.5 + i) * 2;
+      var slot = slotY(rowOf(c, i), rowFrac), rowH = slot.h;
+      var y = slot.y + Math.sin(t * 0.5 + i) * 2;
       ctx.globalAlpha = 0.55 * active;
       ctx.fillStyle = rgba('dim', 0.1);
       ctx.fillRect(band.x0 + pad, y, w, 40);
@@ -442,14 +523,14 @@
     if (!arcRows) return;
     var p = progress();
     var maxW = Math.max.apply(null, arcRows.map(function (r) { return r.weight; })) || 1;
-    var rowH = Math.min(40, (H - 40) / ROWS);
+    var rowFrac = 0.40;
     arcRows.forEach(function (r, i) {
       var active = presence(r, p);
       if (active <= 0.02) return;
       var band = bandForSide(r.side);
       if (!band) return;
       var bw = band.x1 - band.x0;
-      var y = 20 + (i % ROWS) * rowH;
+      var slot = slotY(rowOf(r, i), rowFrac), y = slot.y, rowH = slot.h;
       var thick = 0.6 + (r.weight / maxW) * 3.5;
       var wobble = Math.sin(t * 0.3 + i) * 3;
       ctx.globalAlpha = active;
@@ -484,6 +565,7 @@
     else if (SCENE.kind === 'flowpulse') drawFlow(t);
     else if (SCENE.kind === 'cards') drawCards(t);
     else if (SCENE.kind === 'arcroute') drawArcs(t);
+    else if (SCENE.kind === 'collage') drawCollage(t);
     ctx.restore();
   }
 
