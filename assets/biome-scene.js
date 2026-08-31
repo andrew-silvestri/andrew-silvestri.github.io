@@ -72,13 +72,19 @@
     var outerL = tracks[0], padL = tracks[1], text = tracks[2], padR = tracks[3],
         outerR = tracks[4];
     var mainLeft = rect.left;
-    var textLeft = mainLeft + outerL + padL;
-    var textRight = textLeft + text;
+    // Anchored to wide-start/wide-end plus a gutter, matching
+    // margin-scene.js. Anchored to the text column instead, a creature's
+    // label ran underneath this page's own full-width figures and read as
+    // truncated - the label was there, with an opaque figure card painted
+    // over its first two thirds.
+    var GUTTER = 24;
+    var wideLeft = mainLeft + outerL;
+    var wideRight = wideLeft + padL + text + padR;
     // Run the band all the way to the actual browser edge, not just to the
     // edge of main's own (shell-capped) box - on a screen wider than the
     // 1440px shell there is real, unused window past main's box.
-    leftBand  = (textLeft - 0)  > 60 ? { x0: 0,        x1: textLeft } : null;
-    rightBand = (W - textRight) > 60 ? { x0: textRight, x1: W       } : null;
+    leftBand  = (wideLeft - GUTTER)        > 60 ? { x0: 0, x1: wideLeft - GUTTER } : null;
+    rightBand = (W - (wideRight + GUTTER)) > 60 ? { x0: wideRight + GUTTER, x1: W } : null;
   }
 
   /* ---- the descent, mapped onto the whole document ----------------------
@@ -244,7 +250,7 @@
   var CREATURES = [
     {
       kind: 'bat', color: null, side: 'l',
-      at: 0.020, span: 0.09,
+      at: 0.020,
       label: "Brandt's bat · 12.75× prediction (41 years at 7 grams)",
       motion: loop([
         { x: 0.22, y: 0.20 }, { x: 0.50, y: 0.14 }, { x: 0.70, y: 0.25 }, { x: 0.38, y: 0.22 }
@@ -252,7 +258,7 @@
     },
     {
       kind: 'honeybee', color: null, side: 'r',
-      at: 0.062, span: 0.09,
+      at: 0.062,
       label: 'honey bee queen · 1.98× prediction (5 years)',
       motion: loop([
         { x: 0.40, y: 0.14 }, { x: 0.70, y: 0.08 }, { x: 0.70, y: 0.19 }, { x: 0.66, y: 0.16 }
@@ -260,7 +266,7 @@
     },
     {
       kind: 'parrot', color: null, side: 'l',
-      at: 0.104, span: 0.09,
+      at: 0.104,
       label: 'pink cockatoo · 4.55× prediction (83 years)',
       motion: loop([
         { x: 0.58, y: 0.26 }, { x: 0.60, y: 0.20 }, { x: 0.70, y: 0.31 }, { x: 0.52, y: 0.28 }
@@ -268,7 +274,7 @@
     },
     {
       kind: 'albatross', color: null, side: 'r',
-      at: 0.147, span: 0.09,
+      at: 0.147,
       label: 'Laysan albatross · 2.60× prediction (74 years)',
       motion: loop([
         { x: 0.22, y: 0.18 }, { x: 0.50, y: 0.12 }, { x: 0.70, y: 0.23 }, { x: 0.38, y: 0.20 }
@@ -276,7 +282,7 @@
     },
     {
       kind: 'ant', color: null, side: 'l',
-      at: 0.189, span: 0.09,
+      at: 0.189,
       label: 'black garden ant queen · 28.72× prediction (29 years)',
       motion: loop([
         { x: 0.40, y: 0.44 }, { x: 0.70, y: 0.38 }, { x: 0.70, y: 0.49 }, { x: 0.66, y: 0.46 }
@@ -284,7 +290,7 @@
     },
     {
       kind: 'spider', color: null, side: 'r',
-      at: 0.231, span: 0.09,
+      at: 0.231,
       label: 'Mexican redknee tarantula · 3.55× prediction (30 years)',
       motion: loop([
         { x: 0.58, y: 0.52 }, { x: 0.60, y: 0.46 }, { x: 0.70, y: 0.57 }, { x: 0.52, y: 0.54 }
@@ -292,7 +298,7 @@
     },
     {
       kind: 'chameleon', color: null, side: 'l',
-      at: 0.273, span: 0.09,
+      at: 0.273,
       label: "Labord's chameleon · 0.13× prediction (one year, size predicts eight)",
       motion: loop([
         { x: 0.22, y: 0.56 }, { x: 0.50, y: 0.50 }, { x: 0.70, y: 0.61 }, { x: 0.38, y: 0.58 }
@@ -300,7 +306,7 @@
     },
     {
       kind: 'elephant', color: null, side: 'r',
-      at: 0.315, span: 0.09,
+      at: 0.315,
       label: 'African bush elephant · 1.31× prediction (80 years)',
       motion: loop([
         { x: 0.40, y: 0.66 }, { x: 0.70, y: 0.60 }, { x: 0.70, y: 0.71 }, { x: 0.66, y: 0.68 }
@@ -308,7 +314,7 @@
     },
     {
       kind: 'giraffe', color: null, side: 'l',
-      at: 0.357, span: 0.09,
+      at: 0.357,
       label: 'giraffe · 0.84× prediction (39 years)',
       motion: loop([
         { x: 0.58, y: 0.62 }, { x: 0.60, y: 0.56 }, { x: 0.70, y: 0.67 }, { x: 0.52, y: 0.64 }
@@ -316,7 +322,7 @@
     },
     {
       kind: 'molerat', color: null, side: 'r',
-      at: 0.400, span: 0.09,
+      at: 0.400,
       label: 'naked mole-rat · 6.75× prediction (31 years at 35 grams)',
       motion: loop([
         { x: 0.22, y: 0.34 }, { x: 0.50, y: 0.28 }, { x: 0.70, y: 0.39 }, { x: 0.38, y: 0.36 }
@@ -324,7 +330,7 @@
     },
     {
       kind: 'tortoise', color: null, side: 'l',
-      at: 0.442, span: 0.09,
+      at: 0.442,
       label: 'Galapagos tortoise · 3.21× prediction (177 years)',
       motion: loop([
         { x: 0.40, y: 0.60 }, { x: 0.70, y: 0.54 }, { x: 0.70, y: 0.65 }, { x: 0.66, y: 0.62 }
@@ -332,7 +338,7 @@
     },
     {
       kind: 'snail', color: null, side: 'r',
-      at: 0.484, span: 0.09,
+      at: 0.484,
       label: 'Roman snail · 3.91× prediction (35 years)',
       motion: loop([
         { x: 0.58, y: 0.72 }, { x: 0.60, y: 0.66 }, { x: 0.70, y: 0.77 }, { x: 0.52, y: 0.74 }
@@ -340,7 +346,7 @@
     },
     {
       kind: 'penguin', color: null, side: 'l',
-      at: 0.526, span: 0.09,
+      at: 0.526,
       label: 'African penguin · 1.41× prediction (40 years)',
       motion: loop([
         { x: 0.22, y: 0.30 }, { x: 0.50, y: 0.24 }, { x: 0.70, y: 0.35 }, { x: 0.38, y: 0.32 }
@@ -348,7 +354,7 @@
     },
     {
       kind: 'seal', color: null, side: 'r',
-      at: 0.568, span: 0.09,
+      at: 0.568,
       label: 'Baikal seal · 2.13× prediction (56 years)',
       motion: loop([
         { x: 0.40, y: 0.36 }, { x: 0.70, y: 0.30 }, { x: 0.70, y: 0.41 }, { x: 0.66, y: 0.38 }
@@ -356,7 +362,7 @@
     },
     {
       kind: 'whale', color: null, side: 'l',
-      at: 0.610, span: 0.09,
+      at: 0.610,
       label: 'bowhead whale · 1.78× prediction (211 years)',
       motion: loop([
         { x: 0.58, y: 0.24 }, { x: 0.60, y: 0.18 }, { x: 0.70, y: 0.29 }, { x: 0.52, y: 0.26 }
@@ -364,7 +370,7 @@
     },
     {
       kind: 'shark', color: null, side: 'r',
-      at: 0.653, span: 0.09,
+      at: 0.653,
       label: 'Greenland shark · 6.34× prediction (392 years)',
       motion: loop([
         { x: 0.22, y: 0.40 }, { x: 0.50, y: 0.34 }, { x: 0.70, y: 0.45 }, { x: 0.38, y: 0.42 }
@@ -372,7 +378,7 @@
     },
     {
       kind: 'rockfish', color: null, side: 'l',
-      at: 0.695, span: 0.09,
+      at: 0.695,
       label: 'rougheye rockfish · 12.90× prediction (205 years)',
       motion: loop([
         { x: 0.40, y: 0.56 }, { x: 0.70, y: 0.50 }, { x: 0.70, y: 0.61 }, { x: 0.66, y: 0.58 }
@@ -380,7 +386,7 @@
     },
     {
       kind: 'jellyfish', color: null, side: 'r',
-      at: 0.737, span: 0.09,
+      at: 0.737,
       label: 'moon jellyfish · 0.07× prediction (one year)',
       motion: loop([
         { x: 0.58, y: 0.46 }, { x: 0.60, y: 0.40 }, { x: 0.70, y: 0.51 }, { x: 0.52, y: 0.48 }
@@ -388,7 +394,7 @@
     },
     {
       kind: 'tubeworm', color: null, side: 'l',
-      at: 0.779, span: 0.09,
+      at: 0.779,
       label: 'cold-seep tubeworm · 23.41× prediction (250 years)',
       motion: loop([
         { x: 0.22, y: 0.70 }, { x: 0.50, y: 0.64 }, { x: 0.70, y: 0.75 }, { x: 0.38, y: 0.72 }
@@ -396,7 +402,7 @@
     },
     {
       kind: 'lobster', color: null, side: 'r',
-      at: 0.821, span: 0.09,
+      at: 0.821,
       label: 'American lobster · 3.04× prediction (70 years)',
       motion: loop([
         { x: 0.40, y: 0.74 }, { x: 0.70, y: 0.68 }, { x: 0.70, y: 0.79 }, { x: 0.66, y: 0.76 }
@@ -404,7 +410,7 @@
     },
     {
       kind: 'mussel', color: null, side: 'l',
-      at: 0.863, span: 0.09,
+      at: 0.863,
       label: 'freshwater pearl mussel · 15.78× prediction (190 years)',
       motion: loop([
         { x: 0.58, y: 0.76 }, { x: 0.60, y: 0.70 }, { x: 0.70, y: 0.81 }, { x: 0.52, y: 0.78 }
@@ -412,7 +418,7 @@
     },
     {
       kind: 'quahog', color: null, side: 'r',
-      at: 0.906, span: 0.09,
+      at: 0.906,
       label: 'ocean quahog · 47.48× prediction (a real 507-year lifespan)',
       motion: loop([
         { x: 0.22, y: 0.80 }, { x: 0.50, y: 0.74 }, { x: 0.70, y: 0.85 }, { x: 0.38, y: 0.82 }
@@ -420,7 +426,7 @@
     },
     {
       kind: 'octopus', color: null, side: 'l',
-      at: 0.948, span: 0.09,
+      at: 0.948,
       label: 'common octopus · 0.07× prediction (two years)',
       motion: loop([
         { x: 0.40, y: 0.48 }, { x: 0.70, y: 0.42 }, { x: 0.70, y: 0.53 }, { x: 0.66, y: 0.50 }
@@ -428,7 +434,7 @@
     },
     {
       kind: 'coral', color: null, side: 'r',
-      at: 0.990, span: 0.09,
+      at: 0.990,
       label: 'black coral · 122.84× prediction (4,265 years)',
       motion: loop([
         { x: 0.58, y: 0.82 }, { x: 0.60, y: 0.76 }, { x: 0.70, y: 0.87 }, { x: 0.52, y: 0.84 }
@@ -471,6 +477,40 @@
               HAND_COLOR[c.kind] || 'dim';
   });
 
+  /* Horizontal lanes, one per creature, so two creatures live at the same
+     moment cannot be drawn over each other. Before the fades were lengthened
+     only two or three were ever on screen at once and their hand-authored
+     paths kept them apart by luck; at nine, luck ran out - the Baikal seal
+     and the naked mole-rat drew their labels on the same line, one on top of
+     the other and neither readable.
+
+     Ten lanes, and creatures sharing one are ten slots apart - wider than
+     the nine-slot window in which a creature has any presence at all - so a
+     lane never holds two visible creatures. A creature still moves: its
+     waypoint path now plays out inside its own lane rather than across the
+     whole viewport, which keeps the drift and loses the collisions. */
+  var ROWS = 10;
+  function laneTop(row) {
+    var top = 28, h = Math.max(90, H - top - 24) / ROWS;
+    return { y: top + row * h, h: h };
+  }
+
+  /* The same fade shape margin-scene.js gives every other page, so the whole
+     site behaves alike: a creature holds full opacity across `hold` either
+     side of its own slot, then fades out to nothing at `span`. Expressed in
+     creature-spacings (1/n of the document) and computed here rather than
+     written on each creature, so the twenty-four cannot drift apart from one
+     another. A single peak - which is what `span` alone gave - meant a
+     creature was only ever fully drawn at one exact scroll position. */
+  (function () {
+    var n = CREATURES.length;
+    CREATURES.forEach(function (c, i) {
+      c.hold = Math.min(0.16, 1 / n);
+      c.span = Math.min(0.55, 4.5 / n);
+      c.row = i % ROWS;
+    });
+  }());
+
   /* Every icon-backed kind draws the same way, so the table is built from
      ICON_SRC rather than listed by hand - a creature added to ICON_SRC and
      CREATURES without a matching entry here used to throw
@@ -512,22 +552,26 @@
   }
 
   /* How present a creature is, read straight off where the reader is in the
-     document: full at its own `at`, gone `span` away on either side. span is
-     0.26 of the document, so on this page each creature fades over roughly
-     3,700px of scroll - far enough that flicking the wheel crosses a visible
-     fade instead of a blink. Neighbouring ranges overlap by design, so the
-     margins are never empty between one creature and the next. */
+     document. Trapezoid, matching margin-scene.js: full opacity within
+     `hold` of its own slot, then a fade to nothing at `span` - about 1,200px
+     of full opacity on this page and 2,100px of fade either side of it.
+     Neighbouring ranges overlap by design, so the margins are never empty
+     between one creature and the next. */
   function presence(c, p) {
-    return ease(1 - Math.abs(p - c.at) / c.span);
+    var d = Math.abs(p - c.at);
+    if (d <= c.hold) return 1;
+    if (d >= c.span) return 0;
+    return ease(1 - (d - c.hold) / (c.span - c.hold));
   }
 
   function drawCreature(c, band, p, elapsed) {
     var active = presence(c, p);
     if (active <= 0.02) return;
     var pose = c.motion.pose(elapsed);
-    var bw = band.x1 - band.x0, bh = H;
+    var bw = band.x1 - band.x0;
+    var lane = laneTop(c.row);
     var x = band.x0 + pose.x * bw;
-    var y = pose.y * bh;
+    var y = lane.y + pose.y * lane.h;
     var s = Math.max(11, Math.min(24, bw * 0.13));
     ctx.globalAlpha = 0.5 * active;
     ctx.fillStyle = rgba(c.color, 1);
@@ -536,19 +580,36 @@
       ctx.globalAlpha = 0.55 * active;
       ctx.font = '10px ui-sans-serif, system-ui, sans-serif';
       ctx.fillStyle = rgba('ink', 1);
-      /* Measured, not assumed. This used to reserve a flat 140px for every
-         label, which was near enough while the labels were "octopus" plus a
-         quotient; once they carried a species name, a quotient and a real
-         lifespan they ran past 200px, so the flip-to-the-left test fired too
-         late and the text was drawn straight through its own creature. */
+      /* Measured, not assumed, and checked against the creature it belongs
+         to. A flat 140px reservation was near enough while the labels read
+         "octopus" plus a quotient; carrying a species name, a quotient and a
+         real lifespan they run past 200px. Measuring alone was still not
+         enough: the edge clamp could pull a flipped label back over its own
+         icon, which is how the Roman snail ended up with "(35 years)"
+         printed across it. Both placements are tried, each is clamped to the
+         band, and one is only used if it actually clears the icon. */
       var lw = ctx.measureText(c.label).width;
       var gap = s * 1.6;
-      var lx = x + gap;                       // preferred: to the right
-      if (lx + lw > band.x1 - 4) lx = x - gap - lw;   // else flip left
-      lx = Math.max(band.x0 + 4, Math.min(lx, band.x1 - lw - 4));
-      /* If the band is too narrow to hold the label anywhere without sitting
-         on the creature, the creature is the thing worth keeping. */
-      if (lw + gap * 2 < band.x1 - band.x0) ctx.fillText(c.label, lx, y);
+      var lo = band.x0 + 4, hi = band.x1 - lw - 4;
+      var iconL = x - s, iconR = x + s;
+      var placed = false;
+      var tries = [x + gap, x - gap - lw];   // right of the icon, then left
+      for (var ti = 0; ti < tries.length && !placed; ti++) {
+        var lx = Math.max(lo, Math.min(tries[ti], hi));
+        if (lx >= lo && lx <= hi && (lx + lw <= iconL || lx >= iconR)) {
+          ctx.fillText(c.label, lx, y);
+          placed = true;
+        }
+      }
+      /* A margin is about 240px wide and these labels run to 200, so once
+         the icon is allowed its own 48px there is often no room to sit
+         beside it. Dropping the label underneath uses the band's full width
+         instead of what is left of it, which is why the labels came back
+         after the overlap check went in. */
+      if (!placed && lw <= band.x1 - band.x0 - 8) {
+        ctx.fillText(c.label, Math.max(lo, Math.min(x - lw / 2, hi)),
+                     y + s + 11);
+      }
     }
     ctx.globalAlpha = 1;
   }
