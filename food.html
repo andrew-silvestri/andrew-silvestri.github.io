@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fat, sugar, salt — Andrew Silvestri</title>
+<meta name="description" content="Raw food excludes fat and sugar together, about thirty times more strongly than chance; prepared food carries the pair at exactly the rate chance predicts. Computed from USDA SR Legacy with the published hyper-palatable-food rules.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/food.html">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=5c3e7e7c">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="food.html" class="on">Fat, sugar, salt</a></span></span><a href="code.html">Code</a></nav>
+<main class="notes">
+
+<h1>Fat, sugar, salt</h1>
+<p class="dim">Raw food excludes fat and sugar together, far more strongly than
+chance. Prepared food carries the pair at exactly the rate chance predicts.
+Computed for every solid food in the USDA table.</p>
+<aside class="marginalia" style="grid-row: span 43" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>fat and sugar, raw</b><span class="v">1 of 806</span></li><li><b>shuffled, raw</b><span class="v">28 expected</span></li><li><b>fat and sugar, prepared</b><span class="v">350 of 1,701</span></li><li><b>shuffled, prepared</b><span class="v">351 expected</span></li><li><b>any rule, prepared</b><span class="v">78%</span></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 43"><ul><li><b>US supply, 1988</b><span class="v">49% of items</span></li><li><b>US supply, 2018</b><span class="v">69%</span></li><li><b>store shelves</b><span class="v">67.1%</span></li><li><b>rule drawn from</b><span class="v">75 foods</span></li><li><b>predicts liking</b><span class="v">no, in two tests</span></li></ul></aside>
+
+<p>Nuts are mostly fat. Dates are mostly sugar. A chicken leg is fat and
+protein. Raw foods are fatty or sweet, and almost none is both: of
+806 raw foods in the USDA table, 1 carries fat and sugar
+together in the proportions the published rule names. That is not because
+raw foods are low in either. 79% of them are over the fat
+line and 7% over the sugar line, and if fat and sugar were
+dealt out to raw foods at random, 28 would carry both. Nature
+excludes the pair about 28 times more strongly than chance.</p>
+
+<p>The expected story is that prepared food seeks the pair out. It does not.
+Prepared foods are over the fat line and over the sugar line more often than
+raw foods, and 350 of 1,701 carry both; deal their fat and
+sugar out at random and 351 would. Prepared food is at chance.
+What preparation does is remove an exclusion that raw food has, not build a
+combination that raw food lacks. The rule that makes this computable, three
+published thresholds from 2019, is the page's instrument; it is also
+contested, and the next section says how, including one thing the null
+shows about the rule itself.</p>
+
+<div class="card"><div class="tag">Code and data</div><h3 style="margin-top:4px">Every number on this page is generated</h3><p>One public-domain download, USDA SR Legacy, and three scripts: the fetch, the model with its three nulls, and the figures. The archive holds the scripts, the slimmed table and the payload the page is written from.</p><a class="btn ghost" href="downloads/food-code.zip">Download code and data</a></div>
+
+<img class="fig wide" src="assets/food_fig1_plane.png?v=27be6fb7" loading="lazy" width="1428" height="984" alt="Two scatter panels, raw foods and prepared foods, each placing every food by the share of its energy from fat and from sugar. Raw foods lie along the two axes; prepared foods fill the interior.">
+<p class="small">Every solid food in SR Legacy at 50 kcal per 100 g or
+more, placed by the share of its energy from fat and from sugar. The dashed
+lines are the published thresholds; the diagonal is the edge the axes impose,
+since fat and sugar cannot exceed the whole. Raw foods lie along the two
+axes: 1 of 806 sits above both lines, against 28
+if fat and sugar were paired at random. Prepared foods fill the interior,
+350 of 1,701, the number random pairing gives. Human milk, the one whole food<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> the
+literature names as combining the two, is a liquid and outside the rule; it
+is drawn, not counted.</p>
+
+<h2>The rule, and where it came from</h2>
+<p>Fazzino, Rohde and Sullivan published a quantitative definition<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> of a
+hyper-palatable food in 2019. A food meets it if it clears either threshold
+in any one of three pairs:</p>
+<table>
+<tr><th>Pair</th><th>Threshold</th></tr>
+<tr><td>fat and sugar</td><td>more than 20% of energy from fat <em>and</em> more than 20% from sugar</td></tr>
+<tr><td>fat and sodium</td><td>more than 25% of energy from fat <em>and</em> sodium at least 0.30% by weight</td></tr>
+<tr><td>carbohydrate and sodium</td><td>more than 40% of energy from starch <em>and</em> sodium at least 0.20% by weight</td></tr>
+</table>
+<p>Starch here is carbohydrate less fibre and sugar. Applied to the US food
+survey database of 7,757 items, the rule caught 62%
+of them, and none of the fresh fruit, meat or fish; 97% of
+raw vegetables fell outside it. Of 443 products labelled
+reduced-fat, reduced-sugar, reduced-salt or reduced-calorie,
+49% still met it.</p>
+
+<p>Where the thresholds came from matters. The authors reviewed
+14 papers that described hyper-palatable foods in words,
+collected the 75 solid foods those papers named, plotted them,
+and drew three clusters by eye; each cut-point is the lowest value inside its
+cluster. There is no statistical clustering behind the numbers, and the paper
+says the cut-points <q>should not be assumed to be fixed or final</q>. The rule is a published,
+reproducible line through a small set of named foods, not a boundary found
+in nature.</p>
+
+<p>Whether it measures what its name says is contested. Rogers and colleagues
+rated 52 foods<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> with 72 to 224 people each and found no difference in rated
+palatability between foods that met the rule and foods that did not. Finlayson
+and colleagues had 3,364 people rate 436 foods<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> and found that nutrient content
+explains about a fifth of how much a food is liked. So this page uses the rule
+for what it demonstrably is, a threshold on composition, and makes no claim
+that a food above the lines tastes better or is harder to stop eating. What
+is measured is what is in the food.</p>
+
+<p>The null on this page adds a third caution, and it is about what the rule
+can see. A co-occurrence criterion carries information only where the two
+nutrients are paired more or less often than their separate frequencies
+predict. Among prepared foods they are not: shuffle fat against sugar within
+the group and the count above both lines comes back at 351
+against the 350 observed. For that population the fat-and-sugar pair
+detects foods that are higher in fat and foods that are higher in sugar, and
+nothing about the two arriving together; the marginals carry all of it. The
+pair is informative where it fails: on raw food, where the shuffle gives
+28 and the table holds 1.
+A rule built to find engineered combinations finds, in the foods it was built
+for, exactly what two one-nutrient thresholds would find.</p>
+
+<h2>What it finds</h2>
+<p>The table has 5,698 solid foods with the five values the rule
+needs. 951 of them are raw by the page's rule, stated under Method,
+and 806 of those carry at least 50 kcal per 100 g.
+1,701 are prepared: snacks, sweets, baked goods, fast and restaurant
+food, breakfast cereals, sausages and luncheon meats, ready meals, soups and
+sauces. Above both fat-and-sugar lines the raw group has 1
+food, grape leaves, against 350 prepared foods.</p>
+
+<p>That is not the axes talking. The shares of energy sum to 100, so a food
+high in one is constrained in the other, and the diagonal in the figure is
+that constraint. But the constraint leaves the whole region above both lines
+open, and a random composition lands there 15.6% of the time.
+A stricter test keeps each group's own spread of fat values and of sugar
+values and only breaks the pairing between them, under the same constraint.
+Done 1,000 times:</p>
+
+<img class="fig wide" src="assets/food_fig2_null.png?v=73c2226a" loading="lazy" width="1428" height="803" alt="Two histograms of how many foods land above both fat-and-sugar lines when each group's fat and sugar values are shuffled against each other, with the observed count marked. For raw foods the observed count is far below every shuffle; for prepared foods it sits at the centre.">
+<p class="small">Each group's fat shares and sugar shares, re-paired at random
+1,000 times under the constraint that they cannot exceed the whole. Raw
+foods: the shuffles put 20 to 37 foods above both
+lines, mean 28; the table has 1. Prepared foods: the
+shuffles give 325 to 388, mean 351;
+the table has 350.</p>
+
+<p>The exclusion is the finding. Raw foods avoid the combination about
+28 times more strongly than their own marginals predict:
+independence alone would put 47 in the corner, and
+28 once the constraint is respected; the table has 1.
+Prepared foods land there at exactly the rate independence predicts, with
+both marginals high, 67% above the fat line and
+36% above the sugar line, and the pairing random. Prepared
+food does not aim at the corner. What raw food has is an exclusion, and
+preparation removes it. The same holds in grams, where there is no
+constraint at all: 0 raw foods carry 10 g of fat and 10 g of
+sugar in 100 g, against 334 prepared foods, 20%.
+At 5 g each, the raw list is cashew nuts, coconut meat, pistachio nuts, chickpeas, soybeans and soy flour.</p>
+
+<p>The two sodium pairs are a different kind of finding. Only
+0.9% of raw foods reach 0.30% sodium by weight, and
+those are fish and shellfish; 67% of prepared foods do. No pairing is
+needed to explain that. Sodium above the line means salt was added, and the
+fat or starch it is paired with was there already. The table's own pairs show
+what does the adding.</p>
+
+<img class="fig wide" src="assets/food_fig3_pairs.png?v=ecdcf716" loading="lazy" width="1428" height="984" alt="Raw foods and their prepared versions in fat and sodium space, each pair joined by a line. Plain cooking barely moves a food; canning, breading and packing in salt carry it across the sodium threshold.">
+<p class="small">The same food, raw and prepared: 595 pairs where SR
+Legacy carries a raw item and a prepared version of it, both at
+50 kcal or more. 535 of the prepared versions are
+plain cooking, and they stay where the raw food was. The 16
+that cross into a rule are canned, breaded and fried, or packed in oil and
+salt. Sodium is on a log axis; values under 0.005% sit on the floor.</p>
+
+<p>So it is not cooking. Roasting, boiling and broiling without salt leave a
+food where it was on every axis the rule reads. What moves a food is what is
+added to it: salt, batter, a brine or a syrup, whether that happens in a
+cannery, a kitchen or a fryer. The word for the second group on this page is
+prepared rather than processed for that reason. The rule does not see a
+factory; it sees an addition.</p>
+
+<img class="fig wide" src="assets/food_fig4_groups.png?v=a97583d5" loading="lazy" width="1428" height="1236" alt="Dot plot of every SR Legacy food group, ordered by the share of its foods that meet any of the three rules. Fast foods and baked products are above 90 per cent; beef, lamb and fruit are near zero.">
+<p class="small">Share of each SR Legacy food group meeting any of the three
+pairs, foods at 50 kcal or more, groups of twenty or more. The
+number after each name is the group's count. Fast foods
+95%; sweets 52%; beef 0%,
+because the table's beef is unsalted cuts.</p>
+
+<p>Readers expect sweets on top. They are half-way down, because the rule's
+largest pair is fat with salt, and a sausage or a biscuit meets it more
+reliably than a boiled sweet. Dairy and eggs sit above sweets on the strength
+of cheese. The bottom of the chart is raw meat, raw fish and fruit, the groups
+where the table holds mostly foods nothing has been added to.</p>
+
+<p>The published work extends this in two directions the table cannot. Across
+the US survey databases from 1988 to 2018<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> the share of items meeting the rule
+rose from 49% to 69%, and the items present in all
+three years were about 4 times as likely to meet it in 2018 as
+in 1988, which the authors read as reformulation:</p>
+<table>
+<tr><th>Year</th><th>Items in the database</th><th>Meeting any pair</th></tr>
+<tr><td>1988</td><td>6,216</td><td>49%</td></tr>
+<tr><td>2001</td><td>6,125</td><td>62%</td></tr>
+<tr><td>2018</td><td>6,081</td><td>69%</td></tr>
+</table>
+<p>In grocery scanner data for 2015 to 2018, 67.1% of items on
+store shelves met the rule<sup class="cite" id="cr6"><a href="#ref6">6</a></sup> and 59.4% of household purchases did.
+The rule is not the same thing as ultra-processed: the two definitions show
+moderate overlap<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>, 40 to 70% depending on the year, and this page does not use
+the ultra-processed classification at all. Its axis is composition.</p>
+
+<h2>Method</h2>
+<p>The data is USDA FoodData Central's SR Legacy release of April 2018<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>,
+public domain, 5,698 foods once the beverage groups and USDA's quality-control
+materials are set aside and foods missing any of energy, fat, carbohydrate,
+sugar or sodium are dropped. Fat and sugar shares are grams times 9 and 4
+kilocalories over the food's energy; starch is carbohydrate less fibre less
+sugar, the same way; sodium in milligrams per 100 g over 1,000 is per cent by
+weight. Fibre is missing for 24 of the raw and prepared
+foods and is taken as zero there, which affects the starch-and-sodium pair
+only.</p>
+
+<p>The split is the page's own rule, and it is <em>assumed</em>. USDA has no
+processing field. A food is raw if its description says raw and does not
+also say sausage, cured, salted, sugared, bockwurst, chorizo, added
+solution or enhanced, the words under which USDA files raw sausage, salted
+frozen egg and brine-injected pork; 39 items go out that way. A food is
+prepared if it sits in one of ten SR Legacy groups: snacks, sweets, baked
+products, fast foods, breakfast cereals, sausages and luncheon meats,
+restaurant foods, meals and entrees, soups and sauces, and branded products.
+2,927 foods are neither, cooked plain meat and vegetables, cheeses,
+oils, baby food, and appear only in the by-group figure. Foods under
+50 kcal per 100 g are left out of every count, because a share
+of energy on a food that is mostly water is noise: arugula is 24% fat by
+energy on 25 kcal. Without the floor the raw group holds 6
+foods that meet a pair, kelp and wakame on starch and sodium; tomatillos, grape leaves, arugula and chives on fat and sugar.</p>
+
+<p>Three nulls. The first keeps each group's own fat shares and sugar shares
+and deals the sugar values back to the foods in random order, each food
+taking a random value from those still consistent with fat and sugar summing
+to 100 or less, then counts the corner; sodium is shuffled against fat and
+against starch the same way, with no constraint to respect. 1,000 deals,
+seed 20260905. The second draws 200,000 compositions uniformly over
+fat, carbohydrate and protein shares, with sugar a uniform fraction of
+carbohydrate, and counts the corner: 15.6%. The third leaves the
+shares alone and counts grams per 100 g. The pairs are found by USDA's own
+naming, which writes a preparation as a suffix on one base description;
+24 variants marked <q>with salt</q> are left out because USDA
+imputes a standard salt addition for them rather than measuring one.</p>
+
+<h2>Limits</h2>
+<p>Composition is not palatability. The rule is a line on a nutrient table;
+two rating studies find that foods over the line are not rated better-liked
+than foods under it, and this page claims nothing about liking, appetite or
+intent. Nothing here says a food was designed. The 1974 finding that
+pleasantness peaks<sup class="cite" id="cr9"><a href="#ref9">9</a></sup> and then falls as sugar rises, the source of the phrase
+bliss point, is a fact about tasting, not about any food in this table.</p>
+
+<p>The raw group is what USDA calls raw, and USDA's table is heavy in cuts of
+beef: 382 of the 806 raw foods are beef. The exclusion the
+first figure shows is therefore mostly an exclusion of sugar from meat, nuts
+and fruit, which is what raw food in a US table is. SR Legacy is frozen at
+2018 and US; the time series and the shelf share are looked up, not
+recomputed, and the two beverage groups are outside the rule by its authors'
+choice. USDA's tables carry total sugar, not added sugar, so the fat-and-sugar
+pair cannot tell a fig from a fig roll by the sugar alone. The shares of
+energy sum to 100, and Sadler and colleagues<sup class="cite" id="cr10"><a href="#ref10">10</a></sup> showed in 2015 that part of the
+inverse relation between fat and sugar in diets is that arithmetic; the
+permutation null is how this page separates the arithmetic from the food,
+and the gram-space count is the check that needs no such separation.</p>
+
+<hr>
+<h2>The code</h2>
+<p>Three Python scripts and the slimmed table. <code>fetch_data.py</code>
+downloads the pinned SR Legacy release, checks its hash and writes the
+six-column table; <code>build_food.py</code> applies the rule, the split and
+the three nulls and writes the payload; <code>fig_food.py</code> draws the four
+figures from it. The page's numbers are written from the payload by
+<code>update_page.py</code>. The archive holds the source and the payload,
+not the figures and not the raw download.</p>
+
+<p><a class="btn" href="downloads/food-code.zip">Download source · 536 KB</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">DiFeliceantonio <i>et al.</i>, <i>Cell Metabolism</i> 28(1):33-44, 2018, doi:10.1016/j.cmet.2018.05.018.</span><span class="what">Foods combining fat and carbohydrate are valued above equally liked fat-only or carbohydrate-only foods; the authors name breast milk as the natural exception.</span></li><li id="ref2"><span class="src">Fazzino, Rohde &amp; Sullivan, <i>Obesity</i> 27(11):1761-1768, 2019, doi:10.1002/oby.22639.</span><span class="what">The three threshold pairs, how they were drawn from 75 named foods, and the 62% of FNDDS 2015-16 items, the fresh foods not captured and the reduced-content products that were.</span></li><li id="ref3"><span class="src">Rogers, Vural, Flynn &amp; Brunstrom, <i>Appetite</i> 201:107596, 2024, doi:10.1016/j.appet.2024.107596.</span><span class="what">No difference in rated palatability between foods meeting the hyper-palatable rule and foods not meeting it.</span></li><li id="ref4"><span class="src">Finlayson <i>et al.</i>, <i>Appetite</i> 213:108029, 2025.</span><span class="what">Nutrient content explains about a fifth of rated liking.</span></li><li id="ref5"><span class="src">Demeke, Rohde, Chollet-Hinton, Sutton, L&rsquo;Insalata &amp; Fazzino, <i>Public Health Nutrition</i> 26(1):182-189, 2023, doi:10.1017/S1368980022001227.</span><span class="what">Share of items meeting the rule in the 1988, 2001 and 2017-18 US survey databases, and the odds for items present in all three.</span></li><li id="ref6"><span class="src">Fazzino, Bristi, Chollet-Hinton &amp; Sutton, <i>Public Health Nutrition</i> 29(1):e110, 2026, doi:10.1017/S1368980026102614.</span><span class="what">Share of store items and of household purchases meeting the rule, Circana scanner data 2015-2018.</span></li><li id="ref7"><span class="src">Sutton, Stratton, L&rsquo;Insalata &amp; Fazzino, <i>Obesity</i> 32(1):166-175, 2024, doi:10.1002/oby.23897.</span><span class="what">The 40-70% overlap between the hyper-palatable rule, the NOVA ultra-processed class and high energy density.</span></li><li id="ref8"><span class="src">U.S. Department of Agriculture, Agricultural Research Service, <i>FoodData Central</i>, SR Legacy, April 2018 release (CC0).</span><span class="what">Every computed number on the page: energy, fat, carbohydrate, sugar, fibre and sodium per 100 g for each food, and the food groups.</span></li><li id="ref9"><span class="src">Moskowitz, Kluter, Westerling &amp; Jacobs, <i>Science</i> 184(4136):583-585, 1974.</span><span class="what">Perceived sweetness rises with sucrose concentration while pleasantness rises and then falls.</span></li><li id="ref10"><span class="src">Sadler, McNulty &amp; Gibson, <i>Critical Reviews in Food Science and Nutrition</i> 55(3):338-356, 2015.</span><span class="what">The inverse fat-sugar relation in diets on a share-of-energy basis is partly arithmetic.</span></li></ol>
+
+<footer>Andrew Silvestri · energy systems modelling ·
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main>
+<script src="assets/motion.js?v=6bf4b397"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
+</body></html>
