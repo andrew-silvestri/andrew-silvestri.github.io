@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/atlas.html">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=78808b9d">
+<link rel="stylesheet" href="style.css?v=f73be2d6">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html" class="on">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main class="prose">
@@ -23,21 +23,26 @@ Every node holds one measured quantity and names where it came from. Apply a
 change anywhere and the effect propagates along the links until it settles,
 which takes between twenty and fifty steps.</p>
 
+<img class="fig wide plain" src="assets/hero_globe.png?v=a30332dd" width="1440" height="1252" alt="The model's 34,936 power stations and 35,207 settlements at their recorded coordinates, on an orthographic globe centred on the Atlantic">
+<p class="small">Every power station and every settlement in the model at its recorded coordinates, drawn on paper by <code>build_hero_figure.py</code> from the payload.</p>
+
 <h2>The nine layers</h2>
 
-<img src="assets/atlas_layers.png?v=61ff8b87" class="fig wide" loading="lazy" width="2280" height="1379" alt="The nine layers of the atlas drawn as boxes with their live node counts. Sun, insolation, weather, climate and recorded events push forward only; markets, grids, plants, districts, consumers and behaviour trade back and forth.">
-<p class="small">Every count is read live from the published model. A single arrowhead
-pushes one way; a double head trades an influence back and forth.</p>
+<picture class="wide">
+<source media="(max-width: 760px)" srcset="assets/atlas_layers-phone.png?v=44ac9267">
+<img src="assets/atlas_layers.png?v=e224366a" class="fig" loading="lazy" width="2280" height="1400" alt="The nine layers of the atlas as bands with their live node counts. Space, weather, climate and recorded events push one way, downward; demand, power plants, markets and fuel, grids and behaviour trade back and forth.">
+</picture>
+<p class="small">Drawn by <code>build_layer_diagram.py</code> from the published payload: every count and every link is read from it, and the rank rule from the engine. A single arrowhead pushes one way; a double head trades back and forth; an arc's width is the number of links it stands for. The bands are in the one order that minimises arc crossings, and the table below follows the figure.</p>
 
 <table><tr><th>Layer</th><th class="n">Nodes</th><th>Contents</th></tr>
 <tr><td>Space</td><td class="n">19</td><td>The measured solar constant, and the annual mean insolation above the atmosphere at each band of latitude, computed from orbital geometry</td></tr>
 <tr><td>Weather</td><td class="n">2</td><td>El Nino / La Nina and the North Atlantic Oscillation, from their measured index series</td></tr>
 <tr><td>Climate</td><td class="n">2</td><td>Carbon dioxide and the global temperature anomaly, both global series shown at Mauna Loa, where the record is kept</td></tr>
 <tr><td>Events</td><td class="n">9,259</td><td>Earthquakes of magnitude 5.5 and above since 1960 that reach infrastructure, and the earlier disaster set</td></tr>
+<tr><td>Demand</td><td class="n">35,207</td><td>Every settlement above fifteen thousand people</td></tr>
+<tr><td>Power plants</td><td class="n">34,936</td><td>Every unit in the world database, 167 countries</td></tr>
 <tr><td>Markets and fuel</td><td class="n">3,627</td><td>Price benchmarks, national fuel supplies, and every port in the World Port Index</td></tr>
 <tr><td>Grids</td><td class="n">3,546</td><td>National grids and first-level administrative districts at their settlement centroid</td></tr>
-<tr><td>Power plants</td><td class="n">34,936</td><td>Every unit in the world database, 167 countries</td></tr>
-<tr><td>Demand</td><td class="n">35,207</td><td>Every settlement above fifteen thousand people</td></tr>
 <tr><td>Behaviour</td><td class="n">24</td><td>Behavioural channels, inside 840 drawn brain structures, fed by every district with a measured population</td></tr>
 </table>
 

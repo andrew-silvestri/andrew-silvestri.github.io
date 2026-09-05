@@ -200,6 +200,12 @@ main > * {
    nothing can paint over anything. The 2026-08-30 audit's finding 4 was
    this collision in canvas form; the clamp that fixed it lived in the script
    3a deleted, so it is now in the grid, where a deleted file cannot take it. */
+/* Since 2026-09-04 (Phase 4, A4) the home page is main.notes too, with
+   nothing in its gutters: a page with empty gutters has no reason to break
+   out of its measure, and the figures and card thumbnails it carries were
+   drawn for this 714px column (sitefig NOTES, THUMB), which is why they were
+   soft when the page spent a day on the two-track grid. One measure, one
+   left edge. */
 main.notes {
   --text: min(68ch, 100%);
   grid-template-columns:
@@ -209,9 +215,18 @@ main.notes {
     minmax(0, var(--gutter)) [gutter-r-end]
     minmax(34px, 1fr) [full-end];
 }
-main > .wide, main > table, main > img.fig, main > video.fig,
+/* A table is a block of text and starts where the text starts. Until
+   2026-09-04 (Phase 4, A4) tables were promoted to the wide track with the
+   figures, which gave every prose page two left edges; every table on the
+   site fits the measure by wrapping its prose column, measured at 1440. A
+   picture may still break out, centred on the measure; text may not. */
+main > .wide, main > img.fig, main > video.fig,
 main > .cardgrid, main > .mosaic { grid-column: wide; }
 main > .full { grid-column: full; }
+/* A short text block on a gallery page whose cards take the wide track:
+   flush to the wide edge, so the page has one left edge, but held to the
+   measure so its lines stay readable (library.html, 2026-09-04). */
+main > .flush { grid-column: wide; max-width: var(--text); }
 
 h1 {
   font: 600 var(--fs4)/1.12 var(--sans);
@@ -368,6 +383,13 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 }
 .cardgrid .card {
   display: grid;
+  /* 38 % is decided, not inherited from the image. On the 714px measure it
+     is 271px, which is the thumbnails' own width (sitefig THUMB, 542 bitmap
+     pixels at two per CSS pixel), so a card never scales its picture up or
+     down; the text column is 415px, about 48 characters of the small face,
+     a measure short enough that a four-line summary is four lines. Measured
+     at 1440 on 2026-09-04 (Phase 4, A4): image 271 x 129-308, text 415 x
+     149-233, and whichever is shorter is centred on the other (rows below). */
   grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
   /* The image (column 1) spans every row; the text sits in rows 2-4 between
      two 1fr rows. So whichever column is taller sets the card's height and
@@ -647,7 +669,12 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
 
 /* ------------------------------------------------------------- mobile --- */
 @media (max-width: 760px) {
-  main { grid-template-columns: [full-start wide-start text-start] 1fr
+  /* main.notes as well: its own five-column rule has a class in the
+     selector and outranked this one, so every notes page at 390 kept the
+     34px outer columns inside the 20px padding and drew its text in a 282px
+     column, not the 350 the phone renders are made for (Phase 4, 2026-09-04,
+     found when the hero's 350px render came out 282 wide on the home page). */
+  main, main.notes { grid-template-columns: [full-start wide-start text-start] 1fr
                                 [text-end wide-end full-end];
          padding-left: 20px; padding-right: 20px;
          max-width: 100%; }

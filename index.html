@@ -10,17 +10,21 @@
 <link rel="canonical" href="https://andrewsilvestri.com/">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=78808b9d">
+<link rel="stylesheet" href="style.css?v=f73be2d6">
 </head><body>
 <nav class="top"><a href="index.html" class="on">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main class="prose">
+<main class="notes">
 
 <header class="masthead">
 <h1>Andrew Silvestri</h1>
 <p class="dim">Energy systems modelling: techno-economics, optimisation, and a
 model of the world energy system.</p>
 </header>
-<img class="fig wide plain" src="assets/hero_globe.png?v=a30332dd" width="1440" height="1252" alt="The model's 34,936 power stations and 35,207 settlements at their recorded coordinates, on an orthographic globe centred on the Atlantic">
+<picture>
+<source media="(max-width: 760px)" srcset="assets/atlas_layers-phone.png?v=44ac9267">
+<img class="fig plain" src="assets/atlas_layers-notes.png?v=a09976ba" width="1428" height="1290" alt="The model's nine layers as bands with their node counts. Space, weather, climate and events push one way, downward, into grids and the layers around them; demand, power plants, markets, grids and behaviour trade back and forth.">
+</picture>
+<p class="small">The model's nine layers and which way each pushes, drawn from the published payload by <code>build_layer_diagram.py</code>. <a href="atlas.html">About the atlas</a>.</p>
 <div class="card">
 <div class="tag">Main project</div>
 <h3 style="margin-top:4px">A model of the world energy system</h3>
@@ -40,8 +44,7 @@ model of the world energy system.</p>
 <a href="library.html" tabindex="-1"><img src="assets/06_scenario_reach-thumb.png?v=b43252d8" loading="lazy" width="542" height="299" alt=""></a>
 </div>
 
-<img class="fig wide" src="assets/energy_model_chart.png?v=28e8f0ce"
- alt="Overview chart of the world energy model">
+<img class="fig" src="assets/energy_model_chart.png?v=89be28e7" width="1428" height="1503" alt="Four panels: node counts by kind on a log scale, the sources the numbers come from, the distribution of link weights, and how far each category of prepared change travels.">
 <p class="small">The model at a glance: what it contains, how it is weighted,
 and how it behaves. <a href="library.html">All figures</a>.</p>
 
@@ -108,7 +111,7 @@ quotient is what is left once that relationship is divided out.</p>
 <div class="card">
 <div class="tag">Desktop · interactive</div>
 <h3 style="margin-top:4px"><a href="desktop.html">The bookshelf</a></h3>
-<img src="assets/bookshelf-demo-shelf-thumb.png?v=4a66eb6f" loading="lazy" width="542" height="315" alt="A desktop wallpaper of drawn book spines, built from a Goodreads export.">
+<img src="assets/bookshelf-demo-wallpaper-thumb.png?v=9bc3dd1e" loading="lazy" width="542" height="305" alt="The wallpaper the tool produces: forty-four drawn book spines on three walnut shelves, the built-in demo library.">
 <p>A wallpaper built from a Goodreads export: your books as drawn spines, or
 as a wall of their real covers brought to one finish. The CSV is parsed in the
 browser and never leaves it. The optional cover mode sends the ISBN of each

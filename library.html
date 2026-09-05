@@ -9,13 +9,13 @@
 <link rel="canonical" href="https://andrewsilvestri.com/library.html">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=78808b9d">
+<link rel="stylesheet" href="style.css?v=f73be2d6">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html" class="on">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
 <main class="prose">
 
-<h1>Figures</h1>
-<p class="dim">Every figure is produced from the model and its data. Nothing is
+<h1 class="flush">Figures</h1>
+<p class="dim flush">Every figure is produced from the model and its data. Nothing is
 drawn by hand.</p>
 <div class="grid wide">
 <div class="card">
@@ -76,7 +76,7 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">matplotlib, stacked time series</div>
 <h3 style="margin-top:4px">The two climate series that set the state of the model</h3>
-<img class="fig wide" src="assets/11_climate_record.png?v=e9096ee4" loading="lazy" width="2164" height="1412" alt="The two climate series that set the state of the model">
+<img class="fig wide" src="assets/11_climate_record.png?v=46e65a70" loading="lazy" width="2164" height="1412" alt="The two climate series that set the state of the model">
 <p>The upper panel is the carbon dioxide record from Mauna Loa. The saw pattern is the growing season of the northern hemisphere. The lower panel is the global temperature anomaly. Both series are read directly into the model. They set the starting state of the two climate nodes. The climate nodes then connect to every national grid, and to the gas and electricity prices, through heating and cooling demand.</p>
 
 </div><div class="card">
@@ -88,7 +88,7 @@ drawn by hand.</p>
 </div><div class="card">
 <div class="tag">matplotlib, computed field and measured series</div>
 <h3 style="margin-top:4px">The space layer</h3>
-<img class="fig wide" src="assets/14_space_layer.png?v=bef72d64" loading="lazy" width="2164" height="963" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
+<img class="fig wide" src="assets/14_space_layer.png?v=ecab89bf" loading="lazy" width="2164" height="963" alt="Annual mean insolation against latitude, and the measured total solar irradiance">
 <p>On the left, the annual mean sunlight arriving above the atmosphere at each latitude. This is not data. It is computed from the measured solar constant, the obliquity of 23.44 degrees and the eccentricity of the orbit, integrated over 365 days. The dashed line is the solar constant divided by four, which is what the area-weighted mean of the curve has to equal &mdash; the disc the Earth intercepts over the sphere it radiates from. It agrees to one part in ten thousand, which is the check that the integration is right rather than merely plausible. The equator receives 416 W/m&sup2; and the poles about 174.</p>
 <p>On the right, the measured total solar irradiance, NRLTSI2, with its stated uncertainty as the shaded band. Four solar cycles are visible. The whole vertical range of the panel is two watts in thirteen hundred and sixty, which is the honest scale of the thing the solar minimum scenario perturbs.</p>
 
@@ -101,8 +101,8 @@ drawn by hand.</p>
 </div>
 </div>
 <hr>
-<h2>Method</h2>
-<p class="small">Every static panel here is drawn with matplotlib, from the same
+<h2 class="flush">Method</h2>
+<p class="small flush">Every static panel here is drawn with matplotlib, from the same
 payload the atlas itself loads, by <code>build_atlas_figures.py</code>. The one
 grammar of graphics panel uses plotnine. The atlas is not a plotted figure at
 all; it is drawn live in WebGL. Each figure names its method above the title.</p>
