@@ -5,14 +5,14 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/model.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-force-graph">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="prose">
 
 <h1>The World Energy Model: Structure, Weights, and Behaviour</h1>
 <p class="dim">This report describes a model of the world energy system. The model has 86,622
@@ -40,17 +40,20 @@ at every other node.</p>
 <h2>2. What the model contains</h2>
 
 <table>
-<tr><th>Node type</th><th>Count</th><th>What one node is</th></tr>
-<tr><td>Power station</td><td>34,936</td><td>One real United States plant, with its coordinates</td></tr>
-<tr><td>Consumer group</td><td>35,207</td><td>Households or industry in one district</td></tr>
-<tr><td>Fuel supply</td><td>725</td><td>One fuel in one country</td></tr>
-<tr><td>District</td><td>571</td><td>One part of a national grid</td></tr>
-<tr><td>Historical event</td><td>9,259</td><td>One recorded disaster, with its real damage cost</td></tr>
-<tr><td>National grid</td><td>3,546</td><td>The power system of one country</td></tr>
-<tr><td>Price benchmark</td><td>6</td><td>One traded price, such as Brent crude</td></tr>
-<tr><td>Behaviour channel</td><td>6</td><td>One psychological effect on demand</td></tr>
-<tr><td>Climate system</td><td>2</td><td>Carbon dioxide level and temperature anomaly</td></tr>
-<tr><td><b>Total</b></td><td><b>86,622</b></td><td></td></tr>
+<tr><th>Node type</th><th class="n">Count</th><th>What one node is</th></tr>
+<tr><td>Sun</td><td class="n">1</td><td>The measured solar constant</td></tr>
+<tr><td>Insolation band</td><td class="n">18</td><td>Annual mean insolation above the atmosphere at one band of latitude, computed from orbital geometry</td></tr>
+<tr><td>Weather mode</td><td class="n">2</td><td>El Ni&ntilde;o / La Ni&ntilde;a, or the North Atlantic Oscillation, from its measured index series</td></tr>
+<tr><td>Climate system</td><td class="n">2</td><td>Carbon dioxide level, or the global temperature anomaly</td></tr>
+<tr><td>Recorded event</td><td class="n">9,259</td><td>One earthquake of magnitude 5.5 or more since 1960 that reaches infrastructure, or one earlier recorded disaster</td></tr>
+<tr><td>Market</td><td class="n">2,902</td><td>One traded price benchmark (6), or one port in the World Port Index (2,896)</td></tr>
+<tr><td>Fuel supply</td><td class="n">725</td><td>One fuel in one country, with its share of that country's electricity</td></tr>
+<tr><td>National grid</td><td class="n">214</td><td>The power system of one country</td></tr>
+<tr><td>District</td><td class="n">3,332</td><td>One first-level administrative division, at its settlement centroid</td></tr>
+<tr><td>Power station</td><td class="n">34,936</td><td>One generating unit from the world database, at its recorded coordinate; 167 countries</td></tr>
+<tr><td>Consumer group</td><td class="n">35,207</td><td>The demand of one settlement above fifteen thousand people</td></tr>
+<tr><td>Behaviour channel</td><td class="n">24</td><td>One behavioural channel, placed in a drawn brain structure and wired into demand</td></tr>
+<tr><td><b>Total</b></td><td class="n"><b>86,622</b></td><td></td></tr>
 </table>
 
 <hr>
@@ -73,7 +76,7 @@ at every other node.</p>
 <tr><td>NOAA CPC, Oceanic Ni&ntilde;o Index</td><td>El Ni&ntilde;o and La Ni&ntilde;a</td><td>917 overlapping seasons, 1950 on</td></tr>
 <tr><td>NOAA CPC, standardised NAO</td><td>The North Atlantic Oscillation</td><td>917 months, 1950 on</td></tr>
 <tr><td>Orbital geometry</td><td>Annual mean insolation by latitude. Computed, not measured, and checked against S<sub>0</sub>/4</td><td>18 bands</td></tr>
-<tr><td>Allen Brain Atlas</td><td>Brain structures for the behaviour nodes</td><td>6 channels matched</td></tr>
+<tr><td>Allen Brain Atlas</td><td>Brain structures for the behaviour nodes</td><td>24 channels matched</td></tr>
 <tr><td>FAOSTAT</td><td>Nitrogen fertilizer use</td><td>12,734 area-years</td></tr>
 </table>
 
@@ -135,7 +138,7 @@ links, using the coefficients from 4.3.</li>
 up at sixty steps. Nothing in this write-up reaches sixty.</p>
 </div>
 
-<img class="fig wide" src="assets/model_propagation_step.png?v=dabbf657" loading="lazy" width="1680" height="690"
+<img class="fig wide" src="assets/model_propagation_step.png?v=f637dd01" loading="lazy" width="2280" height="936"
  alt="One node, one step: driver weights into a weighted mean, damped by inertia, an optional applied change, squashed by tanh, moving the node toward its new effect">
 
 <h2>5. How the model is weighted</h2>
@@ -217,22 +220,24 @@ supply moves it and a change at one of its 4,235 plants does not.</p>
 <tr><td>Charts</td><td><code>python3 make_chart.py</code></td><td>Produces the summary figures.</td></tr>
 </table>
 
-<p>The Julia version and the Python version give the same numbers, node by node.
-The check file is <code>calibrate/out/parity_target.json</code>.</p>
+<p>All three run the July 2026 Julia build of the model, 7,192 nodes, which the
+Python mirror in the same download reproduces node by node; the file that
+records that agreement, <code>parity_target.json</code>, belongs to that build
+and is not in the download. The 86,622-node model the atlas draws is built by
+the Python scripts in <a href="downloads/atlas-code.zip">atlas-code.zip</a>. It
+has no Julia port, and nothing in it compares a run's outcome to an observed
+one.</p>
 
 <hr>
 <h2>Figures from this model</h2>
-<img class="fig wide" src="assets/energy_model_throughlines.png?v=f69e1f96" loading="lazy" width="1870" height="2261"
+<img class="fig wide" src="assets/energy_model_throughlines.png?v=a48fb2b3" loading="lazy" width="2280" height="4145"
  alt="Routes through the model from the climate to behaviour">
 <p class="small">The routes through the system, computed from the link weights.
 <a href="library.html">All figures</a>.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/force-graph-data.js?v=3bbd097f"></script>
-<script src="assets/force-bg.js?v=29d2e0ac"></script>
 </body></html>

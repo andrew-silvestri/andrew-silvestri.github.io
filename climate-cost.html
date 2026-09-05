@@ -5,18 +5,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/climate-cost.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html" class="on">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>The true climate cost of a thing</h1>
 <p class="dim">A life-cycle model that shows its working: every step, and what
 each step is made of.</p>
+<aside class="marginalia long" style="grid-row: span 27" aria-label="On this page"><p class="lab">On this page</p><ul><li>beef, Brazil to Texas</li><li>jeans, China to California</li><li>cheese, France to New York</li><li>trainers, Vietnam to New York</li><li>car, petrol, DE to Texas</li><li>flight, short haul, FR to IT</li><li>flight, long haul, NY to CN</li><li>car, electric, CN to Texas</li><li>bus, DE to Texas</li><li>t-shirt, cotton, India to TX</li></ul></aside>
+<aside class="marginalia right long" style="grid-row: span 27"><ul><li>chicken, Brazil to Texas</li><li>t-shirt, poly, China to TX</li><li>rice, India to California</li><li>shoes, leather, IT to NY</li><li>coffee, Colombia to Texas</li><li>tomato, heated, NL to NY</li><li>almonds, CA to New York</li><li>banana, Peru to New York</li><li>tomato, field, Spain to TX</li><li>train, France to France</li></ul></aside>
 
 <p>A tomato has a number attached to it. Somewhere on the internet you can find
 out that it is 0.4 kilograms of carbon dioxide equivalent, or 2.1, or 1.4, and
@@ -32,7 +34,7 @@ The branches have branches. A tomato needs fertiliser<sup class="cite" id="cr1">
 ammonia, the ammonia needs natural gas, and getting that gas out of the ground
 leaks methane<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. Four levels down, and every level is a real emission somewhere.</p>
 
-<img class="fig wide" src="assets/climate_chain_tomato.png?v=e34c9b2b" loading="lazy" width="1870" height="833" alt="A tomato traced four supply-chain stages deep: cultivation at 59.8 grams of carbon dioxide equivalent, the fertiliser it needs at 5.27, the ammonia that fertiliser needs at 3.20, and the natural gas extraction behind the ammonia at 0.386, with the physical quantity flowing along each arrow.">
+<img class="fig wide" src="assets/climate_chain_tomato.png?v=a55396ec" loading="lazy" width="1428" height="680" alt="A tomato traced four supply-chain stages deep: cultivation at 59.8 grams of carbon dioxide equivalent, the fertiliser it needs at 5.27, the ammonia that fertiliser needs at 3.20, and the natural gas extraction behind the ammonia at 0.386, with the physical quantity flowing along each arrow.">
 <p class="small">That chain, traced by the same engine the calculator runs. Each
 box is what the tomato is actually charged for that process, and the total
 tapers by two orders of magnitude in three steps &mdash; which is why a
@@ -58,7 +60,7 @@ including the absurd ones. Those are often the instructive ones.</p>
 <tr><th>Item</th><th class="n">kg CO<sub>2</sub>e</th><th>Per</th><th>Default route</th></tr>
 <tr><td colspan="4" class="dim"><b>Food</b></td></tr>
 <tr><td>Beef, from a dedicated herd</td><td class="n">75.49</td><td>1 kg as eaten</td><td>Brazil to Texas</td></tr>
-<tr><td>Cheese, hard</td><td class="n">12.86</td><td>1 kg as eaten</td><td>France to New York</td></tr>
+<tr><td>Cheese, hard</td><td class="n">13.18</td><td>1 kg as eaten</td><td>France to New York</td></tr>
 <tr><td>Chicken</td><td class="n">5.02</td><td>1 kg as eaten</td><td>Brazil to Texas</td></tr>
 <tr><td>Rice</td><td class="n">3.39</td><td>1 kg as eaten</td><td>India to California</td></tr>
 <tr><td>Coffee, roasted beans</td><td class="n">3.05</td><td>1 kg roasted</td><td>Colombia to Texas</td></tr>
@@ -67,12 +69,12 @@ including the absurd ones. Those are often the instructive ones.</p>
 <tr><td>Banana</td><td class="n">0.89</td><td>1 kg as eaten</td><td>Peru to New York</td></tr>
 <tr><td>Tomato, field grown</td><td class="n">0.67</td><td>1 kg as eaten</td><td>Spain to Texas</td></tr>
 <tr><td colspan="4" class="dim"><b>Transport</b></td></tr>
-<tr><td>Car, petrol</td><td class="n">23.47</td><td>100 km, one occupant</td><td>Germany to Texas</td></tr>
+<tr><td>Car, petrol</td><td class="n">23.57</td><td>100 km, one occupant</td><td>Germany to Texas</td></tr>
 <tr><td>Flight, short haul</td><td class="n">21.40</td><td>100 passenger-km</td><td>France to Italy</td></tr>
 <tr><td>Flight, long haul</td><td class="n">15.81</td><td>100 passenger-km</td><td>New York to China</td></tr>
-<tr><td>Car, battery electric</td><td class="n">12.66</td><td>100 km, one occupant</td><td>China to Texas</td></tr>
+<tr><td>Car, battery electric</td><td class="n">12.81</td><td>100 km, one occupant</td><td>China to Texas</td></tr>
 <tr><td>Bus, city diesel</td><td class="n">9.52</td><td>100 passenger-km</td><td>Germany to Texas</td></tr>
-<tr><td>Train, electric intercity</td><td class="n">0.56</td><td>100 passenger-km</td><td>France to France</td></tr>
+<tr><td>Train, electric intercity</td><td class="n">1.00</td><td>100 passenger-km</td><td>France to France</td></tr>
 <tr><td colspan="4" class="dim"><b>Clothing</b></td></tr>
 <tr><td>Jeans, denim</td><td class="n">14.85</td><td>1 pair, whole life</td><td>China to California</td></tr>
 <tr><td>Trainers, synthetic</td><td class="n">10.09</td><td>1 pair, whole life</td><td>Vietnam to New York</td></tr>
@@ -93,24 +95,41 @@ argument; whether it is an available one is not.</p>
 the one item whose destination matters more than its origin. The same car is a
 different object in France and in Poland. Production electricity and
 consumption electricity are charged separately, so the model already
-distinguishes them. The <b>leather shoe</b> is the allocation argument in its purest form. A hide
-is a co-product of a beef animal, and how much of that animal's methane belongs
-to a shoe is a judgement rather than a measurement. At 2.2% by economic value the shoes come in under four kilograms;
-by mass allocation, at about 7%, they would triple. Nothing about the shoe
-changes.</p>
+distinguishes them. The <b>cheese</b> is the allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> argument in its purest
+form. A dairy cow yields milk and, eventually, meat, and how much of her methane
+belongs to the milk is a judgement rather than a measurement. For cheese that
+judgement is the whole answer, because the herd stages are 93% of the kilogram.
+Every published way of making it is in the figure below, from Flysjö<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> and
+colleagues' comparison of the methods: the same kilogram of French cheese is
+10.0 kg CO<sub>2</sub>e if the cow's meat is credited by system expansion, 13.2
+under the International Dairy Federation<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>'s physical split, which is the model's
+default, and 15.4 if milk carries the whole cow. The spread across the published
+bases, highest total over lowest, is &times;1.54, and nothing a farmer does in
+this model produces a swing that size. The <b>leather shoe</b> is the same
+argument where it barely applies. A hide is a co-product of a beef animal too,
+but the hide stage is 9% of a pair, so moving the hide's share from the economic
+mean to the physical mean measured by Lunesu<sup class="cite" id="cr6"><a href="#ref6">6</a></sup> and colleagues lifts the pair from
+3.7 to 4.2 kg, a spread of &times;1.17. Allocation decides the answer where the
+shared stage <i>is</i> the answer, and nowhere else.</p>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/climate_allocation_poster.png?v=3b1254a6"
- data-src="assets/climate_allocation.mp4?v=a2ffe294"></video>
-<p class="small">The same hide, the same animal, two allocation rules: 3.66 kg
-at 2.2% economic share, nearly tripled at the 7% mass share.</p>
+<img class="fig wide" src="assets/climate_allocation_bases.png?v=8521385e" loading="lazy" width="2280" height="1341" alt="Two horizontal bar panels on one axis from 0 to 16 kg CO2e. Left, a kilogram of hard cheese from France to New York under eight published milk-to-meat allocation bases: 10.0 kg at 63% by system expansion rising to 15.4 kg at 100% with no allocation, the model's default of 13.2 kg at the 85% physical split highlighted; spread times 1.54, contested stage 93% of the total. Right, a pair of leather shoes from Italy to New York under four hide shares: 3.7 kg at 2.2% and 2.7% economic, 4.2 kg at 5.9% physical, 4.4 kg at 6.9%; spread times 1.17, contested stage 9% of the total.">
+<p class="small">Two panels, one axis, one definition. Spread is the highest
+total divided by the lowest across the published bases shown: cheese
+&times;1.54, shoes &times;1.17. Every bar is one run of the calculator's own
+engine with a single number changed on the contested edge. Drawn by
+<code>climate-cost/build_allocation_figure.py</code> from
+<code>lca.py</code>, with each factor written beside the publication it comes
+from. This figure replaced an earlier animation that claimed the shoe "nearly
+tripled" under mass allocation; that number scaled the whole shoe by the ratio
+of two allocation factors, as if all of it were hide, and had no generator in
+the repository.</p>
 
 <p>The two tomatoes are the point of the whole exercise. Same plant, same
 distance, five times the emissions, and the entire difference is whether the
 greenhouse was heated. Food miles are the thing people reach for and they are
 usually the wrong lever: a banana crosses eight thousand kilometres by sea and
 still comes in at under a kilogram, because sea freight costs almost nothing per
-tonne-kilometre<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>. Switch that banana to air and it goes up more than tenfold.
+tonne-kilometre<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>. Switch that banana to air and it goes up more than tenfold.
 Distance matters enormously when it goes by air and barely at all when it does
 not.</p>
 
@@ -127,9 +146,10 @@ A dairy cow also becomes beef. A coffee mill also sells pulp. Charging the whole
 burden to the one output you happen to care about is a choice, and in almost
 every published footprint it is an invisible one.</p>
 
-<p>Two careful studies of the same cheese can differ twofold without either
-being wrong, because one split the cow's methane between milk and meat by
-economic value and the other by protein mass. The <b>allocation<sup class="cite" id="cr3"><a href="#ref3">3</a></sup></b> factor is a
+<p>Two careful studies of the same cheese can differ by half again without
+either being wrong, because one credited the cow's meat by system expansion and
+the other charged the milk with the whole herd; the published bases run from
+63% to 100% of the cow. The <b>allocation</b> factor is a
 judgement, it changes the answer, and it should be visible. Here it sits on
 every edge, and it compounds down the chain, so a process four levels deep may
 contribute only a third of what it emits.</p>
@@ -157,9 +177,9 @@ assumption can be argued with rather than inherited.</p>
 
 <h2>How it is checked</h2>
 
-<p>Every total is compared against the ranges in the published literature<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> rather
+<p>Every total is compared against the ranges in the published literature<sup class="cite" id="cr8"><a href="#ref8">8</a></sup> rather
 than against a single figure, because these are distributions across thousands
-of farms and a point estimate would be false precision. All nine items land
+of farms and a point estimate would be false precision. All twenty items land
 inside their bands. The tree is checked to sum at every node, allocation is
 checked to compound correctly down each chain, and the levers are checked to
 move the answer in the direction physics says they should.</p>
@@ -172,13 +192,13 @@ when you change the destination and something moves that has no business moving.
 There is now a test that walks every production stage and fails if any of them
 draws power from the wrong grid.</p>
 
+
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
-<ol class="refs"><li id="ref1"><span class="src">IPCC, <i>2019 Refinement to the 2006 Guidelines for National Greenhouse Gas Inventories</i>, Volume 4 Chapter 11 - direct and indirect nitrous oxide from managed soils.</span><span class="what">The emission factor for nitrogen applied to soils.</span></li><li id="ref2"><span class="src">IPCC, <i>Sixth Assessment Report</i>, Working Group I Chapter 7, Table 7.15 - global warming potentials.</span><span class="what">Methane at 27 and nitrous oxide at 273 over a century.</span></li><li id="ref3"><span class="src">ISO 14044:2006, <i>Environmental management - Life cycle assessment - Requirements and guidelines</i>, clause 4.3.4.</span><span class="what">The allocation hierarchy: avoid, then physical, then economic.</span></li><li id="ref4"><span class="src">UK Department for Energy Security and Net Zero, <i>Greenhouse gas reporting: conversion factors</i>, 2023.</span><span class="what">Freight emission factors by mode.</span></li><li id="ref5"><span class="src">Poore &amp; Nemecek, <i>Science</i> 360:987, 2018 - reducing food’s environmental impacts through producers and consumers.</span><span class="what">Per-kilogram footprints and the spread within each food.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">IPCC, <i>2019 Refinement to the 2006 Guidelines for National Greenhouse Gas Inventories</i>, Volume 4 Chapter 11 - direct and indirect nitrous oxide from managed soils.</span><span class="what">The emission factor for nitrogen applied to soils.</span></li><li id="ref2"><span class="src">IPCC, <i>Sixth Assessment Report</i>, Working Group I Chapter 7, Table 7.15 - global warming potentials.</span><span class="what">Methane at 27 and nitrous oxide at 273 over a century.</span></li><li id="ref3"><span class="src">ISO 14044:2006, <i>Environmental management - Life cycle assessment - Requirements and guidelines</i>, clause 4.3.4.</span><span class="what">The allocation hierarchy: avoid, then physical, then economic.</span></li><li id="ref4"><span class="src">Flysjö, Cederberg, Henriksson &amp; Ledgard, <i>International Journal of Life Cycle Assessment</i> 16:420, 2011 - how does co-product handling affect the carbon footprint of milk? Table 1.</span><span class="what">Milk-to-meat allocation by physical (85-86%), economic (88-92%), protein (93-94%) and mass (98%) bases, and 63-76% by system expansion.</span></li><li id="ref5"><span class="src">International Dairy Federation, <i>A common carbon footprint approach for the dairy sector</i>, Bulletin 479, 2015, pp. 34-36.</span><span class="what">The physical allocation formula AF = 1 - 6.04 x BMR and the 88% milk share at a typical beef-to-milk ratio of 0.02.</span></li><li id="ref6"><span class="src">Lunesu, Correddu, Carta, Sechi, Farina &amp; Pulina, <i>Animals</i> 15:3546, 2025 - attributing farm-to-slaughter emissions to hides.</span><span class="what">Hide share of the animal: 2.7% by economic allocation (2023 mean), 5.9% by live weight (range 4.2-6.9%).</span></li><li id="ref7"><span class="src">UK Department for Energy Security and Net Zero, <i>Greenhouse gas reporting: conversion factors</i>, 2023.</span><span class="what">Freight emission factors by mode.</span></li><li id="ref8"><span class="src">Poore &amp; Nemecek, <i>Science</i> 360:987, 2018 - reducing food’s environmental impacts through producers and consumers.</span><span class="what">Per-kilogram footprints and the spread within each food.</span></li></ol>
 
 <footer>Andrew Silvestri &middot; energy systems modelling &middot;
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
 <script>
 (function () {
@@ -193,34 +213,6 @@ draws power from the wrong grid.</p>
   } else { b.style.display = 'none'; }
 })();
 </script>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script>
-/* this page's own 20-item table, real kg CO2e per item and its real
-   origin->destination route, in the page's own table order */
-window.MARGIN_SCENE = { kind: 'arcroute', items: [
-  { label: 'beef, Brazil to Texas',        weight: 75.49 },
-  { label: 'jeans, China to California',   weight: 14.85 },
-  { label: 'cheese, France to New York',   weight: 12.86 },
-  { label: 'trainers, Vietnam to New York',weight: 10.09 },
-  { label: 'car, petrol, DE to Texas',     weight: 23.47 },
-  { label: 'flight, short haul, FR to IT', weight: 21.40 },
-  { label: 'flight, long haul, NY to CN',  weight: 15.81 },
-  { label: 'car, electric, CN to Texas',   weight: 12.66 },
-  { label: 'bus, DE to Texas',             weight: 9.52 },
-  { label: 't-shirt, cotton, India to TX', weight: 7.09 },
-  { label: 'chicken, Brazil to Texas',     weight: 5.02 },
-  { label: 't-shirt, poly, China to TX',   weight: 4.69 },
-  { label: 'rice, India to California',    weight: 3.39 },
-  { label: 'shoes, leather, IT to NY',     weight: 3.66 },
-  { label: 'coffee, Colombia to Texas',    weight: 3.05 },
-  { label: 'tomato, heated, NL to NY',     weight: 2.99 },
-  { label: 'almonds, CA to New York',      weight: 1.74 },
-  { label: 'banana, Peru to New York',     weight: 0.89 },
-  { label: 'tomato, field, Spain to TX',   weight: 0.67 },
-  { label: 'train, France to France',      weight: 0.56 }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>

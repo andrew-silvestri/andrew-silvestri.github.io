@@ -5,10 +5,12 @@
  * the wrong container for it.
  *
  * The propagation engine is the model of record. build_atlas_figures.py holds
- * a second implementation of the same arithmetic in sparse linear algebra, and
- * test_atlas_engine.js runs both over the real payload and requires them to
- * agree. Every published figure comes from that second implementation, so if
- * the two ever drift the figures stop describing this page.
+ * a second implementation of the same arithmetic in sparse linear algebra.
+ * Every published figure comes from that second implementation, so if the
+ * two ever drift the figures stop describing this page - and nothing yet
+ * checks that they agree: this comment used to name a test_atlas_engine.js
+ * that never existed (found 2026-09-04). tests/test_atlas_interaction.js
+ * boots the app; it does not compare the engines.
  */
 (function () {
   'use strict';
@@ -441,7 +443,7 @@
         'gl_PointSize=sz*dpr*(1.0/-mv.z);gl_Position=projectionMatrix*mv;}',
       fragmentShader:
         'uniform sampler2D map;varying vec3 vc;void main(){' +
-        'vec4 t=texture2D(map,gl_PointCoord);gl_FragColor=vec4(vc,1.0)*t;}'
+        'vec4 t=texture2D(map,gl_PointCoord);gl_FragColor=vec4(vc,1.0)*t*0.4;}'
     });
     var pts = new THREE.Points(geo, mat);
     pts.visible = false;

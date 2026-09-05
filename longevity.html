@@ -5,21 +5,23 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/longevity.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-own-scene">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html" class="on">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>Longevity quotient</h1>
 <p class="dim">How long an animal lives, against how long an animal of its
 size should live.</p>
+<aside class="marginalia long" style="grid-row: span 50" aria-label="Species in the margin"><p class="lab">Species in the margin</p><ul><li><img src="assets/openmoji/1F987.svg" alt=""><b>Brandt's bat</b>11.87&times; prediction (41 years at 7 grams)</li><li><img src="assets/openmoji/1F41D.svg" alt=""><b>honey bee queen</b>1.98&times; prediction (5 years)</li><li><img src="assets/openmoji/1F99C.svg" alt=""><b>pink cockatoo</b>4.51&times; prediction (83 years)</li><li><img src="assets/openmoji/1F426.svg" alt=""><b>Laysan albatross</b>2.57&times; prediction (74 years)</li><li><img src="assets/openmoji/1F41C.svg" alt=""><b>black garden ant queen</b>28.72&times; prediction (29 years)</li><li><img src="assets/openmoji/1F577.svg" alt=""><b>Mexican redknee tarantula</b>3.55&times; prediction (30 years)</li><li><b>Labord's chameleon</b>0.13&times; prediction (one year, size predicts eight)</li><li><img src="assets/openmoji/1F418.svg" alt=""><b>African bush elephant</b>1.34&times; prediction (80 years)</li><li><img src="assets/openmoji/1F992.svg" alt=""><b>giraffe</b>0.84&times; prediction (39 years)</li><li><img src="assets/openmoji/1F400.svg" alt=""><b>naked mole-rat</b>6.35&times; prediction (31 years at 35 grams)</li><li><img src="assets/openmoji/1F422.svg" alt=""><b>Galapagos tortoise</b>3.19&times; prediction (177 years)</li><li><img src="assets/openmoji/1F40C.svg" alt=""><b>Roman snail</b>3.91&times; prediction (35 years)</li></ul></aside>
+<aside class="marginalia right long" style="grid-row: span 50"><ul><li><img src="assets/openmoji/1F427.svg" alt=""><b>African penguin</b>1.39&times; prediction (40 years)</li><li><img src="assets/openmoji/1F9AD.svg" alt=""><b>Baikal seal</b>2.12&times; prediction (56 years)</li><li><img src="assets/openmoji/1F40B.svg" alt=""><b>bowhead whale</b>1.85&times; prediction (211 years)</li><li><img src="assets/openmoji/1F988.svg" alt=""><b>Greenland shark</b>6.49&times; prediction (392 years)</li><li><img src="assets/openmoji/1F41F.svg" alt=""><b>rougheye rockfish</b>13.11&times; prediction (205 years)</li><li><img src="assets/openmoji/1FABC.svg" alt=""><b>moon jellyfish</b>0.07&times; prediction (one year)</li><li><b>cold-seep tubeworm</b>23.41&times; prediction (250 years)</li><li><img src="assets/openmoji/1F99E.svg" alt=""><b>American lobster</b>3.04&times; prediction (70 years)</li><li><img src="assets/openmoji/1F9AA.svg" alt=""><b>freshwater pearl mussel</b>15.78&times; prediction (190 years)</li><li><img src="assets/openmoji/1F41A.svg" alt=""><b>ocean quahog</b>47.48&times; prediction (a real 507-year lifespan)</li><li><img src="assets/openmoji/1F419.svg" alt=""><b>common octopus</b>0.07&times; prediction (two years)</li><li><img src="assets/openmoji/1FAB8.svg" alt=""><b>black coral</b>122.84&times; prediction (4,265 years)</li></ul></aside>
 
 <p>Body mass predicts lifespan. The 7,873 species in this model run from a
-nematode at a microgram to a blue whale at 150 tonnes, 14.5 orders of
+rotifer at 0.5 &micro;g to a blue whale at 150 tonnes, 14.5 orders of
 magnitude of body size. Across that whole range each tenfold increase in mass
 buys roughly a 1.5-fold increase in maximum lifespan. The relationship is strong
 enough to be worth dividing out. What remains is the longevity quotient:</p>
@@ -27,8 +29,8 @@ enough to be worth dividing out. What remains is the longevity quotient:</p>
 <p style="text-align:center;font-size:16px"><code>LQ = observed lifespan ÷
 lifespan predicted from body mass</code></p>
 
-<img class="fig wide" src="assets/lq_explained.png?v=6c856fa3" loading="lazy" width="2108" height="1394" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
-<p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out.</p>
+<img class="fig wide" src="assets/lq_explained.png?v=cadadeb0" loading="lazy" width="1428" height="1241" alt="Three animals of increasing mass, with the lifespan the allometry predicts beside the lifespan actually observed, and the quotient that falls out.">
+<p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out. This figure scores each animal against the fit across all animals; the rankings below and the visualiser score each against its own group, which for the human gives 5.0 rather than 4.0.</p>
 
 <p>It is built by analogy with the encephalisation quotient<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, which does the
 same thing to brain size. A quotient of one means an animal lives exactly as
@@ -39,12 +41,15 @@ long as its size predicts. The interesting animals are the ones far from one.</p
 
 
 <h3 style="margin-top:4px">The visualiser</h3>
-<p>Every species is a row with two bars, wild maximum and captive maximum, with
-a tick at the average of the two. Changing the sort animates the rows to their
-new positions, so the ranking rearranges rather than being replaced by a new
-table. Sort by quotient, lifespan, body mass or name. Switch which lifespan is
-used. Switch the baseline between a species' own group and a single fit across
-all animals. Filter to any taxon at any rank.</p>
+<p>Every species is a row with up to three bars: a wild maximum, a captive
+maximum, and a maximum whose source did not record where the animal lived,
+each drawn differently, with a tick at the average of whichever exist. Bars run
+from parity, so a species below its prediction extends left. Changing the sort
+animates the rows to their new positions, so the ranking rearranges rather than
+being replaced by a new table. Sort by quotient, lifespan, body mass or name.
+Switch which lifespan is used. Switch the baseline between a species' own group
+and a single fit across all animals. Filter to any taxon at any rank. Every view
+has an address, and every group named on this page links to its own.</p>
 <p>The second view aggregates whole taxa and compares them against each other at
 any rank from phylum down to genus, by mean quotient, median lifespan, longest
 member or species count. Click a group to drop into the species inside it.</p>
@@ -52,20 +57,22 @@ member or species count. Click a group to drop into the species inside it.</p>
 <a class="btn ghost" href="downloads/longevity-code.zip">Download code and data</a>
 </div>
 
-<img class="fig wide" src="assets/lq_allometry.png?v=a7a91e3c" loading="lazy" width="1425" height="990"
+<img class="fig wide" src="assets/lq_allometry.png?v=1512fc77" loading="lazy" width="1428" height="984"
  alt="Maximum lifespan against adult body mass on logarithmic axes, coloured by
  class, with the fitted global relationship and labelled outliers">
 <p class="small">Lifespan against body mass. The dashed line is the fit across
 every animal in the table. Distance above or below that line, measured within a
 species' own class, is the quotient.</p>
 
-<img class="fig wide" src="assets/lq_ranked.png?v=289af425" loading="lazy" width="1350" height="1320"
+<img class="fig wide" src="assets/lq_ranked.png?v=9d2b9ce6" loading="lazy" width="1428" height="1620"
  alt="Species ranked by longevity quotient, from the twelve furthest below
  prediction to the eighteen furthest above">
-<p class="small">The twelve species furthest below their predicted lifespan and
-the eighteen furthest above, coloured by pool. The dashed line is parity, where
-an animal lives exactly as long as its mass predicts. Colonial animals are
-excluded, because a colony is not an individual.</p>
+<p class="small">The twelve grade-A or B species furthest below their
+predicted lifespan and the eighteen furthest above, coloured by pool. The dashed
+line is parity, where an animal lives exactly as long as its mass predicts.
+Colonial animals are excluded, because a colony is not an individual; so are
+grade-C records, which is where the outlier rule below puts a compilation
+figure the fit cannot account for.</p>
 
 <h2>Comparing whole groups</h2>
 
@@ -75,39 +82,13 @@ faint line spanning its lowest to its highest. The geometric mean is the correct
 average for ratios: a species at four times prediction and one at a quarter of
 it should average to one, not to 2.1.</p>
 
-<p>Of the 112 orders holding four or more species, the dories of
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Zeiformes&amp;grade=all" target="_blank" rel="noopener">Zeiformes</a>
-top the list at 3.95 and the egg-laying
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Monotremata&amp;grade=all" target="_blank" rel="noopener">Monotremata</a>
-follow at 2.73 &mdash; but
-both rest on a handful of species, seven and four respectively, and a
-geometric mean over four animals is a claim about four animals. The two large
-groups near the top are the ones worth the weight: the bats of
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera&amp;grade=all" target="_blank" rel="noopener">Chiroptera</a><sup class="cite" id="cr2"><a href="#ref2">2</a></sup> at 2.68 across
-267 species, and the
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Primates&amp;grade=all" target="_blank" rel="noopener">primates</a>
-at 2.12 across 350. At the bottom sit the
-tinamous at 0.32, the needlefishes at 0.39 and the jacks at 0.43; the ground
-birds of
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Galliformes&amp;grade=all" target="_blank" rel="noopener">Galliformes</a>
-come in at 0.51 and the shrews, moles and hedgehogs of
-<a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Eulipotyphla&amp;grade=all" target="_blank" rel="noopener">Eulipotyphla</a>
-at 0.58. At family rank the bats of
-<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Vespertilionidae&amp;grade=all" target="_blank" rel="noopener">Vespertilionidae</a>
-reach 3.43
-over 126 species, and the horseshoe bats of
-<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Rhinolophidae&amp;grade=all" target="_blank" rel="noopener">Rhinolophidae</a>
-3.18, while the
-rockfishes of
-<a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Sebastidae&amp;grade=all" target="_blank" rel="noopener">Sebastidae</a><sup class="cite" id="cr3"><a href="#ref3">3</a></sup>
-sit at 2.76. Flight, burrowing, venom, armour and simply being difficult to
-swallow all register as raised quotients. Being a ground bird or a small
-terrestrial insectivore registers as the reverse.</p>
+<p>Of the 81 orders holding four or more grade-A or B species, the egg-laying <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Monotremata" target="_blank" rel="noopener">Monotremata</a> top the list at 2.66 and the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> follow at 2.53 &mdash; but one rests on a handful of species, 4, and a geometric mean over four animals is a claim about four animals. The large groups near the top are the ones worth the weight: the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> at 2.53 across 261 species and the <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Primates" target="_blank" rel="noopener">Primates</a> at 2.06 across 346 species. At the bottom sit the tinamous of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Tinamiformes" target="_blank" rel="noopener">Tinamiformes</a> at 0.32, the pangolins of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Pholidota" target="_blank" rel="noopener">Pholidota</a> at 0.40, the tenrecs and golden moles of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Afrosoricida" target="_blank" rel="noopener">Afrosoricida</a> at 0.47; the ground birds of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Galliformes" target="_blank" rel="noopener">Galliformes</a> come in at 0.52 and the shrews, moles and hedgehogs of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Eulipotyphla" target="_blank" rel="noopener">Eulipotyphla</a> at 0.66. At family rank, among families with ten or more species, the evening bats of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Vespertilionidae" target="_blank" rel="noopener">Vespertilionidae</a> reach 3.25 over 122 species, the scorpionfishes of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Scorpaenidae" target="_blank" rel="noopener">Scorpaenidae</a> 3.16, the gibbons of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Hylobatidae" target="_blank" rel="noopener">Hylobatidae</a> 3.01. Flight, burrowing, venom, armour and simply being difficult to swallow all register as raised quotients. Being a ground bird or a small terrestrial insectivore registers as the reverse.</p>
 
-<img class="fig wide" src="assets/lq_orders.png?v=6794fffe" loading="lazy" width="1950" height="1638"
+<img class="fig wide" src="assets/lq_orders.png?v=54adb93a" loading="lazy" width="1428" height="1617"
  alt="Bar chart of taxonomic orders ranked by geometric mean longevity quotient">
-<p class="small">All 112 orders holding four or more species, ranked by
-geometric mean quotient and read left column first. The dashed line is parity
+<p class="small">All 81 orders holding four or more species, ranked by
+geometric mean quotient over their grade-A and B species and read left column
+first. The dashed line is parity
 with prediction: everything in the right-hand column falls short of what its
 members&rsquo; body masses predict.</p>
 
@@ -123,12 +104,7 @@ the data actually shows.</p>
 
 <h2>What comes out</h2>
 
-<p>The highest quotients against their own group belong to an ocean quahog<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> clam
-at forty-five times its predicted lifespan, a garden ant queen at twenty-seven, a
-cold-seep tubeworm at twenty-two, the freshwater pearl mussel at fifteen, and a
-leafcutter ant queen and the red sea urchin at ten. The lowest belong to the
-silkmoth, a wasp worker, Labord's chameleon, and the squid and octopus at around
-one-twentieth of prediction.</p>
+<p>The highest quotients against their own group, among the grade-A and B records, belong to an ocean quahog at 47&times;, a black garden ant queen at 29&times;, a cold-seep tubeworm at 23&times;, a freshwater pearl mussel at 16&times;, an olm at 15&times; and a rougheye rockfish at 13&times; its predicted lifespan. The lowest belong to a silkmoth at 0.04&times;, a common wasp at 0.05&times;, a common octopus at 0.07&times;, a longfin inshore squid at 0.07&times; and a toolache wallaby at 0.07&times;.</p>
 
 <p>Three of those are worth a closer look. The honey bee worker and the honey
 bee queen carry the same genome and sit an order of magnitude apart in lifespan,
@@ -141,14 +117,8 @@ shortest life of any four-limbed vertebrate, in a body whose size predicts eight
 years. None of this is visible in a table of lifespans sorted by years. All of
 it appears the moment body mass is divided out.</p>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/longevity_quotient_poster.png?v=8e027b9b"
- data-src="assets/longevity_quotient.mp4?v=aff98c8e"></video>
-<p class="small">The quotient as distance from the global fit: the ocean
-quahog 45&times; above it (a real 507-year lifespan), the giant Pacific
-octopus about a twentieth below (dead in five real years).</p>
 
-<img class="fig wide" src="assets/lq_wild_captive.png?v=74cca569" loading="lazy" width="1350" height="1170"
+<img class="fig wide" src="assets/lq_wild_captive.png?v=504de6fe" loading="lazy" width="1428" height="984"
  alt="Dumbbell chart comparing wild and captive maximum lifespan by species">
 <p class="small">Wild against captive, sorted by the size of the gap. Where
 protection helps most, and where it does not help at all.</p>
@@ -157,7 +127,7 @@ protection helps most, and where it does not help at all.</p>
 
 <p>An ordinary least squares regression of log lifespan on log body mass, run
 globally and within each group. Fitting inside a group matters. Birds come out
-about 1.8 times longer-lived than mammals of equal mass, which matches what the
+about 2.2 times longer-lived than mammals of equal mass, which matches what the
 comparative literature reports, so a single fit across every animal charges
 every bird a bonus it did not earn and every mammal a penalty it does not
 deserve. Fish classes are pooled together, and the many small invertebrate
@@ -166,16 +136,16 @@ fit.</p>
 
 <table>
 <tr><th>Baseline</th><th>Species in fit</th><th>Slope b</th><th>r&sup2;</th><th>Predicted at 1 kg</th></tr>
-<tr><td>All animals</td><td>6,398</td><td>0.191</td><td>0.30</td><td>13.8 yr</td></tr>
-<tr><td>Mammals</td><td>2,583</td><td>0.222</td><td>0.37</td><td>9.7 yr</td></tr>
-<tr><td>Birds</td><td>1,883</td><td>0.215</td><td>0.41</td><td>22.3 yr</td></tr>
-<tr><td>Reptiles</td><td>916</td><td>0.214</td><td>0.33</td><td>16.9 yr</td></tr>
-<tr><td>Fish</td><td>876</td><td>0.241</td><td>0.54</td><td>12.7 yr</td></tr>
+<tr><td>All animals</td><td>6,341</td><td>0.188</td><td>0.32</td><td>14.0 yr</td></tr>
+<tr><td>Mammals</td><td>2,552</td><td>0.215</td><td>0.40</td><td>10.1 yr</td></tr>
+<tr><td>Birds</td><td>1,873</td><td>0.216</td><td>0.44</td><td>22.6 yr</td></tr>
+<tr><td>Reptiles</td><td>908</td><td>0.211</td><td>0.36</td><td>17.3 yr</td></tr>
+<tr><td>Fish</td><td>868</td><td>0.240</td><td>0.56</td><td>12.6 yr</td></tr>
 <tr><td>Amphibians</td><td colspan="4" class="dim">rejected, falls back to the global baseline</td></tr>
 <tr><td>Invertebrates</td><td>57</td><td>0.256</td><td>0.41</td><td>23.0 yr</td></tr>
 </table>
 
-<p>The amphibian regression returns an r² of 0.12 across twenty-four species,
+<p>The amphibian regression returns an r² of 0.04 across 83 species,
 which is not a relationship. Any group fit with a non-positive slope or an r²
 below 0.15 is rejected, and that group falls back to the global baseline. The
 model reports which groups were rejected and why. Amphibians are currently the
@@ -185,13 +155,27 @@ only one.</p>
 
 <p>7,873 species spanning 10 phyla,
 32 classes, 199 orders, 764 families and
-2921 genera. Every record carries full taxonomy, an adult body mass, at
-least one maximum lifespan, a quality grade and its provenance.
-6,387 have a wild maximum, 1,795 a captive maximum, and
-309 have both. That last comparison is the reason the merge keeps
-the hand-checked table at the top of the precedence order rather than letting a
-bulk source overwrite it. Most bulk sources report a single figure per species
-without saying which kind it is.</p>
+2,921 genera. Every record carries full taxonomy, an adult body
+mass, at least one maximum lifespan, a quality grade and its provenance.
+2,905 have a maximum their source labelled wild, 1,795 one it
+labelled captive, and 309 have both &mdash; the comparison this
+project was built around, and the reason the merge keeps the hand-checked table
+at the top of the precedence order rather than letting a bulk source overwrite
+it. The largest set, 3,482 species, carries a maximum whose source did
+not say where the animal lived: the Amniote and AmphiBIO compilations report
+one figure per species with no origin, FishBase population maxima do the same,
+and 90 AnAge rows list the
+specimen origin as unknown. Until 4 September 2026 every one of those was
+labelled wild, here and in the visualiser. A captive maximum runs longer than a
+wild one, so the mislabelling flattered exactly the quotient this page is
+about. They are now carried, drawn and counted as what they are: a maximum of
+unrecorded origin.</p>
+
+<p>Disputed records lose to verified ones: the 226-year koi and the 120-year
+cockatoo are both out. Grade C records appear in the table and in the
+visualiser, with their grade shown, but are held out of every regression, so a
+weak record can be looked at without being allowed to move the baseline that
+judges it.</p>
 
 <h2>Where the data comes from</h2>
 
@@ -204,14 +188,14 @@ record against a careless one produces a number that belongs to neither.</p>
 <tr><th>Source</th><th>Records with a lifespan</th><th>Used as the record</th>
  <th>What it is</th></tr>
 <tr><td>Hand-checked seed table</td><td>417</td><td>417</td><td>Records verified one at a time, each with its own citation.</td></tr>
-<tr><td>AnAge build 15<sup class="cite" id="cr5"><a href="#ref5">5</a></sup></td><td>4,141</td><td>3,441</td><td>The curated standard. Carries its own quality grade and a wild versus captive distinction, both of which are honoured rather than overwritten.</td></tr>
-<tr><td>Amniote life-history database<sup class="cite" id="cr6"><a href="#ref6">6</a></sup></td><td>5,500</td><td>2,649</td><td>Birds, mammals and reptiles. A peer-reviewed compilation reporting the median where its own sources disagreed.</td></tr>
-<tr><td>PanTHERIA<sup class="cite" id="cr7"><a href="#ref7">7</a></sup></td><td>1,013</td><td>0</td><td>Mammals. Maximum longevity in months, converted.</td></tr>
-<tr><td>AmphiBIO<sup class="cite" id="cr8"><a href="#ref8">8</a></sup></td><td>359</td><td>116</td><td>Amphibians, which are otherwise almost absent.</td></tr>
-<tr><td>FishBase v25.04<sup class="cite" id="cr9"><a href="#ref9">9</a></sup></td><td>2,088</td><td>1,250</td><td>Fish. Maximum age taken as the largest of three fields that disagree: the curated longevity, the per-population maximum, and the tmax used to fit growth curves. Graded C throughout.</td></tr>
+<tr><td>AnAge build 15</td><td>4,141</td><td>3,441</td><td>The curated standard. Carries its own quality grade and a wild versus captive distinction, both of which are honoured rather than overwritten.</td></tr>
+<tr><td>Amniote life-history database</td><td>5,500</td><td>2,649</td><td>Birds, mammals and reptiles. A peer-reviewed compilation reporting the median where its own sources disagreed. One maximum per species, with no record of whether the animal was wild or captive; carried here as origin not recorded.</td></tr>
+<tr><td>PanTHERIA</td><td>1,013</td><td>0</td><td>Mammals. Maximum longevity in months, converted.</td></tr>
+<tr><td>AmphiBIO</td><td>359</td><td>116</td><td>Amphibians, which are otherwise almost absent. No origin field; carried as origin not recorded.</td></tr>
+<tr><td>FishBase v25.04</td><td>2,088</td><td>1,250</td><td>Fish. Maximum age taken as the largest of three fields that disagree: the curated wild longevity, the per-population maximum, and the tmax used to fit growth curves. Only the first is kept as a wild maximum; the others are carried as origin not recorded. Graded C throughout.</td></tr>
 </table>
 
-<p>Body-mass databases are a separate matter and they are much larger. AVONET<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>
+<p>Body-mass databases are a separate matter and they are much larger. AVONET
 alone has measured masses for 14,673 species, mostly
 birds. None of them create a record: a species with a mass and no lifespan is
 not an observation of anything this model can use. They only rescue a species
@@ -220,55 +204,70 @@ that has been aged and never weighed, which they did
 
 <p>8,583 distinct species carried a lifespan
 after the merge. 710 of them were dropped for
-having no body mass in any source, mostly reptiles and amphibians,
+having no body mass in any source &mdash; mostly reptiles and amphibians,
 which are routinely measured snout to vent and never put on a scale.
 641 fish were kept with a mass computed
-from maximum length through FishBase's own length&ndash;weight relationship.
-Those masses are modelled rather than measured, and are marked and graded
-accordingly. What survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474.</p>
+from maximum length through FishBase's own length&ndash;weight relationship;
+those are modelled, not measured, and are marked and graded accordingly. What
+survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474 as they
+arrive from their sources. The outlier rule described under the arithmetic
+then demotes 57 grade-B records to C, so the model runs on
+A 149 &middot; B 6,192 &middot; C 1,528 (the four colonies are counted separately).</p>
 
-<p class="small">This is the ceiling. About 2.24 million species have been
-described. Fewer than nine thousand have ever been both aged and weighed,
-because a maximum lifespan requires somebody to have watched an animal until it
-died. The limit here is not access to data. The observations were never made.
-Wikidata, an aggregate of individual species pages rather than a compiled table,
-holds 1,147 taxa with a recorded maximum lifespan and 259 with a lifespan and a
-mass together, less than a twentieth of what the compiled databases give.
-Scraping species pages one at a time would not do better.</p>
+<p class="small">This is the ceiling, and it is worth being clear about why.
+About 2.24 million species have been described. Fewer than nine thousand have
+ever been both aged and weighed, because a maximum lifespan requires somebody
+to have watched an animal until it died. The limit here is not access to data.
+It is that the observations were never made. Wikidata, which is the aggregate
+of individual species pages rather than a compiled table, holds 1,147 taxa with
+a recorded maximum lifespan and 259 with a lifespan and a mass together
+&mdash; less than a twentieth of what the compiled databases give, which is the
+answer to whether scraping species pages one at a time would do better.</p>
 
 <h2>The arithmetic, written out</h2>
 
-<p>One weighted ordinary least squares regression per baseline, of log&#8321;&#8320;
-maximum lifespan in years on log&#8321;&#8320; adult body mass in grams. Weights come
-from the data grade, so a record verified against a named individual counts for
-five times what a compilation estimate counts for. The sample spans
-14.5 orders of magnitude of body mass, from 0 g to
-150,000,000 g.</p>
+<p>One ordinary least squares regression per baseline, unweighted, of
+log&#8321;&#8320; maximum lifespan in years on log&#8321;&#8320; adult body mass in grams,
+over the grade-A and grade-B records. Grade C is held out of every fit and
+scored against the result. Nothing is weighted: an earlier version of this
+page described a grade-weighted fit with an effective sample size, which the
+model does not run. The simulation in <code>test_fit_strategy.py</code> is why
+&mdash; a thin record is biased short, not merely noisy, and down-weighting a
+bias still lets it through where dropping it does not. The count beside each
+baseline above is the number of records in that fit. The sample spans
+14.5 orders of magnitude of body mass, from 0.5 &micro;g to
+150 tonnes.</p>
 
-<pre><code>All animals:    log10 L = +0.565 +0.191 log10 M
-Mammals:        log10 L = +0.320 +0.222 log10 M
-Birds:          log10 L = +0.704 +0.215 log10 M
-Reptiles:       log10 L = +0.585 +0.214 log10 M
-Fish:           log10 L = +0.382 +0.241 log10 M
+<pre><code>All animals:    log10 L = +0.583 +0.188 log10 M
+Mammals:        log10 L = +0.357 +0.215 log10 M
+Birds:          log10 L = +0.706 +0.216 log10 M
+Reptiles:       log10 L = +0.605 +0.211 log10 M
+Fish:           log10 L = +0.379 +0.240 log10 M
 Invertebrates:  log10 L = +0.593 +0.256 log10 M
 
 predicted lifespan  =  10 ^ (a + b * log10(mass in grams))
 LQ                  =  observed maximum lifespan / predicted</code></pre>
 
-<p>The sample size quoted for each fit is Kish's effective sample size,
-(&Sigma;w)&sup2; / &Sigma;w&sup2;, not the raw count. A thousand records at a fifth
-weight do not carry the information of a thousand records at full weight, and
-quoting the raw number would overstate the fit's authority by about a
-factor of two.</p>
+<p>One rule runs before the final fit. A preliminary fit per group flags any
+grade-B record more than 3 residual standard deviations from it,
+in either direction, and demotes it to grade C: 57 records here
+(31 mammals, 10 birds, 8 fish, 8 reptiles). The Amniote compilation grades as B by construction and carried
+twenty-eight mammals, birds and reptiles with maximum lifespans of one to three
+months at body masses up to five kilograms &mdash; a 2.2&nbsp;kg hare at one
+month &mdash; which are unit or field errors, not observations, and which sat
+at the bottom of every ranking on this page. The rule is symmetric so that it
+cannot be accused of only removing what hurts, it never touches a grade-A
+record (each of those was checked by hand against a citation), and it deletes
+nothing: a demoted record keeps its row, its note says why, and the visualiser
+shows it under <b>Include C</b>.</p>
 
-<p>The slope is the interesting parameter. At 0.191 it says a tenfold
-increase in mass buys a 1.55-fold increase in maximum lifespan.
-Lifespan goes roughly as the 5th root of mass. Growing is
-therefore a poor way to escape the prediction: an animal a thousand times
+<p>The slope is the interesting parameter. At 0.188 it says a tenfold
+increase in mass buys a 1.54-fold increase in maximum lifespan
+&mdash; lifespan goes roughly as the 5th root of mass. This is
+why the prediction is so hard to escape by growing: an animal a thousand times
 heavier than another is predicted to live only about
-3.8 times longer.</p>
+3.7 times longer.</p>
 
-<hr>
 <h2>An honourable mention</h2>
 
 <p>Steven Austad&rsquo;s <i>Methuselah&rsquo;s Zoo: What Nature Can Teach Us
@@ -287,11 +286,8 @@ It is worth reading whether or not you care about the arithmetic.</p>
 <p class="small">Animal icons in the margin scene: <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a>, licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, recoloured to this page&rsquo;s own palette. The chameleon and the tubeworm have no emoji and are drawn by hand to match. Every quotient beside a creature is that species&rsquo; own figure from the table above.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script src="assets/biome-scene.js?v=db08d31a"></script>
 </body></html>

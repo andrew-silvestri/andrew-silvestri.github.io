@@ -6,18 +6,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/storage.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-curve-storage">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>Battery revenue simulator</h1>
 <p class="dim">A linear program over a year of hourly prices<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, and what it says
 about how long a battery should be.</p>
+<aside class="marginalia" style="grid-row: span 28" aria-label="On this page"><p class="lab">On this page</p><ul><li>2h · $98.1/kW-yr</li><li>4h · $107.1/kW-yr</li><li>8h · $111.0/kW-yr</li><li>2h · 1,361&nbsp;cycles/yr</li><li>4h · 786&nbsp;cycles/yr</li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 28"><ul><li>8h · 424&nbsp;cycles/yr</li><li>2h · 1.85&nbsp;h at rated output</li><li>4h · 3.71&nbsp;h at rated output</li><li>8h · 7.42&nbsp;h at rated output</li><li>4h capex ref · $242/kW-yr</li></ul></aside>
 
 <p>A grid battery makes its living the way a hibernating ground squirrel does. It
 takes in more than it needs when the taking is good, sits on the surplus, and
@@ -45,34 +47,28 @@ and a longer battery cannot manufacture more of them.</p>
 argument even where it does not matter for revenue. The eight-hour case turns
 over about a third as many equivalent cycles as the two-hour case.</p>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/storage_duration_poster.png?v=baab3b80"
- data-src="assets/storage_duration.mp4?v=de7cbd29"></video>
-<p class="small">The bend, traced through the table's own three points,
-against a dashed line showing what linear growth from the first two would
-have looked like.</p>
 
-<img class="fig wide" src="assets/storage_fig3_duration_value.png?v=9316e02c" loading="lazy" width="1725" height="900" alt="Arbitrage revenue for two, four and eight hours of duration, with the gain from each step marked: nine dollars per kilowatt-year going from two hours to four, then under four dollars going from four to eight. A second panel puts the best case against an annualised capital cost.">
+<img class="fig wide" src="assets/storage_fig3_duration_value.png?v=b6a6d990" loading="lazy" width="1428" height="892" alt="Arbitrage revenue for two, four and eight hours of duration, with the gain from each step marked: nine dollars per kilowatt-year going from two hours to four, then under four dollars going from four to eight. A second panel puts the best case against an annualised capital cost.">
 <p class="small">The same three durations, read as increments: the second four
 hours add well under half what the first two did. The panel on the right sets
 the best of them against an annualised capital cost<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> &mdash; a
 scale to read the revenue against, not a verdict, since arbitrage is only one
 of the things a battery is paid for.</p>
 
-<img class="fig wide" src="assets/storage_fig2_dispatch_week.png?v=fc10c06b" loading="lazy" width="1650" height="975" alt="A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.">
+<img class="fig wide" src="assets/storage_fig2_dispatch_week.png?v=b0b2a6b2" loading="lazy" width="1428" height="984" alt="A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.">
 <p class="small">A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.</p>
 
-<img class="fig wide" src="assets/storage_fig5_monthly.png?v=af909a27" loading="lazy" width="1275" height="750" alt="Arbitrage revenue by month for a 1 MW four-hour battery, highest in July and lowest in January.">
+<img class="fig wide" src="assets/storage_fig5_monthly.png?v=9a9e78ad" loading="lazy" width="1428" height="803" alt="Arbitrage revenue by month for a 1 MW four-hour battery, highest in July and lowest in January.">
 <p class="small">The same year, by month. Revenue is not spread evenly: July
 earns 2.4 times what January does, and June through September together take 43
 per cent of the year from a third of its days. The battery is paid for the weeks
 when the spread is wide, which is the same reason the duration curve above bends
 where it does.</p>
 
-<img class="fig wide" src="assets/storage_fig4_sensitivity.png?v=55cee7e7" loading="lazy" width="1275" height="825" alt="Sensitivity to round-trip efficiency and degradation cost.">
+<img class="fig wide" src="assets/storage_fig4_sensitivity.png?v=65f205bb" loading="lazy" width="1428" height="984" alt="Sensitivity to round-trip efficiency and degradation cost.">
 <p class="small">Sensitivity to round-trip efficiency and degradation cost.</p>
 
-<img class="fig wide" src="assets/storage_fig1_prices.png?v=e64f3c8b" loading="lazy" width="1950" height="720" alt="The price series: duration curve and average daily shape.">
+<img class="fig wide" src="assets/storage_fig1_prices.png?v=e22035cf" loading="lazy" width="1428" height="649" alt="The price series: duration curve and average daily shape.">
 <p class="small">The price series: duration curve and average daily shape.</p>
 
 <h2>Method</h2>
@@ -113,28 +109,8 @@ data. Each model runs from its own <code>README.md</code>.</p>
 <ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, <i>Energy Economics</i>, 2009 - estimating the value of electricity storage under perfect foresight.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref3"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Degradation cost per megawatt hour of throughput, and round-trip efficiency.</span></li><li id="ref4"><span class="src">Denholm <i>et al.</i>, <i>The Four-Hour Challenge</i>, National Renewable Energy Laboratory, 2019.</span><span class="what">Why duration value flattens past four hours.</span></li><li id="ref5"><span class="src">NLR (formerly the National Renewable Energy Laboratory), <i>Annual Technology Baseline</i> 2024, utility-scale battery storage, 4-hour duration, Moderate scenario, Market case.</span><span class="what">The capital cost the right-hand panel compares against: $1,938/kW capex (overnight cost, grid connection and construction finance) plus $44/kW-yr fixed operations, annualised over the dataset's own twenty-year capital recovery period at an eight per cent real discount rate, for about $242/kW-yr. A representative figure for scale, not a quote for any particular project.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script>
-/* this page's own duration-value table: real $/kW-yr revenue, real
-   equivalent cycles/yr and real hours-at-rated-output per duration, plus
-   the annualised capex reference from ref5's own footnote figure. */
-window.MARGIN_SCENE = { kind: 'bars', items: [
-  { label: '2h · $98.1/kW-yr',  n: 98.1 },
-  { label: '4h · $107.1/kW-yr', n: 107.1 },
-  { label: '8h · $111.0/kW-yr', n: 111.0 },
-  { label: '2h · 1,361 cycles/yr', n: 1361 },
-  { label: '4h · 786 cycles/yr',   n: 786 },
-  { label: '8h · 424 cycles/yr',   n: 424 },
-  { label: '2h · 1.85 h at rated output', n: 1.85 },
-  { label: '4h · 3.71 h at rated output', n: 3.71 },
-  { label: '8h · 7.42 h at rated output', n: 7.42 },
-  { label: '4h capex ref · $242/kW-yr',   n: 242 }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>

@@ -2,26 +2,27 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Andrew Silvestri — energy systems</title>
-<meta name="description" content="Energy systems modelling: techno-economics, optimisation, and a calibrated model of the world energy system.">
+<meta name="description" content="Energy systems modelling: techno-economics, optimisation, and a model of the world energy system.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
 </head><body>
 <nav class="top"><a href="index.html" class="on">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
+<header class="masthead">
+<h1>Andrew Silvestri</h1>
+<p class="dim">Energy systems modelling: techno-economics, optimisation, and a
+model of the world energy system.</p>
+</header>
+<aside class="marginalia" style="grid-row: span 18" aria-label="From the projects"><p class="lab">From the projects</p><ul><li><a href="heat.html"><b>gas</b><span class="v">5.13&nbsp;dollars/MMBtu</span></a></li><li><a href="heat.html"><b>break-even</b><span class="v">1.53&nbsp;cents/kWh</span></a></li><li><a href="heat.html"><b>today</b><span class="v">6.5&nbsp;cents to $20.00</span></a></li><li><a href="storage.html"><b>4h battery</b><span class="v">$107.1/kW-yr</span></a></li><li><a href="climate-cost.html">beef, Brazil to Texas</a></li><li><a href="climate-cost.html">jeans, China to California</a></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 18"><ul><li><a href="climate-cost.html">cheese, France to New York</a></li><li><a href="longevity.html">ocean quahog, 47.48x</a></li><li><a href="longevity.html">black coral, 122.84x</a></li><li><a href="longevity.html">7,873&nbsp;species</a></li><li><a href="skyline.html">27&nbsp;cities</a></li></ul></aside>
 <div id="hero" aria-hidden="true"></div>
-<ul class="sys-log" aria-hidden="true">
-<li>86,622 nodes / 197,068 weighted links</li>
-<li>1,144 negative links (relief, not stress)</li>
-<li>34,936 plant units across 167 countries</li>
-<li>60 prepared scenarios<span class="sys-cursor" hidden>&#9608;</span></li>
-</ul>
 <div class="card">
 <div class="tag">Main project</div>
 <h3 style="margin-top:4px">A model of the world energy system</h3>
@@ -33,15 +34,15 @@ try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(p
 </div>
 
 <div class="mosaic" aria-hidden="true">
-<a href="library.html" tabindex="-1"><img src="assets/07_arrival_order.png?v=eec92298" loading="lazy" width="1470" height="810" alt=""></a>
-<a href="library.html" tabindex="-1"><img src="assets/02_demand_distribution.png?v=44a64d50" loading="lazy" width="1425" height="780" alt=""></a>
-<a href="library.html" tabindex="-1"><img src="assets/09_size_vs_lowcarbon.png?v=452c5f2d" loading="lazy" width="1425" height="840" alt=""></a>
-<a href="library.html" tabindex="-1"><img src="assets/04_inertia_by_type.png?v=f939f6a0" loading="lazy" width="1425" height="810" alt=""></a>
-<a href="library.html" tabindex="-1"><img src="assets/05_link_structure.png?v=5562a660" loading="lazy" width="1425" height="810" alt=""></a>
-<a href="library.html" tabindex="-1"><img src="assets/06_scenario_reach.png?v=ce0ffe35" loading="lazy" width="1470" height="810" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/07_arrival_order-thumb.png?v=e3a2e4d5" loading="lazy" width="542" height="299" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/02_demand_distribution-thumb.png?v=91851050" loading="lazy" width="542" height="297" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/09_size_vs_lowcarbon-thumb.png?v=4f581b4a" loading="lazy" width="542" height="319" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/04_inertia_by_type-thumb.png?v=fc8cf953" loading="lazy" width="542" height="308" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/05_link_structure-thumb.png?v=c00f1352" loading="lazy" width="542" height="308" alt=""></a>
+<a href="library.html" tabindex="-1"><img src="assets/06_scenario_reach-thumb.png?v=b43252d8" loading="lazy" width="542" height="299" alt=""></a>
 </div>
 
-<img class="fig wide" src="assets/energy_model_chart.png?v=79723cae"
+<img class="fig wide" src="assets/energy_model_chart.png?v=28e8f0ce"
  alt="Overview chart of the world energy model">
 <p class="small">The model at a glance: what it contains, how it is weighted,
 and how it behaves. <a href="library.html">All figures</a>.</p>
@@ -54,7 +55,7 @@ and how it behaves. <a href="library.html">All figures</a>.</p>
 <div class="tag">Techno-economics</div>
 <h3 style="margin-top:4px"><a href="heat.html">Industrial heat electrification
 break-even</a></h3>
-<img src="assets/heat_fig1_breakeven_price.png?v=16164e8f" loading="lazy" width="1350" height="810" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
+<img src="assets/heat_fig1_breakeven_price-thumb.png?v=9c9d9981" loading="lazy" width="542" height="305" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p>Cost of heat from an electric boiler against a gas boiler in Texas. The gap
 between the fuel prices decides the outcome. Break-even electricity is about
 1.5 cents per kilowatt hour at $3.50 gas, and capital cost moves it very
@@ -64,7 +65,7 @@ little.</p>
 <div class="tag">Optimisation</div>
 <h3 style="margin-top:4px"><a href="storage.html">Battery revenue
 simulator</a></h3>
-<img src="assets/storage_fig3_duration_value.png?v=9316e02c" loading="lazy" width="1725" height="900" alt="Revenue against storage duration. The curve bends at about four hours.">
+<img src="assets/storage_fig3_duration_value-thumb.png?v=25101b65" loading="lazy" width="542" height="339" alt="Revenue against storage duration. The curve bends at about four hours.">
 <p>Linear program over 8,760 hours. Value flattens above four hours of storage
 duration, which is the expected result, now measured.</p>
 </div>
@@ -78,7 +79,7 @@ duration, which is the expected result, now measured.</p>
 <div class="tag">Life-cycle · interactive</div>
 <h3 style="margin-top:4px"><a href="climate-cost.html">The true climate
 cost</a></h3>
-<img src="assets/climate_chain_tomato.png?v=e34c9b2b" loading="lazy" width="1870" height="833" alt="A tomato traced four supply-chain stages deep, from field-grown cultivation back through fertiliser, ammonia synthesis and natural gas extraction, with the CO2e and allocation factor on every edge.">
+<img src="assets/climate_chain_tomato-thumb.png?v=dba07396" loading="lazy" width="542" height="258" alt="A tomato traced four supply-chain stages deep, from field-grown cultivation back through fertiliser, ammonia synthesis and natural gas extraction, with the CO2e and allocation factor on every edge.">
 <p>Twenty products taken apart stage by stage, with the allocation on every
 edge and the lifetime of every vehicle exposed rather than buried. Change the
 route and it recomputes instead of looking up an answer somebody prepared.</p>
@@ -92,7 +93,7 @@ route and it recomputes instead of looking up an answer somebody prepared.</p>
 <div class="card">
 <div class="tag">Sonification · interactive</div>
 <h3 style="margin-top:4px"><a href="skyline.html">Skylines, played</a></h3>
-<img src="assets/skyline_spectrum_poster.png?v=bc070c8b" loading="lazy" width="1920" height="1080" alt="A city skyline drawn as a frequency spectrum, building heights standing in for the bars of an analyser.">
+<img src="assets/skyline_towers-thumb.png?v=a6ed8fb5" loading="lazy" width="542" height="305" alt="A city skyline drawn as a frequency spectrum, building heights standing in for the bars of an analyser.">
 <p>A skyline and a spectrum analyser are the same picture, so the picture is
 played. Twenty-seven cities built from real building heights and coordinates;
 turn on the spot and the sound turns with you. What is measured, what is
@@ -101,7 +102,7 @@ assumed and what is invented are each labelled.</p>
 <div class="card">
 <div class="tag">Allometry · interactive</div>
 <h3 style="margin-top:4px"><a href="longevity.html">Longevity quotient</a></h3>
-<img src="assets/lq_ranked.png?v=289af425" loading="lazy" width="1350" height="1320" alt="Species ranked by longevity quotient, from the twelve furthest below prediction to the eighteen furthest above.">
+<img src="assets/lq_ranked-thumb.png?v=907a44fd" loading="lazy" width="542" height="615" alt="Species ranked by longevity quotient, from the twelve furthest below prediction to the eighteen furthest above.">
 <p>How long an animal lives, against how long an animal of its size should
 live. Body mass predicts lifespan across fourteen orders of magnitude; the
 quotient is what is left once that relationship is divided out.</p>
@@ -109,10 +110,12 @@ quotient is what is left once that relationship is divided out.</p>
 <div class="card">
 <div class="tag">Desktop · interactive</div>
 <h3 style="margin-top:4px"><a href="desktop.html">The bookshelf</a></h3>
-<img src="assets/desktop_spines_poster.png?v=6d5c32a9" loading="lazy" width="1920" height="1080" alt="A desktop wallpaper of drawn book spines, built from a Goodreads export.">
+<img src="assets/bookshelf-demo-shelf-thumb.png?v=4a66eb6f" loading="lazy" width="542" height="315" alt="A desktop wallpaper of drawn book spines, built from a Goodreads export.">
 <p>A wallpaper built from a Goodreads export: your books as drawn spines, or
 as a wall of their real covers brought to one finish. The CSV is parsed in the
-browser and never leaves it.</p>
+browser and never leaves it. The optional cover mode sends the ISBN of each
+book that has one to Open Library &mdash; nothing else from your export
+&mdash; and follows its redirect to Internet Archive.</p>
 </div>
 </div>
 
@@ -122,54 +125,11 @@ browser and never leaves it.</p>
 
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
 <script src="assets/hero-data.js?v=0d2d5608"></script>
 <script src="assets/hero.js?v=b435c79e"></script>
-<script src="assets/hero-gl.js?v=61583a82"></script>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/hero-gl.js?v=54d76673"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/syslog.js?v=3d148c06"></script>
-<script>
-/* this page's own sys-log numbers - kept to just these four real lines so
-   the margin doesn't compete with the hero for attention */
-/* The home page indexes the site, so its margin scene indexes the other
-   pages' scenes: the atlas's own counts as cards, the code archive as bars,
-   the heat model's three prices as a flow, and the climate calculator's
-   heaviest routes as arcs. Every number here is already published on the
-   page it comes from - nothing is computed or invented for the collage. */
-window.MARGIN_SCENE = { kind: 'collage', parts: [
-  { kind: 'cards', items: [
-    { text: '86,622 nodes',          sub: '197,068 weighted links' },
-    { text: '1,144 negative links',  sub: 'relief, not stress' },
-    { text: '34,936 plant units',    sub: 'across 167 countries' },
-    { text: '60 prepared scenarios', sub: 'grouped by kind' },
-    { text: '7,873 species',         sub: 'body mass against lifespan' },
-    { text: '27 cities',             sub: 'skylines, played' }
-  ] },
-  { kind: 'bars', items: [
-    { label: 'atlas | 421 KB',        n: 421 },
-    { label: 'storage | 216 KB',      n: 216 },
-    { label: 'skyline | 109 KB',      n: 109 },
-    { label: 'longevity | 96 KB',     n: 96 },
-    { label: 'climate-cost | 24 KB',  n: 24 },
-    { label: 'heat | 23 KB',          n: 23 }
-  ] },
-  { kind: 'flowpulse', paths: [
-    { label: 'gas: 5.13 dollars/MMBtu',    weight: 0.20 },
-    { label: 'break-even: 1.53 cents/kWh', weight: 0.35 },
-    { label: 'today: 6.5 cents to $20.00', weight: 0.55 },
-    { label: '4h battery: $107.1/kW-yr',   weight: 0.45 }
-  ] },
-  { kind: 'arcroute', items: [
-    { label: 'beef, Brazil to Texas',      weight: 75.49 },
-    { label: 'jeans, China to California', weight: 14.85 },
-    { label: 'cheese, France to New York', weight: 12.86 },
-    { label: 'ocean quahog, 47.48x',       weight: 47.48 },
-    { label: 'black coral, 122.84x',       weight: 122.84 }
-  ] }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>

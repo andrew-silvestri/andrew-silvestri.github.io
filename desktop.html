@@ -6,18 +6,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/desktop.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-own-scene">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html" class="on">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>The bookshelf</h1>
 <p class="dim">A screen is wall space. This hangs a bookshelf on it &mdash;
 built from the books you have actually read, spine by spine.</p>
+<aside class="marginalia long" style="grid-row: span 21" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>Moby-Dick</b>Melville, 1851</li><li><b>Middlemarch</b>Eliot, 1871</li><li><b>War and Peace</b>Tolstoy, 1869</li><li><b>Anna Karenina</b>Tolstoy, 1877</li><li><b>Crime and Punishment</b>Dostoevsky, 1866</li><li><b>The Brothers Karamazov</b>Dostoevsky, 1880</li><li><b>Pride and Prejudice</b>Austen, 1813</li><li><b>Emma</b>Austen, 1815</li><li><b>Jane Eyre</b>C. Bronte, 1847</li><li><b>Wuthering Heights</b>E. Bronte, 1847</li><li><b>Great Expectations</b>Dickens, 1861</li><li><b>Bleak House</b>Dickens, 1853</li><li><b>Ulysses</b>Joyce, 1922</li><li><b>Mrs Dalloway</b>Woolf, 1925</li><li><b>To the Lighthouse</b>Woolf, 1927</li><li><b>The Great Gatsby</b>Fitzgerald, 1925</li><li><b>The Sun Also Rises</b>Hemingway, 1926</li><li><b>Beloved</b>Morrison, 1987</li><li><b>Invisible Man</b>Ellison, 1952</li><li><b>One Hundred Years of Solitude</b>Garcia Marquez, 1967</li><li><b>Don Quixote</b>Cervantes, 1605</li><li><b>The Odyssey</b>Homer, c. 700 BC</li></ul></aside>
+<aside class="marginalia right long" style="grid-row: span 21"><ul><li><b>The Iliad</b>Homer, c. 750 BC</li><li><b>The Divine Comedy</b>Dante, 1320</li><li><b>Frankenstein</b>Shelley, 1818</li><li><b>Dracula</b>Stoker, 1897</li><li><b>The Count of Monte Cristo</b>Dumas, 1844</li><li><b>Les Miserables</b>Hugo, 1862</li><li><b>Madame Bovary</b>Flaubert, 1856</li><li><b>The Trial</b>Kafka, 1925</li><li><b>Lolita</b>Nabokov, 1955</li><li><b>Catch-22</b>Heller, 1961</li><li><b>Slaughterhouse-Five</b>Vonnegut, 1969</li><li><b>1984</b>Orwell, 1949</li><li><b>Brave New World</b>Huxley, 1932</li><li><b>Fahrenheit 451</b>Bradbury, 1953</li><li><b>The Grapes of Wrath</b>Steinbeck, 1939</li><li><b>East of Eden</b>Steinbeck, 1952</li><li><b>The Sound and the Fury</b>Faulkner, 1929</li><li><b>Their Eyes Were Watching God</b>Hurston, 1937</li><li><b>Things Fall Apart</b>Achebe, 1958</li><li><b>The Stranger</b>Camus, 1942</li><li><b>The Master and Margarita</b>Bulgakov, 1967</li><li><b>A Confederacy of Dunces</b>Toole, 1980</li></ul></aside>
 
 <p>A desktop background is looked at more often than anything anyone hangs in
 a house, and it is usually a stock photograph. Goodreads exports a CSV of
@@ -29,9 +31,10 @@ shelf is drawn here, the PNG is written here.</p>
 <div class="tag">Interactive</div>
 <h3 style="margin-top:4px">Bookshelf, yours</h3>
 <p>Drop in a Goodreads export, give it your screen size, and download the
-wallpaper. By default the page works with the network cable out; switch on
-real covers and the shelf becomes a wall of your books&rsquo; actual
-covers.</p>
+wallpaper. The CSV is parsed in the browser and never leaves it. The optional
+cover mode sends the ISBN of each book that has one to Open Library &mdash;
+nothing else from your export &mdash; and follows its redirect to Internet
+Archive.</p>
 <a class="btn" href="bookshelf-app.html" target="_blank" rel="noopener">Open it</a>
 <a class="btn ghost" href="downloads/bookshelf-code.zip">Download it to keep</a>
 </div>
@@ -42,14 +45,11 @@ covers.</p>
 and its dress follows its era &mdash; Victorians in banded leather with gilt
 rules, mid-century in cloth and paper labels, recent books in flat graphic
 colour. A five-star rating earns a gilt point at the foot. Everything is
-deterministic per title, so the same book always gets the same spine.</p>
+deterministic per title, so the same book always gets the same spine. Two
+values are assumed rather than read, and the caption counts each: a book
+whose export row has no page count is drawn at the library&rsquo;s median
+width, and one with no year is dressed plain, with no era to dress for.</p>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/desktop_spines_poster.png?v=6d5c32a9"
- data-src="assets/desktop_spines.mp4?v=c1e586f5"></video>
-<p class="small">Eight real books from the demo library's own forty-four,
-spines drawn in by that exact rule: width from page count, colour from
-era.</p>
 
 <img class="fig wide" src="assets/bookshelf-demo-shelf.webp?v=8296c00f" loading="lazy" width="2200" height="1280"
      alt="The bookshelf app drawing the demo library as book spines on three walnut shelves">
@@ -57,14 +57,20 @@ era.</p>
 1920&thinsp;&times;&thinsp;1080, spines sized by page count and dressed by
 era. Fully offline.</p>
 
-<p>Cover mode turns the shelf into a wall of the covers themselves, fetched
-from the Open Library covers service by the ISBNs in the export &mdash; the
-page&rsquo;s single use of the network, off by default, and the request
-carries the ISBN and nothing else. Scans of covers arrive in every vintage
-of exposure and colour, so each one is brought to a single matte finish:
-exposure pulled toward a common middle, saturation eased, one warm wash, one
-pass of grain. A book with no cover on file is left off the wall rather than
-faked &mdash; the caption says how many.</p>
+<p>Cover mode turns the shelf into a wall of the covers themselves. It is the
+page&rsquo;s one use of the network, and it is worth being exact about: when
+you tick <em>Real covers</em>, the page sends one request per book to Open
+Library, an Internet Archive project, carrying that book&rsquo;s ISBN from
+your export and nothing else from it &mdash; no title, no rating, no shelf,
+no cookie, not even which site sent it. But an ISBN is a book, and several
+hundred of them sent together are a list of your books, so the box is off
+until you tick it, switches itself off again whenever you load a file, and
+the panel reports what came back: how many covers, how many books had no
+ISBN to look up, how many Open Library has no cover for, how many could not
+be fetched. Scans of covers arrive in every vintage of exposure and colour,
+so each one is brought to a single matte finish: exposure pulled toward a
+common middle, saturation eased, one warm wash, one pass of grain. A book
+without a cover is left off the wall rather than faked.</p>
 
 <img class="fig wide" src="assets/bookshelf-demo-covers.webp?v=4c8decae" loading="lazy" width="2200" height="1280"
      alt="The bookshelf app in cover mode: a wall of real book covers, uniformly finished, on four shelves">
@@ -113,61 +119,8 @@ nothing at startup; removal is deleting the folder.</p>
 alongside. The download is on the <a href="code.html">code page</a>.</p>
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script>
-/* bookshelf-app.html's own real 44-book demo library - title, author, year,
-   nothing invented, no excerpted text (16 of the 44 are still in copyright) */
-window.MARGIN_SCENE = { kind: 'cards', items: [
-  { text: 'Moby-Dick', sub: 'Melville, 1851' },
-  { text: 'Middlemarch', sub: 'Eliot, 1871' },
-  { text: 'War and Peace', sub: 'Tolstoy, 1869' },
-  { text: 'Anna Karenina', sub: 'Tolstoy, 1877' },
-  { text: 'Crime and Punishment', sub: 'Dostoevsky, 1866' },
-  { text: 'The Brothers Karamazov', sub: 'Dostoevsky, 1880' },
-  { text: 'Pride and Prejudice', sub: 'Austen, 1813' },
-  { text: 'Emma', sub: 'Austen, 1815' },
-  { text: 'Jane Eyre', sub: 'C. Bronte, 1847' },
-  { text: 'Wuthering Heights', sub: 'E. Bronte, 1847' },
-  { text: 'Great Expectations', sub: 'Dickens, 1861' },
-  { text: 'Bleak House', sub: 'Dickens, 1853' },
-  { text: 'Ulysses', sub: 'Joyce, 1922' },
-  { text: 'Mrs Dalloway', sub: 'Woolf, 1925' },
-  { text: 'To the Lighthouse', sub: 'Woolf, 1927' },
-  { text: 'The Great Gatsby', sub: 'Fitzgerald, 1925' },
-  { text: 'The Sun Also Rises', sub: 'Hemingway, 1926' },
-  { text: 'Beloved', sub: 'Morrison, 1987' },
-  { text: 'Invisible Man', sub: 'Ellison, 1952' },
-  { text: 'One Hundred Years of Solitude', sub: 'Garcia Marquez, 1967' },
-  { text: 'Don Quixote', sub: 'Cervantes, 1605' },
-  { text: 'The Odyssey', sub: 'Homer, c. 700 BC' },
-  { text: 'The Iliad', sub: 'Homer, c. 750 BC' },
-  { text: 'The Divine Comedy', sub: 'Dante, 1320' },
-  { text: 'Frankenstein', sub: 'Shelley, 1818' },
-  { text: 'Dracula', sub: 'Stoker, 1897' },
-  { text: 'The Count of Monte Cristo', sub: 'Dumas, 1844' },
-  { text: 'Les Miserables', sub: 'Hugo, 1862' },
-  { text: 'Madame Bovary', sub: 'Flaubert, 1856' },
-  { text: 'The Trial', sub: 'Kafka, 1925' },
-  { text: 'Lolita', sub: 'Nabokov, 1955' },
-  { text: 'Catch-22', sub: 'Heller, 1961' },
-  { text: 'Slaughterhouse-Five', sub: 'Vonnegut, 1969' },
-  { text: '1984', sub: 'Orwell, 1949' },
-  { text: 'Brave New World', sub: 'Huxley, 1932' },
-  { text: 'Fahrenheit 451', sub: 'Bradbury, 1953' },
-  { text: 'The Grapes of Wrath', sub: 'Steinbeck, 1939' },
-  { text: 'East of Eden', sub: 'Steinbeck, 1952' },
-  { text: 'The Sound and the Fury', sub: 'Faulkner, 1929' },
-  { text: 'Their Eyes Were Watching God', sub: 'Hurston, 1937' },
-  { text: 'Things Fall Apart', sub: 'Achebe, 1958' },
-  { text: 'The Stranger', sub: 'Camus, 1942' },
-  { text: 'The Master and Margarita', sub: 'Bulgakov, 1967' },
-  { text: 'A Confederacy of Dunces', sub: 'Toole, 1980' }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>

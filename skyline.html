@@ -6,18 +6,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/skyline.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-own-scene">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html" class="on">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>Skylines, played</h1>
 <p class="dim">A skyline and a spectrum analyser are the same picture. So the
 picture is played.</p>
+<aside class="marginalia long" style="grid-row: span 18" aria-label="On this page"><p class="lab">On this page</p><ul><li>New York · Bb blues</li><li>Paris · C major</li><li>Tokyo · D yo</li><li>Austin · E blues</li><li>Chicago · E blues</li><li>Tel Aviv · D hijaz</li><li>Frankfurt · C minor</li><li>London · Eb major</li><li>Dubai · D hijaz</li><li>Shenzhen · D pent maj.</li><li>Toronto · G major</li><li>Taipei · G pent min.</li><li>Nashville · G major</li><li>Warsaw · F minor</li></ul></aside>
+<aside class="marginalia right long" style="grid-row: span 18"><ul><li>Auckland · E major</li><li>Osaka · A insen</li><li>Los Angeles · Bb major</li><li>Moscow · Eb major</li><li>Brussels · Bb major</li><li>Hong Kong · E pent min.</li><li>Seoul · G pent maj.</li><li>Calgary · C major</li><li>Rotterdam · A minor</li><li>Miami · A minor</li><li>Madrid · E hijaz</li><li>Vienna · D major</li><li>Fort Worth · C major</li></ul></aside>
 
 <p>Both are a row of vertical bars of varying height. That is a coincidence of
 drawing conventions rather than of physics, but it is usable: if a skyline can
@@ -38,9 +40,7 @@ sounds. Drag to turn, or press Spin.</p>
 <a class="btn ghost" href="downloads/skyline-code.zip">Download code and data</a>
 </div>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/skyline_spectrum_poster.png?v=bc070c8b"
- data-src="assets/skyline_spectrum.mp4?v=4e10e985"></video>
+<img class="fig wide" src="assets/skyline_towers.png?v=186f7fe3" loading="lazy" alt="New York's eight tallest towers as bars, by height in metres, from One World Trade Center at 541 m to World Trade Center at 417 m.">
 <p class="small">The real top eight towers of New York, by height - the same
 bars, read as a spectrum instead of a skyline.</p>
 
@@ -50,26 +50,41 @@ bars, read as a spectrum instead of a skyline.</p>
 composed, so it is drawn sharply here.</p>
 
 <p><strong>Measured.</strong> Each building carries a published structural
-height and a published coordinate. The listener stands at a stated point, and
-each tower's bearing and apparent height follow from those two numbers by
-trigonometry. Where a tower stands behind a taller one it contributes nothing,
-which is what an eye does.</p>
+height and a published coordinate: from Wikidata for twenty-four cities, each
+tower linked to its record from the app; from the city's published
+tallest-buildings list (Wikipedia, retrieved 2026) for Austin, Nashville and
+Fort Worth, where Wikidata had three, fourteen and a handful of buildings on
+record. The order of the towers around the wheel is their true compass order
+from the height-weighted centre of the city, and the heights on the wheel are
+metres.</p>
 
-<p><strong>Assumed.</strong> Footprint width is not recorded anywhere usable,
-so each tower is given a width of eighteen per cent of its height, between
-twenty-five and seventy metres. That is about right for a slender tower and
-about wrong for a broad one.</p>
+<p><strong>Chosen.</strong> The listener stands at that centre. A tower
+closer than four hundred metres is held at four hundred, so a building you
+are standing under does not dwarf the rest; the app writes "under 0.4 km"
+rather than a number for those. The wheel takes the city's tallest buildings
+down to fifty-five metres, at most a hundred and twenty of them; the headline
+count uses eighty. For the three supplemented cities the published list
+overrules Wikidata above the height the list says it is complete to. Every
+one of these floors is shown in the app's side panel.</p>
 
-<p><strong>Rearranged.</strong> The spacing around the wheel, and nothing
-else. Buildings hold their true compass order, clockwise from north; the angle
-between any two of them does not survive. A downtown occupies perhaps forty degrees of a real horizon, and a wheel that
-reproduced that would be two-thirds empty. A transit map takes the same liberty
-with distance, for the same reason.</p>
+<p><strong>Rearranged.</strong> The spacing around the wheel. Buildings hold
+their true compass order, clockwise from north; the angle between any two of
+them does not survive. A downtown occupies perhaps forty degrees of a real
+horizon, and a wheel that reproduced that would be two-thirds empty. A transit
+map takes the same liberty with distance, for the same reason. One
+consequence is worth stating plainly: there is no empty horizon on a wheel,
+so turning changes the chord and never silences it.</p>
 
-<p><strong>Invented.</strong> The sound. There is no sense in which a city has
-a pitch. The mapping is a choice, it is written out in full below, and it is
-deterministic: the same city at the same bearing always makes the same
-sound.</p>
+<p><strong>Invented.</strong> The sound, all of it. There is no sense in which
+a city has a pitch. The mapping is a choice, it is written out in full below,
+and it is deterministic: the same city at the same bearing always makes the
+same sound.</p>
+
+<p class="small">Until 4 September 2026 this section described a different
+rendering: a true panorama from a viewpoint outside the city, with occlusion
+and silence off-axis. That rendering was retired before the page went up, but
+its data was still shipped and its behaviour was still labelled "measured"
+here. The data is gone from the app and the label with it.</p>
 
 <h2>The key</h2>
 
@@ -92,71 +107,69 @@ sound.</p>
 <tr><td>Nashville</td><td>G major</td><td class="dim">the Nashville Number System, the chord notation this city invented and still runs sessions on; G is the key its session players default to</td></tr>
 </table>
 <p class="small">The thirteen with the most skyline, then Fort Worth and
-Nashville. Nineteen distinct keys across eight modes in all.</p>
+Nashville. Nineteen distinct keys across eight modes in all, and the eight
+modes are voiced eight different ways (below), so no two of the nineteen
+sound alike.</p>
 
 <h2>How the bars become sound</h2>
 
-<p>Ninety-six bars is the right number to look at and the wrong number to play.
-Four octaves of a five-note scale is twenty pitches, so five or six adjacent
-bars would land on the same note and become five oscillators detuned by nothing,
-beating against each other. The bars are mapped onto the distinct pitches of the
-scale instead, and a pitch takes the loudest bar that feeds it: twenty-odd real
-partials, ninety-six bars, no unison mud.</p>
+<p>Every row of this table is a choice. None of it was measured, and the app
+says so where the sound is made.</p>
 
 <table>
 <tr><th>Property of the bar</th><th>Property of the sound</th><th>Why</th></tr>
-<tr><td>Position across the view</td><td>Pitch, four octaves of the city's
-scale</td><td>A skyline is not a melody, and there is no reason to make an
-arbitrary arrangement of towers sound like a mistake.</td></tr>
-<tr><td>Apparent height</td><td>Loudness of that partial, as height to the
-power 1.6</td><td>The exponent makes the peaks stand out in the ear the way
-they already do in the picture.</td></tr>
-<tr><td>Empty horizon</td><td>Silence</td><td>Which is why turning away from the
-towers quiets the instrument rather than merely changing it.</td></tr>
+<tr><td>Position across the view</td><td>Which note of the city's chord: nine
+to eleven notes over two and a half octaves, lowest on the left, with the root
+an octave down as a drone</td><td>Ninety-six bars is the right number to look
+at and the wrong number to play; adjacent bars on one note would be
+oscillators detuned by nothing, beating. A note takes the loudest bar that
+feeds it.</td></tr>
+<tr><td>Height, as a share of this city's tallest</td><td>Loudness of that
+note, as the share to the power 1.6</td><td>The exponent makes the peaks stand
+out in the ear the way they do in the picture. Normalising per city means
+every city's tallest tower is equally loud: Fort Worth is not quieter than
+New York for being shorter.</td></tr>
+<tr><td>How many bars are lit</td><td>At most seven notes sound at once, the
+loudest seven</td><td>A bearing that lights every note is a chord nobody
+wrote. Density is most of what makes an additive tone harsh.</td></tr>
+<tr><td>Which note it is</td><td>Higher notes are tilted quieter, by one over
+the square root of their index; every fourth voice is a triangle wave, the
+rest are sines</td><td>An instrument loses energy with height; a flat spectrum
+is a buzz. The triangles give the low voices a little edge.</td></tr>
+<tr><td>Everything</td><td>A shelf pulling down 1.8 kHz and above, a low-pass
+at 3.2 kHz, a limiter, and a fixed ceiling</td><td>So that no city at any
+bearing can line up its partials in the band the ear is most sensitive in.
+The mapping cannot know what hurts; the instrument is built so it cannot
+produce it.</td></tr>
 </table>
 
+<p>Which notes of each mode sound is also a choice, and until 4 September 2026
+it was the wrong one: the same four scale degrees were taken from every mode
+and then anything closer than a minor third to its neighbour was dropped,
+which took the flattened second out of hijaz and left eight modes sounding as
+five. Dubai in D hijaz was Vienna in D major, note for note. Each mode is now
+voiced on its own terms, with the tone that makes it itself placed an octave
+up, where it colours the chord instead of clashing with the root beside it.
+No two sounding notes are ever closer than a minor third.</p>
+
+<table>
+<tr><th>Mode</th><th>Lowest octave</th><th>Octaves above</th><th>Cities</th></tr>
+<tr><td>major</td><td class="dim">root, third, fifth</td><td class="dim">the same</td><td class="dim">Paris, Toronto, Moscow, London, Los Angeles, Auckland, Nashville, Calgary, Vienna, Brussels, Fort Worth</td></tr>
+<tr><td>minor</td><td class="dim">root, minor third, fifth</td><td class="dim">the same</td><td class="dim">Frankfurt, Warsaw, Miami, Rotterdam</td></tr>
+<tr><td>hijaz</td><td class="dim">root, third, fifth</td><td class="dim">flattened second, third, fifth</td><td class="dim">Dubai, Tel Aviv, Madrid</td></tr>
+<tr><td>pentatonic major</td><td class="dim">root, third, sixth</td><td class="dim">the same</td><td class="dim">Shenzhen, Seoul</td></tr>
+<tr><td>yo</td><td class="dim">root, fourth, sixth</td><td class="dim">the same</td><td class="dim">Tokyo</td></tr>
+<tr><td>pentatonic minor</td><td class="dim">root, minor third, fifth, flattened seventh</td><td class="dim">minor third, fifth, flattened seventh</td><td class="dim">Taipei, Hong Kong</td></tr>
+<tr><td>blues</td><td class="dim">root, minor third, fifth, flattened seventh</td><td class="dim">minor third, flattened fifth, flattened seventh</td><td class="dim">New York, Chicago, Austin</td></tr>
+<tr><td>insen</td><td class="dim">root, fourth, flattened seventh</td><td class="dim">flattened second, fourth, flattened seventh</td><td class="dim">Osaka</td></tr>
+</table>
+
+<p class="small">The app names the notes sounding at any moment in a line
+under the meter, so the instrument can be read as well as heard.</p>
+
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script>
-/* all 27 cities in skyline-app.html's own embedded roster, bar length from
-   each city's real tower count and label from that city's real assigned
-   key (both read straight off the app's per-city "n" and "key.label"
-   fields - the twelve without a key row in this page's own table above
-   still carry a real key inside the app's data, just not printed there) */
-window.MARGIN_SCENE = { kind: 'bars', items: [
-  { label: 'New York · Bb blues',    n: 205 },
-  { label: 'Paris · C major',        n: 83 },
-  { label: 'Tokyo · D yo',           n: 81 },
-  { label: 'Austin · E blues',       n: 65 },
-  { label: 'Chicago · E blues',      n: 53 },
-  { label: 'Tel Aviv · D hijaz',     n: 53 },
-  { label: 'Frankfurt · C minor',    n: 50 },
-  { label: 'London · Eb major',      n: 46 },
-  { label: 'Dubai · D hijaz',        n: 44 },
-  { label: 'Shenzhen · D pent maj.', n: 43 },
-  { label: 'Toronto · G major',      n: 43 },
-  { label: 'Taipei · G pent min.',   n: 43 },
-  { label: 'Nashville · G major',    n: 42 },
-  { label: 'Warsaw · F minor',       n: 39 },
-  { label: 'Auckland · E major',     n: 34 },
-  { label: 'Osaka · A insen',        n: 33 },
-  { label: 'Los Angeles · Bb major', n: 28 },
-  { label: 'Moscow · Eb major',      n: 26 },
-  { label: 'Brussels · Bb major',    n: 25 },
-  { label: 'Hong Kong · E pent min.',n: 18 },
-  { label: 'Seoul · G pent maj.',    n: 18 },
-  { label: 'Calgary · C major',      n: 18 },
-  { label: 'Rotterdam · A minor',    n: 18 },
-  { label: 'Miami · A minor',        n: 16 },
-  { label: 'Madrid · E hijaz',       n: 16 },
-  { label: 'Vienna · D major',       n: 15 },
-  { label: 'Fort Worth · C major',   n: 14 }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>

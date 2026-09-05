@@ -177,7 +177,11 @@
       fragmentShader:
         'uniform sampler2D map;varying vec3 vc;' +
         'void main(){vec4 t=texture2D(map,gl_PointCoord);' +
-        'gl_FragColor=vec4(vc,1.0)*t;}'
+        /* 0.55: with 34,936 plant points under additive blending, a full-strength
+           sprite sums to solid white over Europe and the US east coast
+           (HANDOFF.md section 8, trap 10). Scaled so the densest cluster
+           still reads as a cluster, not a glow. */
+        'gl_FragColor=vec4(vc,1.0)*t*0.55;}'
     })));
 
     /* ---- flow, as trailed geometry ------------------------------------- */

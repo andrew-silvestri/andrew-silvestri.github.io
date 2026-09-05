@@ -5,54 +5,66 @@
 <title>Bookshelf wallpaper — Andrew Silvestri</title>
 <meta name="description" content="Turn a Goodreads library export into a bookshelf wallpaper. Offline by default; real cover art by ISBN when you allow it.">
 <style>
+  /* The site's tokens (site/style.css :root, "Yacht club"), copied by name
+     and value because this file must also work alone from a folder. --rule
+     is the site's hairline and sits at 1.5:1 on this ground, so the edge of
+     anything a reader has to find and operate is --dim (5.3:1 on the panel,
+     6.3:1 on a field) and the filled button is --acc-fill under --acc-ink
+     (7.1:1). Nothing here is a colour that style.css does not have. */
   :root {
-    --bg:#0b0d12; --panel:#10131b; --ink:#e8e6f0; --dim:#8b8fa3;
-    --rule:#232636; --acc:#8b7ff2; --acc-dim:#4d4685; --cool:#65B2CC;
+    --bg:#F2F0EF; --bg-lift:#E9E6E4; --card:#FAF9F8; --ink:#241E1A;
+    --dim:#625C57; --faint:#D9D8D6; --rule:#BBBDBC;
+    --acc:#245F73; --acc-dim:#4A8AA0; --acc-ink:#FFFFFF;
+    --acc-fill:#245F73; --acc-fill-hover:#1B4A5B;
+    --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   html,body { height:100%; }
   body { background:var(--bg); color:var(--ink);
-         font:14px/1.5 ui-sans-serif, system-ui, sans-serif; display:flex; }
+         font:14px/1.5 var(--sans); display:flex; }
   aside { width:300px; min-width:300px; padding:18px 20px; overflow-y:auto;
-          border-right:1px solid var(--rule); background:var(--panel); }
+          border-right:1px solid var(--rule); background:var(--bg-lift); }
   main  { flex:1; display:flex; flex-direction:column; align-items:center;
           justify-content:center; padding:22px; overflow:auto; }
   h1 { font-size:19px; letter-spacing:.2px; }
   p.small { color:var(--dim); font-size:12.5px; margin:6px 0 14px; }
-  h2 { font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  h2 { font-size:12px; letter-spacing:.12em; text-transform:uppercase;
        color:var(--dim); margin:18px 0 6px; }
   label { display:block; font-size:12.5px; color:var(--dim); margin:8px 0 3px; }
   input[type=number], select {
-    width:100%; padding:7px 9px; background:#0d1017; color:var(--ink);
-    border:1px solid var(--rule); border-radius:7px; font:inherit; }
+    width:100%; padding:7px 9px; background:var(--card); color:var(--ink);
+    border:1px solid var(--dim); border-radius:4px; font:inherit; }
   .row { display:flex; gap:8px; } .row > * { flex:1; }
   .check { display:flex; gap:8px; align-items:flex-start; margin:10px 0 2px;
            font-size:12.5px; color:var(--ink); cursor:pointer; }
   .check input { margin-top:3px; accent-color:var(--acc); }
   .check span b { font-weight:600; }
-  .check .sub { color:var(--dim); display:block; font-size:11.5px; }
+  .check .sub { color:var(--dim); display:block; font-size:12px; }
   button {
-    width:100%; margin-top:10px; padding:9px 10px; border-radius:8px;
-    border:1px solid var(--rule); background:#161a26; color:var(--ink);
+    width:100%; margin-top:10px; padding:9px 10px; border-radius:4px;
+    border:1px solid var(--dim); background:var(--card); color:var(--ink);
     font:inherit; cursor:pointer; }
-  button:hover { border-color:var(--acc-dim); }
-  button.primary { background:var(--acc); border-color:var(--acc); color:#0b0d12;
-                   font-weight:600; }
-  button.primary:hover { filter:brightness(1.08); }
+  button:hover { border-color:var(--acc); color:var(--acc); }
+  button.primary { background:var(--acc-fill); border-color:var(--acc-fill);
+                   color:var(--acc-ink); font-weight:600; }
+  button.primary:hover { background:var(--acc-fill-hover);
+                         border-color:var(--acc-fill-hover); color:var(--acc-ink); }
   #drop {
-    margin-top:10px; padding:16px 12px; border:1.5px dashed var(--acc-dim);
-    border-radius:9px; text-align:center; color:var(--dim); font-size:12.5px;
-    cursor:pointer; }
+    margin-top:10px; padding:16px 12px; border:1.5px dashed var(--dim);
+    border-radius:4px; text-align:center; color:var(--dim); font-size:12.5px;
+    cursor:pointer; background:var(--card); }
   #drop.hot { border-color:var(--acc); color:var(--ink); }
-  #stats { font-size:12.5px; color:var(--dim); margin-top:10px; }
-  #stats b { color:var(--ink); font-weight:600; }
+  #drop span { font-size:12px; }
+  :focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
+  #stats, #coverline { font-size:12.5px; color:var(--dim); margin-top:10px; }
+  #coverline:empty { display:none; }
+  #stats b, #coverline b { color:var(--ink); font-weight:600; }
   #wrap { max-width:100%; max-height:100%; display:flex; flex-direction:column;
           align-items:center; gap:10px; }
   canvas { max-width:100%; max-height:calc(100vh - 90px);
-           border:1px solid var(--rule); border-radius:6px;
-           box-shadow:0 18px 50px rgba(0,0,0,.5); }
-  #cap { color:var(--dim); font-size:12px; }
-  a { color:var(--cool); }
+           border:1px solid var(--rule); }
+  #cap { color:var(--dim); font-size:12px; text-align:center; }
+  a { color:var(--acc); }
 
 /* Touch. Without touch-action a drag on the canvas is claimed by the page
    as a scroll, so on a phone the view will not turn — which is most of what
@@ -80,26 +92,31 @@ canvas, #gl, #view, #stage { touch-action: none; }
 <aside>
   <h1>Bookshelf, yours</h1>
   <p class="small">A wallpaper generated from the books you have actually
-  read. Offline by default: the CSV is parsed here, the shelf is drawn here,
-  the PNG is written here.</p>
+  read. Offline unless you say otherwise: the CSV is parsed here, the shelf
+  is drawn here, the PNG is written here, and nothing is stored.</p>
 
   <h2>Your library</h2>
-  <div id="drop">Drop a Goodreads CSV export here, or click to choose.<br>
-  <span style="font-size:11.5px">Goodreads &rarr; My&nbsp;Books &rarr;
-  Import/Export &rarr; Export.</span></div>
-  <input id="file" type="file" accept=".csv,text/csv" style="display:none">
-  <div id="stats">Showing the built-in demo shelf.</div>
+  <div id="drop" tabindex="0" role="button" aria-describedby="drophow">Drop a
+  Goodreads CSV export here, or click to choose.<br>
+  <span id="drophow">Goodreads &rarr; My&nbsp;Books &rarr;
+  Import/Export &rarr; Export. Enter or Space opens the file picker.</span></div>
+  <input id="file" type="file" accept=".csv,text/csv" style="display:none"
+         aria-hidden="true" tabindex="-1">
+  <div id="stats" aria-live="polite">Showing the built-in demo shelf.</div>
+  <div id="coverline" aria-live="polite"></div>
 
   <label for="shelf">Which books</label>
   <select id="shelf"></select>
 
   <label class="check"><input id="covers" type="checkbox">
     <span><b>Real covers</b>, face-out
-    <span class="sub">The one thing that uses the network: each book&rsquo;s
-    published cover is fetched from Open&nbsp;Library by the ISBN in your
-    export, and the shelf becomes a wall of actual covers, all brought to
-    one matte finish so mixed scans sit together. Books with no cover on
-    file are left off it.</span></span></label>
+    <span class="sub">The one thing that uses the network. Ticking this sends
+    one request per book to Open&nbsp;Library (an Internet Archive project):
+    the ISBN from your export, and nothing else from it. Sent together, those
+    ISBNs are a list of your books, so it is off until you tick it, switches
+    itself off again when you load a file, and the line above says what came
+    back. Covers are brought to one matte finish so mixed scans sit
+    together.</span></span></label>
 
   <h2>The screen</h2>
   <div class="row">
@@ -123,14 +140,17 @@ canvas, #gl, #view, #stage { touch-action: none; }
 
   <h2>What is real here</h2>
   <p class="small">Real: titles, authors, page counts, years and ratings from
-  your export, and in cover mode the covers themselves, untouched except for
-  one shared finish. Chosen: the drawn spines &mdash; a design keyed to each
-  book, its width from its page count, its dress from its era. No database
-  of photographed book <em>spines</em> exists, for any price, so this page
-  does not pretend to one.</p>
+  your export, and in cover mode the covers themselves, each fitted to a
+  spine-like proportion and given one shared finish. Chosen: the drawn
+  spines &mdash; a design keyed to each book, its width from its page count,
+  its dress from its era. Assumed, and counted in the caption: a book with
+  no page count in the export is drawn at your library&rsquo;s median width,
+  and a book with no year is dressed plain. No database of photographed book
+  <em>spines</em> exists, for any price, so this page does not pretend to
+  one.</p>
 </aside>
 <main><div id="wrap">
-  <canvas id="cv"></canvas>
+  <canvas id="cv" role="img" aria-label="The bookshelf wallpaper, redrawn as the controls change; the caption below says what it holds."></canvas>
   <div id="cap"></div>
 </div></main>
 
@@ -267,14 +287,27 @@ function fromGoodreads(text) {
                   });
     out.push({
       title: t, author: r[iA] || "",
-      pages: parseInt(r[iP], 10) || 0,
-      year: parseInt(r[iY], 10) || parseInt(r[iY2], 10) || 0,
+      pages: parseInt(r[iP], 10) || 0,          // 0 = not in the export
+      year: parseInt(r[iY], 10) || parseInt(r[iY2], 10) || 0,   // 0 = not in the export
       rating: parseInt(r[iR], 10) || 0,
       isbn: cleanIsbn(iI13 >= 0 && r[iI13]) || cleanIsbn(iI10 >= 0 && r[iI10]),
       shelf: shelf, tags: tags
     });
   }
   return out.length ? out : null;
+}
+
+/* The one value this page assumes. A book whose export row has no page
+   count is drawn at the median page count of the books that do have one -
+   a computation from the reader's own data, not a guess - and the caption
+   counts how many spines that was. If nothing has a page count there is
+   no median, and 300 is used and said. */
+function medianPages(list) {
+  var p = list.filter(function (b) { return b.pages > 0; })
+              .map(function (b) { return b.pages; }).sort(function (a, b) { return a - b; });
+  if (!p.length) return 0;
+  var m = p.length >> 1;
+  return p.length % 2 ? p[m] : Math.round((p[m - 1] + p[m]) / 2);
 }
 
 /* Which books make the shelf. The fixed choices, then whatever shelves the
@@ -338,10 +371,23 @@ function esc(s) {
 /* ------------------------------------------------------------- cover art */
 /* Open Library serves cover photographs by ISBN with CORS open, which is
    what lets the canvas read their pixels. This is the page's only network
-   use, it is off by default, and nothing else is sent anywhere: the request
-   carries the ISBN and nothing more. */
-var coverCache = {};          // isbn -> {img, pal} | "none" | "loading"
+   use and it is off until the reader ticks the box. Each request is
+   GET https://covers.openlibrary.org/b/isbn/<ISBN>-M.jpg?default=false with
+   no cookies and no referrer: the ISBN, and what any HTTP request carries
+   (the reader's address and browser). It is fetched rather than loaded as an
+   <img> so the answer is known and can be reported honestly: 200 is a
+   cover, 404 is "not on file", 403 is Open Library's limit of 100 ISBN
+   lookups per address per five minutes, and a request that never gets an
+   answer is a network failure. The four are told apart in the caption
+   because they are four different facts about the reader's shelf. */
+var coverCache = {};   // isbn -> {img, pal} | {state:"none"|"limited"|"failed"} | "loading"
 var coverGen = 0;
+var coverLimited = false;      // once Open Library says 403, stop asking
+
+function hasCover(b) {
+  var c = b.isbn && coverCache[b.isbn];
+  return !!(c && c.img);
+}
 
 function fetchCovers(list, onprog, ondone) {
   var want = list.filter(function (b) {
@@ -353,25 +399,61 @@ function fetchCovers(list, onprog, ondone) {
     while (live < 6 && qi < want.length) start(want[qi++]);
     if (!live && qi >= want.length) ondone();
   }
+  function settle(b, entry) {
+    coverCache[b.isbn] = entry;
+    live--; got++;
+    if (gen === coverGen) onprog(got, total);
+    pump();
+  }
   function start(b) {
     live++;
     coverCache[b.isbn] = "loading";
-    var img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = function () {
-      coverCache[b.isbn] = { img: img, pal: palette(img) };
-      done();
-    };
-    img.onerror = function () { coverCache[b.isbn] = "none"; done(); };
-    img.src = "https://covers.openlibrary.org/b/isbn/" + b.isbn +
+    if (coverLimited) { settle(b, { state: "limited" }); return; }
+    var url = "https://covers.openlibrary.org/b/isbn/" + b.isbn +
               "-M.jpg?default=false";
-    function done() {
-      live--; got++;
-      if (gen === coverGen) onprog(got, total);
-      pump();
-    }
+    fetch(url, { mode: "cors", credentials: "omit", referrerPolicy: "no-referrer" })
+      .then(function (res) {
+        if (res.status === 404) { settle(b, { state: "none" }); return null; }
+        if (res.status === 403 || res.status === 429) {
+          coverLimited = true; settle(b, { state: "limited" }); return null;
+        }
+        if (!res.ok) { settle(b, { state: "failed" }); return null; }
+        return res.blob().then(function (blob) {
+          var img = new Image();
+          var src = URL.createObjectURL(blob);
+          img.onload = function () {
+            URL.revokeObjectURL(src);
+            settle(b, { img: img, pal: palette(img) });
+          };
+          img.onerror = function () { URL.revokeObjectURL(src); settle(b, { state: "failed" }); };
+          img.src = src;
+        });
+      })
+      .catch(function () { settle(b, { state: "failed" }); });
   }
   pump();
+}
+
+/* What happened to each book of a slice in cover mode, for the caption. */
+function coverTally(list) {
+  var t = { have: 0, noisbn: 0, none: 0, limited: 0, failed: 0, pending: 0 };
+  list.forEach(function (b) {
+    if (!b.isbn) { t.noisbn++; return; }
+    var c = coverCache[b.isbn];
+    if (c === undefined || c === "loading") t.pending++;
+    else if (c.img) t.have++;
+    else t[c.state]++;
+  });
+  return t;
+}
+function tallyText(t) {
+  var parts = [];
+  if (t.noisbn)  parts.push(t.noisbn + " with no ISBN in the export, never looked up");
+  if (t.none)    parts.push(t.none + " not on Open Library");
+  if (t.failed)  parts.push(t.failed + " could not be fetched (offline, or blocked?)");
+  if (t.limited) parts.push(t.limited + " not tried: Open Library allows 100 lookups per address per five minutes");
+  if (t.pending) parts.push(t.pending + " still being looked up");
+  return parts.join("; ");
 }
 
 /* One number per cover: its mean luminance, sampled coarse. It is what the
@@ -456,15 +538,16 @@ function build() {
 
   var unit = Math.max(16, Math.min(64, innerW / 46));
   ctx.textBaseline = "middle";
+  var medPages = medianPages(books) || 300;
+  var assumedW = 0, assumedY = 0;          // spines drawn on an assumed value
 
   /* Which books can actually appear. In cover mode that is the ones whose
      cover came back; in spine mode it is all of them. */
-  var have = order, omitted = 0;
+  var have = order, omitted = 0, tally = null;
   if (useCovers) {
-    have = order.filter(function (o) {
-      return o.b.isbn && typeof coverCache[o.b.isbn] === "object";
-    });
+    have = order.filter(function (o) { return hasCover(o.b); });
     omitted = order.length - have.length;
+    tally = coverTally(lib);
   }
 
   /* One pass over the shelves at a given row count. With cc null it measures
@@ -504,7 +587,9 @@ function build() {
         while (bi < have.length) {
           var b = have[bi].b;
           var hs = rng(hash(b.title + "~" + b.author));
-          var pages = b.pages > 0 ? b.pages : 180 + Math.floor(hs() * 320);
+          var pages = b.pages > 0 ? b.pages : medPages;
+          if (cc && b.pages <= 0) assumedW++;
+          if (cc && !b.year) assumedY++;
           var bw = Math.round(unit * (0.45 + Math.min(2.6, pages / 300))
                               * Math.min(1, slotH / 150));
           bw = Math.max(3, bw);
@@ -561,18 +646,22 @@ function build() {
   v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.38)");
   ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
 
-  el("cap").textContent = W + " × " + H + " px · " + placed + " of " +
-    lib.length + " books on " + rows + " shelves" +
-    (fitted ? " · fitted" : "") +
-    (omitted ? " · " + omitted + " left off (no cover on file)" : "") +
-    (placed + omitted < lib.length ?
-      " — Rearrange deals a different hand" : "");
-  if (!coverStatus)
-    el("stats").innerHTML = usingDemo
-      ? "Showing the built-in demo shelf. <b>" + books.length + "</b> books."
-      : "Your export: <b>" + books.length + "</b> books, <b>" +
-        books.filter(function(b){return b.shelf==="read";}).length +
-        "</b> read.";
+  var cap = W + " × " + H + " px · " + placed + " of " + lib.length +
+    " books on " + rows + " shelves" + (fitted ? " · fitted" : "");
+  if (omitted) cap += " · " + omitted + " left off: " + tallyText(tally);
+  if (assumedW) cap += " · " + assumedW + (assumedW === 1 ? " spine" : " spines") +
+    " at the library's median width (no page count in the export" +
+    (medianPages(books) ? "" : "; nothing has one, so 300 pages") + ")";
+  if (assumedY) cap += " · " + assumedY + " dressed plain (no year in the export)";
+  if (placed + omitted < lib.length) cap += " — Rearrange deals a different hand";
+  el("cap").textContent = cap;
+  /* #stats is the library line only; the cover accounting has its own
+     line (#coverline) so that neither can overwrite the other. */
+  el("stats").innerHTML = usingDemo
+    ? "Showing the built-in demo shelf. <b>" + books.length + "</b> books."
+    : "Your export: <b>" + books.length + "</b> books, <b>" +
+      books.filter(function(b){return b.shelf==="read";}).length +
+      "</b> read.";
 }
 
 function drawBoard(ctx, x, y, w, t, wood) {
@@ -646,17 +735,18 @@ function drawSpine(ctx, b, x, base, w, h, hs, lean) {
     ctx.translate(-(x + w), -base);
   }
   var y = base - h;
-  var era = b.year || 1960;
+  var era = b.year;
   var pick = hs();
-  var mode;                       // leather | label | twotone | pulp | modern
-  if (era < 1900)          mode = pick < 0.72 ? "leather" : "label";
+  var mode;                       // leather | label | twotone | pulp | modern | plain
+  if (!era)                mode = "plain";     // no year in the export: no era to dress for
+  else if (era < 1900)     mode = pick < 0.72 ? "leather" : "label";
   else if (era < 1960)     mode = pick < 0.45 ? "label"
                                  : pick < 0.8 ? "twotone" : "leather";
   else if (era < 2000)     mode = pick < 0.5 ? "pulp"
                                  : pick < 0.8 ? "twotone" : "label";
   else                     mode = pick < 0.55 ? "modern" : "pulp";
 
-  var bg, band, ink;
+  var bg, band, ink, labelInk = "#1c1a14";
   if (mode === "leather") {
     bg = LEATHERS[Math.floor(hs() * LEATHERS.length)];
     band = GILT; ink = GILT;
@@ -694,9 +784,10 @@ function drawSpine(ctx, b, x, base, w, h, hs, lean) {
     ctx.fillRect(x + 1, y + h * 0.045, w - 2, 1.5);
     ctx.fillRect(x + 1, base - h * 0.05, w - 2, 1.5);
   } else if (mode === "label") {
+    /* a paper label tall enough to carry the title, which is drawn on it
+       below in labelInk; the author stays on the cloth in the cloth's ink */
     ctx.fillStyle = "rgba(238,229,205,0.93)";
-    ctx.fillRect(x + w * 0.12, y + h * 0.08, w * 0.76, h * 0.24);
-    ink = "#1c1a14";
+    ctx.fillRect(x + w * 0.12, y + h * 0.06, w * 0.76, h * 0.60);
   } else if (mode === "twotone") {
     ctx.fillStyle = band;
     ctx.fillRect(x, y, w, h * 0.32);
@@ -723,7 +814,11 @@ function drawSpine(ctx, b, x, base, w, h, hs, lean) {
              : mode === "pulp"   ? "'Arial Narrow', 'Segoe UI', sans-serif"
              : "Georgia, 'Times New Roman', serif";
   var weight = mode === "modern" || mode === "pulp" ? "700" : "600";
-  ctx.fillStyle = ink;
+  var onLabel = mode === "label";
+  /* on a label the title sits inside the label (6%-66% of the height);
+     elsewhere it is centred a little above the middle of the spine */
+  var titleMid = onLabel ? 0.36 : 0.52, titleSpan = onLabel ? 0.52 : 0.78;
+  ctx.fillStyle = onLabel ? labelInk : ink;
   if (w > 64 && h > 120) {                    // folio: horizontal, stacked
     var fs2 = Math.min(w * 0.16, h * 0.06);
     ctx.font = weight + " " + fs2 + "px " + family;
@@ -737,8 +832,9 @@ function drawSpine(ctx, b, x, base, w, h, hs, lean) {
     lines = lines.slice(0, 4);
     for (var ln = 0; ln < lines.length; ln++)
       ctx.fillText(lines[ln], x + w / 2,
-                   y + h * 0.42 + (ln - (lines.length - 1) / 2) * fs2 * 1.25,
-                   w * 0.9);
+                   y + h * (onLabel ? 0.36 : 0.42) + (ln - (lines.length - 1) / 2) * fs2 * 1.25,
+                   w * (onLabel ? 0.7 : 0.9));
+    ctx.fillStyle = ink;
     ctx.font = (fs2 * 0.6) + "px " + family;
     ctx.globalAlpha = 0.8;
     ctx.fillText((b.author.split(" ").pop() || "").toUpperCase(),
@@ -747,20 +843,27 @@ function drawSpine(ctx, b, x, base, w, h, hs, lean) {
   } else {                                    // the usual: down the spine
     var fs = Math.max(9, Math.min(w * 0.42, h * 0.05));
     ctx.save();
-    ctx.translate(x + w / 2, y + h * 0.52);
+    ctx.translate(x + w / 2, y + h * titleMid);
     ctx.rotate(Math.PI / 2);
     ctx.font = weight + " " + fs + "px " + family;
     ctx.textAlign = "center";
-    var maxLen = h * 0.78;
+    var maxLen = h * titleSpan;
     ctx.fillText(t, 0, 0, maxLen);
+    ctx.restore();
     var surname = (b.author.split(" ").pop() || "").toUpperCase();
     if (surname && h > 90 && w > 20) {
+      ctx.save();
+      ctx.fillStyle = ink;
+      /* on a label the author goes on the cloth below it; otherwise just
+         above the title as before */
+      ctx.translate(x + w / 2, y + h * (onLabel ? 0.82 : 0.52));
+      ctx.rotate(Math.PI / 2);
       ctx.font = (fs * 0.62) + "px " + family;
+      ctx.textAlign = "center";
       ctx.globalAlpha = 0.75;
-      ctx.fillText(surname, 0, -fs * 1.05, maxLen * 0.5);
-      ctx.globalAlpha = 1;
+      ctx.fillText(surname, 0, onLabel ? 0 : -fs * 1.05, h * (onLabel ? 0.26 : 0.39));
+      ctx.restore();
     }
-    ctx.restore();
   }
   ctx.restore();
 }
@@ -797,7 +900,6 @@ function lum2(col) {
 
 /* --------------------------------------------------------------------- UI */
 function el(id) { return document.getElementById(id); }
-var coverStatus = false;
 
 el("w").value = (screen.width * (devicePixelRatio || 1)) | 0;
 el("h").value = (screen.height * (devicePixelRatio || 1)) | 0;
@@ -814,7 +916,17 @@ el("shelf").addEventListener("change", function () {
   if (el("covers").checked) startCovers(); else build();
 });
 el("covers").addEventListener("change", function () {
-  if (el("covers").checked) startCovers(); else { coverStatus = false; build(); }
+  if (el("covers").checked) {
+    /* a fresh tick is a fresh try: a limit lifts after five minutes and a
+       dropped connection comes back, so those answers are not kept */
+    coverLimited = false;
+    Object.keys(coverCache).forEach(function (k) {
+      var c = coverCache[k];
+      if (c && (c.state === "limited" || c.state === "failed")) delete coverCache[k];
+    });
+    startCovers();
+  }
+  else { el("coverline").textContent = ""; build(); }
 });
 el("fit").onclick = function () {
   fitAll = !fitAll;
@@ -835,19 +947,19 @@ el("dl").onclick = function () {
 
 function startCovers() {
   var lib = filterLib();
-  coverStatus = true;
-  el("stats").innerHTML = "Fetching covers from Open Library…";
+  var toAsk = lib.filter(function (b) { return b.isbn && coverCache[b.isbn] === undefined; }).length;
+  el("coverline").innerHTML = "Asking Open Library for <b>" + toAsk + "</b> " +
+    (toAsk === 1 ? "cover" : "covers") + " by ISBN…";
   fetchCovers(lib, function (got, total) {
-    el("stats").innerHTML = "Covers: <b>" + got + "</b> of " + total +
-                            " checked…";
+    el("coverline").innerHTML = "Covers: <b>" + got + "</b> of " + total +
+                                " answered…";
     if (got % 12 === 0) build();
   }, function () {
-    coverStatus = false;
-    var have = lib.filter(function (b) {
-      return b.isbn && typeof coverCache[b.isbn] === "object";
-    }).length;
-    el("stats").innerHTML = "Cover art on file for <b>" + have + "</b> of " +
-      lib.length + " books; the rest are left off the wall.";
+    var t = coverTally(lib);
+    var line = "Covers: <b>" + t.have + "</b> of " + lib.length + " on the wall.";
+    var rest = tallyText(t);
+    if (rest) line += " Left off: " + rest + ".";
+    el("coverline").innerHTML = line;
     build();
   });
 }
@@ -856,25 +968,48 @@ var drop = el("drop");
 drop.onclick = function () { el("file").click(); };
 el("file").onchange = function () {
   if (this.files[0]) readFile(this.files[0]);
+  this.value = "";                 // so the same file can be chosen again
 };
+drop.onkeydown = function (e) {
+  if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+    e.preventDefault(); el("file").click();
+  }
+};
+/* a file dropped anywhere else would be opened by the browser in place of
+   this page, library and all; the whole page catches it and hands it on */
+document.addEventListener("dragover", function (e) { e.preventDefault(); });
+document.addEventListener("drop", function (e) {
+  e.preventDefault(); drop.className = "";
+  if (e.dataTransfer && e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
+});
 drop.ondragover = function (e) { e.preventDefault(); drop.className = "hot"; };
 drop.ondragleave = function () { drop.className = ""; };
-drop.ondrop = function (e) {
-  e.preventDefault(); drop.className = "";
-  if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
-};
 function readFile(f) {
   var rd = new FileReader();
+  rd.onerror = function () {
+    el("stats").innerHTML = "That file could not be read (" +
+      (rd.error && rd.error.name || "unknown error") + ").";
+  };
   rd.onload = function () {
     var lib = fromGoodreads(String(rd.result));
     if (!lib) {
       el("stats").innerHTML = "That file has no Title and Author columns — " +
-        "is it the Goodreads export?";
+        "is it the Goodreads export? (A tab- or semicolon-separated copy, " +
+        "or a re-save from a spreadsheet, will not have them.)";
       return;
     }
     books = lib; usingDemo = false; seed = 1;
     rebuildShelfOptions();
-    if (el("covers").checked) startCovers(); else build();
+    /* Real covers is a decision about this file, so it is taken again for
+       each file: a box ticked for the demo shelf does not send a stranger's
+       ISBNs anywhere. Nothing goes out until the reader ticks it again. */
+    if (el("covers").checked) {
+      el("covers").checked = false;
+      var withIsbn = books.filter(function (b) { return b.isbn; }).length;
+      el("coverline").innerHTML = "Real covers switched off for this file. " +
+        "Tick it again to look up <b>" + withIsbn + "</b> ISBNs on Open Library.";
+    } else el("coverline").textContent = "";
+    build();
   };
   rd.readAsText(f);
 }
@@ -882,7 +1017,8 @@ function readFile(f) {
 rebuildShelfOptions();
 
 /* URL parameters, so a particular view can be linked or captured:
-   ?wood=oak&shelf=read&w=1920&h=1080&covers=1 */
+   ?wood=oak&shelf=read&w=1920&h=1080&covers=1. covers=1 only ever acts on
+   the demo shelf (44 public ISBNs): a file loaded afterwards unticks it. */
 (function () {
   var q = new URLSearchParams(location.search);
   if (q.get("wood") && WOODS[q.get("wood")]) el("wood").value = q.get("wood");

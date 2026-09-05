@@ -6,18 +6,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#070a12">
+<meta name="theme-color" content="#F2F0EF">
 <link rel="canonical" href="https://andrewsilvestri.com/heat.html">
-<script>/* the motion contract — set before first paint */
-try{var m=localStorage.getItem('motion');if(m!=='on'&&m!=='off')m=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';document.documentElement.dataset.motion=m;}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=96bb8cf6">
-</head><body class="bg-curve-heat">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=778bcf55">
+</head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html" class="on">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="desktop.html">The bookshelf</a></span></span><a href="code.html">Code</a></nav>
-<main>
+<main class="notes">
 
 <h1>Industrial heat electrification break-even</h1>
 <p class="dim">Levelised cost of heat from a resistive electric boiler<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> against a
 natural-gas boiler, for process steam in Texas.</p>
+<aside class="marginalia" style="grid-row: span 31" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>gas</b><span class="v">5.13&nbsp;dollars/MMBtu</span></li><li><b>break-even</b><span class="v">1.53&nbsp;cents/kWh</span></li><li><b>today</b><span class="v">6.5&nbsp;cents to $20.00</span></li><li><b>fuel-only break-even</b><span class="v">1.38&nbsp;c/kWh</span></li><li><b>capital ±50%</b><span class="v">break-even ±0.15&nbsp;c</span></li><li><b>emissions parity</b><span class="v">0.209&nbsp;t CO2/MWh</span></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 31"><ul><li><b>ERCOT grid</b><span class="v">0.333&nbsp;t CO2/MWh</span></li><li><b>electric boiler</b><span class="v">99.6&nbsp;kg/MMBtu</span></li><li><b>gas boiler</b><span class="v">62.4&nbsp;kg/MMBtu</span></li><li><b>gas fuel</b><span class="v">$4.12&nbsp;of $5.13</span></li><li><b>electric fuel</b><span class="v">$19.44&nbsp;of $20.00</span></li></ul></aside>
 
 <p>A chemical plant that wants to stop burning gas for process steam has one
 obvious substitute. Put an electric resistance heater where the burner was. No
@@ -50,30 +52,24 @@ pounds per megawatt hour for the subregion. That is well above the threshold, so
 on average grid power electrifying this heat increases emissions: 99.6 kilograms
 per million Btu against the gas boiler&rsquo;s 62.4.</p>
 
-<video class="fig wide motion-video" muted loop playsinline aria-hidden="true"
- poster="assets/heat_breakeven_poster.png?v=98a5338b"
- data-src="assets/heat_breakeven.mp4?v=b65a7d4b"></video>
-<p class="small">The crossing, traced: gas cost flat at $5.13, electric cost
-rising with price to the real break-even at 1.53&cent;/kWh, then on to
-today's real operating point at 6.5&cent; and $20.00.</p>
 
-<img class="fig wide" src="assets/heat_fig2_lcoh_stacked.png?v=c8190bd9" loading="lazy" width="1050" height="825" alt="Levelised cost of heat for the gas and electric boilers as stacked bars, split into fuel, levelised capital and fixed operations.">
+<img class="fig wide" src="assets/heat_fig2_lcoh_stacked.png?v=9276ca60" loading="lazy" width="1428" height="984" alt="Levelised cost of heat for the gas and electric boilers as stacked bars, split into fuel, levelised capital and fixed operations.">
 <p class="small">Where the money goes in each route. Fuel is almost the whole
 bar on both sides: $4.12 of the gas boiler&rsquo;s $5.13, and $19.44 of the
 electric boiler&rsquo;s $20.00. Capital and fixed operations come to $1.02 on
 the gas side and $0.56 on the electric, which is why the break-even below moves
 with the two fuel prices and almost nothing else.</p>
 
-<img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=16164e8f" loading="lazy" width="1350" height="810" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
+<img class="fig wide" src="assets/heat_fig1_breakeven_price.png?v=04b42567" loading="lazy" width="1428" height="803" alt="Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.">
 <p class="small">Break-even electricity price as a function of the gas price. The line is the locus where the two routes cost the same; below it the electric boiler wins.</p>
 
-<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=a4cba414" loading="lazy" width="1200" height="900" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
+<img class="fig wide" src="assets/heat_fig3_costgap_contour.png?v=6c752b2e" loading="lazy" width="1428" height="803" alt="Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.">
 <p class="small">Cost gap across the electricity price and gas price plane. The diagonal structure is the spark gap dominating both axes.</p>
 
-<img class="fig wide" src="assets/heat_fig4_tornado.png?v=57161040" loading="lazy" width="1350" height="825" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
+<img class="fig wide" src="assets/heat_fig4_tornado.png?v=7e6390a8" loading="lazy" width="1428" height="803" alt="Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.">
 <p class="small">Sensitivity of the break-even to every input. Fuel prices dominate; capital and operations barely move it.</p>
 
-<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=aa76c799" loading="lazy" width="1200" height="825" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
+<img class="fig wide" src="assets/heat_fig5_emissions_parity.png?v=cbd817eb" loading="lazy" width="1428" height="803" alt="Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.">
 <p class="small">Emissions of both routes against grid carbon intensity. The crossing point is the parity threshold.</p>
 
 
@@ -125,33 +121,8 @@ data. Each model runs from its own <code>README.md</code>.</p>
 <ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">Texas industrial electricity and gas prices.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID2023</i> (revised 12 June 2025), ERCT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity, 733.862 lb CO&#8322;/MWh or 0.333 t/MWh, and the natural gas emission factor. The CO&#8322; rate is used rather than the CO&#8322;e rate, because the gas factor it is compared against is also carbon dioxide only.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a> &middot;
-<button type="button" class="motion-toggle" hidden>Motion: <span class="motion-state">on</span></button></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
 </main>
-<script src="assets/motion.js?v=4cbbdec3"></script>
+<script src="assets/motion.js?v=6bf4b397"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
-<script src="assets/bgloop.js?v=d269be40"></script>
-<script>
-/* this page's own break-even numbers: the flat gas line and the rising
-   electric line, speed set by the real crossing (1.53) and real operating
-   point (6.5) so the electric path visibly moves faster past break-even.
-   Added paths are the same page's fuel-only break-even, its capital/fixed-
-   ops sensitivity, the emissions parity threshold and ERCOT grid average,
-   the two boilers' own emissions, and the fuel share of each boiler's cost
-   (all from "What the model finds" and the LCOH stacked-bar caption). */
-window.MARGIN_SCENE = { kind: 'flowpulse', paths: [
-  { label: 'gas: 5.13 dollars/MMBtu',        weight: 0.20 },
-  { label: 'break-even: 1.53 cents/kWh',     weight: 0.35 },
-  { label: 'today: 6.5 cents to $20.00',     weight: 0.55 },
-  { label: 'fuel-only break-even: 1.38 c/kWh', weight: 0.30 },
-  { label: 'capital ±50%: break-even ±0.15 c', weight: 0.25 },
-  { label: 'emissions parity: 0.209 t CO2/MWh', weight: 0.40 },
-  { label: 'ERCOT grid: 0.333 t CO2/MWh',      weight: 0.45 },
-  { label: 'electric boiler: 99.6 kg/MMBtu',   weight: 0.50 },
-  { label: 'gas boiler: 62.4 kg/MMBtu',        weight: 0.42 },
-  { label: 'gas fuel: $4.12 of $5.13',         weight: 0.28 },
-  { label: 'electric fuel: $19.44 of $20.00',  weight: 0.60 }
-] };
-</script>
-<script src="assets/margin-scene.js?v=0bfbcbb7"></script>
 </body></html>
