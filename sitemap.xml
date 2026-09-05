@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://andrewsilvestri.com/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://andrewsilvestri.com/atlas.html</loc>
     <lastmod>2026-08-10</lastmod>
     <priority>0.7</priority>
@@ -16,14 +21,24 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://andrewsilvestri.com/heat.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <loc>https://andrewsilvestri.com/continents.html</loc>
+    <lastmod>2026-09-05</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://andrewsilvestri.com/</loc>
+    <loc>https://andrewsilvestri.com/economy.html</loc>
+    <lastmod>2026-09-05</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/food.html</loc>
+    <lastmod>2026-09-05</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/heat.html</loc>
     <lastmod>2026-08-10</lastmod>
-    <priority>1.0</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/library.html</loc>
@@ -41,13 +56,18 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://andrewsilvestri.com/skyline.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <loc>https://andrewsilvestri.com/neuron.html</loc>
+    <lastmod>2026-09-05</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/shoes.html</loc>
     <lastmod>2026-09-05</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/skyline.html</loc>
+    <lastmod>2026-08-10</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
