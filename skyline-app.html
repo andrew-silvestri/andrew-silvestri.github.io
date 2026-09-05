@@ -582,7 +582,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
 
     var splitY = Math.round(H * 0.56);          // horizon of the city panel
     var eqTop = splitY + 46 * dpr;
-    var eqBase = H - 30 * dpr;
+    /* 66, not 30: the foot (the notes line and the hint, two lines of 12px
+       with padding) sits over the bottom of this canvas, and at 30 the
+       meter's bars ran under "sounding G3 B3 D4..." (2026-09-04). The
+       test's label check reads this value, so lowering it fails loudly. */
+    var eqBase = H - 66 * dpr;
     var mx = peak();
 
     /* ---- the wheel ---------------------------------------------------- */
@@ -665,13 +669,21 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     ctx.fillStyle = dim;
     ctx.font = (12 * dpr) + 'px ui-sans-serif, system-ui, sans-serif';
     ctx.textAlign = 'center';
+    /* every piece of text drawn on the canvas goes in here as a box, so a
+       label placed later can be tested against all of them, compass points
+       included - "One World Trade Center" printed straight through "NW"
+       until they were (2026-09-04) */
+    var placed = [];
+    var lineH = 12 * dpr;
     for (var d2 = 0; d2 < 360; d2 += 45) {
       var ph2 = (d2 - S.az) * Math.PI / 180;
       if (Math.cos(ph2) < -0.15) continue;         // behind the drum
       // never below 0.8: at 0.35 the side points were 1.8:1 against the stage
       ctx.globalAlpha = 0.8 + 0.2 * (Math.cos(ph2) + 1) / 2;
-      ctx.fillText(compass(d2), cx + Rx * 1.10 * Math.sin(ph2),
-                   cyc + Ry * 1.10 * Math.cos(ph2) + 20 * dpr);
+      var cxp = cx + Rx * 1.10 * Math.sin(ph2);
+      var cyp = cyc + Ry * 1.10 * Math.cos(ph2) + 20 * dpr;
+      ctx.fillText(compass(d2), cxp, cyp);
+      placed.push({ x: cxp, half: ctx.measureText(compass(d2)).width / 2, y: cyp });
     }
     ctx.globalAlpha = 1;
 
@@ -720,12 +732,14 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     ctx.font = fpx + 'px ui-sans-serif, system-ui, sans-serif';
     var maxLabels = W < 560 * dpr ? 3 : (W < 900 * dpr ? 4 : 6);
     var gap = 14 * dpr;
-    var placed = [];
+    var named = 0;
+    // the names sit a line below the compass ring, not on it
+    var ty = splitY + 34 * dpr;
     // the tallest towers on the near face of the wheel, biggest first
     var seen = ring.slice().filter(function (r) {
       return r[4] && Math.cos((r[0] - S.az) * Math.PI / 180) > 0.25;
     }).sort(function (p, q) { return q[3] - p[3]; }).slice(0, 12);
-    for (i = 0; i < seen.length && placed.length < maxLabels; i++) {
+    for (i = 0; i < seen.length && named < maxLabels; i++) {
       var nm = seen[i][4];
       var half = ctx.measureText(nm).width / 2;
       if (half * 2 > W - 8 * dpr) continue;         // no room for it at all
@@ -733,14 +747,18 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
       tx = Math.min(W - half - 4 * dpr, Math.max(half + 4 * dpr, tx));
       var clash = false;
       for (var j = 0; j < placed.length; j++) {
-        if (Math.abs(tx - placed[j].x) < half + placed[j].half + gap) {
+        // boxes overlap: within a line of each other vertically and
+        // closer than their half-widths plus the gap horizontally
+        if (Math.abs(ty - placed[j].y) < lineH + 2 * dpr &&
+            Math.abs(tx - placed[j].x) < half + placed[j].half + gap) {
           clash = true; break;
         }
       }
       if (clash) continue;
-      placed.push({ x: tx, half: half });
+      placed.push({ x: tx, half: half, y: ty });
+      named++;
       ctx.fillStyle = dim;
-      ctx.fillText(nm, tx, splitY + 18 * dpr);
+      ctx.fillText(nm, tx, ty);
     }
   }
 
