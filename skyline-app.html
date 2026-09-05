@@ -128,9 +128,20 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   font-size:var(--fs-2);color:var(--ink);background:var(--card);
   border:1px solid var(--rule);border-radius:20px;padding:5px 14px;
   display:none}
+/* On a phone the sidebar is a 44vh scroll box. Until 2026-09-05 nothing said
+   so, and the tower list below the fold was invisible unless a thumb found
+   it (FIX_SKYLINE section 9). The cue is a sticky strip at the box's foot,
+   "more below", that app.js hides once the box is scrolled to its end or
+   does not scroll at all. It is decoration for sighted readers: the list is
+   in the document either way. */
+.more{display:none}
 @media (max-width:900px){
   #app{grid-template-columns:100%;grid-template-rows:auto 1fr}
-  #side{border-right:0;border-bottom:1px solid var(--rule);max-height:44vh}
+  #side{border-right:0;border-bottom:1px solid var(--rule);max-height:44vh;padding-bottom:0}
+  #side .more{display:block;position:sticky;bottom:0;margin:0 -18px;padding:14px 18px 8px;
+    text-align:center;font:var(--fs-2)/1 var(--mono);color:var(--dim);
+    background:linear-gradient(to bottom,transparent,var(--panel) 45%)}
+  #side.end .more{display:none}
 }
 </style>
 </head><body>
@@ -175,6 +186,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
 
   <h2>On the wheel</h2>
   <ol class="tow" id="towers"></ol>
+  <div class="more" id="more" aria-hidden="true">more below &darr;</div>
 </aside>
 
 <div id="stage">
@@ -1047,6 +1059,22 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   }) : null;
   if (ro) ro.observe(document.getElementById('stage'));
   window.addEventListener('resize', function () { resize(); touch(); });
+
+  /* The phone sidebar's "more below" cue (template.html, .more): shown while
+     the box has content below its fold, hidden at the end and when nothing
+     scrolls. Defensive, because the harness's DOM has no layout. */
+  (function () {
+    var side = document.getElementById('side');
+    if (!side || typeof side.addEventListener !== 'function') return;
+    function cue() {
+      var atEnd = side.scrollHeight - side.clientHeight - side.scrollTop < 4 ||
+                  side.scrollHeight <= side.clientHeight;
+      if (side.classList && side.classList.toggle) side.classList.toggle('end', atEnd);
+    }
+    side.addEventListener('scroll', cue);
+    window.addEventListener('resize', cue);
+    cue();
+  })();
 
   /* --------------------------------------------------------------- boot -- */
   document.getElementById('city').innerHTML = C.map(function (c, i) {

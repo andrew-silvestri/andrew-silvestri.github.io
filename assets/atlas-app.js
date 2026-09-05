@@ -68,7 +68,8 @@
    * lam is the relaxation rate; a node's resilience damps what reaches it;
    * tanh keeps every value inside (-1, 1) so nothing can run away. Sixty
    * rounds is a ceiling, not a target — the sixty prepared scenarios settle
-   * in 5 to 42 (measured 2026-09-05; update_atlas_pages.py computes it). */
+   * in a few dozen (5 to 43 on 2026-09-05; update_atlas_pages.py measures
+   * it and writes the range into atlas.html and model.html). */
   /* Four faults lived here, and each was hidden by the one before it.
 
      ONE. The influence arriving at a node was the SUM of its neighbours, so a
@@ -99,13 +100,31 @@
      FOUR. What remains is divided by the node's total in-weight, which makes
      every node the weighted mean of its drivers and the operator's spectral
      radius exactly 1. With the tanh contraction and the resilience factor the
-     iteration is a contraction and settles. */
+     iteration is a contraction and settles.
+
+     FIVE (2026-09-05). TWO's fix had a casualty. A negative edge is a
+     response - the site's definition: relief rather than stress - and the
+     1,142 consumer->district edges at -0.01 answer the +0.50 district->
+     consumer demand edges. Making every same-rank edge two-way gave the
+     demand edge a back-channel, consumer->district at +0.50, filed by THREE
+     in the same fan-in bucket as the response; the bucket summed to +0.49
+     and pushing a consumer moved its district UP. So: a negative same-rank
+     edge is not promoted, and neither is the coupling it answers, because
+     the response is that coupling's back-channel. Where the payload
+     supplies the answer, the engine does not invent one. Mirrored in
+     build_throughlines.py's response_pairs(); tests/test_parity.py holds
+     the two equal and tests/test_demand_response.py pushes consumers. */
   var KIND = D.kind.map(function (k) { return D.kinds[k]; });
   var RANK = { sun: 0, insolation: 1, weather: 2, climate: 3, event: 4 };
   function rank(i) { var r = RANK[KIND[i]]; return r === undefined ? 5 : r; }
   var ONE = new Uint8Array(ES.length);
+  var NEG = Object.create(null);   /* FIVE: same-rank negative edges, by "s|t" */
   for (var e0 = 0; e0 < ES.length; e0++) {
-    ONE[e0] = rank(ES[e0]) === rank(ET[e0]) ? 0 : 1;
+    if (EW[e0] < 0 && rank(ES[e0]) === rank(ET[e0])) NEG[ES[e0] + '|' + ET[e0]] = 1;
+  }
+  for (e0 = 0; e0 < ES.length; e0++) {
+    ONE[e0] = (rank(ES[e0]) !== rank(ET[e0]) ||
+               NEG[ES[e0] + '|' + ET[e0]] || NEG[ET[e0] + '|' + ES[e0]]) ? 1 : 0;
   }
 
   /* Per-edge coefficients: fan-in share, then the row normalisation. FW is

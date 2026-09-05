@@ -585,9 +585,25 @@ function groupVal(g){
    right, and bar length means something. The old scale ran from 0.85 x the
    smallest visible value, so in the default view (all above 1) the parity
    line was off the left edge and a 10x species drew at 60% of a 47x one. */
+/* Years mode has no parity line to anchor to, so until 2026-09-05 its floor
+   floated with the view: 0.85 x the smallest VISIBLE lifespan, so filtering
+   to bats re-drew every bar and a 30-year bat went from a sliver to most of
+   the row. The domain is now the whole data set's, computed once, so a bar
+   is the same length in every view and comparable across filters, which is
+   what a bar is for. Quotient mode keeps its parity anchor. */
+let YEARS_DOMAIN=null;
+function yearsDomain(){
+  if(!YEARS_DOMAIN){
+    const v=[];
+    RAW.forEach(d=>['w','p','u','a'].forEach(kk=>{const x=lifeOf(d,kk); if(x&&x>0) v.push(x);}));
+    YEARS_DOMAIN=v.length?[Math.min(...v),Math.max(...v)]:[1,100];
+  }
+  return YEARS_DOMAIN;
+}
 function makeScale(vals){
   vals=vals.filter(v=>v&&v>0);
   if(barMode()==='lq') vals.push(1/1.3, 1.3);
+  else vals=vals.concat(yearsDomain());
   if(!vals.length) vals=[1];
   const hi=Math.max(...vals), lo=Math.min(...vals);
   if(S.scale==='log'){
@@ -641,7 +657,10 @@ function render(){
 function crumb(){
   const c=document.getElementById('crumb');
   if(S.fRank&&S.fVal){
-    c.innerHTML=`showing <b>${S.fVal}</b> (${RANKNAME[S.fRank]})`+
+    const known=RAW.some(d=>d[S.fRank]===S.fVal);
+    c.innerHTML=(known
+        ? `showing <b>${S.fVal}</b> (${RANKNAME[S.fRank]})`
+        : `no ${RANKNAME[S.fRank]} named <b>${S.fVal}</b> in the data`)+
       `<button id="clr">clear filter</button>`;
     document.getElementById('clr').onclick=()=>{
       S.fRank=''; S.fVal='';
@@ -942,6 +961,15 @@ function fillVals(want){
     o.value=k; o.textContent=`${k} (${counts.get(k)})`;
     sel.appendChild(o);
   });
+  if(want!=null && want!=='' && ![...sel.options].some(o=>o.value===want)){
+    /* A taxon the data does not have (a typo in the hash, or a rank that
+       does not carry it). Until 2026-09-05 the select silently fell back to
+       the first taxon alphabetically, so #fVal=Nope showed Acanthisitti and
+       said so nowhere (audit F12). Now the filter stays on what was asked
+       for, shows nothing, and the crumb says why. */
+    const o=document.createElement('option');
+    o.value=want; o.textContent=`${want} (0)`; sel.appendChild(o);
+  }
   if(want!=null && [...sel.options].some(o=>o.value===want)) sel.value=want;
   S.fVal=sel.value;
 }
