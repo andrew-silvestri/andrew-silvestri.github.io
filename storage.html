@@ -12,7 +12,7 @@
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
 <link rel="stylesheet" href="style.css?v=5c3e7e7c">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="food.html">Fat, sugar, salt</a><a href="economy.html">Economy is not time</a><a href="shoes.html">What a fast shoe is worth</a></span></span><a href="code.html">Code</a></nav>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html" class="on">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="food.html">Fat, sugar, salt</a><a href="neuron.html">The measured neuron</a><a href="economy.html">Economy is not time</a><a href="shoes.html">What a fast shoe is worth</a><a href="continents.html">Where the ground goes</a></span></span><a href="code.html">Code</a></nav>
 <main class="notes">
 
 <h1>Battery revenue simulator</h1>
@@ -39,7 +39,7 @@ for itself?</p>
 
 <p>Doubling from two hours to four buys about nine per cent more revenue.
 Doubling again from four to eight buys under four. On energy arbitrage alone the
-value of duration flattens hard past four hours<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>. The reason is unglamorous.
+value of duration flattens hard past four hours<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. The reason is unglamorous.
 There are only so many hours in a day when the price spread is worth crossing,
 and a longer battery cannot manufacture more of them.</p>
 
@@ -51,7 +51,7 @@ over about a third as many equivalent cycles as the two-hour case.</p>
 <img class="fig wide" src="assets/storage_fig3_duration_value.png?v=b6a6d990" loading="lazy" width="1428" height="892" alt="Arbitrage revenue for two, four and eight hours of duration, with the gain from each step marked: nine dollars per kilowatt-year going from two hours to four, then under four dollars going from four to eight. A second panel puts the best case against an annualised capital cost.">
 <p class="small">The same three durations, read as increments: the second four
 hours add well under half what the first two did. The panel on the right sets
-the best of them against an annualised capital cost<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> &mdash; a
+the best of them against an annualised capital cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> &mdash; a
 scale to read the revenue against, not a verdict, since arbitrage is only one
 of the things a battery is paid for.</p>
 
@@ -73,8 +73,8 @@ where it does.</p>
 
 <h2>Method</h2>
 <p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
-linear programming<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, in monthly blocks with the state of charge carried across
-the joins. Every megawatt hour of throughput is charged a cycling cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, so the
+linear programming<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>, in monthly blocks with the state of charge carried across
+the joins. Every megawatt hour of throughput is charged a cycling cost<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>, so the
 optimiser cannot trade for free, and round-trip efficiency is split
 symmetrically as the square root per leg.</p>
 
@@ -106,7 +106,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
-<ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, <i>Energy Economics</i>, 2009 - estimating the value of electricity storage under perfect foresight.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref3"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Degradation cost per megawatt hour of throughput, and round-trip efficiency.</span></li><li id="ref4"><span class="src">Denholm <i>et al.</i>, <i>The Four-Hour Challenge</i>, National Renewable Energy Laboratory, 2019.</span><span class="what">Why duration value flattens past four hours.</span></li><li id="ref5"><span class="src">NLR (formerly the National Renewable Energy Laboratory), <i>Annual Technology Baseline</i> 2024, utility-scale battery storage, 4-hour duration, Moderate scenario, Market case.</span><span class="what">The capital cost the right-hand panel compares against: $1,938/kW capex (overnight cost, grid connection and construction finance) plus $44/kW-yr fixed operations, annualised over the dataset's own twenty-year capital recovery period at an eight per cent real discount rate, for about $242/kW-yr. A representative figure for scale, not a quote for any particular project.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Denholm <i>et al.</i>, <i>The Four-Hour Challenge</i>, National Renewable Energy Laboratory, 2019.</span><span class="what">Why duration value flattens past four hours.</span></li><li id="ref3"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, utility-scale battery storage, 4-hour duration, Moderate scenario, Market case.</span><span class="what">The capital cost the right-hand panel compares against: $1,938/kW capex (overnight cost, grid connection and construction finance) plus $44/kW-yr fixed operations, annualised over the dataset's own twenty-year capital recovery period at an eight per cent real discount rate, for about $242/kW-yr. A representative figure for scale, not a quote for any particular project.</span></li><li id="ref4"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, <i>Energy Economics</i>, 2009 - estimating the value of electricity storage under perfect foresight.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref5"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Degradation cost per megawatt hour of throughput, and round-trip efficiency.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>

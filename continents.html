@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Where the ground goes — Andrew Silvestri</title>
+<meta name="description" content="Plate interiors hold their shape to about half a millimetre a year, and nobody can tell you where they will be. Computed from 21,910 GNSS stations, eight published reconstructions and four published futures.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/continents.html">
+<script>try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=5c3e7e7c">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">The atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="climate-cost.html">Climate cost calculator</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Others <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="food.html">Fat, sugar, salt</a><a href="neuron.html">The measured neuron</a><a href="economy.html">Economy is not time</a><a href="shoes.html">What a fast shoe is worth</a><a href="continents.html" class="on">Where the ground goes</a></span></span><a href="code.html">Code</a></nav>
+<main class="notes">
+<h1>Where the ground goes</h1>
+<p class="dim">The ground under Denver moves 16 millimetres a year, and the plate it rides holds its shape to 0.47 of a millimetre a year. Nobody can tell you where it will be. Those two facts are not in tension, and the distance between them is this page.</p>
+
+<aside class="marginalia" style="grid-row: span 49" aria-label="On this page">
+<p class="lab">On this page</p>
+<ul>
+<li><b>Stations</b><span class="v">21,910</span></li>
+<li><b>Interiors hold to</b><span class="v">0.47 mm/yr</span></li>
+<li><b>Boundaries miss by</b><span class="v">13.9 mm/yr</span></li>
+<li><b>Plates fitted</b><span class="v">9</span></li>
+<li><b>Reconstructions</b><span class="v">8</span></li>
+</ul>
+</aside>
+<aside class="marginalia right" style="grid-row: span 49">
+<ul>
+<li><b>Futures compared</b><span class="v">4</span></li>
+<li><b>They agree for</b><span class="v">20 Myr</span></li>
+<li><b>Then differ over</b><span class="v">47%</span></li>
+<li><b>Of the surface</b><span class="v">land is 29%</span></li>
+<li><b>Build gates</b><span class="v">15</span></li>
+</ul>
+</aside>
+
+<p>A tectonic plate is a rigid body, and it is rigid to an almost absurd degree. Fit a single rotation to every GNSS station more than 500 kilometres from a plate boundary and the stations sit on it to a median of 0.47 millimetres a year, across thousands of kilometres of continent. Within 100 kilometres of a boundary the same fit misses by 13.9. Almost the whole surface of the Earth is a few rafts that do not deform, and everything that happens to them happens in belts a few hundred kilometres wide.</p>
+
+<p>That is the best-known thing on this page, and it buys less than it appears to. Run it forward and you get arithmetic, not a forecast: the rotations do not hold, and the page shows one measured case where a boundary has changed speed inside the last few million years. Run it backward and eight published reconstructions of the same past agree to a few hundred kilometres at 10 million years and disagree by 16,484 at 500. Run it forward far enough and there are four published futures that agree with each other for 20 million years and then disagree about the land-or-ocean status of 47 per cent of the Earth's surface.</p>
+
+<div class="card">
+<div class="tag">Try it</div>
+<h3 style="margin-top:4px">Watch the reconstructions come apart</h3>
+<p>Pick a place, drag back through 500 million years, and see where each of the 8 published models puts the ground under it. They agree for a while. Then they stop, and some of them stop placing any ground there at all.</p>
+<p><a class="btn" href="continents-app.html" target="_blank" rel="noopener">Open the reconstruction viewer</a>
+<a class="btn ghost" href="downloads/continents-code.zip">Download code and data</a></p>
+</div>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/continents_fig1_futures-phone.png?v=d81308fb">
+<img class="fig wide" src="assets/continents_fig1_futures.png?v=d4f3f7dc" loading="lazy" width="1428" height="1020" alt="Four world maps of the same moment, 200 million years from now, drawn on an equal-area projection. Pangaea Ultima, Novopangaea, Aurica and Amasia each show a different arrangement of land. Amasia gathers almost all of it around the north pole; Aurica gathers it around the equator.">
+</picture>
+<p class="small">Four published futures, all at 200 million years from now, the one age all four reach. Equal Earth, which is equal-area<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, so an area on one panel means the same as the same area on another. All four geometries come from a single 2018 paper by one three-author group, built in a deliberately standardised way, and that paper calls them "end-members of a spectrum of possibilities<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>" rather than predictions. Novopangaea has no peer-reviewed primary source at all: it was devised for a television series and reached print in a trade book<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>. The grids are a digitisation of maps that were drawn<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>, not the output of a plate model, which the deposit's own read-me says in as many words. At 200 million years these four disagree about the land-or-ocean status of 47 per cent of the Earth's surface, and land is only 29 per cent of it. The two degrees at each pole are an artificial mask the authors added for numerical convergence and are not drawn. Grids CC0.</p>
+
+<h2>The measured present</h2>
+
+<p>21,910 stations carry a MIDAS velocity. Keeping those with at least 5 years of record and an uncertainty under 0.5 millimetres a year on both horizontal components leaves 14,404, of which 14,390 carry a plate assignment. Nine plates have enough stations far enough from a boundary to fit.</p>
+
+<img class="fig wide" src="assets/continents_fig2_belts.png?v=156ae82a" loading="lazy" width="1428" height="835" alt="An equal-area world map shaded by distance to the nearest plate boundary, with the boundaries drawn as dark lines and nine plates labelled with their measured speed. The shading is dark in narrow belts along the boundaries and pale across the interiors.">
+<p class="small">Shaded by distance to the nearest plate boundary on a uniform lattice, with the boundaries of Bird's PB2002 model<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> over it and nine plates labelled with the speed their fitted rotation gives at that point. The shading is a computed field, not a map of the stations: North America has 4,569 stations and Africa has 100, so a map of receivers would say more about where geodesy happens than about the Earth. The speeds are a fitted model; how well it fits is the next figure.</p>
+
+<img class="fig wide" src="assets/continents_fig3_rigidity.png?v=867237bc" loading="lazy" width="1428" height="984" alt="A log-log scatter of 13,762 GNSS stations. Distance to the nearest plate boundary on the horizontal axis, and how far each station misses its plate's rigid rotation on the vertical. The cloud collapses onto a floor below one millimetre a year beyond about five hundred kilometres. A separate group of points sits high and far right, labelled as Hawaii.">
+<p class="small">Every station's miss against its own plate's rotation, against how far it sits from a plate boundary. The fit is made on interior stations only and then applied everywhere, so the near-boundary points are a prediction being tested rather than a fit being reported. Beyond 500 kilometres the cloud collapses onto a floor. The group at the top right is Hawaii, 17 stations on the Big Island: they sit further from a plate boundary than almost anything else on Earth and miss by up to 28 millimetres a year, because Kīlauea's south flank moves for reasons that have nothing to do with the Pacific plate.</p>
+
+<table>
+<thead><tr><th>Distance to the nearest boundary</th><th class="n">Stations</th><th class="n">Median miss</th><th class="n">90th percentile</th></tr></thead>
+<tbody><tr><td>0 to 100 km</td><td class="n">1,441</td><td class="n">13.95 mm/yr</td><td class="n">34.36</td></tr>
+<tr><td>100 to 250 km</td><td class="n">1,400</td><td class="n">9.83 mm/yr</td><td class="n">45.05</td></tr>
+<tr><td>250 to 500 km</td><td class="n">1,662</td><td class="n">3.65 mm/yr</td><td class="n">10.34</td></tr>
+<tr><td>500 to 1,000 km</td><td class="n">1,968</td><td class="n">0.75 mm/yr</td><td class="n">2.78</td></tr>
+<tr><td>1,000 to 2,000 km</td><td class="n">4,980</td><td class="n">0.47 mm/yr</td><td class="n">1.35</td></tr>
+<tr><td>more than 2,000 km</td><td class="n">2,311</td><td class="n">0.47 mm/yr</td><td class="n">1.24</td></tr></tbody>
+</table>
+
+<p>The Pacific is the plate that shows why this needs guarding. Fitted on all 79 of its far-field stations it misses by 21.7 millimetres a year and its rotation sits 3.8 mm/yr away from the international model's. Nearly all of that is 17 stations on one volcano, four stations in western Alaska that the source file lists under the Pacific plate but which sit on the Bering block, and one station on Salas y Gómez that is filed under the Pacific and is actually on Nazca, 138 millimetres a year out. A stated rule — fit, drop anything past 5 median absolute deviations, refit, repeat — removes 23 of the 79 and the plate comes back to 0.66. The rule is on the page rather than a list of station names, because a list of names is a hardcoded answer to today's contamination.</p>
+
+<h2>It does not hold</h2>
+
+<p>Plate motion is not a constant, and that is measured rather than argued. NNR-MORVEL56 averages sea-floor spreading over the last 0.78 to 3.16 million years; ITRF2020-PMM averages space geodesy over decades. Where those disagree, either a boundary has changed speed or one of the models is wrong.</p>
+
+<img class="fig wide" src="assets/continents_fig4_slowdown.png?v=4f619133" loading="lazy" width="1428" height="716" alt="Seven plate boundaries as rows. Each row joins an open circle for the geologically averaged rate to a filled circle for the geodetic rate. Three continental collisions show large gaps; four ridges and a rift show small ones.">
+<p class="small">Motion of the first plate relative to the second, at a point on the boundary named. Comparisons are on relative motion between pairs only, because the two models sit in different reference frames and only relative motion is frame-independent. The 3 that have slowed by more than five millimetres a year are all continental collisions; the rest are mid-ocean ridges and a rift, and one of those, the SE Indian ridge, has gone 2.5 millimetres a year <em>faster</em>. MORVEL's averaging interval is not one number<sup class="cite" id="cr6"><a href="#ref6">6</a></sup> — 0.78 million years for ten spreading centres, 3.16 for seven, and decades for the five or six plates it carries on GPS. MORVEL is not openly licensed: its authors reserve commercial rights.</p>
+
+<p>India against Eurasia is the case to hold on to. Its geological average is 45.0 millimetres a year and its geodetic rate is 37.4: 7.6 slower now than over the last few million years. Arabia against Eurasia has slowed by 7.4 and Nazca against South America by 7.1, while the mid-Atlantic and the East African rift agree to about two. That is the argument against extrapolation, and it is better than any amount of saying that a hundred million years is a long time: the poles measured today were measurably different three million years ago.</p>
+
+<h2>The reconstructed past</h2>
+
+<p>Going backwards, the question stops being how precisely anything is measured and becomes how much published models of the same past disagree. 8 global plate models were asked where 12 present-day places were, every 10 million years to 500. Each model is named in every request, because the service's default model is documented as liable to change and named models' rotation files have been updated in place as recently as last year.</p>
+
+<img class="fig wide" src="assets/continents_fig5_past.png?v=0a56871f" loading="lazy" width="1428" height="1552" alt="Six small panels, one per city, each showing eight lines of reconstructed latitude against age from zero to five hundred million years. The lines sit together near the present and fan apart going back. Several lines end early where a model's coverage stops, and some break in the middle where a model places no crust.">
+<p class="small">Reconstructed latitude, not position. That is the honest quantity: palaeomagnetism determines how far from the equator a rock formed and cannot determine its longitude at all<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>, so a fan of latitudes is the measurement and a map of positions is the measurement plus each model's own assumption about east and west. Lines end where a model's coverage ends. Lines that break in the middle are models that place no crust at that place and age. The models share ancestry<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>, so the true spread of admissible reconstructions is wider than the spread between them, not narrower.</p>
+
+<p>At 500 million years, 4 of the 8 models still reach that far back, and 3 of those 4 place no crust under Sydney at all. The disagreement there is not about where the ground was. It is about whether it existed.</p>
+
+<h2>The three regimes</h2>
+
+<img class="fig wide" src="assets/continents_fig6_regimes.png?v=d6d7cff5" loading="lazy" width="1428" height="984" alt="A log chart of how far apart independent answers are, in kilometres, against millions of years from now in either direction. A dashed ray shows today's measured miss accumulated forward. A solid line shows the disagreement between published reconstructions of the past. A dotted line with open squares shows a proxy for the spread between the four futures. A horizontal rule marks the furthest two points on Earth can be.">
+<p class="small">Three quantities that are not the same quantity, on one pair of axes, which is the point. The solid line is measured: the largest distance between any two of the 8 reconstructions of the same place and age. The dashed ray is today's measured miss run forward at 0.47 millimetres a year, which is 0.47 kilometres per million years — the extrapolation this page argues against, drawn so it can be compared. The dotted line is a <em>proxy</em>: the separation between the four futures' land centroids. A centroid averages a whole configuration, so two arrangements that barely overlap can have close centroids and two that overlap can have distant ones; the comparison with the measured line above it is <em>assumed</em>, and the direction of its bias is not known. The number the future can be held to in its own units is the one annotated on it. The ceiling is the antipodal distance, 20,015 kilometres.</p>
+
+<h2>What would have made this page wrong</h2>
+
+<p>Two of the inputs contain a trap that produces a confident, plausible, wrong number rather than an error. Each is a check that runs before the number it guards exists, and a failure means there is no page rather than a warning in a log.</p>
+
+<p>The four future scenarios are not on a common longitude convention: two declare −180 to 180 and two declare 0 to 360. Read as they come, two of the four sit half a world out, and the four present-day grids — which are four copies of the same map of today — appear to disagree about 34 per cent of the planet instead of 0.8. That 34 would have been this page's headline number, computed from real files, with nothing anywhere downstream to give it away.</p>
+
+<p>The obvious guard is that the four should agree at the present day. That guard is <em>not sufficient</em>, and the distinction is the reason this section exists: all four are read by the same code, so any mistake common to all four leaves them agreeing perfectly while every map here is wrong. The checks that can catch such a mistake are the ones whose answer comes from outside the data — 12 named points whose land-or-sea answer comes from an ordinary world map, and the Earth's own land fraction.</p>
+
+<table>
+<thead><tr><th>Check</th><th>Threshold</th><th class="n">Measured</th></tr></thead>
+<tbody><tr><td>MIDAS velocities are in the frame the ITRF comparison assumes</td><td>IGS20</td><td class="n">IGS20</td></tr>
+<tr><td>named land/sea probes, truth from a world map [committed masks]</td><td>48/48 exact</td><td class="n">48/48</td></tr>
+<tr><td>area-weighted land at t=0, against Earth's own [committed masks]</td><td>29.2 +/- 0.5 pp</td><td class="n">29.09-29.10 %</td></tr>
+<tr><td>the four t=0 grids agree with each other (necessary, NOT sufficient) [committed masks]</td><td>&lt;= 1.5 %</td><td class="n">0.78 %</td></tr>
+<tr><td>node axes: 1440 x 721 at exactly 0.25 degrees [committed masks]</td><td>lat -90..+90 exact</td><td class="n">-90.00..90.00 step 0.2500</td></tr>
+<tr><td>negative control: reading the grids without normalising still manufactures a disagreement</td><td>&gt;= 25.0 % of the surface</td><td class="n">33.96 % and 14 of 48 probes wrong</td></tr>
+<tr><td>each fitted rotation VECTOR against ITRF2020-PMM's (break_b1.py: the station check alone does not pin this)</td><td>&lt;= 0.03 deg/Myr</td><td class="n">0.0144 deg/Myr worst</td></tr>
+<tr><td>velocity difference from ITRF2020-PMM sampled over the stations' extent, not at the stations</td><td>p95 &lt;= 2.0 mm/yr</td><td class="n">1.36 mm/yr worst</td></tr>
+<tr><td>velocity difference from ITRF2020-PMM at the plate's own stations (the contamination check)</td><td>median &lt;= 1.5 mm/yr</td><td class="n">1.10 mm/yr worst</td></tr>
+<tr><td>worst single retained station; one bad station cannot move a weighted fit but does ruin the residual the page quotes</td><td>&lt;= 3.0 mm/yr</td><td class="n">2.39 mm/yr worst</td></tr>
+<tr><td>the exclusion is a stated rule that converges, not a list of station names</td><td>converged, &lt; 40% dropped</td><td class="n">29% worst, 4 iterations worst</td></tr>
+<tr><td>negative control: the Pacific before exclusion still disagrees with ITRF2020-PMM</td><td>&gt;= 2.0 mm/yr</td><td class="n">3.83 mm/yr</td></tr>
+<tr><td>the pinned model set is what the service served</td><td>8 models present</td><td class="n">8 of 8</td></tr>
+<tr><td>identity at age 0: every model returns the point it was given, recomputed from the cache rather than read from it. The only known answer this regime has, and the whole defence against a swapped coordinate order</td><td>&lt;= 1.0 km</td><td class="n">0.000 km</td></tr>
+<tr><td>no sentinel reached a distance, and models still decline to place crust at the oldest ages</td><td>0 sentinels in any distance, no-crust count &gt; 0</td><td class="n">0 sentinels, 666 no-crust cases</td></tr></tbody>
+</table>
+
+<p>Two of those are negative controls, and they are there because a check that has never been seen to fail is not known to work. If a future release of the scenario grids quietly harmonises the longitude conventions, or a future release of the velocity file reassigns the Hawaiian stations, the guarded numbers would still be produced and this page's account of why they are guarded would become false. So the build also requires the failures to still be reproducible, and stops if they are not.</p>
+
+<h2>Method</h2>
+
+<p>Velocities are MIDAS estimates of GNSS station motion<sup class="cite" id="cr9"><a href="#ref9">9</a></sup>, in IGS20, which is the IGS realisation of ITRF2020<sup class="cite" id="cr10"><a href="#ref10">10</a></sup> — that is what makes the comparison with ITRF2020-PMM a comparison of models rather than of reference frames, and the build asserts it. A plate's rotation is fitted by weighted least squares on <em>v</em> = <b>ω</b> × <b>r</b>, the form in equation 1 of Altamimi and colleagues 2017<sup class="cite" id="cr11"><a href="#ref11">11</a></sup>; neither MORVEL nor the NNR-MORVEL56 paper states it.</p>
+
+<p>Checking a fitted rotation against a published one at that plate's own stations is not enough to pin it, and this was measured rather than assumed. The stations of a plate cover a patch, and there is a direction in rotation space along which the rotation can be moved a long way while barely changing any velocity inside that patch. For South America the rotation can be moved 0.060 degrees per million years — 52 per cent of the plate's own rate — while the difference at its own stations stays inside the 1.5 millimetre a year check. So the rotation vectors are compared directly, in degrees per million years, and that check is the one that pins the plate. The station-level check is kept beside it, because it is the right check for a contaminated station, which is a different failure.</p>
+
+<p>The NNR-MORVEL56 table is extracted from Table 1 of the paper itself<sup class="cite" id="cr12"><a href="#ref12">12</a></sup> and cross-checked against an independent transcription of the same table. The authors' own copy is a JPEG on a host that no longer answers, and the page's argument against extrapolation rests on those numbers.</p>
+
+<p>Distance to a plate boundary is to the nearest PB2002 <em>vertex</em>, not to the nearest point on the segment, which slightly overestimates distance where a segment is sparsely sampled. The cuts, the 500 kilometre threshold, the exclusion rule and the 88-degree polar mask are all <em>assumed</em> and all stated where they are used.</p>
+
+<h2>Limits</h2>
+
+<p>No reconstruction here carries a formal uncertainty, because none is published: the field's own review names uncertainty quantification as an open problem<sup class="cite" id="cr13"><a href="#ref13">13</a></sup>, and inventing an error bar would be worse than not having one. The six places in the fan are not a global grid. The future grids carry no plate identities, so this page can say that a scenario puts land in the south polar region but cannot say that the land is Antarctica.</p>
+
+<p>Nothing here says where any named place will be. Not at any confidence, not for any of the four futures, and the four are not ranked — the paper that built all of them ranks none above the others. The last age shown is 500 million years, where 4 of the 8 models still reach.</p>
+
+<hr>
+
+<h2>The code</h2>
+<p><code>fetch_ngl.py</code>, <code>fetch_static.py</code>, <code>fetch_osf.py</code> and <code>fetch_gplates.py</code> get the data and pin it; <code>otis_grid.py</code> and <code>plates.py</code> hold the readers and the gates; <code>break_b1.py</code> is the experiment that broke the first version of one of them; <code>build_continents.py</code> computes and gates everything and writes the payload; <code>fig_continents.py</code> draws the six figures; <code>test_continents.py</code> checks the failure modes.</p>
+<p>The archive is larger than the others on this site, and deliberately so. Most of it is the 1.5 MB station table and the 763 KB of packed scenario masks: with those two files a reader rebuilds every number here without re-fetching seven megabytes of velocities or a scenario archive that unpacks to about four hundred. That is the difference between an archive that documents the build and one that reproduces it.</p>
+<p><a class="btn" href="downloads/continents-code.zip">Download source and data</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">Savri&#269;, B., Patterson, T. &amp; Jenny, B., <i>International Journal of Geographical Information Science</i> 33(3):454-465, 2019, doi:10.1080/13658816.2018.1504949.</span><span class="what">The projection used for both maps, chosen because every number in their captions is an area claim and because its pole line keeps the circumpolar scenario legible.</span></li><li id="ref2"><span class="src">Davies, H.S., Green, J.A.M. &amp; Duarte, J.C., <i>Global and Planetary Change</i> 169:133-144, 2018, doi:10.1016/j.gloplacha.2018.07.015.</span><span class="what">The one paper that built all four future geometries, in a deliberately standardised way, and its own description of them.</span></li><li id="ref3"><span class="src">Nield, T., <i>Supercontinent: Ten Billion Years in the Life of Our Planet</i>, Granta, 2007.</span><span class="what">Novopangaea's only source. Roy Livermore devised it for the BBC series The Future Is Wild in the late 1990s; it has no peer-reviewed primary source.</span></li><li id="ref4"><span class="src">Davies, H.S., Green, J.A.M. &amp; Duarte, J.C., <i>Earth System Dynamics</i> 11(1):291-299, 2020, doi:10.5194/esd-11-291-2020. Data at OSF 8NEQ4, doi:10.17605/OSF.IO/8NEQ4, CC0 1.0.</span><span class="what">The gridded scenarios themselves, their 0.25 degree resolution, the artificial two-degree polar land mask, and the CC0 licence.</span></li><li id="ref5"><span class="src">Bird, P., <i>Geochemistry, Geophysics, Geosystems</i> 4(3):1027, 2003, doi:10.1029/2001GC000252.</span><span class="what">The plate boundary geometry every distance on this page is measured to: 52 plates and 13 diffuse deformation zones.</span></li><li id="ref6"><span class="src">DeMets, C., Gordon, R.G. &amp; Argus, D.F., <i>Geophysical Journal International</i> 181(1):1-80, 2010, doi:10.1111/j.1365-246X.2009.04491.x.</span><span class="what">MORVEL itself, including the averaging intervals and the section documenting plate boundaries that have slowed within the last few million years, which this page reproduces independently.</span></li><li id="ref7"><span class="src">M&#252;ller, R.D. <i>et al.</i>, <i>Solid Earth</i> 13(7):1127-1159, 2022, doi:10.5194/se-13-1127-2022.</span><span class="what">Verbatim: because the Earth's magnetic dipole field is radially symmetric, palaeo-longitudinal information cannot be determined from palaeomagnetic data alone.</span></li><li id="ref8"><span class="src">Buffan, L., Jones, L.A., Domeier, M., Scotese, C.R., Zahirovic, S. &amp; Varela, S., <i>Methods in Ecology and Evolution</i> 14:3007-3019, 2023, doi:10.1111/2041-210X.14204.</span><span class="what">Inter-model disagreement measured on a global grid, and the caveat that shared ancestry makes the true spread of admissible reconstructions wider than the measured spread between models.</span></li><li id="ref9"><span class="src">Blewitt, G., Kreemer, C., Hammond, W.C. &amp; Gazeaux, J., <i>Journal of Geophysical Research: Solid Earth</i> 121(3):2054-2068, 2016, doi:10.1002/2015JB012552.</span><span class="what">The velocity estimator behind every station used here, and its stated accuracy of 0.23 mm/yr RMS in horizontal velocity on the stable North American interior.</span></li><li id="ref10"><span class="src">Altamimi, Z., Metivier, L., Rebischung, P., Collilieux, X., Chanard, K. &amp; Barneoud, J., <i>Geophysical Research Letters</i> 50(24):e2023GL106373, 2023, doi:10.1029/2023GL106373.</span><span class="what">ITRF2020-PMM, the independently estimated plate motion model every fitted rotation on this page is checked against; 13 plates from 518 sites, fitting that velocity field to 0.25 mm/yr WRMS.</span></li><li id="ref11"><span class="src">Altamimi, Z., Metivier, L., Rebischung, P., Rouby, H. &amp; Collilieux, X., <i>Geophysical Journal International</i> 209(3):1906-1912, 2017, doi:10.1093/gji/ggx136.</span><span class="what">The Euler-pole-to-surface-velocity relation used to fit every plate. Neither MORVEL nor the NNR-MORVEL56 paper states it.</span></li><li id="ref12"><span class="src">Argus, D.F., Gordon, R.G. &amp; DeMets, C., <i>Geochemistry, Geophysics, Geosystems</i> 12(11):Q11001, 2011, doi:10.1029/2011GC003751.</span><span class="what">NNR-MORVEL56, the geologically averaged plate motions, with their 95% uncertainties. Not openly licensed: the authors reserve commercial rights.</span></li><li id="ref13"><span class="src">Seton, M. <i>et al.</i>, <i>Nature Reviews Earth &amp; Environment</i> 4:185-204, 2023, doi:10.1038/s43017-022-00384-8.</span><span class="what">Why no reconstruction on this page carries a formal error bar.</span></li></ol>
+
+<footer>Andrew Silvestri · energy systems modelling · <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+</main>
+<script src="assets/motion.js?v=6bf4b397"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
+</body></html>

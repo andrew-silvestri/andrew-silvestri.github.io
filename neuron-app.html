@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What a drawing at true proportions needs</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<meta name="theme-color" content="#F2F0EF">
+<style>
+/* The site's tokens (site/style.css :root, "Yacht club", 2026-09-04), copied
+   by name and value because this file must also work alone from a folder
+   (the download). Nothing chromatic is set anywhere else in this file. */
+:root{
+  --bg:#F2F0EF; --bg-lift:#E9E6E4; --card:#FAF9F8; --ink:#241E1A; --dim:#625C57;
+  --faint:#D9D8D6; --rule:#BBBDBC; --acc:#245F73; --acc-dim:#4A8AA0;
+  --acc-ink:#FFFFFF; --moss:#733E24; --rose:#A9724F; --slate:#7F8A8F;
+  /* the type scale (style.css); 12px is the floor and nothing here goes under it */
+  --fs-2:12px; --fs-1:14.5px; --fs0:17.5px; --fs1:21px; --fs2:25px;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@font-face{font-family:"IBM Plex Sans";src:url("assets/fonts/IBMPlexSans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url("assets/fonts/IBMPlexSans-SemiBold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("assets/fonts/IBMPlexMono-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:var(--fs-1)/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+main{max-width:960px;margin:0 auto;padding:28px 20px 56px}
+h1{font-size:var(--fs2);line-height:1.2;margin:0 0 6px;font-weight:600}
+p.dim{color:var(--dim);margin:0 0 22px;max-width:64ch}
+p.dim b{color:var(--ink);font-weight:600}
+.wrap{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.1fr);gap:26px;align-items:start}
+@media (max-width:760px){.wrap{grid-template-columns:1fr}}
+.lab{font:var(--fs-2)/1.4 var(--mono);color:var(--dim);text-transform:uppercase;
+  letter-spacing:.06em;margin:0 0 8px}
+/* the five constraints */
+ul.cons{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+ul.cons li{border-bottom:1px solid var(--faint)}
+ul.cons button{width:100%;display:flex;align-items:baseline;gap:10px;text-align:left;
+  background:none;border:0;padding:11px 4px;font:inherit;color:var(--ink);cursor:pointer}
+ul.cons button:hover{background:var(--card)}
+ul.cons button:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.box{flex:0 0 auto;width:15px;height:15px;border:1.5px solid var(--rule);border-radius:2px;
+  position:relative;top:2px}
+li.on .box{background:var(--acc);border-color:var(--acc)}
+li.on .box::after{content:"";position:absolute;left:4px;top:.5px;width:4px;height:9px;
+  border:solid var(--acc-ink);border-width:0 2px 2px 0;transform:rotate(42deg)}
+.name{flex:1 1 auto}
+.alone{font:var(--fs-2)/1.4 var(--mono);color:var(--dim);white-space:nowrap}
+li.on .name{font-weight:600}
+.ord{font:var(--fs-2)/1.4 var(--mono);color:var(--acc);width:1.4em;flex:0 0 auto}
+/* the cascade */
+.panel{background:var(--card);border:1px solid var(--faint);padding:16px 18px 18px}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-1)}
+th{text-align:left;font:var(--fs-2)/1.4 var(--mono);color:var(--dim);text-transform:uppercase;
+  letter-spacing:.06em;font-weight:400;padding:0 0 6px;border-bottom:1px solid var(--rule)}
+th.n,td.n{text-align:right;font-variant-numeric:tabular-nums}
+td{padding:7px 0;border-bottom:1px solid var(--faint);vertical-align:baseline}
+tr:last-child td{border-bottom:0}
+td.cut{color:var(--moss);font:var(--fs-2)/1.4 var(--mono);text-align:right;white-space:nowrap}
+.total{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rule);
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.total .big{font-size:var(--fs2);font-weight:600;font-variant-numeric:tabular-nums}
+.total .of{color:var(--dim);font-size:var(--fs-2)}
+.note{color:var(--dim);font-size:var(--fs-2);margin:12px 0 0}
+.empty{color:var(--dim);margin:6px 0 0}
+button.reset{margin-top:14px;background:none;border:1px solid var(--rule);color:var(--dim);
+  font:var(--fs-2)/1 var(--mono);padding:7px 10px;cursor:pointer;text-transform:uppercase;
+  letter-spacing:.06em}
+button.reset:hover{border-color:var(--acc);color:var(--acc)}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--rule);
+  color:var(--dim);font-size:var(--fs-2);max-width:74ch}
+footer a{color:var(--acc)}
+</style>
+</head><body>
+<main>
+<h1>What a drawing at true proportions needs</h1>
+<p class="dim">Every published reconstruction of a neuron, and the five things a
+drawing would need it to carry. Tick them in any order and watch what each one
+costs &mdash; <b>the order changes the answer</b>, because the constraints are not
+independent.</p>
+
+<div class="wrap">
+<div>
+<p class="lab">The constraints</p>
+<ul class="cons" id="cons"></ul>
+<button class="reset" id="reset" type="button">Clear</button>
+</div>
+<div class="panel">
+<p class="lab">What is left</p>
+<div id="out"></div>
+</div>
+</div>
+
+<footer id="foot"></footer>
+</main>
+<script id="data" type="application/json">{"all_note":"These 104 come from 6 laboratories, contain no human cell, and are almost all cells whose axon never leaves the neighbourhood.","constraints":[{"key":"parts","label":"a soma, a dendrite and an axon","n":22491},{"key":"diameter","label":"a measured diameter","n":89132},{"key":"three_d","label":"three dimensions","n":232322},{"key":"axon_complete","label":"an axon its depositor marked complete","n":36582},{"key":"shrinkage","label":"a correction for tissue shrinkage","n":7927}],"foot":"Every reconstruction in NeuroMorpho.Org v8.x, retrieved 2026-09-05, counted from the archive's own metadata. The counts are the archive's claims about its files, not measurements of them. <a href=\"neuron.html\">Back to the page</a>.","subsets":{"-":298339,"0":22491,"01":12123,"012":11968,"0123":1651,"01234":104,"0124":791,"013":1656,"0134":104,"014":791,"02":21341,"023":5135,"0234":219,"024":2138,"03":5734,"034":219,"04":2138,"1":89132,"12":80801,"123":4976,"1234":121,"124":3291,"13":5420,"134":128,"14":3391,"2":232322,"23":34048,"234":236,"24":7678,"3":36582,"34":243,"4":7927},"total":298339}</script>
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById('data').textContent);
+  var order = [];                       // constraint indices, in the order ticked
+  var consEl = document.getElementById('cons');
+  var outEl  = document.getElementById('out');
+
+  function count(idxs){
+    var k = idxs.slice().sort().join('');
+    return D.subsets[k === '' ? '-' : k];
+  }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+
+  function draw(){
+    consEl.innerHTML = '';
+    D.constraints.forEach(function(c, i){
+      var on = order.indexOf(i) >= 0;
+      var li = document.createElement('li');
+      li.className = on ? 'on' : '';
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.innerHTML = '<span class="box"></span>' +
+        '<span class="ord">' + (on ? (order.indexOf(i) + 1) : '') + '</span>' +
+        '<span class="name">' + c.label + '</span>' +
+        '<span class="alone">' + fmt(c.n) + '</span>';
+      b.onclick = function(){
+        var at = order.indexOf(i);
+        if (at >= 0) order.splice(at, 1); else order.push(i);
+        draw();
+      };
+      li.appendChild(b);
+      consEl.appendChild(li);
+    });
+
+    if (!order.length){
+      outEl.innerHTML = '<p class="empty">Nothing ticked: all ' + fmt(D.total) +
+        ' reconstructions.</p><p class="note">The number beside each constraint is how many ' +
+        'satisfy it on its own.</p>';
+      return;
+    }
+    var rows = '', prev = D.total, running = [];
+    order.forEach(function(i){
+      running.push(i);
+      var n = count(running);
+      var cut = prev > 0 ? (1 - n / prev) : 0;
+      rows += '<tr><td>' + D.constraints[i].label + '</td>' +
+              '<td class="n">' + fmt(n) + '</td>' +
+              '<td class="cut">&minus;' + (cut * 100).toFixed(cut > 0.995 ? 2 : 0) + '%</td></tr>';
+      prev = n;
+    });
+    var left = count(order);
+    outEl.innerHTML =
+      '<table><thead><tr><th>Constraint</th><th class="n">Left</th><th class="n">Cost</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="total"><span class="big">' + fmt(left) + '</span>' +
+      '<span class="of">of ' + fmt(D.total) + ' &middot; ' +
+      (left / D.total * 100).toFixed(left / D.total < 0.001 ? 3 : 1) + '%</span></div>' +
+      (order.length === D.constraints.length
+        ? '<p class="note">' + D.all_note + '</p>' : '');
+  }
+
+  document.getElementById('reset').onclick = function(){ order = []; draw(); };
+  document.getElementById('foot').innerHTML = D.foot;
+  draw();
+})();
+</script>
+</body></html>
