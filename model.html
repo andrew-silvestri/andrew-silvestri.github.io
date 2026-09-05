@@ -128,14 +128,16 @@ would multiply a change by its own degree instead of distributing it.</p>
 <ol>
 <li>For each node, take the weighted mean of the effects arriving along its
 links, using the coefficients from 4.3.</li>
-<li>Multiply that inflow by (1 &minus; inertia) for that node.</li>
+<li>Multiply that inflow by (1 &minus; 0.6 &times; inertia) for that node, so
+the most inert node still hears four tenths of its drivers.</li>
 <li>Add the applied change at that node, if any.</li>
 <li>Apply the tanh function. This keeps the result between -1 and +1.</li>
 <li>Move the node most of the way to this new value.</li>
 </ol>
 
 <p>The model stops when no node moves more than 0.00001 in one step, and gives
-up at sixty steps. Nothing in this write-up reaches sixty.</p>
+up at sixty steps. Nothing in this write-up reaches sixty; the prepared
+changes settle in 5 to 42.</p>
 </div>
 
 <img class="fig wide" src="assets/model_propagation_step.png?v=780b7b46" loading="lazy" width="2280" height="844"
@@ -147,19 +149,21 @@ up at sixty steps. Nothing in this write-up reaches sixty.</p>
 
 <p>There are 197,068 links, with weights between -0.670 and +1.000. Of these, 1,144 are negative. A negative link carries relief rather than stress.</p>
 
-<table>
-<tr><th>Link</th><th>Weight</th><th>Where the weight comes from</th></tr>
-<tr><td>Climate system → temperature</td><td>0.85</td><td>Fixed. The temperature follows the forcing closely.</td></tr>
-<tr><td>Oil price → related prices</td><td>0.70 to 0.80</td><td>Observed price correlation</td></tr>
-<tr><td>Fuel supply → national grid</td><td>0.55 × fuel share</td><td><b>The real share of that fuel in that country&#x27;s power</b></td></tr>
-<tr><td>Price benchmark → fuel supply</td><td>0.35 + 0.40 × share</td><td>Higher where the country depends more on that fuel</td></tr>
-<tr><td>National grid → district</td><td>0.60</td><td>Fixed. Districts are parts of the grid.</td></tr>
-<tr><td>District → consumer group</td><td>0.50</td><td>Fixed.</td></tr>
-<tr><td>Historical event → grid</td><td>0.05 to 0.50</td><td><b>log10 of the real damage cost in dollars</b></td></tr>
-<tr><td>Temperature → national grid</td><td>0.30</td><td>Heating and cooling demand</td></tr>
-<tr><td>Temperature → gas and power price</td><td>0.15 to 0.20</td><td>Heating and cooling demand</td></tr>
-<tr><td>Consumer group → district</td><td>negative</td><td>Demand response. Consumers use less when costs rise.</td></tr>
-<tr><td>Power station → grid</td><td>0.45 ÷ plant count</td><td><b>Normalised.</b> See section 5.3.</td></tr>
+<table><tr><th>Link</th><th class="n">Links</th><th>Weight</th><th>Where the weight comes from</th></tr>
+<tr><td>Climate system → temperature</td><td class="n">1</td><td>+0.85</td><td>Fixed. The temperature follows the forcing closely.</td></tr>
+<tr><td>Price benchmark → related benchmark</td><td class="n">6</td><td>+0.10 to +0.80</td><td>Observed price correlation.</td></tr>
+<tr><td>Fuel supply → national grid</td><td class="n">725</td><td>+0.00 to +0.55</td><td>0.55 × <b>the real share of that fuel in that country's power</b>.</td></tr>
+<tr><td>Price benchmark → fuel supply</td><td class="n">364</td><td>+0.35 to +0.75</td><td>0.35 + 0.40 × share: higher where the country depends more on that fuel.</td></tr>
+<tr><td>National grid → district</td><td class="n">3,304</td><td>+0.42 to +0.60</td><td>0.60 for a district with a measured population, 0.42 for a synthetic filler (build_atlas_global.py).</td></tr>
+<tr><td>District → consumer group</td><td class="n">1,142</td><td>+0.50</td><td>Fixed.</td></tr>
+<tr><td>Recorded event → grid</td><td class="n">1,057</td><td>+0.02 to +0.50</td><td><b>log10 of the recorded damage cost</b> for the 526 EM-DAT events that have one; for the 8,733 USGS earthquakes, which carry no cost, from magnitude and distance (build_atlas_global.py).</td></tr>
+<tr><td>Recorded event → power plant</td><td class="n">23,320</td><td>+0.02 to +0.50</td><td>From magnitude and distance; a quake reaches at most twelve nodes inside its felt radius.</td></tr>
+<tr><td>Temperature → national grid</td><td class="n">214</td><td>+0.30</td><td>Heating and cooling demand.</td></tr>
+<tr><td>Temperature → gas and power price</td><td class="n">2</td><td>+0.15 to +0.20</td><td>Heating and cooling demand.</td></tr>
+<tr><td>Consumer group → district</td><td class="n">1,142</td><td>-0.01</td><td>Negative: demand response. Consumers use less when costs rise.</td></tr>
+<tr><td>Power station → grid</td><td class="n">34,932</td><td>+0.20 to +0.75</td><td>0.20 + 0.55 × √(capacity ÷ the largest plant); the division by plant count is the engine's fan-in, section 5.3.</td></tr>
+<tr><td>District → behaviour channel</td><td class="n">66,264</td><td>+0.01 to +1.00</td><td>Varies by district; set in the brain build.</td></tr>
+<tr><td>Behaviour channel → consumer group</td><td class="n">1,142</td><td>+0.28</td><td>Fixed.</td></tr>
 </table>
 
 <h3>5.2 Node inertia</h3>
@@ -167,15 +171,17 @@ up at sixty steps. Nothing in this write-up reaches sixty.</p>
 <p>Inertia says how strongly a node resists change. A value of 0 means the node
 reacts at once. A value of 1 means the node almost never moves.</p>
 
-<table>
-<tr><th>Node type</th><th>Inertia</th><th>Reason</th></tr>
-<tr><td>Historical event</td><td>0.15</td><td>An event happens at once.</td></tr>
-<tr><td>Price benchmark</td><td>0.09 to 0.30</td><td><b>Set by the real volatility of that price series.</b> A more volatile price reacts faster.</td></tr>
+<table><tr><th>Node type</th><th>Inertia</th><th>Reason</th></tr>
+<tr><td>Recorded event</td><td>0.15 to 0.55</td><td>0.10 + 0.10 per unit of magnitude above 5: an event happens at once, a great earthquake holds longer.</td></tr>
+<tr><td>Price benchmark, port</td><td>0.09 to 0.62</td><td>Benchmarks: <b>set by the real volatility of that price series</b>, a more volatile price reacting faster. Ports: by harbour size class.</td></tr>
 <tr><td>National grid</td><td>0.30</td><td>A grid must balance in seconds.</td></tr>
-<tr><td>Fuel supply, district</td><td>0.35</td><td>Supply chains take weeks.</td></tr>
-<tr><td>Consumer group, power station</td><td>0.45</td><td>People and plants change slowly.</td></tr>
+<tr><td>Fuel supply, district</td><td>0.34 to 0.35</td><td>Supply chains take weeks.</td></tr>
+<tr><td>Settlement, consumer group</td><td>0.18 to 0.73</td><td>Settlements: 0.18 + 0.55 × ∛(population ÷ the largest); a city changes more slowly than a town.</td></tr>
+<tr><td>Power station</td><td>0.14 to 0.74</td><td>From capacity: a larger plant changes more slowly.</td></tr>
 <tr><td>Climate system</td><td>0.45 to 0.55</td><td>The climate is a slow variable.</td></tr>
-<tr><td>Behaviour channel</td><td>0.75</td><td>Habits change very slowly.</td></tr>
+<tr><td>Weather mode</td><td>0.12 to 0.42</td><td>Set per index (build_atlas_global.py).</td></tr>
+<tr><td>Behaviour channel</td><td>0.30 to 0.76</td><td>0.30 rising by 0.02 per channel: a modelling choice, not a measurement.</td></tr>
+<tr><td>Sun, insolation</td><td>0.00 to 0.78</td><td>The sun is held; insolation follows it at once.</td></tr>
 </table>
 
 <h3>5.3 Fan-in normalisation</h3>
@@ -209,24 +215,27 @@ supply moves it and a change at one of its 4,235 plants does not.</p>
 <tr><td>Global pandemics</td><td>The Black Death, at today's scale</td><td class="n">2,744</td></tr>
 </table>
 
-<h2>7. How to run the model</h2>
+<h2>7. Running the model</h2>
 
-<p>There are three ways. All three use the same calculation.</p>
+<p>The model the atlas draws, 86,622 nodes, is built and run by the Python
+scripts in <a href="downloads/atlas-code.zip">atlas-code.zip</a>:
+<code>build_atlas_global.py</code> assembles the payload from the public data
+sets in section 3, <code>build_scenarios.py</code> writes the sixty prepared
+changes, and <code>build_throughlines.py</code> holds the propagation engine
+the figures use, the same arithmetic as the browser's; <code>tests/test_parity.py</code>
+runs every prepared change through both and holds them to a stated tolerance.
+There is no Julia port of this model, and nothing in it compares a run's
+outcome to an observed one.</p>
 
-<table>
-<tr><th>Method</th><th>Command</th><th>Use</th></tr>
-<tr><td>Julia</td><td><code>julia run.jl</code></td><td>Fastest. No packages needed.</td></tr>
-<tr><td>Terminal application</td><td><code>python3 energy_terminal.py</code></td><td>Interactive. Browse, shock, trace routes.</td></tr>
-<tr><td>Charts</td><td><code>python3 make_chart.py</code></td><td>Produces the summary figures.</td></tr>
-</table>
+<h3>7.1 The retired July 2026 build</h3>
 
-<p>All three run the July 2026 Julia build of the model, 7,192 nodes, which the
-Python mirror in the same download reproduces node by node; the file that
-records that agreement, <code>parity_target.json</code>, belongs to that build
-and is not in the download. The 86,622-node model the atlas draws is built by
-the Python scripts in <a href="downloads/atlas-code.zip">atlas-code.zip</a>. It
-has no Julia port, and nothing in it compares a run's outcome to an observed
-one.</p>
+<p>An earlier build, 7,192 nodes, was written in Julia with a Python mirror
+that reproduced it node by node, and it ran three ways: <code>julia run.jl</code>,
+<code>python3 energy_terminal.py</code> (browse, shock, trace routes) and
+<code>python3 make_chart.py</code>. Those commands and that build are not the
+model this page describes and are not in the download; the file that recorded
+their agreement, <code>parity_target.json</code>, belongs to that build. They
+are named here so that nobody looks for them in the current one.</p>
 
 <hr>
 <h2>Figures from this model</h2>

@@ -67,7 +67,8 @@
   /* ============================================== the propagation engine ==
    * lam is the relaxation rate; a node's resilience damps what reaches it;
    * tanh keeps every value inside (-1, 1) so nothing can run away. Sixty
-   * rounds is a ceiling, not a target — scenarios settle in 30 to 40.     */
+   * rounds is a ceiling, not a target — the sixty prepared scenarios settle
+   * in 5 to 42 (measured 2026-09-05; update_atlas_pages.py computes it). */
   /* Four faults lived here, and each was hidden by the one before it.
 
      ONE. The influence arriving at a node was the SUM of its neighbours, so a
@@ -1177,8 +1178,9 @@
 
   /* ================================================================ boot */
   $('sub').textContent = N.toLocaleString() + ' nodes and ' +
-    ES.length.toLocaleString() + ' weighted links. Every position is a real ' +
-    'coordinate. Every parameter comes from a public data set.';
+    ES.length.toLocaleString() + ' weighted links. Every station and ' +
+    'settlement sits at its recorded coordinate. Every node names its source; ' +
+    'most are measured, and the ones that are assumed say so.';
 
   $('scendesc').textContent = SCEN_HINT;
   buildTabs(); setTab(tab); clearSel(); renderShocks(); paint();

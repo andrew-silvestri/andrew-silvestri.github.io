@@ -19,9 +19,15 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 parameter from a public data set.</p>
 
 <p>The atlas is the world energy system drawn as a graph and made to move.
-Every node holds one measured quantity and names where it came from. Apply a
-change anywhere and the effect propagates along the links until it settles,
-which takes between twenty and fifty steps.</p>
+Most nodes hold a measured quantity, and every node names where it came
+from; the 4,062 that hold an assumption say so in their source line:
+1,142 consumer groups carry an elasticity from the literature,
+the 24 behaviour channels are a model of where demand is decided, and
+2,896 ports carry a name and a harbour size class and no number. Apply a
+change anywhere
+and the effect propagates along the links until it settles, which the sixty
+prepared changes do in 5 to 42 rounds, 24 in the
+middle; a single node pushed on its own settles in about 11.</p>
 
 <img class="fig wide plain" src="assets/hero_globe.png?v=a30332dd" width="1440" height="1252" alt="The model's 34,936 power stations and 35,207 settlements at their recorded coordinates, on an orthographic globe centred on the Atlantic">
 <p class="small">Every power station and every settlement in the model at its recorded coordinates, drawn on paper by <code>build_hero_figure.py</code> from the payload.</p>
@@ -68,7 +74,8 @@ the model. The channels carry weight and wire into demand.</p>
 mean of what its neighbours are carrying, damped by its own resilience, bounded
 by a hyperbolic tangent so that nothing runs away, and the source is held at
 the value it was pushed to. The run repeats until the largest remaining
-movement falls below a threshold, which takes between twenty and fifty steps.
+movement falls below a threshold, which takes 5 to 42 rounds
+across the prepared changes and never reaches the ceiling of sixty.
 Nodes the run moved pulse, with the depth of the pulse scaling with the size of
 the effect. Clicking a node draws its web of influence three hops deep.</p>
 
@@ -114,9 +121,11 @@ be found, the scenario says so and calls itself an assumption.</p>
 strongly, so a prepared change is a way of asking that question from a
 particular starting point.</p>
 
-<p>Reach spans five orders of magnitude, and starting at the most connected
-power plant in the world moves one other node. That spread is the point. A
-model that answers the same number to every question is not answering.</p>
+<p>Reach spans 4.6 orders of magnitude, from 2 nodes to
+77,669, and starting at the most connected power plant in the world
+(Lake Hargy (Hydro, 2 MW), 154 links) moves nothing but itself. That spread is the
+point. A model that answers the same number to every question is not
+answering.</p>
 
 <h2>What is above the climate</h2>
 
