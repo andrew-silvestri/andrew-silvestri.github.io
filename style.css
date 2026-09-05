@@ -381,36 +381,75 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
   gap: 0;
   margin: 10px 0;
 }
+/* ======================================================================
+   THE CARD SPEC (index.html, .cardgrid .card). Written 2026-09-04 after four
+   passes each fixed the symptom the last one revealed - the crop, the 3:2
+   aspect, the dead space, the alignment - because nothing said what a card
+   is. Change this first, then the code; tests/test_layout.js holds it.
+
+   1. Thumbnail: one canvas for every card, 542 x 406 bitmap px = 271 x 203
+      CSS px, 4:3, made by build_thumbnails.py from the project's hero
+      figure. The figure is scaled WHOLE to fit inside the canvas and
+      centred, never cropped; the rest of the canvas is the figure's own
+      ground, sampled from its corners, so the letterbox has no edge (the
+      mosaic's rule, carried across). A thumbnail may declare `crop` instead
+      only when the source has nothing to cut off - a wallpaper - and is then
+      scaled to cover and cropped (none on the site since the bookshelf
+      retired, 2026-09-05; the mode stays in sitefig.thumbnail()). The canvas wears the site's 1px
+      rule like every figure; inside it the letterbox has no edge. 4:3, not
+      the figures' 1.6-2.1:1,
+      because the canvas height is the text budget (item 5): 3:2 leaves four
+      lines, 4:3 five.
+   2. Image column: 271px, fixed - the canvas's own CSS width, so the asset
+      is shown at one bitmap pixel per device pixel and its height is 203
+      at every side-by-side width. Not a percentage: the measure is fluid
+      (68ch of a fluid root size), 714px at 1440 and 688 at 1024, and a 38%
+      column shrank the image under the text budget at 1024. Gutter 28px.
+      The text column takes the rest: 415px at 1440, 389 at 1024.
+   3. Vertical padding 22px above and below; a 1px rule on top; no other
+      border. So the card is 22 + 203 + 22 = 247px tall plus its 1px rule,
+      every card.
+   4. What sets the height: the image, always. The image spans the rows and
+      its height is fixed by the canvas, so the air above and below it is
+      the padding, equal, and the same on every card.
+   5. The text is a budget, not a driver. Tag (4px under it), a one-line
+      title (about 34 characters at 389px: the nav's name for the project,
+      not a longer one), a 6px gap and up to five lines of the small face
+      fit inside 203px exactly.
+      Five lines is about 215 characters, measured at the narrowest
+      side-by-side measure (1024, 389px); the test runs there too.
+      Shorter text is centred vertically on the image (the 1fr rows).
+      Longer text is a violation: the layout test fails the page when a
+      card's text passes the image's bottom. Fix the copy, never the card.
+      This inverts the usual order - here the copy serves the card - and
+      that is deliberate: a card blurb is a summary, a different artifact
+      from the prose it points to, and the page carries the full claim. A
+      claim that cannot be shortened without losing its scope is dropped
+      from the card, not compressed (the bookshelf's cover-mode sentence,
+      2026-09-04, twice; the card itself retired the next day).
+   6. Below 760px the card stacks in source order: tag, title, the image
+      full width at 4:3, then the paragraph. The equal-air rule applies only
+      while the image is beside the text.
+   Measured at 1440 on 2026-09-04 before the spec: six cards, five heights
+   (219-357px), the image floating in five of them with 5 to 57px of air
+   inside the padding, 5px more above than below on every card.
+   ====================================================================== */
 .cardgrid .card {
   display: grid;
-  /* 38 % is decided, not inherited from the image. On the 714px measure it
-     is 271px, which is the thumbnails' own width (sitefig THUMB, 542 bitmap
-     pixels at two per CSS pixel), so a card never scales its picture up or
-     down; the text column is 415px, about 48 characters of the small face,
-     a measure short enough that a four-line summary is four lines. Measured
-     at 1440 on 2026-09-04 (Phase 4, A4): image 271 x 129-308, text 415 x
-     149-233, and whichever is shorter is centred on the other (rows below). */
-  grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
-  /* The image (column 1) spans every row; the text sits in rows 2-4 between
-     two 1fr rows. So whichever column is taller sets the card's height and
-     the other is centred against it: a shorter image floats mid-text, a
-     shorter text stack floats mid-image. Before this (2026-09-04) the rows
-     were all auto and the leftover height was dumped under the image - 20
-     to 76px of dead space at the foot of five of the six home-page cards,
-     which read as a mistake, not as rhythm. */
-  grid-template-rows: 1fr auto auto auto 1fr;
-  gap: 0 28px;
+  grid-template-columns: 271px minmax(0, 1fr);            /* spec item 2 */
+  grid-template-rows: 1fr auto auto auto 1fr;              /* spec item 5 */
+  gap: 0 28px;                                             /* spec item 2 */
   align-items: start;
   border: 0;
-  border-top: 1px solid var(--rule);
-  padding: 22px 0;
+  border-top: 1px solid var(--rule);                       /* spec item 3 */
+  padding: 22px 0;                                         /* spec item 3 */
   margin: 0;
   height: auto;
 }
 .cardgrid .card .tag, .cardgrid .card h3, .cardgrid .card p, .cardgrid .card a.btn { grid-column: 2; }
 .cardgrid .card .tag { grid-row: 2; }
 .cardgrid .card h3 { grid-row: 3; }
-.cardgrid .card p { grid-row: 4; margin: 8px 0 0; }
+.cardgrid .card p { grid-row: 4; margin: 6px 0 0; }   /* spec item 5: 6px, so five lines make 203 */
 
 /* -------------------------------------------------------------- cards --- */
 .card {
@@ -429,30 +468,25 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 .card h3 { margin-top: 4px; }
 .card h3 a { border: 0; color: var(--ink); }
 .card h3 a:hover { color: var(--acc); }
-/* A thumbnail for a card that has an obvious hero figure - home page tool
-   cards only, not every card on the site. Sized to the card rather than
-   promoted to the wide track: two-up at 330px+ (.cardgrid above), full width
-   of one column at the 760px breakpoint below. */
+/* The card's thumbnail: spec items 1 and 4 above. The asset is already
+   4:3 on its own ground; aspect-ratio + contain here only repeat that, so a
+   wrong-shaped asset would letterbox on --bg rather than change the card's
+   height. Never `cover`: that pair hid a crop on 2026-09-04. */
 .cardgrid .card img {
   grid-column: 1;
   grid-row: 1 / span 5;
   align-self: center;
   width: 100%;
   max-width: 100%;
-  /* No fixed aspect and no object-fit: the thumbnail is the whole figure at
-     its own shape (build_thumbnails.py) and is shown whole at every width.
-     Do not put aspect-ratio + object-fit: cover back. That pair was here on
-     2026-09-04 and looked innocent - a 3:2 box showing a 3:2 image - while
-     the crop it was hiding had moved into the asset: sitefig.thumbnail()
-     was centre-cropping 1.6-2.1:1 figures to 3:2, and every card lost its
-     right edge (the skyline's "played in Bb" and its last tower, the tomato
-     chain's gas figure and half a box). The mosaic below carries the same
-     warning from its first version. A card 40px taller than its neighbour
-     is the cost, and it is the right cost. */
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: var(--bg);
   height: auto;
-  margin: 4px 0 0;
+  margin: 0;
+  border: 1px solid var(--rule);
   display: block;
 }
+
 
 /* --------------------------------------------------------------- btns --- */
 .btn {
@@ -680,7 +714,7 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
          max-width: 100%; }
   .cardgrid { grid-template-columns: 1fr; }
   .cardgrid .card { grid-template-columns: 1fr; grid-template-rows: none; }
-  .cardgrid .card img { grid-column: 1; grid-row: auto; margin: 10px 0 4px; }
+  .cardgrid .card img { grid-column: 1; grid-row: auto; margin: 10px 0 4px; }   /* spec item 6: stacked */
   .cardgrid .card .tag, .cardgrid .card h3, .cardgrid .card p, .cardgrid .card a.btn { grid-column: 1; grid-row: auto; }
   /* Nothing may be wider than the screen. One over-wide child gives the
      whole document a horizontal scroll, and every block then reads as
