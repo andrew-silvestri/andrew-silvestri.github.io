@@ -20,8 +20,8 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 different place, is every reconstruction in the public archive. Computed for
 all 298,339 of them.</p>
 
-<aside class="marginalia" style="grid-row: span 48" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>reconstructions</b><span class="v">298,339</span></li><li><b>with soma, dendrite and axon</b><span class="v">22,491</span></li><li><b>with no measured width</b><span class="v">70.1%</span></li><li><b>corrected for shrinkage</b><span class="v">2.7%</span></li><li><b>with all five</b><span class="v">104</span></li></ul></aside>
-<aside class="marginalia right" style="grid-row: span 48"><ul><li><b>one cell spans</b><span class="v">4.4 orders</span></li><li><b>a figure holds</b><span class="v">about 3</span></li><li><b>thinnest axon</b><span class="v">0.17 &micro;m</span></li><li><b>at 1000 px it is</b><span class="v">0.039 px</span></li></ul></aside>
+<aside class="marginalia" style="grid-row: span 52" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>reconstructions</b><span class="v">298,339</span></li><li><b>with soma, dendrite and axon</b><span class="v">22,491</span></li><li><b>with no measured width</b><span class="v">70.1%</span></li><li><b>corrected for shrinkage</b><span class="v">2.7%</span></li><li><b>with all five</b><span class="v">104</span></li><li><b>of those, opened, with a measured width</b><span class="v">82</span></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 52"><ul><li><b>one cell spans</b><span class="v">4.4 orders</span></li><li><b>a figure holds</b><span class="v">about 3</span></li><li><b>thinnest axon</b><span class="v">0.17 &micro;m</span></li><li><b>at 1000 px it is</b><span class="v">0.039 px</span></li></ul></aside>
 
 <p>A neuron in a textbook has a round body, a few branches at the top and a
 tail that leaves the frame. It is a diagram, and everyone knows it is a
@@ -37,13 +37,17 @@ records, for each reconstruction, which parts of the cell it contains, whether
 its widths were measured, whether it is three-dimensional, whether its axon
 was followed to the end, and whether anyone corrected for the tissue shrinking
 under the microscope. Requiring all five leaves 104 files out of
-298,339, which is 0.03% of them.</p>
+298,339, which is 0.03% of them. That is the archive's count.
+Opened, 82 of the 104 pass this page's own test for
+a measured width, 2 hold a single width for the entire arbor
+despite the flag that says otherwise, and one of them is drawn below at three
+scales.</p>
 
 <div class="card"><div class="tag">Interactive</div><h3 style="margin-top:4px">What a drawing at true proportions needs</h3><p>The five requirements, and what each one costs. Tick them in any order: the
 order changes the answer, because a reconstruction that has been corrected for
 shrinkage is usually one that was careful about everything else.</p>
 <a class="btn" href="neuron-app.html" target="_blank" rel="noopener">Open it</a>
-<a class="btn ghost" href="downloads/neuron-code.zip">Download code and data · 1.5 MB</a></div>
+<a class="btn ghost" href="downloads/neuron-code.zip">Download code and data · 2.5 MB</a></div>
 
 <h2>Why the diagram is schematic</h2>
 
@@ -73,18 +77,22 @@ was prepared rather than by anyone's preference. A cell recorded in a slice
 sits in a piece of brain a third of a millimetre thick; its widths can be
 measured, and its axon is cut off by the blade. A cell traced through a whole brain keeps its axon<sup class="cite" id="cr4"><a href="#ref4">4</a></sup>, and nobody measured its widths.</p>
 
-<img class="fig wide" src="assets/neuron_fig2_pair.png?v=24775f03" loading="lazy" width="1428" height="1115" alt="Two reconstructions side by side, each at its own scale with a scale bar. The left is a slice reconstruction with varying line widths and almost no axon. The right is a whole-brain reconstruction with a long branching axon drawn at a single uniform width.">
-<p class="small">Two real files. Left: Allen Cell Types, 2.8 mm of
-dendrite and 58 &micro;m of axon, drawn at 1,084 distinct
-widths because that is how many the file records. Right: MouseLight,
-59.8 mm of axon reaching 4.7 mm from the soma, drawn at one width
-because the file contains one.</p>
+<img class="fig wide" src="assets/neuron_fig2_pair.png?v=d1974832" loading="lazy" width="1428" height="916" alt="Left: two reconstructions in one frame at one scale, a whole-brain cell with a long looping axon drawn as a hairline, and beside it, inside a small box, a slice cell a fraction of its size. Right: the box opened, the slice cell at its own scale with its recorded widths drawn, dendrite in blue and axon in brown, with a scale bar.">
+<p class="small">Two real files at one scale, 14.7 &micro;m per pixel. The
+large cell is MouseLight: 59.8 mm of axon reaching 4.7 mm from
+the soma, a hairline because the file holds one width. In the box beside it
+is Allen Cell Types: 2.8 mm of dendrite and 58 &micro;m of axon,
+13.6 times smaller end to end and 28 pixels wide at
+this size, its soma 0.9 of a pixel. Right: the box opened,
+at 2.3 &micro;m per pixel, with the 1,084 recorded widths
+drawn at their true size, dendrite in blue and axon in brown; where a width
+is thinner than a pixel, a fainter hairline carries the shape.</p>
 
-<p>The cell on the right carries 59.8 mm of axon. The cell on the left
-carries 58 &micro;m, and it is the kind of picture that a search for a
-cortical neuron returns. Neither is wrong. Each is missing the half the other
-has, and the halves cannot be added, because they come from different animals
-prepared in different ways.</p>
+<p>The large cell carries 59.8 mm of axon. The cell in the box carries
+58 &micro;m, and it is the kind of picture that a search for a cortical
+neuron returns. Neither is wrong. Each is missing the half the other has, and
+the halves cannot be added, because they come from different animals prepared
+in different ways.</p>
 
 <h2>What the archive contains</h2>
 
@@ -125,7 +133,7 @@ gradient counts as surviving if the median within-archive correlation exceeds
 0.20 and at least 60% of qualifying archives
 exceed it. That rule was fixed before the answer was known.</p>
 
-<img class="fig wide" src="assets/neuron_fig3_tradeoff.png?v=91d1af1d" loading="lazy" width="1428" height="984" alt="A scatter plot with reach from the soma on a logarithmic horizontal axis and the share of drawn length at a single width on the vertical axis. Slice and culture reconstructions cluster at short reach and low share; whole-brain reconstructions cluster at long reach and a share near one hundred per cent.">
+<img class="fig wide" src="assets/neuron_fig3_tradeoff.png?v=dc750da9" loading="lazy" width="1428" height="984" alt="A scatter plot with reach from the soma on a logarithmic horizontal axis and the share of drawn length at a single width on the vertical axis. Slice and culture reconstructions cluster at short reach and low share; whole-brain reconstructions cluster at long reach and a share near one hundred per cent.">
 <p class="small">1,381 sampled reconstructions from
 20 archives. The verdict: no gradient survives inside archives. Median
 within-archive correlation -0.00 across 19
@@ -144,6 +152,52 @@ corrected corner of the archive is not a slow accumulation of good practice
 across the field. It is a few groups that correct as a matter of protocol, and
 their cells.</p>
 
+<img class="fig wide" src="assets/neuron_fig5_ladder.png?v=62642e08" loading="lazy" width="1428" height="1120" alt="One reconstruction at three scales. Panel A, the whole cell as a hairline drawing with a small box near its centre. Panel B, the contents of that box ten times larger: dendrites in blue now drawn with visible thickness, axon in brown still a hairline, and a smaller box around the soma. Panel C, that box opened: the soma as a large disc with dendrites and axon leaving it at their recorded widths, a scale bar, and beside the bar a thin line showing an axon of the thinnest calibre in the literature at the same scale.">
+<p class="small">One of the 104, at the widths its file records.
+BC150319A_28 from the Feldmeyer archive: a rat
+interneuron, non-fast spiking, Martinotti-like, supragranular projecting in neocortex, somatosensory, barrel, layer 4, with 37.1 mm of axon and
+3.6 mm of dendrite, corrected for shrinkage by the factors its paper
+states. Dendrite in blue, axon in brown, each width drawn at its recorded
+size; where a width is thinner than a pixel a fainter hairline carries the
+shape. A: the whole cell at 3.1 &micro;m per pixel,
+where the axon is entirely under a pixel and all but 0.7% of the dendrite's length is; the exceptions are the soma, 6.5 pixels across, and the widest dendrite, 3.15 &micro;m at 1.001 pixels. B: the box in A at 0.63 &micro;m per pixel, where
+58% of the dendrite's length is wider than a pixel and
+0% of the axon's is. C: the box in B at 0.14 &micro;m
+per pixel, where every width shows; beside the scale bar is an axon
+0.17 &micro;m wide, the electron-microscopy figure the page's span is
+computed from, at the same scale. The orientation is the archive's
+standardised one, not the tissue's.</p>
+
+<p>The file holds 22 distinct widths: 10
+on the axon, 18 on the dendrites, of which
+7 appear on both, so the neurites between them hold
+21; the last is the soma's own, 20.33 &micro;m,
+which is drawn as the disc in every panel but belongs to neither compartment
+and is not part of the width test. Of the axon's 37.1 mm,
+64% run at one value, 0.24 &micro;m, which is
+about what visible light can resolve; the dendrites' widths run from
+0.41 &micro;m to 3.15 &micro;m. So even in the corrected corner of the archive the
+axon's width is a floor and the dendrite's is a measurement, which is why
+panel B shows dendrite in ink and axon as a hairline. The cell was chosen by
+rule rather than by eye: the largest single-paper group among the
+104, less the 1 file in it that fails the width
+test when opened, and then the cell nearest that group's median reach and
+axon length. End to end it spans 1.3 mm; the whole-brain cell in
+the second figure spans 4.4 times that.</p>
+
+<p>The 104 also contain 15 cells that look like the thing
+this page says no file holds: mouse pyramidal cells from
+neocortex, somatosensory, barrel, C2, layer 2, primary somatosensory, filled in vivo, with 45.5 mm to
+74.2 mm of axon reaching 2.1 mm to 6.5 mm
+from the soma and 20 to 71 recorded
+widths, flagged in the archive as corrected for shrinkage and as having a
+complete axon. All 15 come from one paper<sup class="cite" id="cr6"><a href="#ref6">6</a></sup>, and that paper contains no
+statement about shrinkage or a correction; on completeness it says that some
+axons might have been incompletely traced, and that in most cases the
+callosal axon was lost inside the fibre tract. The flags are the archive's
+curation fields, not the authors' claims, and they are the reason every count
+on this page is read from the files as well as from the metadata.</p>
+
 <p>That is what the question on this page looks like when it is made
 concrete. Not whether a picture is accurate, but how far you have to go before
 the number under it was measured by someone, on purpose, and written down.</p>
@@ -157,18 +211,18 @@ measurement it came from.</p>
 
 <p>The membrane area of a dendrite is roughly double what its traced skeleton
 suggests, because spines carry much of it. The factor is often attributed to a
-2001 paper on hippocampal synapse counts, which contains no such factor<sup class="cite" id="cr6"><a href="#ref6">6</a></sup>: it is
+2001 paper on hippocampal synapse counts, which contains no such factor<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>: it is
 the source for <em>where</em> spines are, not how much membrane they hold. The
-measured factor is 1.78 to 2.39, from a 2016 study of human cortical cells<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>, and
+measured factor is 1.78 to 2.39, from a 2016 study of human cortical cells<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>, and
 it applies only beyond sixty micrometres from the soma, because the dendrite
 is nearly bare closer in. So the familiar shortcut &mdash; double it &mdash;
 is wrong twice: wrong in its source, and wrong to apply it uniformly.</p>
 
-<p>The synaptic delay everyone quotes as half a millisecond comes from a 1965 paper on the frog neuromuscular junction<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>. That paper reports a
+<p>The synaptic delay everyone quotes as half a millisecond comes from a 1965 paper on the frog neuromuscular junction<sup class="cite" id="cr9"><a href="#ref9">9</a></sup>. That paper reports a
 <em>minimum</em> of 0.4 to 0.5 ms, at twenty degrees, in a low-calcium
 solution chosen to make single events visible; the typical delay in the same
 preparation is about 0.75 ms. A fast central synapse at body temperature
-releases in about a hundred and fifty microseconds<sup class="cite" id="cr9"><a href="#ref9">9</a></sup>. Three different
+releases in about a hundred and fifty microseconds<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>. Three different
 quantities, routinely quoted as one.</p>
 
 <h2>Limits</h2>
@@ -179,7 +233,10 @@ measurements of them. That distinction is not decorative: a reconstruction is
 flagged as having a measured width if its widths are not all identical, and
 that test passes a file holding three values. Every width statement on this
 page is therefore computed from the files, using a stricter rule that is
-stated in the code and labelled <em>assumed</em> in the payload.</p>
+stated in the code and labelled <em>assumed</em> in the payload. Applied to
+the 104 themselves, that rule fails 22 of them
+(Conte 20, Feldmeyer 1, Turner 1), and 2 of those hold one width for the
+whole arbor and carry the flag anyway.</p>
 
 <p>Nor can you always tell what a file's numbers mean. An SWC file has seven
 columns and none of them is a unit: the convention is micrometres, and there
@@ -198,10 +255,10 @@ reconstructions to measure from, and the 120 dropped are counted
 and named rather than quietly discarded.</p>
 
 <p>A measured width is not the same as a reliable one. When the same eight
-cells were reconstructed by two competent light-microscopy pipelines, the widths differed by about a factor of two on visually matched segments<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>:
-1.80 &plusmn; 0.15 &micro;m against 0.91 &plusmn; 0.09 &micro;m. The field's own tracing benchmark excluded diameter<sup class="cite" id="cr11"><a href="#ref11">11</a></sup>
+cells were reconstructed by two competent light-microscopy pipelines, the widths differed by about a factor of two on visually matched segments<sup class="cite" id="cr11"><a href="#ref11">11</a></sup>:
+1.80 &plusmn; 0.15 &micro;m against 0.91 &plusmn; 0.09 &micro;m. The field's own tracing benchmark excluded diameter<sup class="cite" id="cr12"><a href="#ref12">12</a></sup>
 altogether, as too subjective at the resolutions used for whole-arbor
-reconstruction. And three experts tracing one dendrite<sup class="cite" id="cr12"><a href="#ref12">12</a></sup> agreed on 0.470 &plusmn; 0.071 of it
+reconstruction. And three experts tracing one dendrite<sup class="cite" id="cr13"><a href="#ref13">13</a></sup> agreed on 0.470 &plusmn; 0.071 of it
 by area, while one person re-tracing after a fortnight agreed with themselves
 on 87.5%. There is no single true morphology to draw, and this page's widths
 inherit all of that.</p>
@@ -225,13 +282,17 @@ render.</p>
 
 <p>Nor is the contrast between the two cells in the second figure a
 measurement of how much axon slicing removes. They are different cells from
-different animals. The published figure for that is<sup class="cite" id="cr13"><a href="#ref13">13</a></sup> 48–49% of intracortical axon lost in a 300 µm slice; 15–17% of dendrite, and it
+different animals. The published figure for that is<sup class="cite" id="cr14"><a href="#ref14">14</a></sup> 48–49% of intracortical axon lost in a 300 µm slice; 15–17% of dendrite, and it
 covers local axon only; a long-range projection is lost entirely.</p>
 
 <p>Depth is the one thing no figure here uses. Reconstructions made in slices
 are distributed without a shrinkage correction, and tissue prepared this way
-loses roughly half its thickness<sup class="cite" id="cr14"><a href="#ref14">14</a></sup> &mdash; 63 &plusmn; 10% in the preparation these files come from<sup class="cite" id="cr15"><a href="#ref15">15</a></sup>. The archive that supplies the widths handled this by leaving depth-derived measurements out of its own analysis<sup class="cite" id="cr16"><a href="#ref16">16</a></sup> rather than by correcting the coordinates<sup class="cite" id="cr17"><a href="#ref17">17</a></sup>. So both drawings on this page are flat projections, and the
-code that reads them returns two columns rather than three.</p>
+loses roughly half its thickness<sup class="cite" id="cr15"><a href="#ref15">15</a></sup> &mdash; 63 &plusmn; 10% in the preparation these files come from<sup class="cite" id="cr16"><a href="#ref16">16</a></sup>. The archive that supplies the widths handled this by leaving depth-derived measurements out of its own analysis<sup class="cite" id="cr17"><a href="#ref17">17</a></sup> rather than by correcting the coordinates<sup class="cite" id="cr18"><a href="#ref18">18</a></sup>. So every drawing on this page is a flat projection, and the
+code that reads them returns two columns rather than three. The cell drawn
+from the complete set is also shown as the archive standardises it, with the
+soma at the origin and the axes rotated onto the principal components of the
+coordinates, which is not the orientation of the tissue; the depositor's own
+file is not distributed for that archive.</p>
 
 <hr>
 
@@ -241,21 +302,22 @@ code that reads them returns two columns rather than three.</p>
 API. <code>fetch_data.py</code> takes the census and the sample and records a
 hash of each; <code>swclib.py</code> parses the reconstructions and holds the
 rule about depth; <code>build_neuron.py</code> computes the payload and builds
-the interactive; <code>fig_neuron.py</code> draws the four figures;
+the interactive; <code>fig_neuron.py</code> draws the five figures;
 <code>update_page.py</code> writes this page from the payload;
 <code>test_neuron.py</code> checks the failure modes, including the parser
 against a fixture whose every quantity was worked out by hand. The archive
-holds the scripts, the frozen census and the two reconstructions the second
-figure draws; it does not hold the fifteen hundred files the sample was
-computed from, which the fetch script will pull again.</p>
+holds the scripts, the frozen census, the measurements of the 104
+files that were opened, and the three reconstructions the figures draw; it
+does not hold the fifteen hundred files the sample was computed from, which
+the fetch script will pull again.</p>
 
-<p><a class="btn" href="downloads/neuron-code.zip">Download source · 1.5 MB</a>
+<p><a class="btn" href="downloads/neuron-code.zip">Download source · 2.5 MB</a>
 <a class="btn ghost" href="code.html">All code</a></p>
 
 
 <h2>Sources</h2>
 <p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
-<ol class="refs"><li id="ref1"><span class="src">Ascoli, Donohue &amp; Halavi, <i>The Journal of Neuroscience</i> 27(35):9247-9251, 2007, doi:10.1523/JNEUROSCI.2055-07.2007; Tecuatl, Ljungquist &amp; Ascoli, <i>FASEB BioAdvances</i> 6(7):207-221, 2024, doi:10.1096/fba.2024-00048.</span><span class="what">NeuroMorpho.Org, the archive every count on this page is computed from; CC BY 4.0.</span></li><li id="ref2"><span class="src">Shepherd &amp; Harris, <i>The Journal of Neuroscience</i> 18(20):8300-8310, 1998, doi:10.1523/JNEUROSCI.18-20-08300.1998.</span><span class="what">The 0.17 um calibre of a CA3-to-CA1 axon shaft, the thinnest structure a drawing at true proportions would have to render.</span></li><li id="ref3"><span class="src">Huang, Bates &amp; Zhuang, <i>Annual Review of Biochemistry</i> 78:993-1016, 2009, doi:10.1146/annurev.biochem.77.061906.092014.</span><span class="what">The diffraction limit: 200-300 nm laterally, 500-700 nm axially.</span></li><li id="ref4"><span class="src">Winnubst <i>et al.</i>, <i>Cell</i> 179(1):268-281.e13, 2019, doi:10.1016/j.cell.2019.07.042.</span><span class="what">Whole-brain single-neuron reconstruction; more than 85 m of axon across more than 1,000 projection neurons.</span></li><li id="ref5"><span class="src">Emmenegger, Qi, Wang &amp; Feldmeyer, <i>Cerebral Cortex</i> 28(4):1439-1457, 2018, doi:10.1093/cercor/bhx352, attributing Marx <i>et al.</i>, <i>Nature Protocols</i> 7(2):394-407, 2012, doi:10.1038/nprot.2011.449.</span><span class="what">The x1.1 and x2.1 correction factors, and the laboratory whose cells make up most of the fully-qualified set.</span></li><li id="ref6"><span class="src">Megias, Emri, Freund &amp; Gulyas, <i>Neuroscience</i> 102(3):527-540, 2001, doi:10.1016/S0306-4522(00)00496-6.</span><span class="what">Where dendritic spines are on a CA1 pyramidal cell; it carries no membrane-area factor, though it is often cited for one.</span></li><li id="ref7"><span class="src">Eyal <i>et al.</i>, <i>eLife</i> 5:e16553, 2016, doi:10.7554/eLife.16553.</span><span class="what">The spine membrane-area factor, F = 1.78-2.39, applied only beyond 60 um from the soma.</span></li><li id="ref8"><span class="src">Katz &amp; Miledi, <i>Proceedings of the Royal Society B</i> 161(985):483-495, 1965, doi:10.1098/rspb.1965.0016.</span><span class="what">The measured synaptic delay: a minimum of 0.4-0.5 ms and a modal value near 0.75 ms, at 20 C in low-calcium Ringer.</span></li><li id="ref9"><span class="src">Sabatini &amp; Regehr, <i>Nature</i> 384(6605):170-172, 1996, doi:10.1038/384170a0.</span><span class="what">Transmitter release 150 us after the onset of the presynaptic action potential, at physiological temperature.</span></li><li id="ref10"><span class="src">Blackman, Grabuschnig, Legenstein &amp; Sjostrom, <i>Frontiers in Neuroanatomy</i> 8:65, 2014, doi:10.3389/fnana.2014.00065.</span><span class="what">The same eight cells reconstructed two ways: 1.80 +/- 0.15 um against 0.91 +/- 0.09 um.</span></li><li id="ref11"><span class="src">Gillette, Brown &amp; Ascoli, <i>Neuroinformatics</i> 9(2-3):233-245, 2011, doi:10.1007/s12021-011-9117-y.</span><span class="what">Diameter left out of the DIADEM competition as too subjective at the resolutions used for whole-arbor reconstruction.</span></li><li id="ref12"><span class="src">Fernholz, Guggiana Nilo, Bonhoeffer &amp; Kist, <i>PLoS Computational Biology</i> 20(2):e1011774, 2024, doi:10.1371/journal.pcbi.1011774.</span><span class="what">Inter-operator agreement on a traced arbor, and one person's agreement with themselves.</span></li><li id="ref13"><span class="src">van Pelt, van Ooyen &amp; Uylings, <i>Frontiers in Neuroanatomy</i> 8:54, 2014, doi:10.3389/fnana.2014.00054.</span><span class="what">How much intracortical axon a 300 um slice removes: 48-49%, against 15-17% of dendrite.</span></li><li id="ref14"><span class="src">Gardella <i>et al.</i>, <i>Journal of Neuroscience Methods</i> 124(1):45-59, 2003, doi:10.1016/S0165-0270(02)00363-1.</span><span class="what">Measured shrinkage by embedding method; 80 um vibratome sections finished at 31.78 um.</span></li><li id="ref15"><span class="src">Mohan <i>et al.</i>, <i>Cerebral Cortex</i> 25(12):4839-4853, 2015, doi:10.1093/cercor/bhv188.</span><span class="what">63 +/- 10% z shrinkage measured in 350 um slices, and the finding that total dendritic length rises only 11 +/- 2% when corrected.</span></li><li id="ref16"><span class="src">Gouwens <i>et al.</i>, <i>Nature Neuroscience</i> 22(7):1182-1195, 2019, doi:10.1038/s41593-019-0417-0.</span><span class="what">The Allen Cell Types morphologies, and the decision to exclude z-derived features rather than correct the coordinates.</span></li><li id="ref17"><span class="src">Lee <i>et al.</i>, <i>eLife</i> 10:e65482, 2021, doi:10.7554/eLife.65482.</span><span class="what">Where a per-cell shrinkage correction is applied: downstream, in the Patch-seq pipeline, not in the distributed files.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">Ascoli, Donohue &amp; Halavi, <i>The Journal of Neuroscience</i> 27(35):9247-9251, 2007, doi:10.1523/JNEUROSCI.2055-07.2007; Tecuatl, Ljungquist &amp; Ascoli, <i>FASEB BioAdvances</i> 6(7):207-221, 2024, doi:10.1096/fba.2024-00048.</span><span class="what">NeuroMorpho.Org, the archive every count on this page is computed from; CC BY 4.0.</span></li><li id="ref2"><span class="src">Shepherd &amp; Harris, <i>The Journal of Neuroscience</i> 18(20):8300-8310, 1998, doi:10.1523/JNEUROSCI.18-20-08300.1998.</span><span class="what">The 0.17 um calibre of a CA3-to-CA1 axon shaft, the thinnest structure a drawing at true proportions would have to render.</span></li><li id="ref3"><span class="src">Huang, Bates &amp; Zhuang, <i>Annual Review of Biochemistry</i> 78:993-1016, 2009, doi:10.1146/annurev.biochem.77.061906.092014.</span><span class="what">The diffraction limit: 200-300 nm laterally, 500-700 nm axially.</span></li><li id="ref4"><span class="src">Winnubst <i>et al.</i>, <i>Cell</i> 179(1):268-281.e13, 2019, doi:10.1016/j.cell.2019.07.042.</span><span class="what">Whole-brain single-neuron reconstruction; more than 85 m of axon across more than 1,000 projection neurons.</span></li><li id="ref5"><span class="src">Emmenegger, Qi, Wang &amp; Feldmeyer, <i>Cerebral Cortex</i> 28(4):1439-1457, 2018, doi:10.1093/cercor/bhx352, attributing Marx <i>et al.</i>, <i>Nature Protocols</i> 7(2):394-407, 2012, doi:10.1038/nprot.2011.449.</span><span class="what">The x1.1 and x2.1 correction factors, and the laboratory whose cells make up most of the fully-qualified set.</span></li><li id="ref6"><span class="src">Yamashita, Vavladeli, Pala, Galan, Crochet, Petersen &amp; Petersen, <i>Frontiers in Neuroanatomy</i> 12:33, 2018, doi:10.3389/fnana.2018.00033.</span><span class="what">The projection cells in the complete set; its full text contains no statement about shrinkage or a correction, and describes its axon tracing as possibly incomplete. CC BY 4.0.</span></li><li id="ref7"><span class="src">Megias, Emri, Freund &amp; Gulyas, <i>Neuroscience</i> 102(3):527-540, 2001, doi:10.1016/S0306-4522(00)00496-6.</span><span class="what">Where dendritic spines are on a CA1 pyramidal cell; it carries no membrane-area factor, though it is often cited for one.</span></li><li id="ref8"><span class="src">Eyal <i>et al.</i>, <i>eLife</i> 5:e16553, 2016, doi:10.7554/eLife.16553.</span><span class="what">The spine membrane-area factor, F = 1.78-2.39, applied only beyond 60 um from the soma.</span></li><li id="ref9"><span class="src">Katz &amp; Miledi, <i>Proceedings of the Royal Society B</i> 161(985):483-495, 1965, doi:10.1098/rspb.1965.0016.</span><span class="what">The measured synaptic delay: a minimum of 0.4-0.5 ms and a modal value near 0.75 ms, at 20 C in low-calcium Ringer.</span></li><li id="ref10"><span class="src">Sabatini &amp; Regehr, <i>Nature</i> 384(6605):170-172, 1996, doi:10.1038/384170a0.</span><span class="what">Transmitter release 150 us after the onset of the presynaptic action potential, at physiological temperature.</span></li><li id="ref11"><span class="src">Blackman, Grabuschnig, Legenstein &amp; Sjostrom, <i>Frontiers in Neuroanatomy</i> 8:65, 2014, doi:10.3389/fnana.2014.00065.</span><span class="what">The same eight cells reconstructed two ways: 1.80 +/- 0.15 um against 0.91 +/- 0.09 um.</span></li><li id="ref12"><span class="src">Gillette, Brown &amp; Ascoli, <i>Neuroinformatics</i> 9(2-3):233-245, 2011, doi:10.1007/s12021-011-9117-y.</span><span class="what">Diameter left out of the DIADEM competition as too subjective at the resolutions used for whole-arbor reconstruction.</span></li><li id="ref13"><span class="src">Fernholz, Guggiana Nilo, Bonhoeffer &amp; Kist, <i>PLoS Computational Biology</i> 20(2):e1011774, 2024, doi:10.1371/journal.pcbi.1011774.</span><span class="what">Inter-operator agreement on a traced arbor, and one person's agreement with themselves.</span></li><li id="ref14"><span class="src">van Pelt, van Ooyen &amp; Uylings, <i>Frontiers in Neuroanatomy</i> 8:54, 2014, doi:10.3389/fnana.2014.00054.</span><span class="what">How much intracortical axon a 300 um slice removes: 48-49%, against 15-17% of dendrite.</span></li><li id="ref15"><span class="src">Gardella <i>et al.</i>, <i>Journal of Neuroscience Methods</i> 124(1):45-59, 2003, doi:10.1016/S0165-0270(02)00363-1.</span><span class="what">Measured shrinkage by embedding method; 80 um vibratome sections finished at 31.78 um.</span></li><li id="ref16"><span class="src">Mohan <i>et al.</i>, <i>Cerebral Cortex</i> 25(12):4839-4853, 2015, doi:10.1093/cercor/bhv188.</span><span class="what">63 +/- 10% z shrinkage measured in 350 um slices, and the finding that total dendritic length rises only 11 +/- 2% when corrected.</span></li><li id="ref17"><span class="src">Gouwens <i>et al.</i>, <i>Nature Neuroscience</i> 22(7):1182-1195, 2019, doi:10.1038/s41593-019-0417-0.</span><span class="what">The Allen Cell Types morphologies, and the decision to exclude z-derived features rather than correct the coordinates.</span></li><li id="ref18"><span class="src">Lee <i>et al.</i>, <i>eLife</i> 10:e65482, 2021, doi:10.7554/eLife.65482.</span><span class="what">Where a per-cell shrinkage correction is applied: downstream, in the Patch-seq pipeline, not in the distributed files.</span></li></ol>
 
 <footer>Andrew Silvestri · energy systems modelling ·
 <a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
