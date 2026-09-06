@@ -10,21 +10,16 @@
 <link rel="canonical" href="https://andrewsilvestri.com/">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=5c3e7e7c">
-</head><body>
+<link rel="stylesheet" href="style.css?v=701f118b">
+</head><body class="home">
+<div id="hero" aria-hidden="true"></div>
+<div class="navband">
 <nav class="top"><a href="index.html" class="on">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Running <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="shoes.html">What a fast shoe is worth</a><a href="economy.html">Economy is not time</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a><a href="food.html">Fat, sugar, salt</a><a href="continents.html">Where the ground goes</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="neuron.html">The measured neuron</a></span></span><a href="code.html">Code</a></nav>
+</div>
+<div class="heroband"><p class="small herocap"></p></div>
+<div class="paper">
 <main class="notes">
 
-<header class="masthead">
-<h1>Andrew Silvestri</h1>
-<p class="dim">Energy systems modelling: techno-economics, optimisation, and a
-model of the world energy system.</p>
-</header>
-<picture>
-<source media="(max-width: 760px)" srcset="assets/atlas_layers-phone.png?v=44ac9267">
-<img class="fig plain" src="assets/atlas_layers-notes.png?v=a09976ba" width="1428" height="1290" alt="The model's nine layers as bands with their node counts. Space, weather, climate and events push one way, downward, into grids and the layers around them; demand, power plants, markets, grids and behaviour trade back and forth.">
-</picture>
-<p class="small">The model's nine layers and which way each pushes, drawn from the published payload by <code>build_layer_diagram.py</code>. <a href="atlas.html">About the atlas</a>.</p>
 <div class="card">
 <div class="tag">Main project</div>
 <h3 style="margin-top:4px">A model of the world energy system</h3>
@@ -116,14 +111,13 @@ and how it behaves. <a href="library.html">All figures</a>.</p>
 </div>
 </div>
 
-<hr>
-<p class="small">Built with Python, Julia and public data.
-<a href="code.html">All source is downloadable.</a></p>
-
-
 <footer>Andrew Silvestri · energy systems modelling ·
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a></footer>
+<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a><br>
+Built with Python, Julia and public data.
+<a href="code.html">All code is downloadable.</a></footer>
 </main>
+</div>
 <script src="assets/motion.js?v=6bf4b397"></script>
+<script src="assets/hero.js?v=e95739a6"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
 </body></html>

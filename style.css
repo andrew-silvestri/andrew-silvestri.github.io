@@ -440,15 +440,12 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 .btn.ghost:hover { color: var(--ink); border-color: var(--dim); }
 
 /* --------------------------------------------------------------- hero --- */
-/* The home page's globe is a figure drawn on paper (build_hero_figure.py,
-   hero_globe.png): the model's stations and settlements at their recorded
-   coordinates on an orthographic globe, in the palette. Until 2026-09-04
-   it was a WebGL sphere (hero.js, hero-gl.js, three.js, a 109 KB payload)
-   drawn for a dark ground; once Part 1 took the dark frame away it read as
-   a dark blob with a halo on white. A dark object needs a dark ground, and
-   the atlas app is where this one has it. .plain: no frame and no card
-   ground, because a globe is an object on the page, not a picture in a
-   box; capped at 720px so the sphere is a masthead, not a poster. */
+/* .plain is a figure with no frame and no card ground - an object on the page
+   rather than a picture in a box - capped so it is a masthead and not a
+   poster. It was written for the home page's globe, which moved to atlas.html
+   on 2026-09-04 (a dark object needs a dark ground, and the globe's is in the
+   atlas app); atlas.html is what carries it now. The home page's hero is the
+   live canvas below. */
 img.fig.plain {
   border: 0;
   background: transparent;
@@ -604,8 +601,6 @@ aside.marginalia a:hover { border-bottom: 1px solid var(--acc); }
 aside.marginalia .lab { font: 600 var(--fs-2)/1.4 var(--mono); color: var(--dim); margin: 0 0 8px; letter-spacing: .04em; }
 aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; }
 
-/* the home page's name and standfirst; nothing else on the site has a masthead */
-.masthead p.dim { max-width: 58ch; }
 
 /* -------------------------------------------------------------- motion --- */
 /* The attribute is the single gate. prefers-reduced-motion sets its default in
@@ -691,4 +686,106 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   .caret { float: right; font-size: var(--fs-2); opacity: .8; }
   .card { padding: 20px; }
   h1 { font-size: var(--fs3); }
+}
+
+/* ------------------------------------------------- the home page's hero --- */
+/* index.html only, and every rule here is gated on body.home. The page is a
+   live canvas behind an opaque paper column: the reader gets the whole system
+   on arrival, and the moment text starts, text has its ground.
+   Design: 03 RESEARCH/rename-hero/STAGE2_PLAN.md. */
+
+/* The canvas is a child of <body>, NEVER of <main>. tests/test_layout.js walks
+   main.children and counts anything that is not IMG/PICTURE/VIDEO/FIGURE or
+   .mosaic as a text block - CANVAS is in neither list, so a full-bleed one
+   inside <main> sets a second left edge and fails index at every viewport. Do
+   not "fix" that by adding CANVAS to the regex: the rule is right, and this
+   canvas genuinely is neither a text block nor a figure on the measure. */
+#hero {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#hero .hero-layer { position: absolute; inset: 0; }
+
+/* The nav is a band, not a strip. nav.top is max-width:var(--shell) and
+   centred, so making IT sticky sticks a floating centred block over a moving
+   canvas - and it is transparent, which over a moving pendulum is unreadable.
+   The wrapper takes the full width and the paper ground; the nav keeps its
+   shell. THE WRAPPER IS OUTSIDE <nav class="top"> BECAUSE rebuild_nav.py does
+   re.sub(r'<nav class="top">.*?</nav>', ...) and destroys anything written
+   between those tags, silently, on its next run (section 8, trap 13). For the
+   same reason it is not added to the other pages "for sameness": atlas.html is
+   regenerated wholesale by update_atlas_pages.py, which does not know about
+   it. */
+body.home .navband {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The arrival screen: the system uninterrupted, with only the nav band over
+   it. Height comes from .hero-live, which hero.js sets once it has a 2D
+   context, so a reader with JS off gets the page minus the figure rather than
+   460px of blank paper. */
+body.home .heroband { height: 0; }
+body.home.hero-live .heroband {
+  height: min(58vh, 460px);
+  max-width: min(100%, 782px);
+  margin: 0 auto;
+  padding: 0 34px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+/* The one piece of text on this site that would otherwise sit over the canvas,
+   so it carries its own opaque ground. _deslop/measure.js builds its contrast
+   pairs by walking getComputedStyle(el).backgroundColor up the DOM - it reads
+   CSS colours, not rendered pixels - so text over a canvas reports a clean AA
+   pass on a page that is materially harder to read. Giving this its own --bg
+   is what keeps the rig's reading of it true. */
+body.home .herocap {
+  margin: 0 0 18px;
+  padding: 6px 10px;
+  background: var(--bg);
+  max-width: 62ch;
+}
+
+/* The paper column. main is max-width:var(--shell) = 1440 and transparent
+   ("the ground is the ground", above), so painting main leaves no margin at
+   1440 and narrowing main makes its own grid recompute from its own width,
+   which is circular. The wrapper takes the width, main fills it, and
+   --gutter:0 collapses the two aside tracks the home page does not use -
+   leaving minmax(34px,1fr) . 714 . minmax(34px,1fr), the same measure and the
+   same single left edge the page has today. Every track but the outer pair is
+   minmax(0, ...), so if 68ch ever computes differently the text track shrinks
+   rather than overflowing. 782 = the 714px measure + 34px each side. */
+body.home .paper {
+  position: relative;
+  z-index: 1;
+  max-width: min(100%, 782px);
+  margin: 0 auto;
+  background: var(--bg);
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+}
+body.home main { --gutter: 0px; max-width: none; }
+
+/* Below 960 the margins are too thin to read a trajectory in, so there are no
+   margins: the paper takes the full width and the animation lives entirely in
+   the hero band. 960 is derived, not chosen - it is where the double pendulum,
+   the most compact of the three and so the one that vanishes first, still
+   reaches 65px into each 89px margin (2l = 0.95W, penetration 0.475W - 391).
+   Above this the margins carry the system; below it they would carry a flicker
+   at the edge, and between 782 and 950 the margin is a 9-84px sliver. It is
+   also the condition under which hero.js may pause the loop off-screen, which
+   it decides by measuring THIS element rather than by knowing this number.
+   tests/test_layout.js has 960 in its viewports for that reason. */
+@media (max-width: 960px) {
+  body.home .paper { max-width: none; border-left: 0; border-right: 0; }
 }

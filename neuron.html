@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://andrewsilvestri.com/neuron.html">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=5c3e7e7c">
+<link rel="stylesheet" href="style.css?v=701f118b">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Running <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="shoes.html">What a fast shoe is worth</a><a href="economy.html">Economy is not time</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a><a href="food.html">Fat, sugar, salt</a><a href="continents.html">Where the ground goes</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="neuron.html" class="on">The measured neuron</a></span></span><a href="code.html">Code</a></nav>
 <main class="notes">
@@ -20,8 +20,8 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 different place, is every reconstruction in the public archive. Computed for
 all 298,339 of them.</p>
 
-<aside class="marginalia" style="grid-row: span 52" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>reconstructions</b><span class="v">298,339</span></li><li><b>with soma, dendrite and axon</b><span class="v">22,491</span></li><li><b>with no measured width</b><span class="v">70.1%</span></li><li><b>corrected for shrinkage</b><span class="v">2.7%</span></li><li><b>with all five</b><span class="v">104</span></li><li><b>of those, opened, with a measured width</b><span class="v">82</span></li></ul></aside>
-<aside class="marginalia right" style="grid-row: span 52"><ul><li><b>one cell spans</b><span class="v">4.4 orders</span></li><li><b>a figure holds</b><span class="v">about 3</span></li><li><b>thinnest axon</b><span class="v">0.17 &micro;m</span></li><li><b>at 1000 px it is</b><span class="v">0.039 px</span></li></ul></aside>
+<aside class="marginalia" style="grid-row: span 54" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>reconstructions</b><span class="v">298,339</span></li><li><b>with soma, dendrite and axon</b><span class="v">22,491</span></li><li><b>with no measured width</b><span class="v">70.1%</span></li><li><b>corrected for shrinkage</b><span class="v">2.7%</span></li><li><b>with all five</b><span class="v">104</span></li><li><b>of those, opened, with a measured width</b><span class="v">82</span></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 54"><ul><li><b>one cell spans</b><span class="v">4.4 orders</span></li><li><b>a figure holds</b><span class="v">about 3</span></li><li><b>thinnest axon</b><span class="v">0.17 &micro;m</span></li><li><b>at 1000 px it is</b><span class="v">0.039 px</span></li></ul></aside>
 
 <p>A neuron in a textbook has a round body, a few branches at the top and a
 tail that leaves the frame. It is a diagram, and everyone knows it is a
@@ -42,12 +42,6 @@ Opened, 82 of the 104 pass this page's own test for
 a measured width, 2 hold a single width for the entire arbor
 despite the flag that says otherwise, and one of them is drawn below at three
 scales.</p>
-
-<div class="card"><div class="tag">Interactive</div><h3 style="margin-top:4px">What a drawing at true proportions needs</h3><p>The five requirements, and what each one costs. Tick them in any order: the
-order changes the answer, because a reconstruction that has been corrected for
-shrinkage is usually one that was careful about everything else.</p>
-<a class="btn" href="neuron-app.html" target="_blank" rel="noopener">Open it</a>
-<a class="btn ghost" href="downloads/neuron-code.zip">Download code and data · 2.5 MB</a></div>
 
 <h2>Why the diagram is schematic</h2>
 
@@ -97,8 +91,9 @@ in different ways.</p>
 <h2>What the archive contains</h2>
 
 <img class="fig wide" src="assets/neuron_fig4_cascade.png?v=f89ecede" loading="lazy" width="1428" height="616" alt="A descending bar chart on a logarithmic axis. Every reconstruction, then the count remaining after each of five requirements is added: all three parts, a measured diameter, three dimensions, a complete axon, and a shrinkage correction.">
-<p class="small">Each line adds one requirement to the line above it. The
-order matters, and the interactive lets you change it.</p>
+<p class="small">Each line adds one requirement to the line above it, in the
+order the text states them. The order matters, and the next figure shows by
+how much.</p>
 
 <p>22,491 reconstructions contain a soma, a dendrite and an axon
 together, which is 7.5% of the archive. 70.1% record no
@@ -114,6 +109,23 @@ than on the archive's own labels, the same split appears. The
 4.4 mm from the soma and hold a median of 1 distinct
 widths across the entire arbor. The 1,261 slice and culture reconstructions
 reach 192 &micro;m and hold 121.</p>
+
+<img class="fig wide" src="assets/neuron_fig6_orders.png?v=eef3009e" loading="lazy" width="1428" height="676" alt="Five rows, one per requirement, on a horizontal axis from zero to one hundred per cent. Each row has a pale band from the smallest to the largest share the requirement removes across every order of application, small ticks at the mean for each position, a filled dot where it is applied first and a hollow dot where it is applied last. The band for the three-parts requirement spans most of the axis; the band for the shrinkage correction is short and sits near the right edge.">
+<p class="small">What each requirement removes, as a share of what was left,
+in every one of the 120 orders the five can be applied in. A
+requirement's cost is not a property of the requirement; it is a property of
+what came before it.</p>
+
+<p>The five are not independent, and the figure is the whole of that
+finding. Asking for a soma, a dendrite and an axon removes
+92.5% of the archive when it is asked first and
+14.0% when it is asked last, because almost everything that
+passed the other four had all three parts already. Three dimensions costs
+22.1% first and 0.0% last. The shrinkage correction is
+the least order-dependent of the five: it removes between 90%
+and 99% wherever it sits, which is another way of saying that
+correcting for shrinkage is rare in every corner of the archive, not only in
+the careful one.</p>
 
 <h2>Is it a gradient?</h2>
 
@@ -301,8 +313,8 @@ file is not distributed for that archive.</p>
 <p>Two public sources, no key: the NeuroMorpho.Org API and the Allen Institute
 API. <code>fetch_data.py</code> takes the census and the sample and records a
 hash of each; <code>swclib.py</code> parses the reconstructions and holds the
-rule about depth; <code>build_neuron.py</code> computes the payload and builds
-the interactive; <code>fig_neuron.py</code> draws the five figures;
+rule about depth; <code>build_neuron.py</code> computes the payload;
+<code>fig_neuron.py</code> draws the six figures;
 <code>update_page.py</code> writes this page from the payload;
 <code>test_neuron.py</code> checks the failure modes, including the parser
 against a fixture whose every quantity was worked out by hand. The archive
