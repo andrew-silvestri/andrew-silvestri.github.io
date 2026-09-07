@@ -108,7 +108,7 @@
   var CLAMP_MS = 50;                    /* hero.js 2a99923 used this; keep it */
   var NOMINAL_MS = 16;                  /* one 60Hz frame, for the first frame */
 
-  var W = 0, H = 0, fdpr = 1;
+  var W = 0, H = 0, fdpr = 1, footRect = null;
 
   function dot(c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fill(); }
 
@@ -477,6 +477,21 @@
   if (cap) cap.textContent = sys.caption;
 
   /* ==== sizing ========================================================= */
+  /* Re-measured rather than inlined in resize(), because it has to happen
+     again when the web font arrives. The block is anchored to the bottom, so
+     if the caption re-wraps from one line to two after IBM Plex loads, the
+     block grows UPWARD and a rect cached at load time leaves an uncleared
+     strip along its top edge. Measured: the pendulum's caption is the one that
+     wraps, and it was the only pin leaking ink into the block. */
+  function measureFoot() {
+    var hf = document.querySelector('.herofoot');
+    footRect = null;
+    if (hf && getComputedStyle(hf).position === 'fixed') {
+      var fr = hf.getBoundingClientRect();
+      if (fr.width > 0 && fr.height > 0) footRect = fr;
+    }
+  }
+
   function resize() {
     var w = window.innerWidth, h = window.innerHeight;
     if (w === W && h === H) return;
@@ -495,10 +510,31 @@
     /* The band is the whole first screen less the nav. Measured rather than
        computed from a constant, because the navband's height changes when the
        nav wraps - which it does at 390. The stylesheet keeps height:0 as the
-       no-JS default; the band only exists when this file runs anyway. */
+       no-JS default; the band only exists when this file runs anyway.
+
+       SETTING THIS IN THE HEAD SCRIPT INSTEAD DOES NOT HELP, and the reasoning
+       that says it should is wrong about this page. The argument: hero-live is
+       added here, after load, so the page paints with a zero-height band and
+       then reflows the whole document when an ~823px block appears above it -
+       a layout thrash on every load, and a good candidate for the 80-113ms
+       single frames seen at t=0.
+       Measured on 2026-09-07 and it does not happen. Cumulative layout shift
+       is 0 before and 0 after moving the height into the blocking head script:
+       0 shifts on two pins, one shift of 0.0002 on the third, either way. The
+       reason is at the bottom of index.html - hero.js is a plain <script src>
+       with no defer and no async, so it is parser-blocking and runs BEFORE the
+       first paint. The band already has its height when the page first paints.
+       There is no reflow to remove. The t=0 spikes are something else. */
     var nb = document.querySelector('.navband');
     var band = document.querySelector('.heroband');
     if (nb && band) band.style.height = Math.max(0, H - nb.getBoundingClientRect().height) + 'px';
+    /* The caption/footer block's rectangle, cached HERE and not read per frame.
+       It is position:fixed, so its box does not move while the page scrolls;
+       re-reading getBoundingClientRect every frame would reintroduce exactly
+       the per-frame layout read that made the clip experiment lose on
+       2026-09-07. Null below 960, where the block is back in the flow and
+       there is no canvas behind it to clear. */
+    measureFoot();
     sys.frame();
   }
 
@@ -523,6 +559,24 @@
      transparent and the page's own --bg shows through exactly. The trail is
      laid down at alpha 1, so its colour is never re-quantised on the way out.
      This is an eraser, not additive blending; nothing here sums. */
+  /* DO NOT CLIP THIS TO THE VISIBLE MARGINS. It is the obvious optimisation -
+     the paper column hides 782 of 1440 pixels, 54% of every frame drawn,
+     blended and uploaded to be covered by an opaque element - and it was tried
+     on 2026-09-07 and measured WORSE: p95 19.0 -> 24.3ms and dropped frames
+     1 -> 7 during a scroll, restored on revert.
+     Two reasons, and the second is the one that matters.
+     Cost: two getBoundingClientRect reads, two path builds and two
+     non-rectangular clips per frame cost more than the fill they save, and a
+     non-rectangular clip takes canvas off its fast path.
+     AND THE OCCLUSION IS NOT PERMANENT, WHICH IS WHAT MAKES THE CHEAP VERSION
+     IMPOSSIBLE. It looks static - a fixed column down the middle of a fixed
+     canvas - but at the top of the page the hero band sits ABOVE .paper and
+     the full width is visible; the column only closes over the middle once the
+     reader has scrolled past the band. So the clip cannot be a constant. It
+     has to read the rect every frame, which is where the cost came from.
+     Anyone re-proposing this on the fill-savings argument alone has not
+     checked the scroll-zero case. Measure with tests/test_scroll_jank.js
+     --real before believing any of it. */
   function fadeBack(f) {
     bc.globalCompositeOperation = 'destination-out';
     bc.fillStyle = 'rgba(0,0,0,' + f + ')';
@@ -570,6 +624,19 @@
     fc.clearRect(0, 0, W, H);
     for (var i = 0; i < n; i++) { sys.step(sys.H); sys.trail(1); }
     sys.bodies(1);          /* once a frame: the front canvas was cleared once */
+    /* Keep the animation out of the caption/footer block. A clearRect of one
+       axis-aligned rectangle, not a clip: clipping was measured on 2026-09-07
+       and lost, because a non-rectangular clip path takes canvas off its fast
+       path. Both canvases - the back one accumulates and would fill straight
+       back in next frame, and the front one can have a body inside the rect.
+       THE STYLESHEET CANNOT VERIFY THIS. _deslop/measure.js resolves
+       backgrounds through getComputedStyle and reports 0 AA failures whether
+       this works or is deleted; the check that can see it samples rendered
+       pixels (_deslop/ground.js). */
+    if (footRect) {
+      bc.clearRect(footRect.x, footRect.y, footRect.width, footRect.height);
+      fc.clearRect(footRect.x, footRect.y, footRect.width, footRect.height);
+    }
     if (sys.done) wipe = 1e-6;
     raf = requestAnimationFrame(frame);
   }
@@ -627,6 +694,7 @@
   /* ==== wiring ========================================================= */
   document.body.classList.add('hero-live');
   resize();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureFoot);
   sys.reset();
   if (sys.settle) settle(sys.settle);
 

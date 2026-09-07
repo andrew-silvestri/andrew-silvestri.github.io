@@ -705,6 +705,11 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  /* This canvas is fixed and repaints every frame while the page scrolls over
+     it, which is the textbook case for giving it a compositor layer of its own
+     so scrolling does not drag it through paint. There were no compositing
+     hints anywhere in this stylesheet before 2026-09-07. */
+  will-change: transform;
 }
 #hero .hero-layer { position: absolute; inset: 0; }
 
@@ -737,6 +742,69 @@ body.home .navband > nav.top { padding-bottom: 26px; }
    context, so a reader with JS off gets the page minus the figure rather than
    460px of blank paper. */
 body.home .heroband { height: 0; }
+/* The caption and the footer, stacked, pinned to the bottom left - IN THE LEFT
+   MARGIN, outside .paper, which is what makes the rest of this work. At 1920
+   that margin is (1920-782)/2 = 569px wide and NOTHING SCROLLS THERE: the only
+   thing behind this block is the canvas. So it carries no background, the text
+   sits on the page's own ground with no box edge, and hero.js clears the
+   canvas out of the block's rectangle every frame (see footRect there).
+   Over .paper this could not work - it would need an opaque ground to stay
+   readable over the moving index, and then clearing the canvas would be
+   redundant, because an opaque rectangle hides it by itself. */
+body.home .herofoot {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  width: calc((100% - min(100%, 782px)) / 2);
+  padding: 0 34px 26px;
+  box-sizing: border-box;
+}
+body.home .herofoot footer {
+  margin-top: 0;      /* it is a stacked block here, not the end of a document */
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Below 960 the paper is full-bleed, so there is no margin to sit in and no
+   canvas to clear: the block goes back into the flow at the end of the page.
+   Same breakpoint as .paper's, deliberately - one number, one behaviour
+   change. The cost is that on a phone the hero's caption ends up a scroll away
+   from the hero it describes; the alternative was moving the element between
+   two parents on every resize, which is worse. */
+@media (max-width: 960px) {
+  body.home .herofoot {
+    position: static;
+    width: auto;
+    max-width: min(100%, 782px);
+    margin: 0 auto;
+    padding: 0 34px 40px;
+  }
+  body.home .herofoot footer {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+  }
+  body.home .herocap { max-width: none; }
+}
+
+/* "Projects" is immediately above "Energy", and h2's border-top would read as
+   an underline for the h1 rather than a divider above the h2 - the double rule
+   DESLOP_3A took out once. The h1 is the boundary here, so the first h2 after
+   it does not draw one. Home page only: every other page's h2 has prose above
+   it and keeps its rule. The hr is in the selector because one sits between
+   them in the markup and renders nothing (hr { display: none }). */
+body.home main > h1 + hr + h2 {
+  border-top: 0;
+  margin-top: 28px;
+  padding-top: 0;
+}
+
+/* main's bottom padding is 120px at desktop, sized for a page that ended with
+   a footer. The footer is in .herofoot now, so that was dead space at the foot
+   of the column - visible because .paper has a border. Matches the top. */
+body.home main { padding-bottom: clamp(30px, 22.9px + 1.9vw, 40px); }
+
 /* The height is set by hero.js, to the viewport less the navband: the brief
    asked for the whole system on arrival and a min(58vh, 460px) cap was 43% of
    a 1080-tall screen. It is measured rather than a calc() because the
@@ -758,11 +826,13 @@ body.home.hero-live .heroband {
    CSS colours, not rendered pixels - so text over a canvas reports a clean AA
    pass on a page that is materially harder to read. Giving this its own --bg
    is what keeps the rig's reading of it true. */
+/* No background and no padding any more. It used to carry its own opaque
+   ground because it sat over the canvas inside the hero band; it now lives in
+   .herofoot, out in the left margin where nothing scrolls behind it and where
+   hero.js clears the canvas from under the whole block. */
 body.home .herocap {
-  margin: 0 0 18px;
-  padding: 6px 10px;
-  background: var(--bg);
-  max-width: 62ch;
+  margin: 0 0 14px;
+  max-width: 34ch;
 }
 
 /* The paper column. main is max-width:var(--shell) = 1440 and transparent
