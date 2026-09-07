@@ -7,10 +7,30 @@
  * watch. That is the whole argument for it being here - a figure a reader can
  * see being computed, rather than a picture of one.
  *
- * It is NOT the energy model, and every caption says so. A picture of a
- * nonlinear system on a page about energy modelling is a metaphor, and the
- * captions are what keep it from pretending otherwise (DESLOP_AUDIT F6: an
- * unlabelled background made from real data is still decoration).
+ * IT IS NOT THE ENERGY MODEL, AND THE CAPTIONS STOPPED SAYING SO ON
+ * 2026-09-06. READ THIS BEFORE PUTTING ANYTHING ATLAS-SHAPED BACK ON THE HOME
+ * PAGE.
+ *
+ * DESLOP_AUDIT F6 deleted force-bg.js - a real, physically simulated subgraph
+ * of the published atlas - for being "decoration that restates the page at
+ * illegible size". The answer to that, recorded in HANDOFF section 4, was that
+ * these captions name a published system and deny being the model outright.
+ * The denial has gone: the captions were cut to about a dozen words and the
+ * clause went with the length.
+ *
+ * THAT IS ONLY SAFE BECAUSE THE SAME COMMIT EMPTIED THE PAGE AROUND IT. The
+ * atlas card, the figure mosaic and the model chart went at the same time, so
+ * the home page is this canvas and the index and nothing else. There is
+ * nothing left for a reader to mistake the animation FOR. A pendulum beside a
+ * card headed "A model of the world energy system" invites exactly the
+ * reading F6 punished; a pendulum on an otherwise empty page does not.
+ *
+ * SO THE RULE CARRIES ITS CIRCUMSTANCE: if anything atlas-shaped returns to
+ * the home page - a card, a figure of the model, a node-link anything, and the
+ * pending rename may well put one there - THE DISCLAIMER COMES BACK INTO THE
+ * CAPTIONS AT THE SAME TIME. It is not a stylistic preference that was
+ * outgrown; it was load-bearing until the thing it was bearing against was
+ * removed.
  *
  * ---- the four things that will bite whoever edits this ------------------
  *
@@ -75,6 +95,16 @@
   var MOSS = '#733E24';                 /* --moss */
   var RULE = '#BBBDBC';                 /* --rule */
 
+  /* The back canvas ran at dpr 1 while the front ran at min(dpr,2), which put
+     half-resolution trails against crisp rods and was visible.
+     Raising it was expected to be expensive, because the erosion covers the
+     whole surface and scales with bdpr^2. Measured, it is not: three runs of
+     the three-body at 1440 averaged 1022 ms/3s at dpr 1 and 964 at dpr 2, a
+     difference smaller than the +/-150ms run-to-run noise. The per-frame cost
+     is dominated by stroke COUNT, not by fill area - which is also why
+     splitting trail() from bodies() below was worth far more than this. So
+     dpr 2, because it is visibly better and costs nothing detectable. */
+  var TRAIL_DPR = 2;
   var CLAMP_MS = 50;                    /* hero.js 2a99923 used this; keep it */
   var NOMINAL_MS = 16;                  /* one 60Hz frame, for the first frame */
 
@@ -83,10 +113,28 @@
   function dot(c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fill(); }
 
   /* ==== the three systems ==============================================
-   * Each exposes: reset(), frame(), step(h), draw(alpha), and the constants
+   * Each exposes: reset(), frame(), step(h), trail(alpha), bodies(alpha), and
+   * the constants
+   *
+   * TRAIL AND BODIES ARE SEPARATE BECAUSE THEY RUN AT DIFFERENT RATES. The
+   * trail needs one segment per integration step, or it draws a dotted line
+   * with gaps where the step was; the rods and discs need drawing once per
+   * FRAME, because the front canvas is cleared once per frame and every pass
+   * but the last is overwritten. They were one function until 2026-09-06, so
+   * seventeen steps a frame meant seventeen redraws of six rods and six discs,
+   * sixteen of them invisible. Splitting them was worth ~40% of the frame.
    * H (step), RATE (system time per wall second), CAP (steps a frame may take),
    * FADE (the trail's erosion per frame), settle (units to run undrawn), and a
    * caption.
+   *
+   * THE CAPTIONS ARE ONE REGISTER: the system's name, then the parameters that
+   * make this instance this instance - the release offset, the three Lorenz
+   * constants, the three masses. Nothing else. The dates that used to follow
+   * the Lorenz and Burrau names were dropped on 2026-09-07 because the double
+   * pendulum has no single publication to date and inventing symmetry is worse
+   * than losing two numbers a reader was not using; the citations are in the
+   * per-system comments below, where provenance belongs. Keep new captions to
+   * that shape and to about a dozen words.
    *
    * FADE IS PER SYSTEM. The erosion is per frame but the drawing rate is per
    * unit of system time, so one constant gives the fast system a long arc and
@@ -95,12 +143,20 @@
    * each system shows a comparable LENGTH of trajectory, not a comparable
    * duration. */
 
-  /* ---- 1. double pendulum --------------------------------------------- */
+  /* ---- 1. three double pendulums ------------------------------------- */
+  /* Three, not one, and that is the whole point of choosing this system: they
+     are released 0.001 rad apart, they are indistinguishable for several
+     seconds, and then they are not. One pendulum draws a pretty curve; three
+     draw sensitive dependence, which is the thing the page is about.
+     tests/verify_hero_systems.js pins that claim - it is a caption assertion
+     like the other two, not a decoration. */
   function Pendulum() {
     var M1 = 1, M2 = 1, L1 = 1, L2 = 1, G = 9.81;
-    var s = [2, 2, 0, 0];
+    var TH = [2.000, 2.001, 2.002];
+    var COL = [ACC, MOSS, INK];
+    var st = [], prev = [];
     var k1 = [0,0,0,0], k2 = [0,0,0,0], k3 = [0,0,0,0], k4 = [0,0,0,0], t = [0,0,0,0];
-    var px = 0, py = 0, scale = 1, prev = null;
+    var px = 0, py = 0, scale = 1;
 
     function f(y, o) {
       var t1 = y[0], t2 = y[1], w1 = y[2], w2 = y[3];
@@ -121,7 +177,10 @@
     this.CAP = 200;
     this.FADE = 0.03;
     this.settle = 0;
-    this.reset = function () { s = [2, 2, 0, 0]; prev = null; };
+    this.reset = function () {
+      st = TH.map(function (a) { return [a, a, 0, 0]; });
+      prev = [null, null, null];
+    };
     this.frame = function () {
       /* The pivot is CENTRED, and `scale` is PX PER METRE while the swept
          disc's RADIUS is l1+l2 = 2m. The design said "2l = 0.95W", which reads
@@ -142,40 +201,53 @@
       scale = Math.min(0.1875 * W, 0.42 * H);
     };
     this.step = function (h) {
-      var i;
-      f(s, k1);
-      for (i = 0; i < 4; i++) t[i] = s[i] + 0.5 * h * k1[i];
-      f(t, k2);
-      for (i = 0; i < 4; i++) t[i] = s[i] + 0.5 * h * k2[i];
-      f(t, k3);
-      for (i = 0; i < 4; i++) t[i] = s[i] + h * k3[i];
-      f(t, k4);
-      for (i = 0; i < 4; i++) s[i] += h / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
-    };
-    this.draw = function (alpha) {
-      var x1 = px + scale * L1 * Math.sin(s[0]), y1 = py + scale * L1 * Math.cos(s[0]);
-      var x2 = x1 + scale * L2 * Math.sin(s[1]), y2 = y1 + scale * L2 * Math.cos(s[1]);
-      if (prev) {                                   /* the lower bob's trail */
-        bc.strokeStyle = ACC; bc.lineWidth = 1.6; bc.lineCap = 'round';
-        bc.globalAlpha = alpha;
-        bc.beginPath(); bc.moveTo(prev[0], prev[1]); bc.lineTo(x2, y2); bc.stroke();
-        bc.globalAlpha = 1;
+      for (var n = 0; n < 3; n++) {
+        var y = st[n], i;
+        f(y, k1);
+        for (i = 0; i < 4; i++) t[i] = y[i] + 0.5 * h * k1[i];
+        f(t, k2);
+        for (i = 0; i < 4; i++) t[i] = y[i] + 0.5 * h * k2[i];
+        f(t, k3);
+        for (i = 0; i < 4; i++) t[i] = y[i] + h * k3[i];
+        f(t, k4);
+        for (i = 0; i < 4; i++) y[i] += h / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
       }
-      prev = [x2, y2];
+    };
+    function tip(y) {
+      var x1 = px + scale * L1 * Math.sin(y[0]), y1 = py + scale * L1 * Math.cos(y[0]);
+      return [x1, y1, x1 + scale * L2 * Math.sin(y[1]), y1 + scale * L2 * Math.cos(y[1])];
+    }
+    this.trail = function (alpha) {
+      bc.lineWidth = 1.6; bc.lineCap = 'round'; bc.globalAlpha = alpha;
+      for (var n = 0; n < 3; n++) {
+        var p = tip(st[n]);
+        if (prev[n]) {
+          bc.strokeStyle = COL[n];
+          bc.beginPath(); bc.moveTo(prev[n][0], prev[n][1]); bc.lineTo(p[2], p[3]); bc.stroke();
+        }
+        prev[n] = [p[2], p[3]];
+      }
+      bc.globalAlpha = 1;
+    };
+    /* Rods 1.2/1.0 and discs 5/4, down from 1.6/1.3 and 6/5: six rods and six
+       discs at the single-pendulum weights read as clutter. Each pendulum's
+       rods take its own colour so a reader can follow one of the three. */
+    this.bodies = function (alpha) {
       fc.globalAlpha = alpha;
-      fc.strokeStyle = INK; fc.lineCap = 'round'; fc.lineJoin = 'round';
-      fc.lineWidth = 1.6;
-      fc.beginPath(); fc.moveTo(px, py); fc.lineTo(x1, y1); fc.stroke();
-      fc.lineWidth = 1.3;
-      fc.beginPath(); fc.moveTo(x1, y1); fc.lineTo(x2, y2); fc.stroke();
-      fc.fillStyle = RULE; dot(fc, px, py, 3);
-      fc.fillStyle = INK;  dot(fc, x1, y1, 6); dot(fc, x2, y2, 5);
+      fc.lineCap = 'round'; fc.lineJoin = 'round';
+      for (var n = 0; n < 3; n++) {
+        var p = tip(st[n]);
+        fc.strokeStyle = COL[n];
+        fc.lineWidth = 1.2;
+        fc.beginPath(); fc.moveTo(px, py); fc.lineTo(p[0], p[1]); fc.stroke();
+        fc.lineWidth = 1.0;
+        fc.beginPath(); fc.moveTo(p[0], p[1]); fc.lineTo(p[2], p[3]); fc.stroke();
+        fc.fillStyle = COL[n]; dot(fc, p[0], p[1], 5); dot(fc, p[2], p[3], 4);
+      }
+      fc.fillStyle = RULE; dot(fc, px, py, 3);     /* the shared pivot, once */
       fc.globalAlpha = 1;
     };
-    this.caption = 'Double pendulum. Two 1 kg masses on 1 m rods, released from '
-      + 'rest at θ₁ = θ₂ = 2.00 rad, g = 9.81 m s⁻². Integrated in your browser, '
-      + 'Runge–Kutta 4 at a 1 ms step. A picture of a nonlinear system, not of the '
-      + 'energy model.';
+    this.caption = 'Three double pendulums, released 0.001 rad apart.';
   }
 
   /* ---- 2. Lorenz attractor -------------------------------------------- */
@@ -217,7 +289,7 @@
       f(t, k4);
       for (i = 0; i < 3; i++) s[i] += h / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
     };
-    this.draw = function (alpha) {
+    this.trail = function (alpha) {
       var x = ox + s[0] * sx, y = oy - s[2] * sy;
       if (prev) {
         /* y is out of plane, so it carries depth through width and alpha - both
@@ -232,15 +304,13 @@
         bc.globalAlpha = 1;
       }
       prev = [x, y];
+    };
+    this.bodies = function (alpha) {
       fc.globalAlpha = alpha;
-      fc.fillStyle = INK; dot(fc, x, y, 3.5);
+      fc.fillStyle = INK; dot(fc, ox + s[0] * sx, oy - s[2] * sy, 3.5);
       fc.globalAlpha = 1;
     };
-    this.caption = 'Lorenz attractor, 1963. σ = 10, ρ = 28, β = 8/3, from '
-      + '(x, y, z) = (0, 1, 0), with the first 20 time units of transient '
-      + 'integrated but not drawn, projected on the x–z plane. Integrated in your '
-      + 'browser, Runge–Kutta 4 at h = 0.004. A picture of a nonlinear system, not '
-      + 'of the energy model.';
+    this.caption = 'Lorenz attractor. σ = 10, ρ = 28, β = 8/3.';
   }
 
   /* ---- 3. Burrau's three-body problem ---------------------------------- */
@@ -261,6 +331,7 @@
     var y = new Float64Array(12), yt = new Float64Array(12), y5 = new Float64Array(12);
     var k = [], q;
     for (q = 0; q < 6; q++) k.push(new Float64Array(12));
+    var RAD = [0, 1, 2].map(function (i) { return 4.0 * Math.pow(M[i], 1 / 3); });
     var hh = 1e-4, seed = 0, prev = null, sx = 1, ox = 0, oy = 0, span = 3;
 
     function deriv(v, o) {
@@ -346,7 +417,7 @@
       if (escaped()) this.done = true;
     };
     this.frame = function () { };
-    this.draw = function (alpha) {
+    function frameFit() {
       var i, mx = 0;
       for (i = 0; i < 3; i++) mx = Math.max(mx, Math.abs(y[4*i]), Math.abs(y[4*i+1]));
       /* Scale against the WIDTH, not min(W,H). The visible canvas is shaped
@@ -360,31 +431,38 @@
       span += (Math.max(1.5, Math.min(mx, 20)) - span) * 0.02;   /* slow follow */
       sx = 0.45 * W / span;
       ox = W / 2; oy = H / 2;
-      var col = [ACC, MOSS, INK], rad = [3.6, 4.0, 4.3];   /* radius ~ m^(1/3) */
-      var pt = [];
-      for (i = 0; i < 3; i++) pt.push([ox + y[4*i] * sx, oy - y[4*i+1] * sx]);
+      /* radius = k * m^(1/3), computed rather than typed so the mass encoding
+         cannot drift when someone resizes the dots. [5.77, 6.35, 6.84]. */
+    }
+    var COL3 = [ACC, MOSS, INK];
+    function pts() {
+      var i, p = [];
+      for (i = 0; i < 3; i++) p.push([ox + y[4*i] * sx, oy - y[4*i+1] * sx]);
+      return p;
+    }
+    this.trail = function (alpha) {
+      frameFit();
+      var i, pt = pts();
       if (prev) {
         /* 1.4 not 1.0: destination-out erodes an antialiased thin line's soft
            edges before its core, so a 1px diagonal breaks into dashes as it
            fades. A slightly fatter core outlives that. */
         bc.lineWidth = 1.4; bc.lineCap = 'round'; bc.globalAlpha = alpha;
         for (i = 0; i < 3; i++) {
-          bc.strokeStyle = col[i];
+          bc.strokeStyle = COL3[i];
           bc.beginPath(); bc.moveTo(prev[i][0], prev[i][1]); bc.lineTo(pt[i][0], pt[i][1]); bc.stroke();
         }
         bc.globalAlpha = 1;
       }
       prev = pt;
+    };
+    this.bodies = function (alpha) {
+      var i, pt = pts();
       fc.globalAlpha = alpha;
-      for (i = 0; i < 3; i++) { fc.fillStyle = col[i]; dot(fc, pt[i][0], pt[i][1], rad[i]); }
+      for (i = 0; i < 3; i++) { fc.fillStyle = COL3[i]; dot(fc, pt[i][0], pt[i][1], RAD[i]); }
       fc.globalAlpha = 1;
     };
-    this.caption = 'Burrau’s three-body problem, 1913. Masses 3, 4 and 5 released '
-      + 'from rest at the vertices of a 3–4–5 triangle. Integrated in your browser, '
-      + 'adaptive Runge–Kutta, softened at 10⁻⁶ so a close pass cannot break the '
-      + 'step. In this integration the 3 and the 4 pair off and the 5 is thrown clear '
-      + 'at t = 61, which is the published outcome; it then fades and starts again '
-      + 'perturbed by 10⁻⁶. A picture of a nonlinear system, not of the energy model.';
+    this.caption = 'Burrau’s three-body problem. Masses 3, 4 and 5.';
   }
 
   /* ==== choose ========================================================= */
@@ -404,17 +482,23 @@
     if (w === W && h === H) return;
     W = w; H = h;
     fdpr = Math.min(window.devicePixelRatio || 1, 2);
-    /* The back canvas stays at dpr 1: its whole-surface erosion is the dominant
-       per-frame cost (5.2M device pixels at dpr 2 on a 1440x900 screen against
-       1.3M at 1) and a trail is soft anyway. The front canvas, which carries
-       the crisp rods and discs, gets the real ratio. */
-    back.width = W; back.height = H;
+    /* Both canvases now take the device ratio, capped: TRAIL_DPR above records
+       why the back one stopped being pinned to 1. */
+    var bdpr = Math.min(window.devicePixelRatio || 1, TRAIL_DPR);
+    back.width = Math.round(W * bdpr); back.height = Math.round(H * bdpr);
     back.style.width = front.style.width = W + 'px';
     back.style.height = front.style.height = H + 'px';
     front.width = Math.round(W * fdpr); front.height = Math.round(H * fdpr);
     fc.setTransform(fdpr, 0, 0, fdpr, 0, 0);
-    bc.setTransform(1, 0, 0, 1, 0, 0);
+    bc.setTransform(bdpr, 0, 0, bdpr, 0, 0);
     bc.clearRect(0, 0, W, H);              /* a stretched trail is a smear */
+    /* The band is the whole first screen less the nav. Measured rather than
+       computed from a constant, because the navband's height changes when the
+       nav wraps - which it does at 390. The stylesheet keeps height:0 as the
+       no-JS default; the band only exists when this file runs anyway. */
+    var nb = document.querySelector('.navband');
+    var band = document.querySelector('.heroband');
+    if (nb && band) band.style.height = Math.max(0, H - nb.getBoundingClientRect().height) + 'px';
     sys.frame();
   }
 
@@ -471,7 +555,7 @@
       if (wipe >= WIPE_HOLD && sys.done) sys.reset();
       if (wipe >= WIPE_END) wipe = 0;
       fc.clearRect(0, 0, W, H);
-      sys.draw(wipeAlpha());
+      sys.bodies(wipeAlpha());
       raf = requestAnimationFrame(frame);
       return;
     }
@@ -484,8 +568,8 @@
                                         missing time, and compounds under load */
     fadeBack(sys.FADE);
     fc.clearRect(0, 0, W, H);
-    for (var i = 0; i < n; i++) { sys.step(sys.H); sys.draw(1); }
-    if (!n) sys.draw(1);
+    for (var i = 0; i < n; i++) { sys.step(sys.H); sys.trail(1); }
+    sys.bodies(1);          /* once a frame: the front canvas was cleared once */
     if (sys.done) wipe = 1e-6;
     raf = requestAnimationFrame(frame);
   }
@@ -513,7 +597,8 @@
     fc.clearRect(0, 0, W, H);
     settle(sys.settle);
     var n = Math.min(Math.round(2.5 / sys.H), 4000);
-    for (var i = 0; i < n; i++) { sys.step(sys.H); sys.draw(1); }
+    for (var i = 0; i < n; i++) { sys.step(sys.H); sys.trail(1); }
+    sys.bodies(1);
   }
 
   /* The loop may pause when the hero band leaves the viewport ONLY where the

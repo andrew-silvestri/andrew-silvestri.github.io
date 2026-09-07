@@ -725,14 +725,23 @@ body.home .navband {
   background: var(--bg);
   border-bottom: 1px solid var(--rule);
 }
+/* nav.top is "padding: 26px 34px 0 26px" - 26 top and nothing at the bottom -
+   which is right on the fourteen pages where the nav has open page below it,
+   and wrong here, where the band has a border-bottom and the links sat flush
+   on the rule. Scoped to body.home on purpose: nav.top's own declaration is
+   shared by every page and is not touched. */
+body.home .navband > nav.top { padding-bottom: 26px; }
 
 /* The arrival screen: the system uninterrupted, with only the nav band over
    it. Height comes from .hero-live, which hero.js sets once it has a 2D
    context, so a reader with JS off gets the page minus the figure rather than
    460px of blank paper. */
 body.home .heroband { height: 0; }
+/* The height is set by hero.js, to the viewport less the navband: the brief
+   asked for the whole system on arrival and a min(58vh, 460px) cap was 43% of
+   a 1080-tall screen. It is measured rather than a calc() because the
+   navband's height changes when the nav wraps, which it does at 390. */
 body.home.hero-live .heroband {
-  height: min(58vh, 460px);
   max-width: min(100%, 782px);
   margin: 0 auto;
   padding: 0 34px;
