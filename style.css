@@ -774,6 +774,18 @@ body.home .herofoot footer {
   padding-top: 0;
   border-top: 0;
 }
+/* The identity is stacked, not run together with middots. In a block this
+   narrow the separators orphan - a dangling "·" at the end of a wrapped line -
+   and no width fixes that, because the run-together line is 68 characters and
+   needs roughly 590px while the block has 405px at 1728 and 261px at 1440.
+   Stacked, the longest item is "energy systems modelling", which RENDERS at
+   191px - measured, not counted; the character-count estimate for it was 209
+   and 9% high, and the breakpoint below is derived from the 191. Nothing can
+   orphan at any width this block stays fixed at.
+   Two <p> rather than <br><br>, so the gap between the identity and the
+   built-with line comes from margins and can be changed in one place. */
+body.home .herofoot footer p { margin: 0; }
+body.home .herofoot footer p + p { margin-top: 14px; }
 
 /* Below 960 the paper is full-bleed, so there is no margin to sit in and no
    canvas to clear: the block goes back into the flow at the end of the page.
@@ -781,7 +793,32 @@ body.home .herofoot footer {
    change. The cost is that on a phone the hero's caption ends up a scroll away
    from the hero it describes; the alternative was moving the element between
    two parents on every resize, which is worse. */
-@media (max-width: 960px) {
+/* 1340, NOT 960, AND THE DIFFERENCE IS DELIBERATE. .paper goes full-bleed at
+   960 because that is where its margins stop being wide enough to read a
+   trajectory in. This block goes static where its margins stop being wide
+   enough to hold its own TEXT, which is a different question and a larger
+   number, so the two breakpoints are not the same and must not be "tidied"
+   into one.
+   Derived from a MEASUREMENT, not from a character count. The longest stacked
+   line is "energy systems modelling", and rendered it needs 191px - the figure
+   test_layout.js reports when the assertion fails. With the block's 68px of
+   horizontal padding that is a 259px block, and the block is (W - 782) / 2, so
+   the strict requirement is W >= 1300.
+   THE BREAKPOINT IS 1340, ABOUT 40px OF SLACK ABOVE THAT, DELIBERATELY. 1300
+   and 1340 are both correct and neither is a typo: 1300 is where the text
+   stops fitting and 1340 is where this stops being fixed, and the gap is
+   margin for a font that renders slightly wider than it does here. Do not
+   "correct" one to the other.
+   (An earlier version of this comment said 209px, from 24 characters x 8.7px
+   of 14.5px mono. That was an estimate and it was 9% high; the rendered figure
+   is 191. The arithmetic downstream of it - 277px, W >= 1336 - was wrong by
+   the same margin.)
+   What it was: at 960 the block stayed fixed down to 961px, where its usable
+   text width is (961-782)/2 - 68 = 21px, about two characters. At 1024 it is
+   53px, and at 1280 - a common laptop width - 181px against the 191px it
+   needs. It shipped that way; test_layout.js ran at 1024 and had nothing
+   asserting that a fixed block's text fits inside it, which it now does. */
+@media (max-width: 1340px) {
   body.home .herofoot {
     position: static;
     width: auto;
