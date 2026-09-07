@@ -708,9 +708,18 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   /* This canvas is fixed and repaints every frame while the page scrolls over
      it, which is the textbook case for giving it a compositor layer of its own
      so scrolling does not drag it through paint. There were no compositing
-     hints anywhere in this stylesheet before 2026-09-07. */
-  will-change: transform;
+     hints anywhere in this stylesheet before 2026-09-07.
+     VARIANT 4b: opacity is now the animated property, so it is the one to
+     hint. The hero fades out when its band leaves the viewport and the loop
+     stops once the fade completes - a compositor-only transition, no repaint.
+     This is the answer to the objection recorded in hero.js against pausing on
+     desktop, that "a stopped loop freezes visible pixels mid-scroll, which
+     reads as a crash": a freeze is a still image where motion was expected, a
+     fade is a departure. */
+  will-change: opacity;
+  transition: opacity 300ms linear;
 }
+body.home.hero-idle #hero { opacity: 0; }
 #hero .hero-layer { position: absolute; inset: 0; }
 
 /* The nav is a band, not a strip. nav.top is max-width:var(--shell) and
