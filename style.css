@@ -173,7 +173,14 @@ nav.top .dd { margin: 0; }
   position: absolute;
   left: -16px;
   top: 100%;
-  padding: 9px 0;
+  /* NO VERTICAL PADDING: the items own the panel's inner spacing, all of it.
+     With 9px here the first item's highlight started 9px below the panel's
+     inner edge and the last ended 9px above it, while CONSECUTIVE items had 0
+     between them - the links are display:block with no margin, so their
+     backgrounds touch. Measured 2026-09-07: 9 above, 0 between, 9 below, which
+     read as dead space at the top of the menu and nowhere else. Now 0/0/0.
+     Horizontal stays 0: the items carry their own left indent. */
+  padding: 0;
   min-width: 268px;
   background: var(--card);
   border: 1px solid var(--rule);
@@ -181,10 +188,23 @@ nav.top .dd { margin: 0; }
   box-shadow: var(--shadow);
 }
 .dd:hover > .ddmenu, .dd:focus-within > .ddmenu { display: block; }
-.ddmenu a {
+/* nav.top IS IN THIS SELECTOR ON PURPOSE, AND WITHOUT IT THE PADDING BELOW DOES
+   NOTHING. `nav.top a` is (0,1,2) and a bare `.ddmenu a` is (0,1,1), so the bar's
+   own `padding: 5px 10px` wins and the menu items indent 10px. This rule said
+   18px from the day it was written and never once applied it - the stylesheet
+   asserting something untrue, which is the same class of defect as a comment
+   describing a state the site has left. Found 2026-09-07 by measuring the
+   rendered padding instead of reading the declaration.
+   26px, NOT the 18px it used to claim, and the number is derived rather than
+   chosen: the menu is positioned `left: -16px` from the `.dd`, and the button's
+   own text sits at its 10px padding, so 26 = 16 + 10 puts an item's text
+   EXACTLY under the text of the button that opened it. Measured at 1728: the
+   first item's text starts 1.0px right of "Misc", against 7.0px left at 18px
+   and 15.0px left at 10px. Change the -16px above and this must follow. */
+nav.top .ddmenu a {
   display: block;
   margin: 0;
-  padding: 8px 18px;
+  padding: 8px 26px;
   color: var(--dim);
   font-size: var(--fs-1);
   white-space: nowrap;
@@ -716,7 +736,12 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
     background: transparent;
   }
   .dd:focus-within > .ddmenu { display: block; }
-  .ddmenu a { padding: 9px 0 9px 18px; font-size: var(--fs-1); }
+  /* same specificity fix as the desktop rule: a bare `.ddmenu a` loses to
+     `nav.top a`'s `padding: 14.5px 4px` in this block, so this indent has
+     never applied either. 26px is not used here - the menu is full-width in
+     the column layout, so there is no button text to align under; 18px is
+     just enough to read as nested under its group. */
+  nav.top .ddmenu a { padding: 9px 0 9px 18px; font-size: var(--fs-1); }
   .dd { display: block; margin: 2px 0; width: 100%; }
   /* One item per row. The bar is a wrapping flex row, so the groups — which
      are block-level — took a line each while the plain links flowed
