@@ -22,21 +22,21 @@ parameter from a public data set.</p>
 Most nodes hold a measured quantity, and every node names where it came
 from; the 4,062 that hold an assumption say so in their source line:
 1,142 consumer groups carry an elasticity from the literature,
-the 24 behaviour channels are a model of where demand is decided, and
+the 24 behavior channels are a model of where demand is decided, and
 2,896 ports carry a name and a harbour size class and no number. Apply a
 change anywhere
 and the effect propagates along the links until it settles, which the sixty
 prepared changes do in 5 to 43 rounds, 24 in the
 middle; a single node pushed on its own settles in about 11.</p>
 
-<img class="fig wide plain" src="assets/hero_globe.png?v=a30332dd" width="1440" height="1252" alt="The model's 34,936 power stations and 35,207 settlements at their recorded coordinates, on an orthographic globe centred on the Atlantic">
+<img class="fig wide plain" src="assets/hero_globe.png?v=a30332dd" width="1440" height="1252" alt="The model's 34,936 power stations and 35,207 settlements at their recorded coordinates, on an orthographic globe centered on the Atlantic">
 <p class="small">Every power station and every settlement in the model at its recorded coordinates, drawn on paper by <code>build_hero_figure.py</code> from the payload.</p>
 
 <h2>The nine layers</h2>
 
 <picture class="wide">
-<source media="(max-width: 760px)" srcset="assets/atlas_layers-phone.png?v=44ac9267">
-<img src="assets/atlas_layers.png?v=e224366a" class="fig" loading="lazy" width="2280" height="1400" alt="The nine layers of the atlas as bands with their live node counts. Space, weather, climate and recorded events push one way, downward; demand, power plants, markets and fuel, grids and behaviour trade back and forth.">
+<source media="(max-width: 760px)" srcset="assets/atlas_layers-phone.png?v=c59b8e9e">
+<img src="assets/atlas_layers.png?v=10176f59" class="fig" loading="lazy" width="2280" height="1400" alt="The nine layers of the atlas as bands with their live node counts. Space, weather, climate and recorded events push one way, downward; demand, power plants, markets and fuel, grids and behavior trade back and forth.">
 </picture>
 <p class="small">Drawn by <code>build_layer_diagram.py</code> from the published payload: every count and every link is read from it, and the rank rule from the engine. A single arrowhead pushes one way; a double head trades back and forth; an arc's width is the number of links it stands for. The bands are in the one order that minimises arc crossings, and the table below follows the figure.</p>
 
@@ -49,7 +49,7 @@ middle; a single node pushed on its own settles in about 11.</p>
 <tr><td>Power plants</td><td class="n">34,936</td><td>Every unit in the world database, 167 countries</td></tr>
 <tr><td>Markets and fuel</td><td class="n">3,627</td><td>Price benchmarks, national fuel supplies, and every port in the World Port Index</td></tr>
 <tr><td>Grids</td><td class="n">3,546</td><td>National grids and first-level administrative districts at their settlement centroid</td></tr>
-<tr><td>Behaviour</td><td class="n">24</td><td>Behavioural channels, inside 840 drawn brain structures, fed by every district with a measured population</td></tr>
+<tr><td>Behavior</td><td class="n">24</td><td>Behavioral channels, inside 840 drawn brain structures, fed by every district with a measured population</td></tr>
 </table>
 
 <p>Seven of the nine layers are drawn on a sphere. Mercator inflates Greenland
@@ -61,7 +61,7 @@ side is hidden by the planet rather than flung to the edge of a rectangle.</p>
 <p>The space layer is drawn standing off the surface, because the sun is not
 on the Earth and neither is the sunlight arriving above the atmosphere.</p>
 
-<p>The last layer is not a place. Behaviour is drawn inside a brain, with
+<p>The last layer is not a place. Behavior is drawn inside a brain, with
 24 channels at anatomically defensible positions among 840 named
 structures of the Allen Mouse Brain Common Coordinate Framework. The
 structures are scenery: they carry no weight, no link and no channel, and they
@@ -182,9 +182,9 @@ seasonal release of heat the ocean absorbed in summer, and by the standing wave
 the Rocky Mountains impose on the flow. The ocean stores and releases; the
 atmosphere is what carries.</p>
 
-<h2>The behaviour layer</h2>
+<h2>The behavior layer</h2>
 
-<p>Behaviour is wired in both directions: the channels reach the consumer
+<p>Behavior is wired in both directions: the channels reach the consumer
 groups, and every district that resolves to a real administrative division
 reaches the channels.</p>
 
@@ -197,11 +197,11 @@ settlement data on their administrative code, so the join is exact rather than
 a spatial guess.</p>
 
 <p>The concentration is the weight of the link from a district into the
-behaviour layer. That the measurement is real does not make the direction real:
-that a more concentrated population couples more strongly to shared behaviour
+behavior layer. That the measurement is real does not make the direction real:
+that a more concentrated population couples more strongly to shared behavior
 is a hypothesis, and it is marked assumed rather than measured.</p>
 
-<p>The behaviour tab switches between the brain and the map, because the two
+<p>The behavior tab switches between the brain and the map, because the two
 things worth seeing are the channels and the places feeding them.</p>
 
 <p>What is deliberately absent: there is no weighting of a district by the

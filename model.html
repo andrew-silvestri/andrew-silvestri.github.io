@@ -14,7 +14,7 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 <nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html" class="on">How the model works</a><a href="library.html">Figures</a><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Running <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="shoes.html">What a fast shoe is worth</a><a href="economy.html">Economy is not time</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a><a href="food.html">Fat, sugar, salt</a><a href="continents.html">Where the ground goes</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a><a href="neuron.html">The measured neuron</a></span></span><a href="code.html">Code</a><a href="about.html">About</a></nav>
 <main class="prose">
 
-<h1>The World Energy Model: Structure, Weights, and Behaviour</h1>
+<h1>The World Energy Model: Structure, Weights, and Behavior</h1>
 <p class="dim">This report describes a model of the world energy system. The model has 86,622
 nodes and 197,068 weighted links. It shows how a change at one point in the
 system travels to every other point.</p>
@@ -52,7 +52,7 @@ at every other node.</p>
 <tr><td>District</td><td class="n">3,332</td><td>One first-level administrative division, at its settlement centroid</td></tr>
 <tr><td>Power station</td><td class="n">34,936</td><td>One generating unit from the world database, at its recorded coordinate; 167 countries</td></tr>
 <tr><td>Consumer group</td><td class="n">35,207</td><td>The demand of one settlement above fifteen thousand people</td></tr>
-<tr><td>Behaviour channel</td><td class="n">24</td><td>One behavioural channel, placed in a drawn brain structure and wired into demand</td></tr>
+<tr><td>Behavior channel</td><td class="n">24</td><td>One behavioral channel, placed in a drawn brain structure and wired into demand</td></tr>
 <tr><td><b>Total</b></td><td class="n"><b>86,622</b></td><td></td></tr>
 </table>
 
@@ -66,7 +66,7 @@ at every other node.</p>
 <tr><td>Our World in Data</td><td>Fuel shares for 182 more countries</td><td>11,285 country-years</td></tr>
 <tr><td>WRI Global Power Plant Database v1.3</td><td>Every generating unit in the world database, at its recorded coordinate, with capacity and fuel</td><td>34,936 units, 167 countries</td></tr>
 <tr><td>GeoNames cities15000</td><td>Settlements above fifteen thousand people, and the population and concentration of each administrative division</td><td>34,068 settlements, 2,786 divisions</td></tr>
-<tr><td>USGS earthquake catalogue</td><td>Earthquakes of magnitude 5.5 and above that reach infrastructure</td><td>8,733 wired events</td></tr>
+<tr><td>USGS earthquake catalog</td><td>Earthquakes of magnitude 5.5 and above that reach infrastructure</td><td>8,733 wired events</td></tr>
 <tr><td>NGA World Port Index</td><td>Ports</td><td>2,896</td></tr>
 <tr><td>FRED</td><td>Daily price histories</td><td>9 series, 38,633 observations</td></tr>
 <tr><td>EM-DAT</td><td>Recorded disasters with damage costs</td><td>27,727 events; 14,057 energy-relevant</td></tr>
@@ -76,7 +76,7 @@ at every other node.</p>
 <tr><td>NOAA CPC, Oceanic Ni&ntilde;o Index</td><td>El Ni&ntilde;o and La Ni&ntilde;a</td><td>917 overlapping seasons, 1950 on</td></tr>
 <tr><td>NOAA CPC, standardised NAO</td><td>The North Atlantic Oscillation</td><td>917 months, 1950 on</td></tr>
 <tr><td>Orbital geometry</td><td>Annual mean insolation by latitude. Computed, not measured, and checked against S<sub>0</sub>/4</td><td>18 bands</td></tr>
-<tr><td>Allen Brain Atlas</td><td>Brain structures for the behaviour nodes</td><td>24 channels matched</td></tr>
+<tr><td>Allen Brain Atlas</td><td>Brain structures for the behavior nodes</td><td>24 channels matched</td></tr>
 <tr><td>FAOSTAT</td><td>Nitrogen fertilizer use</td><td>12,734 area-years</td></tr>
 </table>
 
@@ -161,8 +161,8 @@ up at sixty steps. Nothing in this write-up reaches sixty; the prepared changes 
 <tr><td>Temperature → gas and power price</td><td class="n">2</td><td>+0.15 to +0.20</td><td>Heating and cooling demand.</td></tr>
 <tr><td>Consumer group → district</td><td class="n">1,142</td><td>-0.01</td><td>Negative: demand response. Consumers use less when costs rise.</td></tr>
 <tr><td>Power station → grid</td><td class="n">34,932</td><td>+0.20 to +0.75</td><td>0.20 + 0.55 × √(capacity ÷ the largest plant); the division by plant count is the engine's fan-in, section 5.3.</td></tr>
-<tr><td>District → behaviour channel</td><td class="n">66,264</td><td>+0.01 to +1.00</td><td>Varies by district; set in the brain build.</td></tr>
-<tr><td>Behaviour channel → consumer group</td><td class="n">1,142</td><td>+0.28</td><td>Fixed.</td></tr>
+<tr><td>District → behavior channel</td><td class="n">66,264</td><td>+0.01 to +1.00</td><td>Varies by district; set in the brain build.</td></tr>
+<tr><td>Behavior channel → consumer group</td><td class="n">1,142</td><td>+0.28</td><td>Fixed.</td></tr>
 </table>
 
 <h3>5.2 Node inertia</h3>
@@ -179,7 +179,7 @@ reacts at once. A value of 1 means the node almost never moves.</p>
 <tr><td>Power station</td><td>0.14 to 0.74</td><td>From capacity: a larger plant changes more slowly.</td></tr>
 <tr><td>Climate system</td><td>0.45 to 0.55</td><td>The climate is a slow variable.</td></tr>
 <tr><td>Weather mode</td><td>0.12 to 0.42</td><td>Set per index (build_atlas_global.py).</td></tr>
-<tr><td>Behaviour channel</td><td>0.30 to 0.76</td><td>0.30 rising by 0.02 per channel: a modeling choice, not a measurement.</td></tr>
+<tr><td>Behavior channel</td><td>0.30 to 0.76</td><td>0.30 rising by 0.02 per channel: a modeling choice, not a measurement.</td></tr>
 <tr><td>Sun, insolation</td><td>0.00 to 0.78</td><td>The sun is held; insolation follows it at once.</td></tr>
 </table>
 
@@ -238,8 +238,8 @@ are named here so that nobody looks for them in the current one.</p>
 
 <hr>
 <h2>Figures from this model</h2>
-<img class="fig wide" src="assets/energy_model_throughlines.png?v=0b5747c9" loading="lazy" width="2280" height="4145"
- alt="Routes through the model from the climate to behaviour">
+<img class="fig wide" src="assets/energy_model_throughlines.png?v=fc7c9dfb" loading="lazy" width="2280" height="4145"
+ alt="Routes through the model from the climate to behavior">
 <p class="small">The routes through the system, computed from the link weights.
 <a href="library.html">All figures</a>.</p>
 
