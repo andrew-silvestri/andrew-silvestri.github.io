@@ -157,9 +157,18 @@
    * FADE IS PER SYSTEM. The erosion is per frame but the drawing rate is per
    * unit of system time, so one constant gives the fast system a long arc and
    * the slow one a stub that washes out before it grows. A trail survives about
-   * 1/FADE frames, so these are roughly 3s, 5s and 20s of memory - chosen so
-   * each system shows a comparable LENGTH of trajectory, not a comparable
-   * duration. */
+   * 1/FADE frames - so at the 59.6 fps this page actually runs, 0.56s for the
+   * pendulum, 0.84s for the Lorenz and 1.68s for the three-body. THIS LINE SAID
+   * "roughly 3s, 5s and 20s" until 2026-09-08 and was six times high on all
+   * three; 1/FADE is 33, 50 and 100 FRAMES, and somebody converted frames to
+   * seconds at about 10fps. The ratios were right, which is why it read
+   * plausibly for as long as nobody divided.
+   * Measured rather than derived, by following bright pixels for two seconds:
+   * at FADE 0.005 they fall to mean alpha 130.0 against 138.3 predicted, and at
+   * 0.010 to 71.2 against 74.8. The gap is the followed pixels starting near
+   * 250 rather than 255.
+   * The constants are chosen so each system shows a comparable LENGTH of
+   * trajectory, not a comparable duration. */
 
   /* ---- 1. three double pendulums ------------------------------------- */
   /* Three, not one, and that is the whole point of choosing this system: they
@@ -407,11 +416,34 @@
     }
     this.H = 0.01;           /* the chunk handed to the adaptive stepper, not a
                                 fixed step - it subdivides internally */
-    this.RATE = 0.30;        /* resolution at t=61.4 (measured) -> ~205s a run.
-                                At real-time scaling it would reseed every 60s
-                                and the wipe would be the page's main event. */
+    this.RATE = 0.60;        /* resolution at t=61.4 (measured) -> ~102s a run,
+                                and 102.7s is what the page measures. Doubled
+                                from 0.30 on 2026-09-08 at Andrew's request.
+                                THE ARGUMENT THE OLD VALUE CARRIED IS STILL THE
+                                ARGUMENT, and it is why this is 0.60 and not
+                                1.0: at real-time scaling the run resolves in
+                                ~60s and the 1.6s wipe becomes the page's main
+                                event. 0.30 gave ~205s and bought that at the
+                                cost of a drawing that barely moved. ~102s was
+                                chosen deliberately as the point where the wipe
+                                is still rare - one in every sixty-four seconds
+                                of animation, against one in thirty-eight at
+                                real time. Anyone proposing 1.0 is re-opening a
+                                decision made twice. */
     this.CAP = 40;
-    this.FADE = 0.005;       /* slowest mover, so the longest memory */
+    this.FADE = 0.010;       /* slowest mover, so the longest memory - and it
+                                DOUBLED WITH RATE, on the rule above: FADE is
+                                per system so that each shows a comparable
+                                LENGTH of trajectory, and system time now
+                                advances twice as fast through a trail that
+                                survives a fixed number of FRAMES. Left at
+                                0.005 the visible arc would have doubled.
+                                Measured at equal system time (18), 0.010 at
+                                RATE 0.60 reproduces 0.005 at RATE 0.30 to
+                                within a rounding: trail coverage 0.241% against
+                                0.235%, bright core 0.067% against 0.064%.
+                                erodeN goes 4 -> 2 and erodeF stays 0.0199, so
+                                the 8-bit floor still clears at residue 25. */
     this.settle = 0;
     this.done = false;
     this.reset = function () {
@@ -680,7 +712,9 @@
      had no erosion at all, which is neither 127 nor 25. The pre-fix behaviour
      it warns about ("unlimited memory ... cleared only by the reseed wipe every
      ~205s ... trails were never fading") was an accurate description of the
-     site right up to this commit.
+     site right up to the commit that moved the call. The ~205s in that
+     quotation is the reseed interval at the RATE of 0.30 then in force; it is
+     ~102s now.
 
      AFTER THE MOVE, measured in the page, three-body at RATE 0.30, Firefox
      software raster, 1728x1080 dSF 2.2222: coverage above alpha 96 goes 0.100%
