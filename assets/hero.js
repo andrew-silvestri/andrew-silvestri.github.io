@@ -710,16 +710,21 @@
     fc.clearRect(0, 0, W, H);
     for (var i = 0; i < n; i++) { sys.step(sys.H); sys.trail(1); }
     sys.bodies(1);          /* once a frame: the front canvas was cleared once */
-    /* NOTHING IS DONE ABOUT THE CAPTION/FOOTER BLOCK HERE, AND NOTHING SHOULD
-       BE. It is an opaque panel in CSS (style.css, body.home .herofoot) and
-       hides the canvas by itself. This file used to clear its rectangle out of
-       both canvases every frame, which meant caching the rect, which meant
-       re-measuring it on document.fonts.ready when the caption rewrapped under
-       the arriving webfont and the block grew upward past a stale rect. All of
-       that is gone with the declaration that replaced it. Do not add a
-       clearRect or a clip back: tests/test_panel.js checks the panel from
-       rendered pixels and will pass whether this loop cooperates or not, so a
-       reintroduced clear would be dead code nothing fails on. */
+    /* NOTHING IS DONE ABOUT ANY BLOCK OVER THE CANVAS HERE, AND NOTHING SHOULD
+       BE. There is nothing over it: the corner panel was retired on 2026-09-07
+       and the home page's footer moved into <main>, so the canvas has no
+       overlay to avoid.
+       Two earlier mechanisms lived at this point in the loop and both are gone.
+       This file cleared the panel's rectangle out of both canvases every frame,
+       which meant caching the rect, which meant re-measuring it on
+       document.fonts.ready when the caption rewrapped under the arriving
+       webfont and the bottom-anchored block grew past a stale rect; an opaque
+       CSS ground replaced all of that, and then the panel itself went. The
+       history is in unpublished/RETIRED.md.
+       If a fixed block over the canvas is ever reintroduced, give it an opaque
+       background in CSS rather than clearing pixels here - and note that the
+       pixel check which could see whether that worked, tests/test_panel.js,
+       was retired with the panel and is in git, not in tests/. */
     if (sys.done) wipe = 1e-6;
     raf = requestAnimationFrame(frame);
   }

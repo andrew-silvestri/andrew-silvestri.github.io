@@ -533,10 +533,11 @@ footer {
    role and the address left on 2026-09-07 - they are what about.html is for,
    and repeating them under every page was that page written out fifteen times.
    SCOPED TO main ON PURPOSE, and the scoping is free. Every page's footer is
-   inside <main>; the home page's is not - it sits in the fixed .herofoot panel
-   outside it - so this rule reaches exactly the pages it should and cannot
-   touch the panel. When the home page's footer moves into <main>, this same
-   rule picks it up and the site converges on one footer with no new selector.
+   inside <main>, INCLUDING the home page's since 2026-09-07, when the corner
+   panel was retired and its footer moved in. That is why this rule has no
+   special case: it was written while the home page's footer was still outside
+   <main> in the panel, scoped so it could not reach it, and the convergence
+   cost no new selector when the panel went.
    The gap is var(--rhythm), the same token the panel uses. `footer` above has
    padding-top: 22px and that is a different 22 - equal today, unrelated. */
 main footer { text-align: center; }
@@ -812,153 +813,25 @@ body.home .navband > nav.top { padding-bottom: 26px; }
    context, so a reader with JS off gets the page minus the figure rather than
    460px of blank paper. */
 body.home .heroband { height: 0; }
-/* The caption and the footer, stacked, pinned to the bottom left - IN THE LEFT
-   MARGIN, outside .paper, which is what makes the rest of this work. At 1728
-   that margin is (1728-782)/2 = 473px wide and NOTHING SCROLLS THERE: the only
-   thing behind this block is the canvas.
-   IT IS A PANEL, NOT A HOLE, AND THAT IS THE WHOLE DESIGN. It carries an
-   opaque --bg and a hairline on the two edges that face the drawing. A
-   rectangle with no edge and no ground of its own, punched out of a dense
-   drawing, reads as a rendering fault rather than as a deliberate label.
-   WHAT THE OPAQUE GROUND REPLACED, so nobody puts it back: hero.js cleared
-   this block's rectangle out of both canvases every frame, cached that rect,
-   and re-measured it on document.fonts.ready - because the caption rewrapped
-   when IBM Plex arrived, the block is anchored to the bottom so it grew
-   UPWARD, and the stale rect left an uncleared strip along its top edge. An
-   opaque rectangle hides the canvas by itself, so the clearRect pair, the
-   cached rect and the font-load invalidation all went with it (2026-09-07).
-   It also restores _deslop/measure.js as a real gate here. That rig resolves
-   backgrounds by walking getComputedStyle up the DOM - CSS colours, not
-   rendered pixels - so it reported a clean AA pass for this text whether the
-   exclusion worked, was broken, or had been deleted that morning. The ground
-   it reads is now the ground that paints. tests/test_panel.js is the check
-   that can still see pixels, and it is what fails if this background goes.
-   THE +1px ON THE WIDTH IS NOT SLOP. .paper's border-left occupies 473-474 at
-   1728; a border-right on a 473px-wide block lands on 472-473, ADJACENT, and
-   the two hairlines paint a 2px rule wherever .paper spans this block's rows -
-   which is everywhere except the arrival screen, where the paper column starts
-   below the hero band. One more pixel puts the two borders on the same column
-   and they paint one hairline. box-sizing is border-box, so the text box is
-   still (W-782)/2 - 68 and the 2.7px of slack at 1341 - see the breakpoint
-   note below - is not spent on the border. */
-body.home .herofoot {
-  /* --rhythm is on :root now, shared with every page's footer. It is this
-     panel's top and bottom padding AND the gap between its two lines. */
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  z-index: 1;
-  width: calc((100% - min(100%, 782px)) / 2 + 1px);
-  padding: var(--rhythm) 34px;
-  box-sizing: border-box;
-  background: var(--bg);
-  border-top: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
-}
-body.home .herofoot footer {
-  margin-top: 0;      /* it is a stacked block here, not the end of a document */
-  padding-top: 0;
-  border-top: 0;
-}
-/* Two lines, each a link, each a whole destination. The name goes to
-   about.html, which carries the role and the email; the built-with SENTENCE is
-   the link to code.html rather than a separate "All code is downloadable."
-   after it, because two links in a two-line block is one more decision than
-   the block is worth making the reader take.
-   WHAT WAS HERE, because the breakpoint below used to be derived from it: a
-   <br>-stacked identity - name, "energy systems modeling", email - three
-   lines whose longest item rendered at 208.8px. That string is gone and so is
-   the derivation that rested on it. Read the breakpoint note below before
-   assuming any number in this block still comes from a stacked identity.
-   THE line-height IS DELIBERATE and it is what makes the rhythm one number.
-   footer's line boxes are 19px at line-height:normal against the caption's
-   21.75 at .small's 1.5, so the SAME margin rendered 15.4px above the footer
-   and 13.0px inside it - the "two different gaps" this block was reported for.
-   One margin and two line-heights is two gaps.
-   Two <p> rather than <br>, so the gap between the two lines comes from a
-   margin and can be changed in one place. */
-body.home .herofoot footer p { margin: 0; line-height: 1.5; }
-body.home .herofoot footer p + p { margin-top: var(--rhythm); }
+/* THE CORNER PANEL IS RETIRED (2026-09-07). The home page is the drawing and
+   then the scroll: no panel, no caption over the margin. Its footer moved into
+   <main>, where `main footer` centres it exactly like the other fifteen, so the
+   site now has ONE footer rule and no special case.
+   TO PUT THE CAPTION BACK, ADD ONE LINE TO index.html:
 
-/* Below 960 the paper is full-bleed, so there is no margin to sit in and no
-   canvas to clear: the block goes back into the flow at the end of the page.
-   Same breakpoint as .paper's, deliberately - one number, one behaviour
-   change. The cost is that on a phone the hero's caption ends up a scroll away
-   from the hero it describes; the alternative was moving the element between
-   two parents on every resize, which is worse. */
-/* 1340, NOT 960, AND THE DIFFERENCE IS DELIBERATE. .paper goes full-bleed at
-   960 because that is where its margins stop being wide enough to read a
-   trajectory in. This block goes static where its margins stop being wide
-   enough to hold its own TEXT, which is a different question and a larger
-   number, so the two breakpoints are not the same and must not be "tidied"
-   into one.
-   RE-DERIVED 2026-09-07 WHEN THE FOOTER BECAME TWO LINES. The old derivation
-   is gone with the string it rested on, and the obvious way to redo it gives a
-   number that would delete this feature on most screens. Read all of this
-   before changing 1340.
-   THE OLD RULE WAS ABOUT ATOMICITY, NOT LENGTH. It protected "energy systems
-   modeling", one item of a <br>-stacked identity, where a wrap splits one
-   label across two lines and reads as breakage. 208.8px + 68 gave W >= 1336,
-   and 1340 shipped.
-   APPLYING THAT RULE TO THE NEW FOOTER GIVES 1632, AND 1632 IS WRONG. The
-   longest line is now "Built with Python, Julia and public data." at 356.7px,
-   and 356.7 + 68 solves to W >= 1632 (measured: one line at 1632, two at 1600).
-   But that line is a SENTENCE, and sentences wrap. A rule about atomic tokens
-   applied to prose would take the fixed panel out of 1341-1631 - including
-   1440, the shell width, and 1366, a very common laptop width - to prevent a
-   sentence from doing the thing sentences do.
-   THE BINDING CONSTRAINT NOW IS TWO LINES, NOT ONE. Measured with this media
-   query overridden so the block stays fixed all the way down (Firefox,
-   1728-config, dpr 2.2222, IBM Plex Mono loaded):
-     the built-with sentence reaches THREE lines at W = 1300, and is still two
-       at 1301 - a text box of 190.5px holds it, 190.0px does not
-     the first OVERFLOW - scrollWidth > clientWidth, what test_layout.js
-       actually fails on - is at W in [1070, 1075)
-   The overflow figure is not a line: it is "Silvestri", 78.3px, the longest
-   UNBREAKABLE run, and 78.3 + 68 predicts W >= 1075 against a measured failure
-   between 1070 and 1075. Lines wrap; runs overflow; only runs fail a test.
-   SO 1340 STAYS, and now it has room. The requirement is W >= 1301, so 1340
-   carries 39px of slack where the old rule left 4, and the hard failure is
-   another 226px below that at 1075. Nothing here is close to anything.
-   BOTH DIRECTIONS WERE BROKEN BEFORE THIS WAS TRUSTED (trap 17). Moved to
-   1632, the panel goes static at 1366 and at 1440 - measured, both. Moved to
-   1300, the sentence takes three lines - measured with this rule overridden so
-   the block stays fixed that far down, because otherwise the shipped rule wins
-   and every reading below 1340 is of a static block in the 714px column, which
-   is how the first attempt at that test produced nonsense.
-   960 IS STILL A DIFFERENT NUMBER FOR A DIFFERENT REASON - see .paper.
-   (An earlier version of this comment derived W >= 1300 from 191px and called
-   the slack 40px. 191.4px is the email address, which is the widest UNBREAKABLE
-   run and so the figure test_layout.js reports; the identity line is 208.8px.
-   The two were swapped, and everything downstream of the 191 was wrong. See the
-   longer note beside the footer rule above.)
-   What it was: at 960 the block stayed fixed down to 961px, where its usable
-   text width is (961-782)/2 - 68 = 21px, about two characters. At 1024 it is
-   53px, and at 1280 - a common laptop width - 181px, against 191.4px for the
-   email address that cannot break and 208.8px for the identity line that can.
-   It shipped that way; test_layout.js ran at 1024 and had nothing asserting
-   that a fixed block's text fits inside it, which it now does. */
-@media (max-width: 1340px) {
-  body.home .herofoot {
-    position: static;
-    width: auto;
-    max-width: min(100%, 782px);
-    margin: 0 auto;
-    padding: 0 34px 40px;
-    /* No panel down here. The block is back in the flow inside the 782px
-       column, on the page's own ground, with nothing behind it to hide and no
-       margin for an edge to divide from - so the ground and the two borders
-       come off and footer's own rule below does the separating. */
-    background: none;
-    border: 0;
-  }
-  body.home .herofoot footer {
-    margin-top: 40px;
-    padding-top: 22px;
-    border-top: 1px solid var(--rule);
-  }
-  body.home .herocap { max-width: none; }
-}
+       <p class="small herocap"></p>
+
+   as the first child of <main>. That is the whole change. hero.js still picks a
+   system, still computes its caption, and still runs
+   `var cap = document.querySelector('.herocap'); if (cap) cap.textContent = ...`
+   - it is guarded, so with no such element it computes the caption and shows
+   nothing. The rule below styles it and is kept for this purpose. Nothing in
+   assets/hero.js needs editing either way; that is the point.
+   The panel's own rules, and the 1340 breakpoint's whole derivation, are in
+   unpublished/RETIRED.md - moved rather than deleted, because that derivation
+   cost two rounds and three corrections and should be inherited rather than
+   re-measured. */
+
 
 /* "Projects" is immediately above "Energy", and h2's border-top would read as
    an underline for the h1 rather than a divider above the h2 - the double rule
@@ -973,8 +846,11 @@ body.home main > h1 + hr + h2 {
 }
 
 /* main's bottom padding is 120px at desktop, sized for a page that ended with
-   a footer. The footer is in .herofoot now, so that was dead space at the foot
-   of the column - visible because .paper has a border. Matches the top. */
+   a footer. When the footer sat in the corner panel that was dead space at the
+   foot of the column - visible because .paper has a border - and the padding
+   was cut to match the top. The footer came back into <main> on 2026-09-07
+   with the panel's retirement, and the reduced padding is still right: the
+   footer brings its own margin-top: 74px. */
 body.home main { padding-bottom: clamp(30px, 22.9px + 1.9vw, 40px); }
 
 /* The height is set by hero.js, to the viewport less the navband: the brief
@@ -992,20 +868,13 @@ body.home.hero-live .heroband {
   z-index: 1;
 }
 
-/* No background and no padding of its own: it sits inside .herofoot, which is
-   an opaque panel and carries the ground for the whole block.
-   AND NO max-width, WHICH IS THE FIX FOR THE ORPHANED WORD. It was capped at
-   34ch = 295.8px inside a block whose text box is 405px at 1728, so two of the
-   three captions wrapped with a word alone on line two - the pendulum's needs
-   335.2px and Burrau's 317px - while the caption stopped 109.2px short of a
-   footer line running to 365.4px, which is the band of unexplained emptiness
-   the block was reported for. Both come from the cap.
-   The panel is the measure here. 405px is 46 characters of the caption's own
-   type, and a caption is one or two lines naming a system and its parameters,
-   not a column of prose that a 34ch measure exists to keep readable.
-   SHORTENING THE CAPTIONS DID NOT FIX THIS AND COULD NOT HAVE: all three fit
-   405px unshortened. They were shortened as well, on their own merits, in
-   hero.js. */
+/* KEPT DELIBERATELY FOR AN ELEMENT THAT IS NOT IN THE MARKUP. index.html has
+   no .herocap since the panel was retired on 2026-09-07; this rule is what
+   makes putting it back a one-line change rather than a rebuild. Add
+   `<p class="small herocap"></p>` as the first child of <main> and the caption
+   returns, styled, filled by hero.js, under the hero band and on the measure.
+   Delete this rule and that one line stops being enough - which is the whole
+   reason it is still here. */
 body.home .herocap {
   margin: 0 0 var(--rhythm);
 }
