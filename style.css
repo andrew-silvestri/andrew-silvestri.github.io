@@ -104,7 +104,14 @@ nav.top {
   margin: 0 auto;
   /* 34px less the 8px each item carries as padding, so the first item's text
      lines up with the page text. Never set margin-left here: it overrides the
-     auto margins that centre the shell and drags the whole page to the left. */
+     auto margins that centre the shell and drags the whole page to the left.
+     THAT WARNING IS ABOUT THIS RULE, NOT ABOUT ITS CHILDREN, and the
+     difference matters now that one child uses margin-left:auto to sit right
+     (see "About", below). margin-left on nav.top fights the `margin: 0 auto`
+     on the line above and moves the whole bar; margin-left:auto on a flex ITEM
+     eats the free space inside the bar and moves only that item. The first is
+     the bug this comment was written for; the second is the standard way to
+     pin a last item right and touches none of the centring. */
   padding: 26px 34px 0 26px;
   display: flex;
   align-items: center;
@@ -134,6 +141,18 @@ nav.top a[aria-current="page"] {
   border-radius: 0;
   text-decoration: none;
 }
+/* About sits at the far right of the bar. rebuild_nav.py emits a flat sequence
+   in NAV order and has no notion of alignment - which is right, alignment is
+   not the generator's business - so the pinning is here and the ORDER is
+   there: About is the last entry in NAV and this eats the free space before it.
+   Selected by href rather than :last-child ON PURPOSE. If someone appends a
+   NAV entry later, :last-child would silently pin the NEW item right and leave
+   About stranded mid-bar; naming the href means it either keeps working or
+   visibly stops, and the NAV comment beside About says to keep it last.
+   Below 620px nav.top is flex-direction:column, so this is inert on the main
+   axis and About is simply the last full-width row. That is intended. */
+nav.top > a[href="about.html"] { margin-left: auto; }
+
 /* the dropdowns are their own inline-block, so they need the same rhythm */
 nav.top .dd { margin: 0; }
 .ddmenu a.on { color: var(--acc-ink); background: var(--acc-fill); }
@@ -682,6 +701,17 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   /* The current-page highlight hugs its own text rather than running the
      width of the bar, which in a column layout stretch would otherwise do. */
   nav.top a.on { align-self: flex-start; width: auto; }
+  /* ...and that is exactly why About's margin-left:auto has to come off here.
+     In this column layout the main axis is vertical, so an auto left margin is
+     a CROSS-axis margin - and an auto margin beats align-self. On every other
+     page About is stretch-width, the free space is zero and the auto margin
+     does nothing; on about.html itself the rule above shrink-wraps it, the
+     free space appears, and the current-page pill alone jumps to the right
+     edge while the whole rest of the bar is left-aligned. Measured at 390:
+     margin-left resolved to 301.4px on about.html against 0px everywhere else.
+     One line, and it only bites on one page, which is why it was inferred to
+     be inert and was not. */
+  nav.top > a[href="about.html"] { margin-left: 0; }
   .dd > .ddbtn { display: block; }
   .caret { float: right; font-size: var(--fs-2); opacity: .8; }
   .card { padding: 20px; }
@@ -802,28 +832,23 @@ body.home .herofoot footer {
   padding-top: 0;
   border-top: 0;
 }
-/* The identity is stacked, not run together with middots. In a block this
-   narrow the separators orphan - a dangling "·" at the end of a wrapped line -
-   and no width fixes that, because the run-together line is 68 characters and
-   needs roughly 590px while the block has 405px at 1728 and 261px at 1440.
-   Stacked, the longest item is "energy systems modelling", which RENDERS at
-   208.8px - measured 2026-09-07 in Firefox at 1728x1080, dpr 2.2222, with IBM
-   Plex Mono actually loaded. The breakpoint below is derived from that.
-   THE 191px THIS COMMENT USED TO CARRY WAS A DIFFERENT LINE. 191.4px is
-   "dasilvestri@utexas.edu", and 191 is the figure test_layout.js reports when
-   its fixed-block assertion fails - because that assertion is scrollWidth >
-   clientWidth, which fires on the widest UNBREAKABLE run, and an email address
-   has no break opportunity while "energy systems modelling" has two. The two
-   numbers answer different questions and were swapped. The "209 estimate" that
-   was thrown out as 9% high was right to within 0.2px.
+/* Two lines, each a link, each a whole destination. The name goes to
+   about.html, which carries the role and the email; the built-with SENTENCE is
+   the link to code.html rather than a separate "All code is downloadable."
+   after it, because two links in a two-line block is one more decision than
+   the block is worth making the reader take.
+   WHAT WAS HERE, because the breakpoint below used to be derived from it: a
+   <br>-stacked identity - name, "energy systems modeling", email - three
+   lines whose longest item rendered at 208.8px. That string is gone and so is
+   the derivation that rested on it. Read the breakpoint note below before
+   assuming any number in this block still comes from a stacked identity.
    THE line-height IS DELIBERATE and it is what makes the rhythm one number.
    footer's line boxes are 19px at line-height:normal against the caption's
    21.75 at .small's 1.5, so the SAME margin rendered 15.4px above the footer
    and 13.0px inside it - the "two different gaps" this block was reported for.
-   One margin and two line-heights is two gaps. Matching them costs 14px of
-   height and buys the rhythm.
-   Two <p> rather than <br><br>, so the gap between the identity and the
-   built-with line comes from margins and can be changed in one place. */
+   One margin and two line-heights is two gaps.
+   Two <p> rather than <br>, so the gap between the two lines comes from a
+   margin and can be changed in one place. */
 body.home .herofoot footer p { margin: 0; line-height: 1.5; }
 body.home .herofoot footer p + p { margin-top: var(--rhythm); }
 
@@ -839,33 +864,41 @@ body.home .herofoot footer p + p { margin-top: var(--rhythm); }
    enough to hold its own TEXT, which is a different question and a larger
    number, so the two breakpoints are not the same and must not be "tidied"
    into one.
-   Derived from a MEASUREMENT, not from a character count. The longest stacked
-   line is "energy systems modelling", and rendered it needs 208.8px (Firefox,
-   1728x1080, dpr 2.2222, IBM Plex Mono loaded, 2026-09-07). With the block's
-   68px of horizontal padding that is a 276.8px block, and the block is
-   (W - 782) / 2, so the strict requirement is W >= 1335.6 - call it 1336.
-   THE SLACK AT THE BOTTOM OF THE RANGE IS 2.7px, AND THAT IS FINE. READ ON
-   BEFORE CHANGING ANYTHING - the number looks alarming and is not.
-   At 1341, the narrowest width where this block is still fixed, the text box is
-   211.5px against 208.8px of text: 2.7px, about a third of one character.
-   MEASURED, not subtracted: narrowing the block in 0.5px steps at 1341, the
-   identity group holds at three lines through a 2.5px shrink and goes to four
-   at 3.0px, so the wrap threshold is in [2.5, 3.0) and the arithmetic above
-   lands inside it (Firefox, dpr 2.2222, IBM Plex Mono loaded, 2026-09-07).
-   THE 2.7px EXISTS IN A ONE-PIXEL BAND. 1340 is where the block goes static, so
-   1341 is the only width that sees the worst case. One pixel up it is 3.2px, and
-   AT 1366 - a very common laptop width - IT IS 15.2px ((1366-782)/2 - 68 = 224,
-   less 208.8).
-   SO DO NOT RAISE THIS TO 1400 to "fix" the 2.7. That would give 32.2px
-   ((1400-782)/2 - 68 = 241) by taking the fixed panel out of the margin across
-   1341-1399 INCLUDING 1366, in order to prevent an outcome at 1341 that is
-   benign: the identity group wrapping to four lines. No overflow, no test
-   failure, one extra line. It trades a real cost at a common width for a
-   cosmetic one in a 1px band. Considered on 2026-09-07 and declined deliberately.
-   And the wrap is not what test_layout.js watches for anyway - that assertion is
-   scrollWidth > clientWidth, so it fires on the email address at 191.4px, which
-   has 20.1px of room at 1341. The two margins answer different questions; see
-   the longer note beside the footer rule above.
+   RE-DERIVED 2026-09-07 WHEN THE FOOTER BECAME TWO LINES. The old derivation
+   is gone with the string it rested on, and the obvious way to redo it gives a
+   number that would delete this feature on most screens. Read all of this
+   before changing 1340.
+   THE OLD RULE WAS ABOUT ATOMICITY, NOT LENGTH. It protected "energy systems
+   modeling", one item of a <br>-stacked identity, where a wrap splits one
+   label across two lines and reads as breakage. 208.8px + 68 gave W >= 1336,
+   and 1340 shipped.
+   APPLYING THAT RULE TO THE NEW FOOTER GIVES 1632, AND 1632 IS WRONG. The
+   longest line is now "Built with Python, Julia and public data." at 356.7px,
+   and 356.7 + 68 solves to W >= 1632 (measured: one line at 1632, two at 1600).
+   But that line is a SENTENCE, and sentences wrap. A rule about atomic tokens
+   applied to prose would take the fixed panel out of 1341-1631 - including
+   1440, the shell width, and 1366, a very common laptop width - to prevent a
+   sentence from doing the thing sentences do.
+   THE BINDING CONSTRAINT NOW IS TWO LINES, NOT ONE. Measured with this media
+   query overridden so the block stays fixed all the way down (Firefox,
+   1728-config, dpr 2.2222, IBM Plex Mono loaded):
+     the built-with sentence reaches THREE lines at W = 1300, and is still two
+       at 1301 - a text box of 190.5px holds it, 190.0px does not
+     the first OVERFLOW - scrollWidth > clientWidth, what test_layout.js
+       actually fails on - is at W in [1070, 1075)
+   The overflow figure is not a line: it is "Silvestri", 78.3px, the longest
+   UNBREAKABLE run, and 78.3 + 68 predicts W >= 1075 against a measured failure
+   between 1070 and 1075. Lines wrap; runs overflow; only runs fail a test.
+   SO 1340 STAYS, and now it has room. The requirement is W >= 1301, so 1340
+   carries 39px of slack where the old rule left 4, and the hard failure is
+   another 226px below that at 1075. Nothing here is close to anything.
+   BOTH DIRECTIONS WERE BROKEN BEFORE THIS WAS TRUSTED (trap 17). Moved to
+   1632, the panel goes static at 1366 and at 1440 - measured, both. Moved to
+   1300, the sentence takes three lines - measured with this rule overridden so
+   the block stays fixed that far down, because otherwise the shipped rule wins
+   and every reading below 1340 is of a static block in the 714px column, which
+   is how the first attempt at that test produced nonsense.
+   960 IS STILL A DIFFERENT NUMBER FOR A DIFFERENT REASON - see .paper.
    (An earlier version of this comment derived W >= 1300 from 191px and called
    the slack 40px. 191.4px is the email address, which is the widest UNBREAKABLE
    run and so the figure test_layout.js reports; the identity line is 208.8px.
