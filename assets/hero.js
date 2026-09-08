@@ -491,7 +491,14 @@
   var names = ['pendulum', 'lorenz', 'threebody'];
   var sys = new KINDS[KINDS[want] ? want : names[Math.floor(Math.random() * 3)]]();
 
-  setErosion(sys.FADE);
+  /* setErosion is NOT called here, and the blank line is not where it went.
+     It used to be, and that is the bug fixed on 2026-09-08: this point in the
+     file is ABOVE `var EROSION_MIN = 0.02` and `var erodeN = 1, erodeF = 0`.
+     The function declaration hoists so the call ran, but the vars do not, so it
+     read EROSION_MIN as undefined and wrote NaN - and those two initialisers
+     then executed and overwrote NaN with 1 and 0. The call now sits directly
+     under erode(), where the constants are already assigned. Do not move it
+     back up here to keep the setup together. */
 
   var cap = document.querySelector('.herocap');
   if (cap) cap.textContent = sys.caption;
@@ -626,8 +633,14 @@
 
          floor = 255 / (2 * round(f * 255))
 
-     Measured over 3000 frames on a solid patch with NO redrawing, identical
-     in Firefox and Chromium:
+     EVERY NUMBER IN THE TABLE BELOW WAS MEASURED IN A STANDALONE PROBE, NOT
+     ON THIS PAGE, AND UNTIL 2026-09-08 THIS COMMENT DID NOT SAY SO. Read the
+     provenance line beside each claim before trusting it; that distinction is
+     the whole reason the defect below survived.
+
+     PROBE (a 64x64 canvas, filled once, 3000 destination-out applications, no
+     redrawing; Firefox and Chromium agree, and it was re-run on 2026-09-08 and
+     reproduces all four):
 
          f        round(255f)   predicted   measured
          0.005        1           127.5       127
@@ -644,18 +657,38 @@
      (Nor is the settling point explained by ink being re-laid over the same
      path: the probe fills once and never draws again.)
 
-     WHAT IT COST: the three-body's FADE of 0.005 was chosen for "about twenty
-     seconds of memory" and delivered unlimited memory at alpha 127 of 255,
-     cleared only by the reseed wipe every ~205s. Its trails were never
-     fading. That looked like long trails, which is what they were supposed to
-     look like, which is why it survived four rounds of screenshots.
+     THE FIX, as designed: keep the decay rate and lift the per-application
+     alpha over the floor - erode every Nth frame with the alpha that compounds
+     to the same rate, so 0.005 becomes 0.0199 every 4th frame, effective rate
+     0.00501 against 0.00500. That arithmetic is right and the probe confirms
+     it.
 
-     THE FIX keeps the decay rate and lifts the per-application alpha over the
-     floor: erode every Nth frame with the alpha that compounds to the same
-     rate. 0.005 becomes 0.0199 every 4th frame - measured effective rate
-     0.00501 against 0.00500, residue alpha 25 instead of 127. Visually, at
-     t=60 on the three-body: identical geometry and coverage (4.3% of the
-     canvas either way), mean ink darkness 67 -> 111 against paper. */
+     THE FIX NEVER RAN. From the day it was written until 2026-09-08, the call
+     to setErosion sat above the two lines that assign EROSION_MIN, erodeN and
+     erodeF. The function declaration hoisted, the var initialisers did not, and
+     those initialisers then overwrote the computed values - leaving erodeN = 1
+     and **erodeF = 0**, so every frame called fadeBack(0), a fill at alpha zero
+     that erodes nothing. MEASURED IN THE PAGE on 2026-09-08, on all three pins:
+     erodeN 1, erodeF 0, fadeBack called ~60 times a second with f = 0. Follow
+     the same pixels and they do not move: 8,754 at alpha >= 224 at t=40s were
+     at mean 246.2 five seconds and 298 erode() calls later, against 57.3
+     predicted, none reaching zero.
+
+     SO THE LINE THIS COMMENT USED TO CARRY - "residue alpha 25 instead of 127,
+     mean ink darkness 67 -> 111 against paper, identical geometry and coverage
+     at 4.3%" - DESCRIBED THE PROBE AND A HYPOTHETICAL PAGE. The shipped page
+     had no erosion at all, which is neither 127 nor 25. The pre-fix behaviour
+     it warns about ("unlimited memory ... cleared only by the reseed wipe every
+     ~205s ... trails were never fading") was an accurate description of the
+     site right up to this commit.
+
+     AFTER THE MOVE, measured in the page, three-body at RATE 0.30, Firefox
+     software raster, 1728x1080 dSF 2.2222: coverage above alpha 96 goes 0.100%
+     at t=30s to 0.068% at t=60s, where before it went 0.875% to 1.866% -
+     bounded instead of doubling. The brightest alpha bucket falls 192 -> 53
+     where it used to climb 6,095 -> 13,035. Residue below alpha ~31 still never
+     clears, which is the floor above doing exactly what it says; at 1-31 of 255
+     over paper it is not visible, and the reseed wipe takes it. */
   var EROSION_MIN = 0.02;
   var erodeN = 1, erodeF = 0, erodeTick = 0;
   function setErosion(f) {
@@ -667,6 +700,11 @@
     if (erodeTick++ % erodeN) return;
     fadeBack(erodeF);
   }
+  /* HERE, AND NOT BESIDE `var sys` 170 LINES UP. Everything setErosion reads is
+     assigned in the two lines above this block; called any earlier it reads
+     undefined, computes NaN, and is then overwritten by those same two lines.
+     See the note at the old call site. */
+  setErosion(sys.FADE);
 
   /* The three-body resolves into a binary and an escaper and has to start
      again. A hard cut - trails gone, bodies suddenly elsewhere - is the one
