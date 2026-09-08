@@ -420,8 +420,18 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 /* ======================================================================
    THE INDEX SPEC (index.html, .index .entry). Succeeds THE CARD SPEC on
    2026-09-05 (PHASE5, Part 2b), which succeeded four passes of card fixes.
-   The home page is an index: it points at five projects, and the layer
-   diagram above makes the site's argument before anyone scrolls.
+   The home page is an index. It pointed at five projects when this was
+   written, ten by 2026-09-07 and eleven from 2026-09-08, when the atlas
+   rejoined it under an Atlas heading of its own - so read the page for the
+   count, not this paragraph.
+   THIS SPEC ALSO SAID "the layer diagram above makes the site's argument
+   before anyone scrolls", AND BELOW THAT "the mosaic above still shows six of
+   them as a strip". Both left the home page on 2026-09-06, when it became the
+   live hero canvas and the index and nothing else. So the spec's own statement
+   of what the reader meets before the entries was wrong for two publishes:
+   THERE IS NO TEXT AND NO FIGURE ABOVE THE ENTRIES AT ALL, only the drawing.
+   That is what makes rule 2's one sentence carry more than it did - for the
+   atlas it is the only thing on the page describing the site's main project.
 
    1. An entry is a kicker (.tag, mono 12px), a linked title (h3) and one
       sentence in the small face, muted. No figure. A 271px thumbnail
@@ -429,7 +439,8 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
       measure let the tallest figure set the page's rhythm (the longevity
       ranking, 810px, beside a break-even that reads at 300) - the card
       mistake pointing the other way. The figures live on the pages that
-      explain them; the mosaic above still shows six of them as a strip.
+      explain them. (The mosaic that used to show six of them as a strip is
+      gone; see above.)
    2. One sentence: a hook, not a summary; the project page carries the
       explanation. It does not open by repeating the title. There is no
       copy budget, because one sentence always fits; the layout test counts
