@@ -126,7 +126,7 @@
   var CLAMP_MS = 50;                    /* hero.js 2a99923 used this; keep it */
   var NOMINAL_MS = 16;                  /* one 60Hz frame, for the first frame */
 
-  var W = 0, H = 0, fdpr = 1, footRect = null;
+  var W = 0, H = 0, fdpr = 1;
 
   function dot(c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fill(); }
 
@@ -265,7 +265,7 @@
       fc.fillStyle = RULE; dot(fc, px, py, 3);     /* the shared pivot, once */
       fc.globalAlpha = 1;
     };
-    this.caption = 'Three double pendulums, released 0.001 rad apart.';
+    this.caption = 'Three double pendulums, 0.001 rad apart.';
   }
 
   /* ---- 2. Lorenz attractor -------------------------------------------- */
@@ -480,7 +480,7 @@
       for (i = 0; i < 3; i++) { fc.fillStyle = COL3[i]; dot(fc, pt[i][0], pt[i][1], RAD[i]); }
       fc.globalAlpha = 1;
     };
-    this.caption = 'Burrau’s three-body problem. Masses 3, 4 and 5.';
+    this.caption = 'Burrau’s three-body problem. Masses 3, 4, 5.';
   }
 
   /* ==== choose ========================================================= */
@@ -497,21 +497,6 @@
   if (cap) cap.textContent = sys.caption;
 
   /* ==== sizing ========================================================= */
-  /* Re-measured rather than inlined in resize(), because it has to happen
-     again when the web font arrives. The block is anchored to the bottom, so
-     if the caption re-wraps from one line to two after IBM Plex loads, the
-     block grows UPWARD and a rect cached at load time leaves an uncleared
-     strip along its top edge. Measured: the pendulum's caption is the one that
-     wraps, and it was the only pin leaking ink into the block. */
-  function measureFoot() {
-    var hf = document.querySelector('.herofoot');
-    footRect = null;
-    if (hf && getComputedStyle(hf).position === 'fixed') {
-      var fr = hf.getBoundingClientRect();
-      if (fr.width > 0 && fr.height > 0) footRect = fr;
-    }
-  }
-
   function resize() {
     var w = window.innerWidth, h = window.innerHeight;
     if (w === W && h === H) return;
@@ -554,13 +539,6 @@
     var nb = document.querySelector('.navband');
     var band = document.querySelector('.heroband');
     if (nb && band) band.style.height = Math.max(0, H - nb.getBoundingClientRect().height) + 'px';
-    /* The caption/footer block's rectangle, cached HERE and not read per frame.
-       It is position:fixed, so its box does not move while the page scrolls;
-       re-reading getBoundingClientRect every frame would reintroduce exactly
-       the per-frame layout read that made the clip experiment lose on
-       2026-09-07. Null below 960, where the block is back in the flow and
-       there is no canvas behind it to clear. */
-    measureFoot();
     sys.frame();
   }
 
@@ -732,19 +710,16 @@
     fc.clearRect(0, 0, W, H);
     for (var i = 0; i < n; i++) { sys.step(sys.H); sys.trail(1); }
     sys.bodies(1);          /* once a frame: the front canvas was cleared once */
-    /* Keep the animation out of the caption/footer block. A clearRect of one
-       axis-aligned rectangle, not a clip: clipping was measured on 2026-09-07
-       and lost, because a non-rectangular clip path takes canvas off its fast
-       path. Both canvases - the back one accumulates and would fill straight
-       back in next frame, and the front one can have a body inside the rect.
-       THE STYLESHEET CANNOT VERIFY THIS. _deslop/measure.js resolves
-       backgrounds through getComputedStyle and reports 0 AA failures whether
-       this works or is deleted; the check that can see it samples rendered
-       pixels (_deslop/ground.js). */
-    if (footRect) {
-      bc.clearRect(footRect.x, footRect.y, footRect.width, footRect.height);
-      fc.clearRect(footRect.x, footRect.y, footRect.width, footRect.height);
-    }
+    /* NOTHING IS DONE ABOUT THE CAPTION/FOOTER BLOCK HERE, AND NOTHING SHOULD
+       BE. It is an opaque panel in CSS (style.css, body.home .herofoot) and
+       hides the canvas by itself. This file used to clear its rectangle out of
+       both canvases every frame, which meant caching the rect, which meant
+       re-measuring it on document.fonts.ready when the caption rewrapped under
+       the arriving webfont and the block grew upward past a stale rect. All of
+       that is gone with the declaration that replaced it. Do not add a
+       clearRect or a clip back: tests/test_panel.js checks the panel from
+       rendered pixels and will pass whether this loop cooperates or not, so a
+       reintroduced clear would be dead code nothing fails on. */
     if (sys.done) wipe = 1e-6;
     raf = requestAnimationFrame(frame);
   }
@@ -822,7 +797,6 @@
   /* ==== wiring ========================================================= */
   document.body.classList.add('hero-live');
   resize();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureFoot);
   sys.reset();
   if (sys.settle) settle(sys.settle);
 

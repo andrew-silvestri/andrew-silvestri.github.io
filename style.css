@@ -752,22 +752,50 @@ body.home .navband > nav.top { padding-bottom: 26px; }
    460px of blank paper. */
 body.home .heroband { height: 0; }
 /* The caption and the footer, stacked, pinned to the bottom left - IN THE LEFT
-   MARGIN, outside .paper, which is what makes the rest of this work. At 1920
-   that margin is (1920-782)/2 = 569px wide and NOTHING SCROLLS THERE: the only
-   thing behind this block is the canvas. So it carries no background, the text
-   sits on the page's own ground with no box edge, and hero.js clears the
-   canvas out of the block's rectangle every frame (see footRect there).
-   Over .paper this could not work - it would need an opaque ground to stay
-   readable over the moving index, and then clearing the canvas would be
-   redundant, because an opaque rectangle hides it by itself. */
+   MARGIN, outside .paper, which is what makes the rest of this work. At 1728
+   that margin is (1728-782)/2 = 473px wide and NOTHING SCROLLS THERE: the only
+   thing behind this block is the canvas.
+   IT IS A PANEL, NOT A HOLE, AND THAT IS THE WHOLE DESIGN. It carries an
+   opaque --bg and a hairline on the two edges that face the drawing. A
+   rectangle with no edge and no ground of its own, punched out of a dense
+   drawing, reads as a rendering fault rather than as a deliberate label.
+   WHAT THE OPAQUE GROUND REPLACED, so nobody puts it back: hero.js cleared
+   this block's rectangle out of both canvases every frame, cached that rect,
+   and re-measured it on document.fonts.ready - because the caption rewrapped
+   when IBM Plex arrived, the block is anchored to the bottom so it grew
+   UPWARD, and the stale rect left an uncleared strip along its top edge. An
+   opaque rectangle hides the canvas by itself, so the clearRect pair, the
+   cached rect and the font-load invalidation all went with it (2026-09-07).
+   It also restores _deslop/measure.js as a real gate here. That rig resolves
+   backgrounds by walking getComputedStyle up the DOM - CSS colours, not
+   rendered pixels - so it reported a clean AA pass for this text whether the
+   exclusion worked, was broken, or had been deleted that morning. The ground
+   it reads is now the ground that paints. tests/test_panel.js is the check
+   that can still see pixels, and it is what fails if this background goes.
+   THE +1px ON THE WIDTH IS NOT SLOP. .paper's border-left occupies 473-474 at
+   1728; a border-right on a 473px-wide block lands on 472-473, ADJACENT, and
+   the two hairlines paint a 2px rule wherever .paper spans this block's rows -
+   which is everywhere except the arrival screen, where the paper column starts
+   below the hero band. One more pixel puts the two borders on the same column
+   and they paint one hairline. box-sizing is border-box, so the text box is
+   still (W-782)/2 - 68 and the 2.7px of slack at 1341 - see the breakpoint
+   note below - is not spent on the border. */
 body.home .herofoot {
+  /* ONE number for the vertical rhythm, and it is a custom property rather
+     than 22px written three times so that it cannot drift into two. It is the
+     panel's top and bottom padding AND both gaps between the three groups.
+     22px is not new here: footer's own padding-top is 22px (see `footer`). */
+  --rhythm: 22px;
   position: fixed;
   left: 0;
   bottom: 0;
   z-index: 1;
-  width: calc((100% - min(100%, 782px)) / 2);
-  padding: 0 34px 26px;
+  width: calc((100% - min(100%, 782px)) / 2 + 1px);
+  padding: var(--rhythm) 34px;
   box-sizing: border-box;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
 }
 body.home .herofoot footer {
   margin-top: 0;      /* it is a stacked block here, not the end of a document */
@@ -779,13 +807,25 @@ body.home .herofoot footer {
    and no width fixes that, because the run-together line is 68 characters and
    needs roughly 590px while the block has 405px at 1728 and 261px at 1440.
    Stacked, the longest item is "energy systems modelling", which RENDERS at
-   191px - measured, not counted; the character-count estimate for it was 209
-   and 9% high, and the breakpoint below is derived from the 191. Nothing can
-   orphan at any width this block stays fixed at.
+   208.8px - measured 2026-09-07 in Firefox at 1728x1080, dpr 2.2222, with IBM
+   Plex Mono actually loaded. The breakpoint below is derived from that.
+   THE 191px THIS COMMENT USED TO CARRY WAS A DIFFERENT LINE. 191.4px is
+   "dasilvestri@utexas.edu", and 191 is the figure test_layout.js reports when
+   its fixed-block assertion fails - because that assertion is scrollWidth >
+   clientWidth, which fires on the widest UNBREAKABLE run, and an email address
+   has no break opportunity while "energy systems modelling" has two. The two
+   numbers answer different questions and were swapped. The "209 estimate" that
+   was thrown out as 9% high was right to within 0.2px.
+   THE line-height IS DELIBERATE and it is what makes the rhythm one number.
+   footer's line boxes are 19px at line-height:normal against the caption's
+   21.75 at .small's 1.5, so the SAME margin rendered 15.4px above the footer
+   and 13.0px inside it - the "two different gaps" this block was reported for.
+   One margin and two line-heights is two gaps. Matching them costs 14px of
+   height and buys the rhythm.
    Two <p> rather than <br><br>, so the gap between the identity and the
    built-with line comes from margins and can be changed in one place. */
-body.home .herofoot footer p { margin: 0; }
-body.home .herofoot footer p + p { margin-top: 14px; }
+body.home .herofoot footer p { margin: 0; line-height: 1.5; }
+body.home .herofoot footer p + p { margin-top: var(--rhythm); }
 
 /* Below 960 the paper is full-bleed, so there is no margin to sit in and no
    canvas to clear: the block goes back into the flow at the end of the page.
@@ -800,24 +840,43 @@ body.home .herofoot footer p + p { margin-top: 14px; }
    number, so the two breakpoints are not the same and must not be "tidied"
    into one.
    Derived from a MEASUREMENT, not from a character count. The longest stacked
-   line is "energy systems modelling", and rendered it needs 191px - the figure
-   test_layout.js reports when the assertion fails. With the block's 68px of
-   horizontal padding that is a 259px block, and the block is (W - 782) / 2, so
-   the strict requirement is W >= 1300.
-   THE BREAKPOINT IS 1340, ABOUT 40px OF SLACK ABOVE THAT, DELIBERATELY. 1300
-   and 1340 are both correct and neither is a typo: 1300 is where the text
-   stops fitting and 1340 is where this stops being fixed, and the gap is
-   margin for a font that renders slightly wider than it does here. Do not
-   "correct" one to the other.
-   (An earlier version of this comment said 209px, from 24 characters x 8.7px
-   of 14.5px mono. That was an estimate and it was 9% high; the rendered figure
-   is 191. The arithmetic downstream of it - 277px, W >= 1336 - was wrong by
-   the same margin.)
+   line is "energy systems modelling", and rendered it needs 208.8px (Firefox,
+   1728x1080, dpr 2.2222, IBM Plex Mono loaded, 2026-09-07). With the block's
+   68px of horizontal padding that is a 276.8px block, and the block is
+   (W - 782) / 2, so the strict requirement is W >= 1335.6 - call it 1336.
+   THE SLACK AT THE BOTTOM OF THE RANGE IS 2.7px, AND THAT IS FINE. READ ON
+   BEFORE CHANGING ANYTHING - the number looks alarming and is not.
+   At 1341, the narrowest width where this block is still fixed, the text box is
+   211.5px against 208.8px of text: 2.7px, about a third of one character.
+   MEASURED, not subtracted: narrowing the block in 0.5px steps at 1341, the
+   identity group holds at three lines through a 2.5px shrink and goes to four
+   at 3.0px, so the wrap threshold is in [2.5, 3.0) and the arithmetic above
+   lands inside it (Firefox, dpr 2.2222, IBM Plex Mono loaded, 2026-09-07).
+   THE 2.7px EXISTS IN A ONE-PIXEL BAND. 1340 is where the block goes static, so
+   1341 is the only width that sees the worst case. One pixel up it is 3.2px, and
+   AT 1366 - a very common laptop width - IT IS 15.2px ((1366-782)/2 - 68 = 224,
+   less 208.8).
+   SO DO NOT RAISE THIS TO 1400 to "fix" the 2.7. That would give 32.2px
+   ((1400-782)/2 - 68 = 241) by taking the fixed panel out of the margin across
+   1341-1399 INCLUDING 1366, in order to prevent an outcome at 1341 that is
+   benign: the identity group wrapping to four lines. No overflow, no test
+   failure, one extra line. It trades a real cost at a common width for a
+   cosmetic one in a 1px band. Considered on 2026-09-07 and declined deliberately.
+   And the wrap is not what test_layout.js watches for anyway - that assertion is
+   scrollWidth > clientWidth, so it fires on the email address at 191.4px, which
+   has 20.1px of room at 1341. The two margins answer different questions; see
+   the longer note beside the footer rule above.
+   (An earlier version of this comment derived W >= 1300 from 191px and called
+   the slack 40px. 191.4px is the email address, which is the widest UNBREAKABLE
+   run and so the figure test_layout.js reports; the identity line is 208.8px.
+   The two were swapped, and everything downstream of the 191 was wrong. See the
+   longer note beside the footer rule above.)
    What it was: at 960 the block stayed fixed down to 961px, where its usable
    text width is (961-782)/2 - 68 = 21px, about two characters. At 1024 it is
-   53px, and at 1280 - a common laptop width - 181px against the 191px it
-   needs. It shipped that way; test_layout.js ran at 1024 and had nothing
-   asserting that a fixed block's text fits inside it, which it now does. */
+   53px, and at 1280 - a common laptop width - 181px, against 191.4px for the
+   email address that cannot break and 208.8px for the identity line that can.
+   It shipped that way; test_layout.js ran at 1024 and had nothing asserting
+   that a fixed block's text fits inside it, which it now does. */
 @media (max-width: 1340px) {
   body.home .herofoot {
     position: static;
@@ -825,6 +884,12 @@ body.home .herofoot footer p + p { margin-top: 14px; }
     max-width: min(100%, 782px);
     margin: 0 auto;
     padding: 0 34px 40px;
+    /* No panel down here. The block is back in the flow inside the 782px
+       column, on the page's own ground, with nothing behind it to hide and no
+       margin for an edge to divide from - so the ground and the two borders
+       come off and footer's own rule below does the separating. */
+    background: none;
+    border: 0;
   }
   body.home .herofoot footer {
     margin-top: 40px;
@@ -866,19 +931,22 @@ body.home.hero-live .heroband {
   z-index: 1;
 }
 
-/* The one piece of text on this site that would otherwise sit over the canvas,
-   so it carries its own opaque ground. _deslop/measure.js builds its contrast
-   pairs by walking getComputedStyle(el).backgroundColor up the DOM - it reads
-   CSS colours, not rendered pixels - so text over a canvas reports a clean AA
-   pass on a page that is materially harder to read. Giving this its own --bg
-   is what keeps the rig's reading of it true. */
-/* No background and no padding any more. It used to carry its own opaque
-   ground because it sat over the canvas inside the hero band; it now lives in
-   .herofoot, out in the left margin where nothing scrolls behind it and where
-   hero.js clears the canvas from under the whole block. */
+/* No background and no padding of its own: it sits inside .herofoot, which is
+   an opaque panel and carries the ground for the whole block.
+   AND NO max-width, WHICH IS THE FIX FOR THE ORPHANED WORD. It was capped at
+   34ch = 295.8px inside a block whose text box is 405px at 1728, so two of the
+   three captions wrapped with a word alone on line two - the pendulum's needs
+   335.2px and Burrau's 317px - while the caption stopped 109.2px short of a
+   footer line running to 365.4px, which is the band of unexplained emptiness
+   the block was reported for. Both come from the cap.
+   The panel is the measure here. 405px is 46 characters of the caption's own
+   type, and a caption is one or two lines naming a system and its parameters,
+   not a column of prose that a 34ch measure exists to keep readable.
+   SHORTENING THE CAPTIONS DID NOT FIX THIS AND COULD NOT HAVE: all three fit
+   405px unshortened. They were shortened as well, on their own merits, in
+   hero.js. */
 body.home .herocap {
-  margin: 0 0 14px;
-  max-width: 34ch;
+  margin: 0 0 var(--rhythm);
 }
 
 /* The paper column. main is max-width:var(--shell) = 1440 and transparent
