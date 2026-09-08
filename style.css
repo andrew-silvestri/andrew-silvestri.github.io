@@ -161,7 +161,23 @@ nav.top > a[href="about.html"] { margin-left: auto; }
 
 /* the dropdowns are their own inline-block, so they need the same rhythm */
 nav.top .dd { margin: 0; }
-.ddmenu a.on { color: var(--acc-ink); background: var(--acc-fill); }
+/* `nav.top` IS IN THIS SELECTOR FOR THE SAME REASON IT IS IN THE PADDING RULE
+   BELOW, AND LEAVING IT OUT SHIPPED AN AA FAILURE FOR A DAY. A bare
+   `.ddmenu a.on` is (0,2,1) and `nav.top .ddmenu a` is (0,2,2), so the menu's
+   own muted colour won and the CURRENT item rendered --dim on --acc-fill:
+   #625C57 on #245F73, measured 1.08:1 against a 4.5 floor. The background
+   applied and the colour did not, which is the worst version of this - a filled
+   highlight with unreadable text on it, rather than something that looks
+   broken.
+   The `.on:hover` half is not decoration. Without it, `nav.top .ddmenu a:hover`
+   below is also (0,3,2) and sits LATER in the file, so hovering the current
+   item would strip its fill. Naming it here at (0,4,2) makes the outcome
+   independent of the order these two rules happen to sit in - the top bar gets
+   the same behaviour for free, from `nav.top a.on` sitting after
+   `nav.top a:hover`, and that is a coincidence of ordering rather than a
+   decision. Measured after: #FFFFFF on #245F73, 7.10:1, hovered and not. */
+nav.top .ddmenu a.on,
+nav.top .ddmenu a.on:hover { color: var(--acc-ink); background: var(--acc-fill); }
 
 
 /* dropdown */
@@ -179,7 +195,19 @@ nav.top .dd { margin: 0; }
      between them - the links are display:block with no margin, so their
      backgrounds touch. Measured 2026-09-07: 9 above, 0 between, 9 below, which
      read as dead space at the top of the menu and nowhere else. Now 0/0/0.
-     Horizontal stays 0: the items carry their own left indent. */
+     Horizontal stays 0: the items carry their own left indent.
+     THE CURRENT ITEM'S FILL DOES NOT OVERLAP THIS BORDER, AND IT HAS BEEN
+     REPORTED AS IF IT DOES. Measured at 1728 on 2026-09-08: the first item's
+     box sits 1px below the menu's top, 1px right of its left and 1px above its
+     bottom - exactly the border width, every side. The fill abuts the border
+     and covers none of it, so there is no geometry to fix and adding vertical
+     padding here to "clear" it would only restore the 9/0/9 asymmetry above at
+     1px instead of 9.
+     What is actually being seen is CONTRAST: `--rule #BBBDBC` on `--acc-fill
+     #245F73` is 3.76:1, so the hairline dissolves where the fill meets it, and
+     when the current item is the FIRST item its blue sits one dissolved
+     hairline from the button's blue and the two read as one block. If that ever
+     needs fixing the lever is the border COLOUR, not the geometry. */
   padding: 0;
   min-width: 268px;
   background: var(--card);
@@ -195,22 +223,45 @@ nav.top .dd { margin: 0; }
    asserting something untrue, which is the same class of defect as a comment
    describing a state the site has left. Found 2026-09-07 by measuring the
    rendered padding instead of reading the declaration.
-   26px, NOT the 18px it used to claim, and the number is derived rather than
-   chosen: the menu is positioned `left: -16px` from the `.dd`, and the button's
-   own text sits at its 10px padding, so 26 = 16 + 10 puts an item's text
-   EXACTLY under the text of the button that opened it. Measured at 1728: the
-   first item's text starts 1.0px right of "Misc", against 7.0px left at 18px
-   and 15.0px left at 10px. Change the -16px above and this must follow. */
+   THE INDENT WAS 26px AND IT IS 16px, AND THE PROPERTY 26 BOUGHT WAS TRADED
+   AWAY ON PURPOSE ON 2026-09-08. Do not re-derive 26 and put it back.
+   What 26 was: the menu is positioned `left: -16px` from the `.dd` and the
+   button's text sits at its own 10px padding, so 26 = 16 + 10 put an item's
+   text EXACTLY under the text of the button that opened it - measured at 1728,
+   the first item's text started 1.0px right of "Misc", against 7.0px left at
+   18px and 15.0px left at 10px. That derivation is sound and is not what was
+   wrong with it. Alignment was simply not the only goal: with the menu's
+   vertical padding now 0 and the items at 8px, a 26px horizontal inset is more
+   than three times the vertical one and reads as a wide left margin rather
+   than an indent. Andrew overruled the alignment.
+   WHY 16 AND NOT 20 OR 14, WHICH WERE ALSO OFFERED: 16 is the only one of the
+   three that can be re-derived from something already in this rule - the
+   vertical padding is 8px, so `8px 16px` is a stated 1:2 ratio and anyone
+   finding this number later can reconstruct where it came from. 20 and 14 are
+   numbers somebody liked. This file has a long record of what happens to those:
+   the 18px above that never applied, and the 1340 breakpoint that had to be
+   re-derived after the string it rested on was deleted. An alignment rule was
+   given up either way; it was given up for another rule rather than for a
+   preference.
+   Measured at 1728 after the change: the item's text lands 9.0px LEFT of the
+   button's, which is the alignment being spent. If the -16px above changes,
+   nothing here needs to follow any more - that dependency went with 26. */
 nav.top .ddmenu a {
   display: block;
   margin: 0;
-  padding: 8px 26px;
+  padding: 8px 16px;
   color: var(--dim);
   font-size: var(--fs-1);
   white-space: nowrap;
   border: 0;
 }
-.ddmenu a:hover { color: var(--acc); background: var(--bg-lift); }
+/* `nav.top` again, and this declaration had NEVER APPLIED either - a second
+   dead rule in the same three, found the same way as the 18px indent above and
+   on the same day: by reading the rendered colour instead of the declaration.
+   A hovered item was --dim on --bg-lift, 5.30:1, which passes AA and looked
+   fine, so nothing pointed at it. It is --acc now, 5.71:1 measured, and the hover
+   actually changes the text colour the way the file has always claimed. */
+nav.top .ddmenu a:hover { color: var(--acc); background: var(--bg-lift); }
 
 /* --------------------------------------------------------------- text --- */
 /* A content grid with three named tracks. Children default to the text
