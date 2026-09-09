@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://andrewsilvestri.com/beauty.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://andrewsilvestri.com/climate-cost.html</loc>
     <lastmod>2026-08-10</lastmod>
     <priority>0.7</priority>
@@ -32,11 +37,6 @@
   </url>
   <url>
     <loc>https://andrewsilvestri.com/economy.html</loc>
-    <lastmod>2026-09-05</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://andrewsilvestri.com/food.html</loc>
     <lastmod>2026-09-05</lastmod>
     <priority>0.7</priority>
   </url>
@@ -58,11 +58,6 @@
   <url>
     <loc>https://andrewsilvestri.com/model.html</loc>
     <lastmod>2026-08-10</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://andrewsilvestri.com/neuron.html</loc>
-    <lastmod>2026-09-05</lastmod>
     <priority>0.7</priority>
   </url>
   <url>

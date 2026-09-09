@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Endangered, and studied — Andrew Silvestri</title>
+<meta name="description" content="Does being endangered get a bird studied? For 9,113 bird species, a Critically Endangered bird has about 2.65 times the papers of a Least Concern one once family, size, range and description date are held fixed — and a third of that runs through public attention. Computed from OpenAlex, Wikipedia, AVONET and the Red List.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/beauty.html">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=da2928eb">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Atlas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="atlas-app.html" target="_blank" rel="noopener">Open the atlas</a><a href="atlas.html">About the atlas</a><a href="model.html">How the model works</a><a href="library.html">Figures</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Running <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="shoes.html">What a fast shoe is worth</a><a href="economy.html">Economy is not time</a></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Mind <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="beauty.html" class="on">Endangered, and studied</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="continents.html">Where the ground goes</a><a href="longevity.html">Longevity quotient</a><a href="skyline.html">Skylines, played</a></span></span><a href="code.html">Code</a><a href="about.html">About</a></nav>
+<main class="notes">
+
+<h1>Endangered, and studied</h1>
+<p class="dim">Does being endangered get a bird studied? For 9,113
+birds, yes — a Critically Endangered species has about 2.65 times
+the papers of a Least Concern one, once family, size, range and description
+date are held fixed. Which direction that runs is not settled here: a bird
+cannot be listed without evidence, and evidence is research. The published
+models, on other taxa and older indexes, mostly found the opposite.</p>
+<aside class="marginalia" style="grid-row: span 53" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>birds modeled</b><span class="v">9,113</span></li><li><b>papers, Least Concern</b><span class="v">18.9 typical</span></li><li><b>papers, Critically Endangered</b><span class="v">30.5</span></li><li><b>the same, adjusted</b><span class="v">17.6 and 47.7</span></li><li><b>Critically Endangered vs Least Concern</b><span class="v">2.65×</span></li><li><b>of that, through attention</b><span class="v">34%</span></li></ul></aside>
+<aside class="marginalia right" style="grid-row: span 53"><ul><li><b>papers per threatened amphibian</b><span class="v">9</span></li><li><b>per threatened bird</b><span class="v">102</span></li><li><b>published models read</b><span class="v">6 of 10</span></li><li><b>Wikipedia views vs rated beauty</b><span class="v">135×</span></li><li><b>published models, threat null or negative</b><span class="v">5 of 6</span></li><li><b>Red List</b><span class="v">2026-1</span></li></ul></aside>
+
+<p>Everyone knows that pandas get more attention than frogs. The expected
+correction is that endangered species get more than their share, because
+danger draws study. Across the vertebrates it does not work that way.
+Amphibians are 41% threatened, the highest rate of any fully
+assessed class, and hold 25% of the threatened vertebrate
+species; they get 6% of the papers that name their
+class, 9 per threatened species. Birds hold
+11% of the threatened species and get
+27% of the papers, 102 per threatened species.
+Reptiles sit with the amphibians. That is the gap at the level of whole
+classes, and it is where most treatments stop.</p>
+
+<p>The question this page asks is narrower, and the answer came out the
+other way. Take one class where every term can be measured for every
+species, and ask whether a species' own Red List category predicts how
+much it is studied, once the things that make a species easy or appealing
+to study are held fixed. For 9,113 birds it does, and upward: a
+Critically Endangered bird has 2.65 times the papers of a Least
+Concern one. Adjusting does not shrink the gap — it widens it.</p>
+
+<p>That is not what the literature says. Ten species-level
+models across mammals, birds, reptiles, carnivores, turtles and plants have
+asked this question since 2014; of the 6 whose full text could be
+read for this page, 5 report threat status as null or
+negative. The disagreement is worth stating before anything is made of it.
+Those models used Web of Science and Zoological Record, over series ending
+in 2008 to 2010, across several classes. This page uses OpenAlex
+title-and-abstract counts for 2015-2024, on birds alone. Fifteen
+years and a different index is a sufficient explanation for a reversal,
+and it is the more likely one: a single result that contradicts a
+literature is more likely to be wrong than the literature. What follows is
+what one instrument measured on one taxon over one window.</p>
+
+<div class="card"><div class="tag">Code and data</div><h3 style="margin-top:4px">Every number on this page is generated</h3><p>Six fetch scripts, one build and one figure script. The archive holds all of them and every input whose license allows it. It does not hold the Red List column: the Red List's terms forbid redistributing it, so the build fetches it with the reader's own free token, and the page says so below.</p><a class="btn ghost" href="downloads/beauty-code.zip">Download code and data</a></div>
+
+<img class="fig wide" src="assets/beauty_fig1_gap.png?v=3db29de5" loading="lazy" width="1428" height="984" alt="A slope chart with five lines, one per vertebrate class, joining each class's share of threatened vertebrate species on the left to its share of papers naming the class on the right. Birds and fishes rise; amphibians, reptiles and mammals fall, amphibians most steeply.">
+<p class="small">The five vertebrate classes: the share of all threatened
+vertebrate species each holds, against the share of papers of
+2015-2024 whose title or abstract names the class. Assessment
+coverage is printed beside each class because it is the denominator: the
+Red List has assessed 78 to 100% of each vertebrate class, and 0.1 to 21%
+of the invertebrate, plant and fungal groups, which is why no other group
+is drawn. Threatened counts from Red List 2026-1, Table 1a<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>;
+papers from OpenAlex, biology and environment topics only.</p>
+
+<h2>What it finds</h2>
+<p>The class-level picture is the one a reader expects, and it is
+consistent with two different stories: that attention follows appeal, or
+that attention follows the practical business of being able to study a
+species at all. Birds are large, diurnal, widely distributed and watched
+by millions of amateurs; amphibians are small, nocturnal, often
+tropical and often described in the last thirty years. To separate the
+stories you need species, not classes.</p>
+
+<p>Birds are the one class where every term has a free, species-level
+source. AVONET gives body mass<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, range size and family for
+11,009 species. The iratebirds project<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> gives a rated attractiveness
+score, from several hundred thousand photograph ratings, for
+9,386 of them. The GBIF backbone gives the year<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> each species was
+described. English Wikipedia gives a public-attention measure<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> for the
+10,645 species with an article. OpenAlex gives the number of papers<sup class="cite" id="cr6"><a href="#ref6">6</a></sup>
+of 2015 to 2024 whose title or abstract names the species. The Red List
+gives the category. Joined, with the Data Deficient, Extinct and Extinct
+in the Wild species set aside, that is 9,113 birds.</p>
+
+<img class="fig wide" src="assets/beauty_fig2_category.png?v=1c36af4c" loading="lazy" width="1428" height="984" alt="Dot plot of typical papers per bird species across the five Red List categories from Least Concern to Critically Endangered, three series: as counted; adjusted for family, body mass, range size and years since description; and the same with Wikipedia views also held fixed. The adjusted series rises steeply with threat category, and the third series sits below the second by a gap that widens with severity.">
+<p class="small">Papers per bird species by Red List category: as counted,
+adjusted, and adjusted with public attention held fixed as well. "Typical"
+is the back-transformed mean of log(1 + papers), which is closer to a median
+than to a mean for counts this skewed. Each adjusted series predicts every
+one of the 9,113 species under each category in turn, with its own
+family, mass, range and age held as they are, and averages. Whiskers are
+95% intervals from 300 bootstrap resamples over species. The dotted
+drop is the share of the advantage that runs through attention; its
+direction is <em>assumed</em>, for the reason given under Limits.</p>
+
+<p>As counted, a Least Concern bird has 18.9 papers and a Critically
+Endangered one 30.5. After adjustment the figures are 17.6 and
+48.1, a 95% interval of 43.3 to 54.7 for the Critically Endangered
+species. The coefficient is +0.97 on the log scale — 2.65
+times — with a robust p-value under 0.01. The adjustment is doing the work
+the question asks for: it is what remains of "endangered" once "small,
+restricted, recently named and in an obscure family" has been accounted
+for. What remains is larger than what it started with, because the
+convenience terms were working against threat, not with it: threatened
+birds tend to be the small, narrowly ranged, recently described ones, and
+holding that fixed removes a handicap rather than an advantage.</p>
+
+<p>Holding public attention fixed as well takes the coefficient to
++0.64, 1.90 times. The difference between the two is the
+share of the advantage that travels with attention: 16% at Near
+Threatened, 21% at Vulnerable, 21% at Endangered and
+34% at Critically Endangered. It rises with severity. Both numbers
+are on the page because they answer different questions — the first is what
+being endangered is worth in total, the second is what it is worth among
+birds people look up equally often — and neither is the "true" one.</p>
+
+<img class="fig wide" src="assets/beauty_fig3_terms.png?v=765616de" loading="lazy" width="1428" height="796" alt="Horizontal bars ranking seven terms by how much R-squared falls when each is dropped from the full model: family far ahead, then Wikipedia views, then Red List category, with rated attractiveness and body mass indistinguishable from zero at the bottom.">
+<p class="small">What the full model's fit depends on: the fall in R² when
+each term is removed and the model refitted, with 95% bootstrap intervals.
+The full model adds rated attractiveness and Wikipedia views to the
+adjusted model above; R² rises from 0.48 to 0.59.</p>
+
+<p>Ranked by what the fit loses without them, family comes first
+(0.141) and wikipedia views second (0.104). Red List
+category is 3rd of seven at 0.021, above range size and
+years since description.</p>
+
+<p>The two measures of appeal do not behave alike, and this page cannot use
+the word undivided. Rated attractiveness — scored from photographs by
+several thousand people — contributes 0.001, below body mass and
+indistinguishable from zero. Wikipedia views contribute 0.104,
+135 times as much. The thing this project was named for
+explains nothing here; the thing that does is how often people look a bird
+up. Weigh that second term with care: views are partly a consequence of
+research as well as a cause of it, and the model cannot tell the two
+apart.</p>
+
+<p>The published record says the same, taxon by taxon. Ten
+species-level models of research effort since 2014 have included threat
+status beside size, range, description date or phylogeny. Where the full
+text could be read, the threat term is null in 3, negative in
+2, and positive only for being assessed at all rather than for
+being threatened. Three are marked as read from the abstract
+alone because the full text sits behind a paywall or a bot wall, and
+one could not be read at all; their verdicts are left as
+unread rather than guessed.</p>
+
+<table><thead><tr><th>Model</th><th>Taxon, species</th><th>Threat term</th><th>Read from</th></tr></thead><tbody><tr><td>Brooke et al. 2014<sup class="cite" id="cr7"><a href="#ref7">7</a></sup></td><td>Carnivores, 286</td><td>null</td><td>full text</td></tr><tr><td>Ducatez &amp; Lefebvre 2014</td><td>Birds, 10,064</td><td>negative</td><td>full text</td></tr><tr><td>McKenzie &amp; Robertson 2015<sup class="cite" id="cr8"><a href="#ref8">8</a></sup></td><td>British breeding birds, 225</td><td>null</td><td>full text</td></tr><tr><td>Fleming &amp; Bateman 2016<sup class="cite" id="cr9"><a href="#ref9">9</a></sup></td><td>Australian terrestrial mammals, 331</td><td>unread</td><td>abstract</td></tr><tr><td>dos Santos et al. 2020<sup class="cite" id="cr10"><a href="#ref10">10</a></sup></td><td>Terrestrial mammals, 4,108</td><td>weak</td><td>abstract</td></tr><tr><td>Tam et al. 2022<sup class="cite" id="cr11"><a href="#ref11">11</a></sup></td><td>Mammals, 5,497</td><td>negative</td><td>full text</td></tr><tr><td>Mammola et al. 2023<sup class="cite" id="cr12"><a href="#ref12">12</a></sup></td><td>29 phyla, 3,019</td><td>assessed, positive</td><td>full text</td></tr><tr><td>Guedes et al. 2023<sup class="cite" id="cr13"><a href="#ref13">13</a></sup></td><td>Reptiles, 10,531</td><td>unread</td><td>abstract</td></tr><tr><td>Adamo et al. 2021<sup class="cite" id="cr14"><a href="#ref14">14</a></sup></td><td>Alpine plants, 113</td><td>unread</td><td>none</td></tr><tr><td>Ducatez &amp; DeVore 2026<sup class="cite" id="cr15"><a href="#ref15">15</a></sup></td><td>Turtles, 370</td><td>null</td><td>full text</td></tr></tbody></table>
+<p class="small">"Assessed, positive" means the paper found that species on
+the Red List at all are more studied than unassessed ones, with no further
+effect of the category; the authors of that study note the circularity,
+since an assessment needs data to exist first. "Negative, unadjusted"
+means a bivariate comparison rather than a model term. One entry, on
+British birds, found the international Red List category null while the
+national action-plan listing was a significant positive predictor, which
+is the one place in this record where a conservation listing does buy
+attention: a national one, with money and a monitoring obligation behind
+it.</p>
+
+<p>Funding behaves the way the papers do. In the first study of United
+States endangered-species spending<sup class="cite" id="cr16"><a href="#ref16">16</a></sup>, over half of the identifiable money
+went to ten species, and body length and being a mammal or bird
+outweighed the agency's own endangerment rank. Birds and mammals take
+75% of the European Union's LIFE species-project budget<sup class="cite" id="cr17"><a href="#ref17">17</a></sup>. In a
+global database of conservation projects<sup class="cite" id="cr18"><a href="#ref18">18</a></sup> over twenty-five years, about
+6% of threatened species were ever funded and
+29% of the money went to species of Least Concern. Those
+are looked up, not recomputed here.</p>
+
+<h2>Is it just the paperwork?</h2>
+<p>A listing generates its own literature. Status reviews, Red List updates
+and assessment documents all name the species, so a Critically Endangered
+bird could look well studied because being assessed produces writing rather
+than because anyone studies the animal. That would make the whole finding
+an artefact of the instrument.</p>
+
+<p>It is testable, and the test was fixed in writing before the data to run
+it existed. Every OpenAlex work carries a primary topic, so the model can
+be refitted inside one field at a time. The rule — which field is the
+primary test, how many species each category needs before a field may be
+read at all, and what result would count as failure — was committed to
+<code>PRESPEC_topics_2026-09-09.md</code> before a single topic count was
+fetched, because choosing the field after seeing the coefficients would
+leave no trace: every number correctly computed and the conclusion still
+unearned.</p>
+
+<img class="fig wide" src="assets/beauty_fig4_strata.png?v=bc9da087" loading="lazy" width="1428" height="908" alt="Dot plot of the Critically Endangered coefficient inside seven OpenAlex topic fields, with 95% intervals. Biochemistry and Genetics, the pre-registered primary field, sits well above the pre-set floor; Environmental Science, the positive control, is highest; three fields are named without a value because too few Critically Endangered species have any paper in them.">
+<p class="small">The Critically Endangered coefficient refitted inside each
+topic field, against the same terms as the adjusted model. Brown marks the
+fields that carry conservation writing; blue marks those that cannot. The
+pre-registered primary field is Biochemistry, Genetics and Molecular
+Biology, the floor was set at +0.20, and a field is read only if
+every Red List category has at least 30 species with a
+paper in it. 3 fields fail that floor and are named without
+a value rather than shown at a smaller sample.</p>
+
+<p>The effect survives. In molecular biology — where a status review cannot
+be published — the Critically Endangered coefficient is
++0.721, 2.06 times Least Concern, against a
+floor set in advance at +0.20. Earth and Planetary Sciences, the
+other field clearing the cell rule, gives +0.358. Environmental
+Science, the positive control, gives the largest value on the page,
++0.983: the artefact is real and measurable, and it is not
+what the effect is made of.</p>
+
+<p>Its size can be put a number on. Refitting on all papers except the two
+conservation-carrying fields gives +0.888 against
++0.966 on the whole corpus — about 8% of the
+headline coefficient is assessment writing. That comparison was predicted
+in the pre-specification to understate the effect, because deleting whole
+fields also deletes genuine conservation biology, which is research about
+the species; it is reported because it was predicted, not because it came
+out well.</p>
+
+<h2>Method</h2>
+<p>The response is log(1 + papers), where a paper is an OpenAlex work of
+2015 to 2024 whose title or abstract contains the species' scientific name
+as a phrase. That definition is <em>assumed</em>: it misses papers that
+use only a common name and catches a few that mention a species in
+passing, and it treats a note and a monograph alike. Two ordinary
+least-squares fits, each with a fixed effect for every family and
+heteroskedasticity-robust standard errors. The adjusted model has log body
+mass, log range size, years since description to 2024, and the Red
+List category with Least Concern as the reference. The full model adds
+rated attractiveness and log(1 + mean monthly Wikipedia views). Family
+fixed effects standing in for a phylogeny is <em>assumed</em>; the
+published bird model used a tree<sup class="cite" id="cr19"><a href="#ref19">19</a></sup> and attributed 74% of the variance to it.</p>
+
+<p>The category means are computed rather than read off coefficients:
+every species is predicted under each of the five categories with its
+other terms as they are, and the predictions are averaged and
+back-transformed. The share of the fit each term carries is the fall in R²
+when that term alone is dropped and the model refitted. Intervals are
+percentile bootstrap over species, 300 resamples, seed 20260905.
+Species without an English Wikipedia article are given zero views rather
+than dropped, which is <em>assumed</em> and keeps the obscure species in;
+260 species assessed as Data Deficient, Extinct or Extinct in
+the Wild are left out because the question is about the categories that
+rank risk.</p>
+
+<p>The Red List column on this page came from the Red List API,
+version 2026-1, matched by scientific name to the
+HBW-BirdLife v5 names AVONET uses; 10,669 of 11,009 names
+matched. The class-level figure uses the Red List's own summary table and
+a class-name search of OpenAlex, restricted to works whose primary topic
+is in the biological or environmental sciences so that "bird" does not
+count ornithopter patents. That proxy is defensible for vertebrate classes,
+whose conservation papers name the class, and not beyond them, where a
+paper on rice never says "angiosperm"; the feasibility work behind this
+page tried the wider version and found the numbers it produced were
+artefacts of vocabulary.</p>
+
+<p>The exact form of the species query is pinned, and the reason is the
+clearest illustration on this site of a number being wrong while nothing
+goes wrong. OpenAlex offers two ways to ask for works mentioning a phrase.
+Until February 2026 the short one<sup class="cite" id="cr20"><a href="#ref20">20</a></sup>, <code>search=</code>, meant the title
+and the abstract; it now means the full text, and
+<code>filter=title_and_abstract.search:</code> means what the short one
+used to. On 5 September 2026 a species with a large literature,
+the lion, returned 11,759 works through the short
+parameter and 3,459 through the pinned one: a factor of
+3.4 in the quantity this whole page rests on. Both queries are
+valid, both are answered, and a build that reached for the shorter one
+would have finished without an error and published counts 3.4
+times too large. So the query is fixed in one place and a test asserts the
+URL the fetcher constructs, which is the only way that particular mistake
+can be caught: it is a change in someone else's API, not a fault in this
+one's code.</p>
+
+<h2>Limits</h2>
+<p>Association, not cause, and here that is not a formality. A bird cannot
+be listed Critically Endangered without evidence: Least Concern is the
+cheap default, while the higher categories need population size, trend and
+range data, and that data is research. So the arrow may run from research
+to listing rather than from listing to research, and the Red List category
+may be partly a record of how well studied a species already was. The
+gradient this page reports — more threatened, more studied — is exactly
+what rising evidence requirements would produce, from a mechanism that has
+nothing to do with attention or with threat.</p>
+
+<p>The cheapest check on that story is the category that means nobody has
+enough data. 34 birds are assessed Data Deficient, and they are the
+least-studied group in the table: a median of 9 papers against
+15 for Least Concern, the lowest at every quartile. That is
+34 species, far too few to fit anything, so it is reported as a
+description and given no coefficient and no point on any figure. Those raw
+counts are on a wider frame than the model: all 10,669 birds with a
+Red List category and a paper count, where every fitted number on this page
+uses the 9,113 that also carry an attractiveness rating. But it
+points the way the evidence story predicts. <b>This page reports an
+association between threat category and research volume and does not
+establish its direction.</b> Two mechanisms produce that association —
+threat attracting research, and research enabling the listing — and the
+stratum test above separates only a third one, the paperwork.</p>
+
+<p>The raw counts are not monotone, and the fitted values are. Among the
+raw medians, Near Threatened (13) sits below Least Concern
+(15), and Critically Endangered (21) below Endangered
+(22). Only the adjusted series rises without exception, because
+the raw counts are confounded by exactly what the model controls for —
+family, body mass, range size and years since description — and threatened
+birds are on the wrong side of all four. Extinct in the Wild, which the model
+leaves out, is the most-studied group of all at a median of 28
+papers across 5 species: birds with captive populations generating
+literature, which is the evidence mechanism at its most visible.</p>
+
+<p>Rated attractiveness is itself correlated with size, colour and
+familiarity, and public attention with research; what the model can say is
+how the fit partitions among named terms, and what it cannot say is that
+any one of them makes scientists choose. "Beauty determines funding" is a
+sentence this page does not write. Nor is the ordering of threat, attention
+and research a finding: a cross-section with attention measured at one
+moment cannot tell threat → attention → research from research → a better
+article → views. The 34% is what the model attributes, and its
+direction is <em>assumed</em>.</p>
+
+<p>The model needs a rated attractiveness score, which 1,472 of
+the 10,585 otherwise-complete birds do not have, and those species are
+marginally less studied and more often Critically Endangered. That could
+bias the coefficient, so it was measured rather than argued: fitting the
+same terms on both samples moves the Critically Endangered coefficient from
++0.864 to +0.966, with every interval overlapping. The
+selection is real and its effect on this page's claim is not.</p>
+
+<p>The attention measure is the weakest of the inputs and is measured
+badly in two known ways. 364 species have no English
+Wikipedia article and are given zero views, which is a floor rather than a
+measurement. And the bird taxonomy this page uses splits species that
+Wikipedia still covers in a single article, so 273 species
+share 129 articles between them and each is credited
+with the whole of an article's traffic: the four pheasant pigeons are one
+page. Refitting without the 12 such species that reach
+the model moves the Red List term from 0.021 to
+0.021, and refitting on only the species that have an
+article of their own moves it to 0.013. The finding
+does not rest on either.</p>
+
+<p>The denominator is the bias. The Red List has assessed between 78 and
+100% of each vertebrate class and between 0.1 and 21% of everything else,
+so the groups that carry most of the extinction burden are invisible in
+the very statistic used to count it. Of the roughly two million named
+species, one estimate puts<sup class="cite" id="cr21"><a href="#ref21">21</a></sup> 7.5-13% extinct since 1500 against
+0.04% on the Red List; 64% of Data Deficient mammals<sup class="cite" id="cr22"><a href="#ref22">22</a></sup>
+and 85% of Data Deficient amphibians<sup class="cite" id="cr23"><a href="#ref23">23</a></sup> are predicted to be threatened
+once modeled. This page's class figure stops at vertebrates for that
+reason, and its species model stops at birds because birds are the one
+class with a rated-attractiveness dataset.</p>
+
+<p>Some stories about neglected extinction do not survive checking, and
+they are left out. The ridge of Centinela in Ecuador, long cited as a
+place where dozens of plant species vanished before anyone had studied
+them, was resurveyed in 2024<sup class="cite" id="cr24"><a href="#ref24">24</a></sup> and almost all of its supposed endemics have
+since been collected elsewhere. The Christmas Island pipistrelle, cited
+as a bat lost for want of attention, was monitored for fifteen years<sup class="cite" id="cr25"><a href="#ref25">25</a></sup>
+before it disappeared; the failure was a decision delayed, not a species
+unstudied. Both are better told as they happened, and neither is evidence
+for this page's claim.</p>
+
+<p>What is absent, and why. There is no zoo figure: captive-collection
+data at species level are held in a members-only database, and the
+published finding that zoo holdings favor large<sup class="cite" id="cr26"><a href="#ref26">26</a></sup>, attractive and
+non-threatened species is cited<sup class="cite" id="cr27"><a href="#ref27">27</a></sup> rather than drawn. There is no funding
+computation: the per-species expenditure reports exist only as scanned
+tables. There is no forecast of what the gap will cost; that is an
+argument, and this page carries findings. Mammals, with a public
+h-index dataset of their own<sup class="cite" id="cr28"><a href="#ref28">28</a></sup>, are the obvious next class and are not
+built.</p>
+
+<hr>
+<h2>The code</h2>
+<p>Six fetch scripts, one per source, each resumable; the build, which
+joins, fits and bootstraps and writes the payload; the figure script; and
+the page renderer. The archive is thinner than the site's others by one
+column. The IUCN Red List's terms of use prohibit redistributing Red List
+data in any form, so no file in it carries a category beside a species
+name: <code>fetch_iucn.py</code> gets the column from a free personal
+token, and the build labels its output with the Red List version it ran
+against. Every other input travels: the AVONET and attractiveness tables
+under CC BY 4.0, the Wikipedia and OpenAlex counts under CC0, the Red
+List summary table as a cited aggregate.</p>
+
+<p>What travels in place of the withheld table is a fingerprint of it. The
+archive's <code>manifest.json</code> carries the SHA-256 of the
+11,185 species and categories this page was built from, sorted and
+canonicalised, <code>1f1d4b6f1ff2c81d</code>; after fetching the
+categories yourself, <code>build_beauty.py --verify-categories</code>
+tells you whether you have the same table, a Red List reassessed since,
+or a name-matching problem. Sixty-four characters cannot be turned back
+into eleven thousand categories, so the digest goes where the table may
+not, and the one input a reader has to supply is still the one input they
+can check.</p>
+
+<p>OpenAlex has metered its API since February 2026. The per-species
+counts shipped in the archive cost $11.01 to fetch across
+11,009 species, on a free account's allowance of a dollar a
+day; a reader who trusts the shipped counts pays nothing, and one who
+re-fetches them needs a free key and 12 days. The build runs without a
+Red List token and says so in its output, taking the 2021 categories that
+travel with the attractiveness deposit; the page that ships was built from
+the API.</p>
+
+<p><a class="btn" href="downloads/beauty-code.zip">Download source · 1,489 KB</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+<h2>Sources</h2>
+<p class="small">Numbered markers in the text above point here. Emission factors, cost ranges and lifespan figures are representative values from these sources, not measurements made for this project.</p>
+<ol class="refs"><li id="ref1"><span class="src">IUCN, <i>The IUCN Red List of Threatened Species</i>, version 2026-1, summary statistics Table 1a, 2026, https://www.iucnredlist.org.</span><span class="what">Described, evaluated and threatened species by major group, and the category per bird species through the Red List API.</span></li><li id="ref2"><span class="src">Tobias <i>et al.</i>, <i>Ecology Letters</i> 25(3):581-597, 2022, doi:10.1111/ele.13898.</span><span class="what">Body mass, range size, family and order for 11,009 bird species on the HBW-BirdLife v5 taxonomy; CC BY 4.0.</span></li><li id="ref3"><span class="src">Santangeli <i>et al.</i>, <i>npj Biodiversity</i> 2:20, 2023, doi:10.1038/s44185-023-00026-2.</span><span class="what">Rated attractiveness per species and sex from over 400,000 photograph ratings by 6,212 raters; the deposit is CC BY 4.0.</span></li><li id="ref4"><span class="src">GBIF Secretariat, <i>GBIF Backbone Taxonomy</i>, checklist dataset, doi:10.15468/39omei.</span><span class="what">The full scientific name with authorship, from which the year of description is read.</span></li><li id="ref5"><span class="src">Mittermeier <i>et al.</i>, <i>Conservation Biology</i> 35(2):412-423, 2021, doi:10.1111/cobi.13702.</span><span class="what">Wikipedia pageviews as a measure of public interest in species, the method this page borrows.</span></li><li id="ref6"><span class="src">Priem, Piwowar &amp; Orr, <i>arXiv</i> 2205.01833, 2022.</span><span class="what">The open index of scholarly works whose title-and-abstract search gives the paper counts; data CC0.</span></li><li id="ref7"><span class="src">Brooke, Bielby, Nambiar &amp; Carbone, <i>PLoS ONE</i> 9(4):e93195, 2014, doi:10.1371/journal.pone.0093195.</span><span class="what">286 carnivores; IUCN status estimate -0.047, z = -0.82, p = 0.41 beside body mass, range and diet breadth.</span></li><li id="ref8"><span class="src">McKenzie &amp; Robertson, <i>PLoS ONE</i> 10(7):e0131004, 2015, doi:10.1371/journal.pone.0131004.</span><span class="what">225 British breeding birds; Red List status null (p = 0.34), national action-plan status positive (t = 3.14).</span></li><li id="ref9"><span class="src">Fleming &amp; Bateman, <i>Mammal Review</i> 46(4):241-254, 2016, doi:10.1111/mam.12066.</span><span class="what">331 Australian mammals; the threat-term result is in the paywalled full text and was not read for this page.</span></li><li id="ref10"><span class="src">dos Santos <i>et al.</i>, <i>Animal Conservation</i> 23(6):679-688, 2020, doi:10.1111/acv.12586.</span><span class="what">4,108 terrestrial mammals, hurdle model; the abstract reports threat status as weakly associated with research presence and volume.</span></li><li id="ref11"><span class="src">Tam, Lagisz, Cornwell &amp; Nakagawa, <i>GigaScience</i> 11:giac074, 2022, doi:10.1093/gigascience/giac074.</span><span class="what">5,497 mammals; IUCN status linear -16.4 [-19.3, -13.6] with a quadratic term; Google Trends the strongest fixed effect.</span></li><li id="ref12"><span class="src">Mammola <i>et al.</i>, <i>eLife</i> 12:RP88251, 2023, doi:10.7554/eLife.88251.</span><span class="what">3,019 species across 29 phyla; being on the Red List raises interest whether the species is endangered or of Least Concern.</span></li><li id="ref13"><span class="src">Guedes, Moura &amp; Diniz-Filho, <i>Ecography</i> 2023:e06491, 2023, doi:10.1111/ecog.06491.</span><span class="what">10,531 reptiles; body size, description year and proximity to institutions dominate. Full text not reached for this page.</span></li><li id="ref14"><span class="src">Adamo <i>et al.</i>, <i>Nature Plants</i> 7:574-578, 2021, doi:10.1038/s41477-021-00912-2.</span><span class="what">113 Alpine plants; color, conspicuousness and range predict research attention. Paywalled; not read for this page.</span></li><li id="ref15"><span class="src">Ducatez &amp; DeVore, <i>PLoS ONE</i> 21:e0347198, 2026, doi:10.1371/journal.pone.0347198.</span><span class="what">370 turtles; extinction risk -0.10, t = -0.46, p = 0.64; phylogeny 66% of the variance; assessed species more studied than unassessed.</span></li><li id="ref16"><span class="src">Metrick &amp; Weitzman, <i>Land Economics</i> 72(1):1-16, 1996, doi:10.2307/3147153.</span><span class="what">Endangered Species Act spending FY1989-91: over half to ten species; body length and taxon outweigh endangerment rank.</span></li><li id="ref17"><span class="src">Mammides, <i>Biodiversity and Conservation</i> 28(5):1291-1296, 2019, doi:10.1007/s10531-019-01725-8.</span><span class="what">Over 800 EU LIFE species projects since 1992; birds and mammals take 69% of projects and 75% of the species budget.</span></li><li id="ref18"><span class="src">Gu&eacute;nard <i>et al.</i>, <i>PNAS</i> 122:e2412479122, 2025, doi:10.1073/pnas.2412479122.</span><span class="what">About 14,600 projects over 25 years: 6% of threatened species ever funded, 29% of funds to Least Concern species.</span></li><li id="ref19"><span class="src">Ducatez &amp; Lefebvre, <i>PLoS ONE</i> 9(2):e89955, 2014, doi:10.1371/journal.pone.0089955.</span><span class="what">10,064 birds; phylogeny takes 74% of the variance in research effort; Least Concern species have twice the papers of threatened ones.</span></li><li id="ref20"><span class="src">OpenAlex, &ldquo;New features and usage-based pricing&rdquo;, 24 February 2026, https://blog.openalex.org/openalex-api-new-features-and-usage-based-pricing/.</span><span class="what">The date the bare search parameter was redefined as full-text search and the API became metered, at $0.0001 for a filtered list call.</span></li><li id="ref21"><span class="src">Cowie, Bouchet &amp; Fontaine, <i>Biological Reviews</i> 97(2):640-663, 2022, doi:10.1111/brv.12816.</span><span class="what">7.5-13% of the roughly two million known species estimated extinct since 1500, against 0.04% recorded on the Red List.</span></li><li id="ref22"><span class="src">Bland <i>et al.</i>, <i>Conservation Biology</i> 29(1):250-259, 2015, doi:10.1111/cobi.12372.</span><span class="what">64% of Data Deficient mammals predicted to be threatened.</span></li><li id="ref23"><span class="src">Borgelt <i>et al.</i>, <i>Communications Biology</i> 5:679, 2022, doi:10.1038/s42003-022-03638-9.</span><span class="what">85% of Data Deficient amphibians predicted to be threatened.</span></li><li id="ref24"><span class="src">White <i>et al.</i>, <i>Nature Plants</i> 10:1627-1634, 2024, doi:10.1038/s41477-024-01832-7.</span><span class="what">99% of Centinela's supposed microendemic plants have since been collected elsewhere.</span></li><li id="ref25"><span class="src">Martin <i>et al.</i>, <i>Conservation Letters</i> 5(4):274-280, 2012, doi:10.1111/j.1755-263X.2012.00239.x.</span><span class="what">The Christmas Island pipistrelle was monitored from 1994 and lost in 2009 while a captive-breeding decision was delayed.</span></li><li id="ref26"><span class="src">Frynta <i>et al.</i>, <i>PLoS ONE</i> 8(5):e63110, 2013, doi:10.1371/journal.pone.0063110.</span><span class="what">Rated beauty and body size predict which mammal families zoos hold and in what numbers; Red List status does not.</span></li><li id="ref27"><span class="src">Conde <i>et al.</i>, <i>PLoS ONE</i> 8(12):e80311, 2013, doi:10.1371/journal.pone.0080311.</span><span class="what">3,955 species in 837 zoos, 23% threatened; only 2 of 59 orders hold more threatened species than random would.</span></li><li id="ref28"><span class="src">Tam <i>et al.</i>, GigaDB dataset 102237, 2022, doi:10.5524/102237.</span><span class="what">Per-species h-index, publication count, Red List category and Google Trends for 7,521 mammals; CC0.</span></li></ol>
+
+<footer>
+<p><a href="about.html">Andrew Silvestri</a></p>
+<p><a href="code.html">Built with Python, Julia and public data.</a></p>
+</footer>
+</main>
+<script src="assets/motion.js?v=6bf4b397"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
+</body></html>
