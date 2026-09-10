@@ -937,6 +937,51 @@ function model(item, origin, dest, mode, life){
   var pv = new THREE.Vector3();
   var LADDER = [0, -15, 15, -30, 30, -46, 46];
 
+  /* Label widths are MEASURED, not counted. The old estimate was
+     (name.length + 6) * 6.6 for a spine label and * 6.1 for the rest, and
+     free() below refuses any label whose box would cross the frame - so the
+     bounds rule was correct and only its input was wrong. The guess ran
+     short at 960 and #labels, which hides its overflow and draws no
+     ellipsis, cut a stage name in half.
+
+     Measured through a hidden element carrying the label's own classes and
+     its own markup, because the CSS is what decides the width: .lab.geo is
+     uppercased with letter-spacing, and the spine labels carry a bold run.
+     DO NOT replace this with a canvas measureText. It is the obvious
+     optimisation - one context, no layout, no reflow - and it was the first
+     thing tried here. It measures a string in a font. It does not apply
+     text-transform, so .lab.geo's uppercase run is measured in lowercase; it
+     does not apply letter-spacing, so .lab.geo loses .06em on every
+     character; and it takes one font, so the bold number inside a spine
+     label is measured as regular. All three under-measure, and an
+     under-measured width is the defect this block exists to fix: the pins
+     came out short enough to be nudged past the left edge, which is the same
+     bug on the other side of the frame. A hidden element in the real
+     stylesheet is slower per string and correct for all three, and the cache
+     below makes the cost paid once.
+
+     Cached by class and string - labelPlan runs on every frame, and the
+     strings repeat. If the panel is display:none (the List tab) the
+     measurement is 0 and the old estimate stands in, which costs nothing
+     because nothing is drawn then. */
+  var measEl = null, measCache = Object.create(null);
+  function labelBox(html, cls, fallbackW) {
+    var key = cls + '|' + html;
+    var v = measCache[key];
+    if (v) return v;
+    if (!measEl) { measEl = document.createElement('div'); labels.appendChild(measEl); }
+    measEl.className = 'lab ' + cls;
+    measEl.style.cssText = 'position:absolute;visibility:hidden;left:-9999px;'
+                         + 'top:0;transform:none;white-space:nowrap';
+    measEl.innerHTML = html;
+    var r = measEl.getBoundingClientRect();
+    if (!(r.width > 0)) return { w: fallbackW, h: 15 };
+    // three pixels of air either side, two above and below
+    v = { w: r.width + 6, h: r.height + 4 };
+    measCache[key] = v;
+    return v;
+  }
+
   function labelPlan(cam, W, H, sel, hov) {
     var out = [], taken = [];
 
@@ -955,8 +1000,34 @@ function model(item, origin, dest, mode, life){
       }
       return true;
     }
-    function put(x, y, w, text, cls, node) {
-      var h = 15;
+    function put(x, y, w, text, cls, node, hh) {
+      /* h was 15 for every label until 2026-09-10, the same guess the widths
+         carried and with the same consequence one axis over: the collision
+         ladder packed rows tighter than the labels actually are, and pairs
+         overlapped at 1024 and 390 on the shipped page. Measured now, with
+         15 left as the fallback for when the panel is not displayed. */
+      var h = hh || 15;
+      /* THE RULE: a label may move only so far as its box still covers its
+         own node's x. Position is what says which node a label belongs to in
+         this diagram, so a label that has left its node's column is not a
+         displaced label, it is a wrong one.
+
+         w / 2 below is a consequence of that rule and not the reason for it.
+         Nudging at all is worth it: at 960 the Consumer stage lost its name
+         outright without it. Nudging without the bound is not - it put End of
+         life 131px from its own node and 10px from Consumer's at 1024, which
+         reads as a false number against a stage. An incomplete view is
+         recoverable; a wrong one is not, and nothing on the page tells a
+         reader which they have.
+
+         A label that cannot satisfy the rule is refused here, and End of life
+         is refused at 1024, 960 and 390 as a result. That it cannot be placed
+         legibly at those widths is a fact about the layout, not about this
+         parameter, and displacement cannot fix it in either direction; a
+         leader line or room for the last stage can. */
+      var x0 = x;
+      if (w + 4 <= W) x = Math.max(w / 2 + 2, Math.min(x, W - w / 2 - 2));
+      if (Math.abs(x - x0) > w / 2) return false;
       for (var i = 0; i < LADDER.length; i++) {
         var yy = y + LADDER[i];
         if (!free(x, yy, w, h)) continue;
@@ -977,8 +1048,9 @@ function model(item, origin, dest, mode, life){
         if (local.clone().normalize().dot(toCam) < 0.05) return;
         var s = project(local.clone().add(gc));
         if (!s) return;
-        put(s.x, s.y - 16, pin.text.replace(/&middot;/g, '.').length * 5.6,
-            pin.text, 'geo', null);
+        var pb = labelBox(pin.text, 'geo',
+                          pin.text.replace(/&middot;/g, '.').length * 5.6);
+        put(s.x, s.y - 16, pb.w, pin.text, 'geo', null, pb.h);
       });
     }
     if (!placed) return out;
@@ -1002,10 +1074,11 @@ function model(item, origin, dest, mode, life){
       var lift = nd.spine
         ? (nd.idx % 2 ? (nd.r * 46 + 20) : -(nd.r * 46 + 16))
         : -(nd.r * 40 + 11);
-      var w2 = (nd.name.length + 6) * (nd.spine ? 6.6 : 6.1);
-      if (put(s2.x, s2.y + lift, w2,
-              esc(nd.name) + ' <b>' + fmt(nd.total) + '</b>',
-              (nd.spine ? 'spine' : '') + (nd === sel ? ' sel' : ''), nd))
+      var txt = esc(nd.name) + ' <b>' + fmt(nd.total) + '</b>';
+      var cls2 = (nd.spine ? 'spine' : '') + (nd === sel ? ' sel' : '');
+      var b2 = labelBox(txt, cls2,
+                        (nd.name.length + 6) * (nd.spine ? 6.6 : 6.1));
+      if (put(s2.x, s2.y + lift, b2.w, txt, cls2, nd, b2.h))
         shown++;
     }
     return out;
