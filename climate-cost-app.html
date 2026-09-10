@@ -1193,8 +1193,16 @@ function model(item, origin, dest, mode, life){
   /* Arrow keys walk the graph, which is the difference between a picture and
      a place: left and right along the chain, down into the largest branch,
      up back towards the spine. */
+  /* The exemption list is every focusable control on the page, not just the
+     selects. It read SELECT alone until 2026-09-10, and #life is an
+     <input type="range">: focusing the vehicle-life slider and pressing an
+     arrow walked the supply chain instead of moving the slider, because this
+     handler is on window and calls preventDefault below. A control that eats
+     its own keys is invisible to a mouse and total to a keyboard.
+     skyline-app's handler exempts the same three tags for the same reason. */
   window.addEventListener('keydown', function (e) {
-    if (!placed || e.target.tagName === 'SELECT') return;
+    var tag = e.target.tagName;
+    if (!placed || tag === 'SELECT' || tag === 'INPUT' || tag === 'BUTTON') return;
     var spine = placed.nodes.filter(function (n) { return n.spine; });
     var k = e.key;
     if (k === 'ArrowLeft' || k === 'ArrowRight') {
