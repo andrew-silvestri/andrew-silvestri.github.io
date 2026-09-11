@@ -135,19 +135,26 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
    "more below", that app.js hides once the box is scrolled to its end or
    does not scroll at all. It is decoration for sighted readers: the list is
    in the document either way. */
-.more{display:none}
+/* The cue is no longer scoped to phones. It was, from 2026-09-05 until
+   2026-09-11, because the phone was where the panel became a 44vh box. But
+   #side scrolls inside a position:fixed #app at every width, so the page
+   never scrolls and the only scrollbar is an overlay that appears once you
+   are already scrolling: 2,289px sat below the fold at 1440 with nothing to
+   say so. app.js already hides the cue whenever the box is at its end or
+   does not scroll, so showing it at every width adds nothing to a panel that
+   fits. This extends that decision rather than reversing it. */
+.more{display:block;position:sticky;bottom:0;margin:0 -18px;padding:14px 18px 8px;
+  text-align:center;font:var(--fs-2)/1 var(--mono);color:var(--dim);
+  background:linear-gradient(to bottom,transparent,var(--panel) 45%)}
+#side.end .more{display:none}
 @media (max-width:900px){
   #app{grid-template-columns:100%;grid-template-rows:auto 1fr}
   #side{border-right:0;border-bottom:1px solid var(--rule);max-height:44vh;padding-bottom:0}
-  #side .more{display:block;position:sticky;bottom:0;margin:0 -18px;padding:14px 18px 8px;
-    text-align:center;font:var(--fs-2)/1 var(--mono);color:var(--dim);
-    background:linear-gradient(to bottom,transparent,var(--panel) 45%)}
-  #side.end .more{display:none}
 }
 </style>
 </head><body>
 <div id="app">
-<aside id="side">
+<aside id="side" data-scroll-affordance="more">
   <h1>Skylines, played</h1>
   <p class="sub">A skyline and a spectrum analyser are the same picture.
   So the picture is played.</p>
@@ -1074,6 +1081,16 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     }
     side.addEventListener('scroll', cue);
     window.addEventListener('resize', cue);
+    /* The city list, the stats and the tower list are all filled by script
+       after this runs, so cue() at boot measured an empty panel, found it did
+       not scroll, and set the end class. At 1440 the panel was already long
+       enough for that to be wrong immediately; at 1920 the taller viewport
+       hid it until the panel filled, and nothing fired afterwards - 2,109px
+       sat below a cue that had hidden itself. Recompute when the content
+       changes, not only when the reader does something. */
+    if (window.MutationObserver)
+      new MutationObserver(cue).observe(side, {childList: true, subtree: true,
+                                               characterData: true});
     cue();
   })();
 

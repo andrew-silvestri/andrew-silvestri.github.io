@@ -535,6 +535,19 @@
   var cap = document.querySelector('.herocap');
   if (cap) cap.textContent = sys.caption;
 
+  /* The corner caption left the page on 2026-09-07 and is not coming back
+     (HANDOFF section 4). A LABEL IS NOT A CAPTION: it is invisible, it costs
+     no layout, and without it the whole of the first screen is a moving
+     picture that says nothing at all to a reader who cannot see it. It says
+     what the caption would have said, because sys.caption is the sentence
+     already written for exactly this and tests/verify_hero_systems.js
+     already pins it. back is hidden: two canvases are one picture. */
+  front.setAttribute('role', 'img');
+  front.setAttribute('aria-label', sys.caption +
+    ' Integrated in the browser from its published equations; decorative, ' +
+    'and nothing on this page depends on it.');
+  back.setAttribute('aria-hidden', 'true');
+
   /* ==== sizing ========================================================= */
   function resize() {
     var w = window.innerWidth, h = window.innerHeight;

@@ -61,8 +61,19 @@ sub,sup{font-size:var(--fs-2);line-height:0}
   grid-template-columns:352px 1fr;grid-template-rows:100%}
 
 /* ------------------------------------------------------------- panel --- */
+/* #side scrolls inside #app, which is position:fixed - so the page itself
+   never scrolls and the panel's own scrollbar is an overlay that appears
+   only once you are already scrolling. It hid 261px at 1440 and 728px at
+   390 with nothing to say so. skyline-app hit this on 2026-09-05 and solved
+   it with a sticky cue; this is that pattern, and data-scroll-affordance is
+   how tests/test_layout.js knows the claim is made rather than guessed. */
 #side{overflow:auto;background:var(--panel);
   border-right:1px solid var(--rule);padding:16px 18px 44px}
+#side .more{display:block;position:sticky;bottom:0;margin:0 -18px;
+  padding:14px 18px 8px;text-align:center;
+  font:var(--fs-2)/1 var(--mono);color:var(--dim);
+  background:linear-gradient(to bottom,transparent,var(--panel) 45%)}
+#side.end .more{display:none}
 #side h1{font:600 var(--fs1)/1.25 var(--sans);margin:0 0 2px}
 #side .sub{color:var(--dim);font-size:var(--fs-1);margin:0 0 14px}
 .back{color:var(--dim);font-size:var(--fs-2);text-decoration:none;
@@ -208,7 +219,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
 </head><body>
 
 <div id="app">
-<aside id="side">
+<aside id="side" data-scroll-affordance="more">
   <a class="back" href="climate-cost.html">&larr; back</a>
   <h1>The true climate cost</h1>
   <p class="sub">Three inputs. Every step, and every step inside every step.</p>
@@ -253,10 +264,13 @@ canvas, #gl, #view, #stage { touch-action: none; }
   full ring means the whole process is charged to this product, a third of a
   ring means a third of it is. Allocation multiplies down a branch, so a
   process four levels deep may send only a sliver of itself here.</p>
+  <div class="more" aria-hidden="true">more below &darr;</div>
 </aside>
 
 <div id="stage">
-  <canvas id="gl"></canvas>
+  <canvas id="gl" role="img" aria-label="The life cycle of the selected item
+    drawn in three dimensions, one ball per process, sized by emissions. The
+    same numbers are in the List tab, which is the button in the panel."></canvas>
   <div id="labels"></div>
   <div id="hover"></div>
   <div id="hint">drag to orbit &middot; scroll to zoom &middot; click a node
@@ -1299,6 +1313,32 @@ function model(item, origin, dest, mode, life){
     else return;
     e.preventDefault();
   });
+
+  /* The panel's "more below" cue. #side scrolls inside a position:fixed #app,
+     so the page never scrolls and the only scrollbar is an overlay that shows
+     up once you are already scrolling - it hid 261px at 1440 and 728px at 390
+     with nothing to say so. Lifted from skyline/app.js, which hit the same
+     thing on 2026-09-05; the cue hides itself at the end. Defensive, because
+     the harness's DOM has no layout. */
+  (function () {
+    var side = document.getElementById('side');
+    if (!side || typeof side.addEventListener !== 'function') return;
+    function cue() {
+      var atEnd = side.scrollHeight - side.clientHeight - side.scrollTop < 4 ||
+                  side.scrollHeight <= side.clientHeight;
+      if (side.classList && side.classList.toggle) side.classList.toggle('end', atEnd);
+    }
+    side.addEventListener('scroll', cue);
+    window.addEventListener('resize', cue);
+    /* The panel's content changes when a selection does, and cue() run once
+       at boot measured a panel that had not been filled yet - it read "at the
+       end" while 261px were still below at 1440. Scroll and resize never
+       fire on their own afterwards, so the stale answer stood. */
+    if (window.MutationObserver)
+      new MutationObserver(cue).observe(side, {childList: true, subtree: true,
+                                               characterData: true});
+    cue();
+  })();
 
   document.getElementById('reset').addEventListener('click', function () {
     select(null); resetView(false);
