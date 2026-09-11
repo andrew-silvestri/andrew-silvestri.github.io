@@ -166,11 +166,9 @@ it. The largest set, 3,482 species, carries a maximum whose source did
 not say where the animal lived: the Amniote and AmphiBIO compilations report
 one figure per species with no origin, FishBase population maxima do the same,
 and 90 AnAge rows list the
-specimen origin as unknown. Until 4 September 2026 every one of those was
-labeled wild, here and in the visualiser. A captive maximum runs longer than a
-wild one, so the mislabelling flattered exactly the quotient this page is
-about. They are now carried, drawn and counted as what they are: a maximum of
-unrecorded origin.</p>
+specimen origin as unknown. A captive maximum runs longer than a wild one, so a
+record whose origin is not stated is carried, drawn and counted as a maximum of
+unrecorded origin rather than as a wild one.</p>
 
 <p>Disputed records lose to verified ones: the 226-year koi and the 120-year
 cockatoo are both out. Grade C records appear in the table and in the
@@ -230,9 +228,8 @@ answer to whether scraping species pages one at a time would do better.</p>
 <p>One ordinary least squares regression per baseline, unweighted, of
 log&#8321;&#8320; maximum lifespan in years on log&#8321;&#8320; adult body mass in grams,
 over the grade-A and grade-B records. Grade C is held out of every fit and
-scored against the result. Nothing is weighted: an earlier version of this
-page described a grade-weighted fit with an effective sample size, which the
-model does not run. The simulation in <code>test_fit_strategy.py</code> is why
+scored against the result. Nothing is weighted. The simulation in
+<code>test_fit_strategy.py</code> is why
 &mdash; a thin record is biased short, not merely noisy, and down-weighting a
 bias still lets it through where dropping it does not. The count beside each
 baseline above is the number of records in that fit. The sample spans
