@@ -115,12 +115,19 @@ select{max-width:200px}
    its bar is a wrong reading, not a cosmetic one. 0px until measured. */
 #axis{position:relative;height:24px;margin-left:300px;margin-top:6px;
  margin-right:var(--gut,0px)}
-#detail{position:fixed;right:16px;bottom:16px;width:340px;
- max-width:calc(100vw - 32px);background:var(--card);
- border:1px solid var(--faint);border-radius:2px;padding:15px 17px;
- box-shadow:var(--shadow);z-index:40;display:none;
- max-height:70vh;overflow:auto}
+/* IN THE LIST, NOT OVER IT. Until 2026-09-11 this was position:fixed at the
+   bottom right, 340px wide and up to 70vh tall, and it covered the controls:
+   two at 1440, four at 1280, nine at 1024 - including `All animals`, which is
+   the one control the prose under this chart singles out. A card floating
+   over a panel cannot be made not to cover it; it has to stop floating.
+   It is a sibling of the rows now, in their coordinate system, positioned
+   under the row it belongs to. */
+#detail{position:absolute;left:0;right:0;display:none;
+ background:var(--card);border:1px solid var(--faint);border-radius:2px;
+ border-left:3px solid var(--acc);padding:14px 17px;
+ transition:transform .58s cubic-bezier(.22,.72,.24,1)}
 #detail.on{display:block}
+.row.open .nm{font-weight:600}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .row:focus-visible{outline:none}
 .row:focus-visible .nm{outline:2px solid var(--acc);outline-offset:1px;border-radius:2px}
@@ -167,7 +174,7 @@ table.fits th{font-size:var(--fs-2);text-transform:uppercase;letter-spacing:.05e
     as the fallback for a browser that never ran setGutter. */
  .track{flex:none;width:calc(100% - var(--gut,58px));height:22px;margin-right:0}
  #axis{margin-left:0;margin-right:var(--gut,58px)}
- #detail{left:16px;right:16px;width:auto;max-height:60vh}}
+ #detail{padding:12px 13px}}
 /* Motion. Nothing here moves under the site's contract or the system
    preference. Both are honoured: the attribute is set before first paint
    from the media query, and the media query is also matched directly in
@@ -193,7 +200,12 @@ observed maximum lifespan over the lifespan predicted for that mass. A quotient
 of one is exactly as long as expected. The interesting animals, and the
 interesting groups, are the ones far from one.</p>
 
-<button class="ptog" id="ptog" aria-expanded="false" aria-controls="panel">Adjust the view <b>show ▾</b></button>
+<!-- Below 700px this button is the only thing between a reader and every
+     control in the app: the panel ships closed there and shows nothing of
+     what it holds. "Adjust the view" did not say that the baseline, the
+     lifespan used and the data grade were behind it - and the baseline is
+     the control the prose under this chart singles out. -->
+<button class="ptog" id="ptog" aria-expanded="false" aria-controls="panel">Sort, baseline, grade and filters <b>show ▾</b></button>
 <div class="panel closed" id="panel">
  <div class="grp"><span class="lab">View</span>
   <div class="seg" id="viewSeg">
@@ -290,9 +302,7 @@ interesting groups, are the ones far from one.</p>
 
 <div class="legend" id="legend"></div>
 <div id="axis"></div>
-<div id="chart"></div>
-
-<div id="detail"><button class="x" id="dx">×</button><div id="dbody"></div></div>
+<div id="chart"><div id="detail"><button class="x" id="dx">×</button><div id="dbody"></div></div></div>
 
 <hr>
 <h2>Comparing groups</h2>
@@ -708,26 +718,41 @@ function renderSpecies(){
      moving four thousand nodes. Past the cap the list is truncated to the end
      of the current sort, which is where the interesting animals are anyway;
      the groups view is the way to see everything at once. */
-  const list=all.slice(0,S.cap);
-  const truncated=all.length-list.length;
+  /* FIRST PAINT IS A SCREENFUL, NOT THE CAP.
+     The payload arrives in about 150ms; first paint was 456ms in chromium and
+     769ms in firefox on a phone, and the difference is this loop building
+     four hundred rows - 4,999 elements - before anything is shown. Nothing
+     here is fetched and nothing blocks, so the only thing left to defer is
+     the building. The first pass lays out a screenful and hands the page
+     over; the rest arrive on the next idle callback. The count line and the
+     sort are computed from the whole list either way, so nothing a reader
+     reads is a partial answer - only how many rows exist yet. */
+  const full=all.slice(0,S.cap);
+  const list=firstFill?full.slice(0,FIRST_ROWS):full;
+  const truncated=all.length-full.length;
+  openIdx=-1;                 /* recomputed below if the open row is shown */
+  rowOrder=[];
   const vals=[];
   list.forEach(d=>['w','p','u','a'].forEach(kk=>{
     const v=barMode()==='lq'?lqOf(d,kk):lifeOf(d,kk); if(v) vals.push(v);}));
   const sc=makeScale(vals);
   document.getElementById('count').textContent=
     (truncated
-      ? `showing ${list.length} of ${all.length} matching species — `+
+      ? `showing ${full.length} of ${all.length} matching species — `+
         `${S.dir==='desc'?'highest':'lowest'} first. `+
         `Flip Order to see the other end, raise Rows shown, filter to a taxon, `+
         `or use the groups view.`
-      : `${list.length} species of ${RAW.length}`)+
+      : `${full.length} species of ${RAW.length}`)+
     (barMode()==='lq'?' · bars show the quotient, 1 = as predicted'
                      :' · bars show years');
   drawAxis(sc);
   const shown=new Set();
   list.forEach((d,i)=>{
     const key='s|'+d.n+d.s; shown.add(key);
-    const el=getRow(key,()=>detail(d));
+    const el=getRow(key,()=>detail(d,key));
+    if(key===openKey) openIdx=i;
+    el.classList.toggle('open',key===openKey);
+    rowOrder.push(el);
     place(el,i);
     putHTML(el.$.nm,
       label2(d)+(d.col?' <span class="colb">colonial</span>':''));
@@ -750,6 +775,31 @@ function renderSpecies(){
                                   :(cur!=null?fmt(cur)+' yr':''));
   });
   sweep(shown,list.length);
+  settleDetail(list.length);
+  /* Exactly one row is the way in. Clamped rather than reset, so arrowing to
+     row 200 and then changing the sort does not send you back to the top. */
+  activeIdx=Math.max(0,Math.min(activeIdx,rowOrder.length-1));
+  rowOrder.forEach((el,i)=>{ el.tabIndex = i===activeIdx?0:-1; });
+  if(firstFill && full.length>list.length){
+    firstFill=false;
+    const rest=()=>render();
+    if('requestIdleCallback' in window) requestIdleCallback(rest,{timeout:400});
+    else setTimeout(rest,0);
+  } else firstFill=false;
+}
+
+/* The card's height is not known until its content is in the document, and the
+   rows below it were placed using the previous value. Measure, and if it moved,
+   place them again - two passes rather than a guessed height, which is the
+   mistake this tree keeps finding. Groups view has no card. */
+function settleDetail(n){
+  const was=detailH;
+  placeDetail();
+  if(Math.abs(detailH-was)>0.5){
+    let i=0;
+    nodes.forEach(el=>{ if(!el.classList.contains('hide')) place(el,i++); });
+    chart.style.height=(n*ROWH+10+(openIdx>=0?detailH:0))+'px';
+  }
 }
 
 function renderGroups(){
@@ -811,7 +861,13 @@ function getRow(key,onClick){
   if(!el){
     el=document.createElement('div');
     el.className='row';
-    el.setAttribute('role','button'); el.tabIndex=0;
+    /* ROVING TABINDEX. Every row carried tabIndex=0 until 2026-09-11, which
+       made the chart four hundred tab stops - 430 focusable elements on the
+       page, 400 of them rows - so the fit table and the prose below the chart
+       were 400 presses away, and at "Rows shown: All" they were 6,341. A
+       ranked list is one composite control: Tab enters it once, the arrows
+       move within it, and every row is still operable. */
+    el.setAttribute('role','button'); el.tabIndex=-1;
     el.innerHTML='<div class="nm"></div><div class="track">'+
       '<div class="rng"></div><div class="bar bw"></div>'+
       '<div class="bar bu"></div>'+
@@ -820,7 +876,17 @@ function getRow(key,onClick){
     const qs=s=>el.querySelector(s);
     el.$={nm:qs('.nm'), rng:qs('.rng'), bw:qs('.bw'), bc:qs('.bc'), bu:qs('.bu'),
           bg1:qs('.bg1'), avg:qs('.avg'), val:qs('.val')};
-    el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } };
+    el.onkeydown=e=>{
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); return; }
+      let to=null;
+      if(e.key==='ArrowDown') to=rowOrder.indexOf(el)+1;
+      else if(e.key==='ArrowUp') to=rowOrder.indexOf(el)-1;
+      else if(e.key==='Home') to=0;
+      else if(e.key==='End') to=rowOrder.length-1;
+      else return;
+      e.preventDefault();
+      focusRow(Math.max(0,Math.min(rowOrder.length-1,to)));
+    };
     chart.appendChild(el); nodes.set(key,el);
   }
   el.onclick=onClick;
@@ -848,7 +914,33 @@ function putHTML(el,v){
   if(el._h===v) return;
   el._h=v; el.innerHTML=v;
 }
-function place(el,i){ put(el,'transform','translateY('+(i*ROWH)+'px)'); }
+/* Which row is open, and how tall its card is. Every row after the open one
+   is pushed down by that much, and the chart grows to match; the transform
+   transition already on .row carries the movement. */
+let openKey=null, openIdx=-1, detailH=0;
+/* The rows in the order they are drawn, which is the order the arrows move
+   through. Rebuilt on every render because sorting and filtering change it. */
+let rowOrder=[], activeIdx=0;
+const FIRST_ROWS=40;        /* more than a screen at any viewport we test */
+let firstFill=true;
+function focusRow(i){
+  const el=rowOrder[i]; if(!el) return;
+  if(rowOrder[activeIdx]) rowOrder[activeIdx].tabIndex=-1;
+  activeIdx=i; el.tabIndex=0; el.focus();
+  el.scrollIntoView({block:'nearest'});
+}
+function shift(i){ return (openIdx>=0 && i>openIdx) ? detailH : 0; }
+function place(el,i){ put(el,'transform','translateY('+(i*ROWH+shift(i))+'px)'); }
+/* The card sits directly under its row. Measured after the content is in,
+   because the height depends on how many taxonomic ranks the species has and
+   whether it carries a note. */
+function placeDetail(){
+  const d=document.getElementById('detail');
+  if(openIdx<0){ d.classList.remove('on'); detailH=0; return; }
+  d.classList.add('on');
+  d.style.transform='translateY('+((openIdx+1)*ROWH)+'px)';
+  detailH=d.getBoundingClientRect().height+8;
+}
 /* Where bars start: parity in quotient mode, the axis origin otherwise. */
 function origin(sc){ return barMode()==='lq' ? sc.f(1) : 0; }
 /* A bar runs from `from` to `to` in percent of the track, whichever way
@@ -935,7 +1027,7 @@ function sweep(shown,n){
       nodes.delete(k);
     }
   }
-  chart.style.height=(n*ROWH+10)+'px';
+  chart.style.height=(n*ROWH+10+(openIdx>=0?detailH:0))+'px';
 }
 function drawAxis(sc){
   axis.innerHTML='';
@@ -956,7 +1048,7 @@ function drawAxis(sc){
 }
 
 /* ---------- detail ---------- */
-function detail(d){
+function detail(d,key){
   const q={A:'documented and verified',B:'literature estimate',
            C:'uncertain'}[d.q]||d.q;
   const lqc=d.pc?(lifeOf(d,S.met)/d.pc):null, lqg=lifeOf(d,S.met)/d.pg;
@@ -979,10 +1071,15 @@ function detail(d){
      <tr><td>data quality</td><td>${q}</td></tr>
      ${d.col?'<tr><td>colonial</td><td>yes — excluded from fits</td></tr>':''}
     </table>${d.note?`<p class="small" style="margin-top:9px">${d.note}</p>`:''}`;
-  document.getElementById('detail').classList.add('on');
+  /* Opening a row changes the layout below it, so the list is laid out
+     again rather than the card being dropped on top of it. */
+  openKey=key||null;
+  render();
 }
-document.getElementById('dx').onclick=()=>
-  document.getElementById('detail').classList.remove('on');
+function closeDetail(){ if(openKey===null) return; openKey=null; openIdx=-1;
+  detailH=0; render(); }
+document.getElementById('dx').onclick=closeDetail;
+addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
 
 /* ---------- controls ---------- */
 function press(id,k){
@@ -1082,7 +1179,7 @@ document.getElementById('filtVal').addEventListener('change',e=>{
   const mob=()=>matchMedia('(max-width:700px)').matches;
   const set=open=>{ p.classList.toggle('closed', mob() && !open);
     b.setAttribute('aria-expanded', open?'true':'false');
-    b.innerHTML='Adjust the view <b>'+(open?'hide ▴':'show ▾')+'</b>'; };
+    b.innerHTML='Sort, baseline, grade and filters <b>'+(open?'hide ▴':'show ▾')+'</b>'; };
   let open=!mob();
   b.onclick=()=>{ open=!open; set(open); };
   set(open);
