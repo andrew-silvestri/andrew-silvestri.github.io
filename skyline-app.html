@@ -113,6 +113,14 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
    (or has it muted). --ink, not --dim, because it is a reading, not a hint */
 #notes{font:var(--fs-2) var(--mono);color:var(--ink);white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis}
+/* At 390 this was 238px of text in 171px and ellipsised to about 72%: the
+   last notes of the chord vanished, and this line is the only account of what
+   is sounding for anyone not listening. It wraps below 760 instead. */
+@media (max-width:760px){
+  #notes{white-space:normal;overflow:visible;text-overflow:clip}
+  #foot{align-items:flex-start}
+}
+
 #hint{font-size:var(--fs-2);color:var(--dim);letter-spacing:.03em;
   min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #az{font:var(--fs-2) var(--mono);color:var(--dim);flex:none;white-space:nowrap;
@@ -202,6 +210,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   <dl id="stats"></dl>
 
   <h2>On the wheel</h2>
+  <p class="note" id="listcap"></p>
   <ol class="tow" id="towers"></ol>
 </aside>
 <div id="sidecue" class="more" aria-hidden="true">more below &darr;</div>
@@ -897,8 +906,23 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     /* The list is the wheel, in the order it is drawn, with whatever is
        currently on the near face marked. It used to be the twenty tallest in
        true-bearing order, which no longer matched anything on screen. */
-    var named = c.ring.filter(function (r) { return r[4]; })
+    /* The canvas's aria-label says "the towers ... are listed as text in the
+       panel", and for New York that was 40 of 120. A text alternative that
+       silently holds a third of the picture is a claim, not an alternative,
+       so the list says what it is: the cap is reported beside it, from the
+       same numbers the stats already carry. */
+    var onWheel = c.ring.filter(function (r) { return r[4]; });
+    var named = onWheel.slice()
                  .sort(function (p, q) { return q[3] - p[3]; }).slice(0, 40);
+    var cap = document.getElementById('listcap');
+    /* NAMED, not "on the wheel": the stat above counts every tower at or
+       above 55 m and this counts the ones with a name to list, so New York
+       reads 120 there and 119 here. Two numbers a line apart differing by one
+       is worse than either, so each says which set it is. */
+    if (cap) cap.textContent = named.length < onWheel.length
+      ? 'The tallest ' + named.length + ' of ' + onWheel.length +
+        ' named towers on the wheel. The rest are drawn but not listed.'
+      : 'All ' + onWheel.length + ' named towers on the wheel.';
     document.getElementById('towers').innerHTML = named.map(function (r) {
       var front = Math.cos((r[0] - S.az) * Math.PI / 180) > 0;
       /* A building links to the record it came from where there is one.
