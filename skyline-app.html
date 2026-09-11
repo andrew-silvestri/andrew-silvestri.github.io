@@ -42,8 +42,10 @@ body{margin:0;background:var(--bg);color:var(--ink);
 #app{position:fixed;inset:0;display:grid;
   grid-template-columns:330px 1fr;grid-template-rows:100%}
 
-#side{overflow:auto;background:var(--panel);
-  border-right:1px solid var(--rule);padding:16px 18px 40px}
+#sidewrap{display:flex;flex-direction:column;min-height:0;
+  border-right:1px solid var(--rule);background:var(--panel)}
+#side{flex:1;min-height:0;overflow:auto;background:var(--panel);
+  padding:16px 18px 24px}
 h1{font:600 var(--fs1)/1.25 var(--sans);margin:0 0 2px}
 .sub{color:var(--dim);font-size:var(--fs-1);margin:0 0 14px}
 
@@ -135,26 +137,33 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
    "more below", that app.js hides once the box is scrolled to its end or
    does not scroll at all. It is decoration for sighted readers: the list is
    in the document either way. */
-/* The cue is no longer scoped to phones. It was, from 2026-09-05 until
-   2026-09-11, because the phone was where the panel became a 44vh box. But
-   #side scrolls inside a position:fixed #app at every width, so the page
-   never scrolls and the only scrollbar is an overlay that appears once you
-   are already scrolling: 2,289px sat below the fold at 1440 with nothing to
-   say so. app.js already hides the cue whenever the box is at its end or
-   does not scroll, so showing it at every width adds nothing to a panel that
-   fits. This extends that decision rather than reversing it. */
-.more{display:block;position:sticky;bottom:0;margin:0 -18px;padding:14px 18px 8px;
-  text-align:center;font:var(--fs-2)/1 var(--mono);color:var(--dim);
-  background:linear-gradient(to bottom,transparent,var(--panel) 45%)}
-#side.end .more{display:none}
+/* Shown at every width since 2026-09-11: #side scrolls inside a
+   position:fixed #app at every one of them, and 2,289px sat below the fold at
+   1440 with nothing to say so. app.js hides it whenever the box is at its end
+   or does not scroll, so a panel that fits still shows nothing.
+   AND IT IS OUTSIDE THE SCROLLER. Sticky-inside overlapped "The key" at 390
+   from 2026-09-05 until 2026-09-11; a cue about a scrollport cannot live in
+   the scrollport without landing on its contents. */
+/* THE CUE LIVES OUTSIDE THE BOX IT DESCRIBES. Sticky-inside was the first
+   attempt and it always lands on whatever is at the bottom of the scrollport
+   - prose in skyline, a form control in climate-cost at 390. Padding cannot
+   fix that: padding only adds space at the END of the content, so mid-scroll
+   the overlap returns. As a flex sibling it takes its own row and overlaps
+   nothing, ever. */
+.more{flex:none;padding:10px 18px;text-align:center;
+  font:var(--fs-2)/1 var(--mono);color:var(--dim);
+  background:var(--panel);border-top:1px solid var(--faint)}
+#sidewrap.end .more{display:none}
 @media (max-width:900px){
   #app{grid-template-columns:100%;grid-template-rows:auto 1fr}
-  #side{border-right:0;border-bottom:1px solid var(--rule);max-height:44vh;padding-bottom:0}
+  #sidewrap{border-right:0;border-bottom:1px solid var(--rule)}
+  #side{max-height:44vh}
 }
 </style>
 </head><body>
 <div id="app">
-<aside id="side" data-scroll-affordance="more">
+<div id="sidewrap">
+<aside id="side" data-scroll-affordance="#sidecue">
   <h1>Skylines, played</h1>
   <p class="sub">A skyline and a spectrum analyser are the same picture.
   So the picture is played.</p>
@@ -194,8 +203,9 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
 
   <h2>On the wheel</h2>
   <ol class="tow" id="towers"></ol>
-  <div class="more" id="more" aria-hidden="true">more below &darr;</div>
 </aside>
+<div id="sidecue" class="more" aria-hidden="true">more below &darr;</div>
+</div>
 
 <div id="stage">
   <canvas id="c" role="img" aria-label="The city's towers on a wheel, and the same ring as a meter. Turn with drag, arrow keys or Spin; the towers and the notes sounding are listed as text in the panel and under the meter."></canvas>
@@ -1077,7 +1087,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     function cue() {
       var atEnd = side.scrollHeight - side.clientHeight - side.scrollTop < 4 ||
                   side.scrollHeight <= side.clientHeight;
-      if (side.classList && side.classList.toggle) side.classList.toggle('end', atEnd);
+      /* The cue is a sibling of #side now, not a child, so the class goes on
+         the wrapper that holds both. The measurement still comes from #side:
+         it is the box that scrolls. */
+      var wrap = document.getElementById('sidewrap') || side;
+      if (wrap.classList && wrap.classList.toggle) wrap.classList.toggle('end', atEnd);
     }
     side.addEventListener('scroll', cue);
     window.addEventListener('resize', cue);
