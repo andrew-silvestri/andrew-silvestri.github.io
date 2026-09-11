@@ -85,7 +85,7 @@ select{max-width:200px}
 .nm .cnt{color:var(--dim);font-size:var(--fs-2)}
 .nm .colb{color:var(--dim);font-size:var(--fs-2);border:1px solid var(--line);
  border-radius:2px;padding:0 3px;margin-left:4px}
-.track{position:relative;flex:1;height:22px}
+.track{position:relative;flex:1;height:22px;margin-right:var(--gut,0px)}
 /* Three origins, three shapes. Wild is a solid bar, captive a hollow one,
    origin-not-recorded a hatched one: shape as well as hue, so the three
    read apart in print and to anyone who does not see the colours. */
@@ -108,7 +108,12 @@ select{max-width:200px}
 .gl span{position:absolute;top:1px;left:4px;font:var(--fs-2) var(--sans);
  color:var(--dim);white-space:nowrap}
 .gl.one{background:var(--acc);opacity:.9;width:2px}
-#axis{position:relative;height:24px;margin-left:300px;margin-top:6px}
+/* --gut is the reserved label gutter, set from the data at first render
+   (setGutter). It is on BOTH #axis and .track because they are the same box -
+   measured identical at every viewport - and a gridline that does not sit on
+   its bar is a wrong reading, not a cosmetic one. 0px until measured. */
+#axis{position:relative;height:24px;margin-left:300px;margin-top:6px;
+ margin-right:var(--gut,0px)}
 #detail{position:fixed;right:16px;bottom:16px;width:340px;
  max-width:calc(100vw - 32px);background:var(--card);
  border:1px solid var(--faint);border-radius:2px;padding:15px 17px;
@@ -155,8 +160,12 @@ table.fits th{font-size:var(--fs-2);text-transform:uppercase;letter-spacing:.05e
  input[type=search],select{min-height:44px}
  .row{height:48px;flex-wrap:wrap;align-items:flex-start}
  .nm{width:100%;padding:3px 0 0;line-height:18px}
- .track{flex:none;width:calc(100% - 58px);height:22px}
- #axis{margin-left:0;margin-right:58px}
+ /* The phone layout already reserved a label gutter, at a hardcoded 58px.
+    It is the same rule as the desktop one and it now takes the same measured
+    width, so the two cannot drift apart and neither is a guess. 58px is kept
+    as the fallback for a browser that never ran setGutter. */
+ .track{flex:none;width:calc(100% - var(--gut,58px));height:22px;margin-right:0}
+ #axis{margin-left:0;margin-right:var(--gut,58px)}
  #detail{left:16px;right:16px;width:auto;max-height:60vh}}
 /* Motion. Nothing here moves under the site's contract or the system
    preference. Both are honoured: the attribute is set before first paint
@@ -631,6 +640,7 @@ function ticks(sc){
 
 /* ---------- render ---------- */
 function render(){
+  setGutter();
   document.getElementById('rankBox').classList.toggle('off',S.view!=='gr');
   document.getElementById('gmetBox').classList.toggle('off',S.view!=='gr');
   document.getElementById('minnBox').classList.toggle('off',S.view!=='gr');
@@ -847,9 +857,64 @@ function setBar(el,sel,from,to,on){
   const l=Math.min(from,to), w=Math.abs(to-from);
   put(b,'left',l+'%'); put(b,'width',w+'%'); put(b,'opacity',on?'1':'0');
 }
+/* The width of a value label, measured through a hidden node carrying the
+   real class, cached by string. Guessing it from the character count is the
+   defect this whole clamp exists to undo - see climate-cost/scene.js, where
+   the same guess put scene labels outside their frame. A value is a short
+   string from a small set, so the cache fills in the first render. */
+let valMeas=null; const valCache=Object.create(null);
+function valWidth(t){
+  let w=valCache[t]; if(w!=null) return w;
+  if(!valMeas){
+    valMeas=document.createElement('div');
+    valMeas.className='val';
+    valMeas.style.cssText='position:absolute;visibility:hidden;left:-9999px;top:0';
+    (document.getElementById('chart')||document.body).appendChild(valMeas);
+  }
+  valMeas.textContent=t;
+  w=Math.ceil(valMeas.getBoundingClientRect().width);
+  if(!(w>0)) return 0;                    // not laid out yet; caller skips the clamp
+  valCache[t]=w; return w;
+}
+/* THE RULE: a value label is never drawn over its own bar. The bar's end is
+   where the value is encoded, so a number laid across it is legible about the
+   thing it is covering.
+
+   That means the plotting area has to reserve room rather than the label
+   having to fit. --gut below is a right margin on #axis and .track - the same
+   box, so gridlines stay on their bars - wide enough for the widest string
+   this data can produce plus the 8px gap. Bars get shorter in pixels; no
+   value, no proportion and no gridline relationship moves, because every bar
+   scales together against the same track.
+
+   The clamp that stood here for one build is gone. It kept the label inside
+   the track by pulling it onto its own bar, where --dim on --moss measured
+   1.30:1 - a sideways scroll traded for an unreadable figure on the
+   top-ranked row. */
 function label(el,leftPct,text){
   const v=el.$.val;
   put(v,'left','calc('+leftPct+'% + 8px)'); putText(v,text);
+}
+/* Measured from the data, not chosen. Every mode's widest string: the largest
+   quotient, the longest lifespan through fmt(), and the largest possible
+   species count, which is the whole table. Group statistics cannot exceed any
+   of those - a geometric mean is inside its members' range and a group is a
+   subset - so these bound every label the app can draw. One pass at first
+   render; picking a round number instead would be a guess about text width,
+   and a guess about text width is what put the label outside the track. */
+let _gutDone=false;
+function setGutter(){
+  if(_gutDone) return; _gutDone=true;
+  let mq=0, ml=0;
+  for(const d of RAW) for(const m of ['mx','a','w','p']){
+    const q=lqOf(d,m); if(q>mq) mq=q;
+    const l=lifeOf(d,m); if(l>ml) ml=l;
+  }
+  const widest=Math.max(valWidth(mq.toFixed(2)+'\u00d7'),
+                        valWidth(fmt(ml)+' yr'),
+                        valWidth(RAW.length+' species'));
+  if(widest>0)
+    document.documentElement.style.setProperty('--gut',(widest+10)+'px');
 }
 function sweep(shown,n){
   /* Hidden rows are kept so that re-sorting animates from where a row was
