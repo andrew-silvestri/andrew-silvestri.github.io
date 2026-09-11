@@ -16,7 +16,7 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 <main class="notes">
 
 <h1>Battery revenue simulator</h1>
-<p class="dim">A linear program over a year of hourly prices<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, and what it says
+<p class="dim">A linear program over a synthetic year of hourly prices<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, and what it says
 about how long a battery should be.</p>
 <aside class="marginalia" style="grid-row: span 28" aria-label="On this page"><p class="lab">On this page</p><ul><li>2h · $98.1/kW-yr</li><li>4h · $107.1/kW-yr</li><li>8h · $111.0/kW-yr</li><li>2h · 1,361&nbsp;cycles/yr</li><li>4h · 786&nbsp;cycles/yr</li></ul></aside>
 <aside class="marginalia right" style="grid-row: span 28"><ul><li>8h · 424&nbsp;cycles/yr</li><li>2h · 1.85&nbsp;h at rated output</li><li>4h · 3.71&nbsp;h at rated output</li><li>8h · 7.42&nbsp;h at rated output</li><li>4h capex ref · $242/kW-yr</li></ul></aside>
@@ -68,8 +68,8 @@ where it does.</p>
 <img class="fig wide" src="assets/storage_fig4_sensitivity.png?v=65f205bb" loading="lazy" width="1428" height="984" alt="Sensitivity to round-trip efficiency and degradation cost.">
 <p class="small">Sensitivity to round-trip efficiency and degradation cost.</p>
 
-<img class="fig wide" src="assets/storage_fig1_prices.png?v=e22035cf" loading="lazy" width="1428" height="649" alt="The price series: duration curve and average daily shape.">
-<p class="small">The price series: duration curve and average daily shape.</p>
+<img class="fig wide" src="assets/storage_fig1_prices.png?v=e22035cf" loading="lazy" width="1428" height="649" alt="The synthetic price series: duration curve and average daily shape.">
+<p class="small">The synthetic price series: duration curve and average daily shape.</p>
 
 <h2>Method</h2>
 <p>This model dispatches a one-megawatt battery against 8,760 hourly prices by
@@ -78,12 +78,18 @@ the joins. Every megawatt hour of throughput is charged a cycling cost<sup class
 optimiser cannot trade for free, and round-trip efficiency is split
 symmetrically as the square root per leg.</p>
 
+<p>The price year is synthetic. It is 8,760 hours generated from a fixed seed
+and calibrated to the shape of ERCOT's day-ahead prices &mdash; the daily and
+seasonal swing, and the scarcity spikes that carry most of the revenue. It is
+not a record of any real year, and every number and figure here is a figure of
+that series.</p>
+
 <hr>
 <h2>The code</h2>
 <p>Python reference implementation using an open solver, a JuMP and HiGHS port, an Octave port, and the dispatch workbook. The archive holds the source only: no generated figures, no bulk
 data. Each model runs from its own <code>README.md</code>.</p>
 
-<p><a class="btn" href="downloads/storage-code.zip">Download source · 216 KB</a>
+<p><a class="btn" href="downloads/storage-code.zip">Download source</a>
 <a class="btn ghost" href="code.html">All code</a></p>
 
 
