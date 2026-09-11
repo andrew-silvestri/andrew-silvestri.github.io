@@ -4,6 +4,7 @@
 <title>Skylines, played</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#F2F0EF">
 <script>/* the motion contract - set before first paint, from the system preference alone. Mirrors assets/motion.js, which the apps do not load; the app reads data-motion and listens for "motionchange". */
 (function(){var r=document.documentElement,m=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):null;function a(){var s=m&&m.matches?'off':'on';if(r.dataset.motion===s)return;r.dataset.motion=s;document.dispatchEvent(new CustomEvent('motionchange',{detail:s}));}try{a();if(m){if(m.addEventListener)m.addEventListener('change',a);else if(m.addListener)m.addListener(a);}}catch(e){r.dataset.motion='on';}})();</script>
