@@ -8,7 +8,7 @@ Plain static files. No build step, no dependencies, no framework. Every page
 works offline if you open it directly.
 
 Generated from `00 PUBLISH` in the working repository. Do not edit files here by
-hand: run `publish.ps1` from that folder, which rebuilds this repository from
+hand: run `./publish.sh` from that folder, which rebuilds this repository from
 `00 PUBLISH/site`.
 
 | Path | What it is |
