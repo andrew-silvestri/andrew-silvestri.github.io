@@ -24,7 +24,11 @@ are left out, because every model rebuilds them. Each archive has a
 <code>README.md</code> at its root giving the command to run, the results to
 expect, and the assumptions that produced them.</p>
 
-<table>
+<!-- tabindex="0": style.css:780 makes this a sideways scroller below 760px,
+     hiding 65px at 390, and Chromium will not focus a scroller that contains
+     focusable elements. Typed here, not generated: sync_code_rows.py rewrites
+     <tr> rows only. -->
+<table tabindex="0">
 <tr><th>Model</th><th>Contents</th><th>Size</th><th>Download</th></tr>
 <tr><td><a href="heat.html">Industrial heat break-even</a></td><td>Python reference, Julia and Octave ports, formula workbook.</td><td>11 files</td><td><a href="downloads/heat-code.zip">23 KB</a></td></tr>
 <tr><td><a href="storage.html">Battery revenue simulator</a></td><td>Linear-program dispatch; JuMP and HiGHS port included.</td><td>9 files</td><td><a href="downloads/storage-code.zip">223 KB</a></td></tr>
