@@ -18,7 +18,7 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 <h1>Industrial heat electrification break-even</h1>
 <p class="dim">Levelised cost of heat from a resistive electric boiler<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> against a
 natural-gas boiler, for process steam in Texas.</p>
-<aside class="marginalia" style="grid-row: span 31" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>gas</b><span class="v">5.13&nbsp;dollars/MMBtu</span></li><li><b>break-even</b><span class="v">1.53&nbsp;cents/kWh</span></li><li><b>today</b><span class="v">6.5&nbsp;cents to $20.00</span></li><li><b>fuel-only break-even</b><span class="v">1.38&nbsp;c/kWh</span></li><li><b>capital ±50%</b><span class="v">break-even ±0.15&nbsp;c</span></li><li><b>emissions parity</b><span class="v">0.209&nbsp;t CO2/MWh</span></li></ul></aside>
+<aside class="marginalia" style="grid-row: span 31" aria-label="On this page"><p class="lab">On this page</p><ul><li><b>gas heat</b><span class="v">5.13&nbsp;dollars/MMBtu</span></li><li><b>break-even</b><span class="v">1.53&nbsp;cents/kWh</span></li><li><b>today</b><span class="v">6.5&nbsp;cents to $20.00</span></li><li><b>fuel-only break-even</b><span class="v">1.38&nbsp;c/kWh</span></li><li><b>capital ±50%</b><span class="v">break-even ±0.15&nbsp;c</span></li><li><b>emissions parity</b><span class="v">0.209&nbsp;t CO2/MWh</span></li></ul></aside>
 <aside class="marginalia right" style="grid-row: span 31"><ul><li><b>ERCOT grid</b><span class="v">0.333&nbsp;t CO2/MWh</span></li><li><b>electric boiler</b><span class="v">99.6&nbsp;kg/MMBtu</span></li><li><b>gas boiler</b><span class="v">62.4&nbsp;kg/MMBtu</span></li><li><b>gas fuel</b><span class="v">$4.12&nbsp;of $5.13</span></li><li><b>electric fuel</b><span class="v">$19.44&nbsp;of $20.00</span></li></ul></aside>
 
 <p>A chemical plant that wants to stop burning gas for process steam has one
@@ -32,8 +32,8 @@ million British thermal units that actually reach the process, not on fuel
 bought at the gate.</p>
 
 <h2>What the model finds</h2>
-<p>At a gas price of $3.50<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> per million British thermal units and electricity at
-6.5 cents per kilowatt hour, gas heat costs about <strong>$5.13</strong> per
+<p>At an assumed gas price of $3.50<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> per million British thermal units and an
+assumed 6.5 cents per kilowatt hour for electricity, gas heat costs about <strong>$5.13</strong> per
 million British thermal units and electric heat about <strong>$20.00</strong>.
 The break-even electricity price is about <strong>1.53 cents per kilowatt
 hour</strong>, or 1.38 cents if only fuel is counted.</p>
@@ -82,8 +82,11 @@ assumptions can be edited without touching code. The Python implementation is
 the reference for the other ports.</p>
 
 <h2>Limits</h2>
-<p>The prices in the shipped run are placeholders. The model reads a real series
-from a template file the moment one is supplied. The boundary between retail
+<p>The prices in the shipped run are placeholders, and every figure above that
+depends on them is assumed rather than observed. They are set in the model, not
+read from data: <code>heat/model.py</code> holds them, and
+<code>data/eia_price_template.csv</code> beside it is the format for an EIA
+series, not a file the model loads. The boundary between retail
 all-in electricity and wholesale energy-only pricing has to be stated before any
 number is quoted, because it moves the answer by more than the capital cost
 does. Capital figures are scaling placeholders with a stated uncertainty band
@@ -117,7 +120,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 
 <h2>Sources</h2>
-<ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">Texas industrial electricity and gas prices.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID2023</i> (revised 12 June 2025), ERCT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity, 733.862 lb CO&#8322;/MWh or 0.333 t/MWh, and the natural gas emission factor. The CO&#8322; rate is used rather than the CO&#8322;e rate, because the gas factor it is compared against is also carbon dioxide only.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">Zuberi, Hasanbeigi &amp; Morrow, <i>Electrification of industrial process heat</i>, Lawrence Berkeley National Laboratory, 2021.</span><span class="what">Electric boiler efficiency and capital cost ranges.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Electric Power Monthly</i> Table 5.6.A and the Natural Gas Industrial Price series.</span><span class="what">The series to use for Texas industrial electricity and gas prices. The shipped run does not: its two prices are placeholders set in <code>heat/model.py</code>.</span></li><li id="ref3"><span class="src">U.S. EPA, <i>eGRID2023</i> (revised 12 June 2025), ERCT subregion output emission rates; and EPA, <i>Emission Factors for Greenhouse Gas Inventories</i>, stationary combustion.</span><span class="what">Grid carbon intensity, 733.862 lb CO&#8322;/MWh or 0.333 t/MWh, and the natural gas emission factor. The CO&#8322; rate is used rather than the CO&#8322;e rate, because the gas factor it is compared against is also carbon dioxide only.</span></li><li id="ref4"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, financial assumptions.</span><span class="what">Discount rate, economic life and the levelisation method.</span></li></ol>
 
 <footer>
 <p><a href="about.html">Andrew Silvestri</a></p>
