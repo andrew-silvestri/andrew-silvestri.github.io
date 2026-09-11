@@ -122,10 +122,21 @@ engine with a single number changed on the contested edge. Drawn by
 <code>lca.py</code>, with each factor written beside the publication it comes
 from.</p>
 
-<p>The two tomatoes are the point of the whole exercise. Run both from the
-Netherlands to New York and it is the same plant over the same distance, five
-times the emissions, and the entire difference is whether the greenhouse was
-heated. Food miles are the thing people reach for and they are
+<!-- Measured over all 784 matched origin-destination pairs the model has, the
+     same route on both sides: heating adds 2.4033 to 2.4538 kg CO2e per
+     kilogram as eaten, a spread of 2.1%. Freight, distribution, consumer and
+     end-of-life differ by exactly 0.0000 between the two entries on any route,
+     because the leg is charged against the same shipped kilogram, so the
+     residue is not distance. It is the origin's electricity: the glasshouse
+     buys heat and irrigation at the origin grid, and the adder tracks that
+     grid at r = +0.9997 against +0.3476 for distance. Norway 2.4033, South
+     Africa 2.4538. The ratio between the two entries is not quoted here
+     because it depends on which routes the table happens to show: the same
+     adder over a smaller denominator. -->
+<p>The two tomatoes are the point of the whole exercise. Heating adds about
+2.4 kg CO2e to a kilogram of tomatoes on every route this model runs, against
+a field tomato's entire footprint of well under one, and what separates them
+is the growing rather than the journey. Food miles are the thing people reach for and they are
 usually the wrong lever: a banana crosses eight thousand kilometers by sea and
 still comes in at under a kilogram, because sea freight costs almost nothing per
 tonne-kilometer<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>. Switch that banana to air and it goes up more than tenfold.
