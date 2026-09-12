@@ -159,6 +159,11 @@ nav.top a[aria-current="page"] {
    axis and About is simply the last full-width row. That is intended. */
 nav.top > a[href="about.html"] { margin-left: auto; }
 
+/* The collapse control belongs to the column layout only; above 620px the bar
+   is a row of nine children at 50.5px total and there is nothing to collapse.
+   The @media block below turns it on. */
+nav.top > .navmore { display: none; }
+
 /* the dropdowns are their own inline-block, so they need the same rhythm */
 nav.top .dd { margin: 0; }
 /* `nav.top` IS IN THIS SELECTOR FOR THE SAME REASON IT IS IN THE PADDING RULE
@@ -810,9 +815,60 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
      together and shared one: "Pipeline liquid holdup  Climate cost
      calculator" sat side by side looking like a single stuck item. A column
      gives every item the same shape. */
+  /* THE BAR COLLAPSES. Closed, it is Home and one control, in a row, and
+     nothing else. Opened - by touching the control, or by tabbing into the bar,
+     both of which are :focus-within - it becomes the column it used to be
+     always.
+
+     THE BUDGET IS 400% ZOOM AND IT IS THE WHOLE OF WHY THESE NUMBERS ARE THESE
+     NUMBERS. The chrome invariant is 25% of the viewport height at every width
+     from 360 up and every zoom to 400% (tests/test_chrome.js). A 1440x900
+     laptop at 400% lays out as 360x225, so the budget there is 56.25px and it
+     is the binding case - at 390x844 the budget is 211px and none of this is
+     tight. 44px is the target size and does not move; 3px of padding either
+     side puts the closed bar at 50px, 22.2% of 225, with about a tenth of the
+     budget in hand. A design that cleared 25% by a quarter of a pixel would be
+     red after the first font metric change, and the temptation then is to move
+     the threshold - which is the gate being rewritten by the thing it gates.
+
+     THE CLOSED STATE IS SELECTED WITH :not(:focus-within) AND THAT IS NOT
+     STYLE. The first version hid the children with `nav.top > *`, which is
+     (0,1,1); `nav.top a { ... display: block }` in the block below is (0,1,2)
+     and won, so the two dropdown groups collapsed and the bare Code and About
+     links kept their rows. The bar measured 181px instead of 50 - 80.9% of a
+     225px viewport, still over the limit - and the rule read correct the whole
+     time. Carrying the state on the selector puts these at (0,2,2) and
+     (0,3,2), above anything that can select nav.top a, and independent of
+     source order rather than relying on it. */
+  nav.top:not(:focus-within) { gap: 0; padding: 3px 20px;
+                               flex-direction: row; align-items: center; }
+  nav.top:not(:focus-within) > a,
+  nav.top:not(:focus-within) > .dd { display: none; }
+  nav.top:not(:focus-within) > a[href="index.html"],
+  nav.top:not(:focus-within) > a.navmore {
+    display: inline-flex; align-items: center; min-height: 44px; }
+  nav.top:not(:focus-within) > a.navmore { margin-left: auto; }
+  /* AND IT STAYS VISIBLE WHEN THE BAR IS OPEN. The base rule hides the
+     control outside this breakpoint, and the closed-state rule above was
+     the only thing bringing it back - so opening the bar hid the very
+     element holding the focus that kept it open. Chromium tolerated it and
+     Firefox did not, which is the reason both engines run: the control was
+     never reachable by Tab in Firefox at any width below 620, and Chromium
+     passing was the accident. */
+  nav.top > a.navmore { display: inline-flex; align-items: center;
+                        min-height: 44px; }
+  /* Opened: the column the bar used to be at every width below 620, unchanged.
+     Nothing about the open state is new - only that it is now a state. */
   nav.top { gap: 0; padding: 16px 20px 6px;
             flex-direction: column; align-items: stretch; }
-  nav.top > a, nav.top > .dd { width: 100%; }
+  /* Full-width rows belong to the OPEN column. Left unscoped this applied to
+     the closed bar as well, so Home and the control each took 100% and wrapped
+     onto a line of their own: two 44px rows plus padding, 94px, still over the
+     limit at 400% zoom. The bar reported flex-direction:row throughout - it WAS
+     a row, of two full-width items. Two specificity-and-scope faults in the
+     same rule set, both invisible to reading it and both caught by measuring
+     the rendered height. */
+  nav.top:focus-within > a, nav.top:focus-within > .dd { width: 100%; }
   /* 14.5px top and bottom plus the 15px line box (nav.top's own font shorthand
      sets line-height:1, so the box is exactly font-size tall) clears the
      44px touch-target floor instead of the 33px box the old 9px padding left. */
@@ -894,6 +950,17 @@ body.home .navband {
    on the rule. Scoped to body.home on purpose: nav.top's own declaration is
    shared by every page and is not touched. */
 body.home .navband > nav.top { padding-bottom: 26px; }
+/* AND NOT BELOW 620. At 400% zoom the whole chrome budget is 56.25px and this
+   26px is 46% of it - spent on separating the nav from a band border. The
+   collapsed bar is 50px on every other page and would be 76px here, 34% of a
+   225px viewport, over the limit on the strength of this one declaration.
+   Below 620 index carries the same bar as every other page.
+   THE STICKINESS IS NOT TOUCHED. That is the decision recorded above and it is
+   a separate question from the height; only the height is answered here. */
+@media (max-width: 620px) {
+  body.home .navband > nav.top:not(:focus-within) { padding-bottom: 3px; }
+  body.home .navband > nav.top { padding-bottom: 6px; }
+}
 
 /* The arrival screen: the system uninterrupted, with only the nav band over
    it. Height comes from .hero-live, which hero.js sets once it has a 2D
