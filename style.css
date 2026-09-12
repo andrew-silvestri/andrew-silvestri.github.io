@@ -866,15 +866,31 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
      sibling combinators, which have worked everywhere for twenty years. */
   nav.top { gap: 0; padding: 3px 20px;
             flex-direction: row; align-items: center; flex-wrap: wrap; }
-  /* :not() RATHER THAN A BARE `nav.top > a`, AND THIS IS THE SECOND TIME.
-     `nav.top > a` is (0,1,2) and so is `nav.top a { ... display: block }` at
-     :901, which comes LATER in this file - equal specificity, later wins, so
-     Code and About were never hidden. Three of seven links showed in the
-     closed bar and Andrew saw it on his phone. The first attempt at this nav
-     lost the same way and was fixed by raising specificity; rewriting the
-     rules without that pseudo-class reintroduced it. Selecting with
-     :not([href=...]) puts this at (0,2,2), above anything that can select
-     nav.top a, and independent of source order rather than relying on it. */
+  /* DO NOT SIMPLIFY THIS SELECTOR. The :not() is load-bearing and it is not
+     about which elements it matches - it is there for its SPECIFICITY.
+
+     WHAT IT IS DEFENDING AGAINST: `nav.top a { ... display: block }` at :901.
+     That rule is (0,1,2) and it sits LATER in this file, so ANY selector at
+     (0,1,2) or below loses to it on display, regardless of where it is
+     written - moving this rule down the file does not help, because :901 is
+     inside the same media block and would still follow it. A bare
+     `nav.top > a { display: none }` is exactly (0,1,2) and is the losing
+     shape. `:not([href=...])` adds an attribute selector, putting this at
+     (0,2,2), which wins on specificity and therefore cannot be undone by
+     re-ordering.
+
+     WHAT IT COST TO LEARN, TWICE IN ONE WEEK AND BOTH TIMES MINE. The first
+     version of this nav held its closed state with :not(:focus-within), which
+     happened to be (0,2,2) and happened to win. When that mechanism was
+     replaced by a <details>, the rules were rewritten without any
+     pseudo-class - the specificity went back to (0,1,2), :901 won again, and
+     Code and About showed in a 50px bar. Three of seven links visible; Andrew
+     found it on his phone. The first fix lived entirely in a specificity
+     number, and a number carries no reason, so the rewrite could not see what
+     it was deleting. That is HANDOFF section 8, trap 36.
+
+     So if this selector ever needs to change, keep it above (0,1,2) or change
+     :901 instead, and say which. */
   nav.top > a:not([href="index.html"]),
   nav.top > .dd { display: none; }
   nav.top > a[href="index.html"] { display: inline-flex; align-items: center;
