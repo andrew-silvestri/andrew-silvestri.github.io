@@ -159,6 +159,11 @@ nav.top a[aria-current="page"] {
    axis and About is simply the last full-width row. That is intended. */
 nav.top > a[href="about.html"] { margin-left: auto; }
 
+/* The collapse control belongs to the column layout only; above 620px the bar
+   is a row of nine children at 50.5px total and there is nothing to collapse.
+   The @media block below turns it on. */
+nav.top > .navmore { display: none; }
+
 /* the dropdowns are their own inline-block, so they need the same rhythm */
 nav.top .dd { margin: 0; }
 /* `nav.top` IS IN THIS SELECTOR FOR THE SAME REASON IT IS IN THE PADDING RULE
@@ -837,9 +842,59 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
      together and shared one: "Pipeline liquid holdup  Climate cost
      calculator" sat side by side looking like a single stuck item. A column
      gives every item the same shape. */
-  nav.top { gap: 0; padding: 16px 20px 6px;
-            flex-direction: column; align-items: stretch; }
-  nav.top > a, nav.top > .dd { width: 100%; }
+  /* THE BAR COLLAPSES. Closed it is Home and one control; opened, the column
+     it used to be always.
+
+     THE BUDGET IS 400% ZOOM. The chrome invariant is 25% of the viewport
+     height AT REST, at every width from 360 up and every zoom to 400%
+     (tests/test_chrome.js, which carries the derivation). A 1440x900 laptop at
+     400% lays out as 360x225, so the budget there is 56.25px and it is the
+     binding case - at 390x844 it is 211px and none of this is tight. 44px is
+     the target and does not move; 3px either side puts the closed bar at 50px,
+     22.2% of 225, about a tenth of the budget in hand. Measured, all three
+     engines: closed 50px on nine pages and 51px on index, which carries the
+     navband's 1px rule.
+
+     NO :has() ANYWHERE IN HERE, DELIBERATELY. The open column could be
+     selected with nav.top:has(> .navmore[open]) and it would be shorter. This
+     project has never stated a browser floor, and a nav commit is the wrong
+     place to set one by implication - but the sharper reason is the failure
+     mode: where :has() is unsupported the rule does not apply AT ALL, so the
+     menu opens and lays out wrong, silently, on a device nobody here has.
+     Everything else on this site degrades visibly and on purpose - #nogl and
+     #noaudio both announce themselves. So the open state is selected with
+     sibling combinators, which have worked everywhere for twenty years. */
+  nav.top { gap: 0; padding: 3px 20px;
+            flex-direction: row; align-items: center; flex-wrap: wrap; }
+  nav.top > a, nav.top > .dd { display: none; }
+  nav.top > a[href="index.html"] { display: inline-flex; align-items: center;
+                                   min-height: 44px; }
+  nav.top > .navmore { display: block; margin-left: auto; }
+  nav.top > .navmore > summary {
+    display: inline-flex; align-items: center; min-height: 44px;
+    cursor: pointer; list-style: none; }
+  /* THE MARKER IS ALREADY GONE, AND NOT BECAUSE OF THESE TWO LINES. Both
+     incantations are here - list-style:none for Chromium and Firefox, the
+     -webkit- pseudo-element for WebKit - because shipping one of the two is the
+     classic half-fix that looks right in whichever engine you opened. Measured
+     2026-09-12 by screenshotting the control with and without all of them:
+     ZERO pixels differ in all three engines. What actually suppresses the
+     marker is `display: inline-flex` on the summary, which removes the marker
+     box outright. These lines are insurance against that display value
+     changing, not the thing doing the work - so if someone makes this summary
+     `block` again, the marker comes back and these rules will not stop it. */
+  nav.top > .navmore > summary::-webkit-details-marker { display: none; }
+  nav.top > .navmore > summary::marker { content: ""; }
+  nav.top > .navmore > summary::after { content: " \25be"; }
+  /* OPEN: the column the bar used to be at every width below 620, unchanged.
+     Selected on the siblings of an open <details>, so the padding comes from
+     the same combinator rather than from :has() on the parent. The row gap the
+     closed bar does not need is added here. */
+  nav.top > .navmore[open] { margin-left: 0; width: 100%; }
+  nav.top > .navmore[open] ~ a,
+  nav.top > .navmore[open] ~ .dd { display: block; width: 100%; }
+  nav.top > .navmore[open] ~ a:first-of-type { margin-top: 13px; }
+  nav.top > .navmore[open] ~ a:last-of-type { margin-bottom: 3px; }
   /* 14.5px top and bottom plus the 15px line box (nav.top's own font shorthand
      sets line-height:1, so the box is exactly font-size tall) clears the
      44px touch-target floor instead of the 33px box the old 9px padding left. */
@@ -921,6 +976,15 @@ body.home .navband {
    on the rule. Scoped to body.home on purpose: nav.top's own declaration is
    shared by every page and is not touched. */
 body.home .navband > nav.top { padding-bottom: 26px; }
+/* AND NOT BELOW 620. At 400% zoom the whole chrome budget is 56.25px and this
+   26px is 46% of it - spent separating the nav from a band border. The
+   collapsed bar is 50px on every other page and would be 76px here, 34% of a
+   225px viewport, over the limit on the strength of this one declaration.
+   THE STICKINESS IS NOT TOUCHED: that is the decision recorded above and it is
+   a separate question from the height. */
+@media (max-width: 620px) {
+  body.home .navband > nav.top { padding-bottom: 3px; }
+}
 
 /* The arrival screen: the system uninterrupted, with only the nav band over
    it. Height comes from .hero-live, which hero.js sets once it has a 2D
