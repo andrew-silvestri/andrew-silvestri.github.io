@@ -786,8 +786,35 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   /* On a phone the dropdowns used to be forced open — position:static plus
      display:block — so every page began with the whole site map spilled down
      the screen and the content pushed below the fold. They stay closed here
-     and open on tap: an anchor takes focus when touched, which is the same
-     mechanism the desktop hover uses, so no script is needed. */
+     and open on tap, and no script is needed. THAT MUCH IS TRUE AND CONFIRMED
+     ON A REAL IPHONE (2026-09-13): tapping a group reveals its links and they
+     navigate.
+
+     WHAT IS NOT TRUE IS THE MECHANISM THIS COMMENT USED TO NAME. It said "an
+     anchor takes focus when touched, which is the same mechanism the desktop
+     hover uses". Measured in WebKit 26.5 on 2026-09-12, at 390x664 with
+     hasTouch and a real page.tap(): :focus-within contributes NOTHING there.
+     WebKit does not focus an anchor on activation, by tap or by click - the
+     active element after a tap is BODY - so `.dd:focus-within` never fires.
+     Disabling only the hover half of the rule at :223 and keeping
+     :focus-within took the menu from opening (0 -> 2 links) to not opening
+     (0 -> 0).
+
+     WHAT ACTUALLY OPENS THEM ON A PHONE is `.dd:hover > .ddmenu` at :223,
+     which sits OUTSIDE this media block and was written for a desktop pointer,
+     combined with iOS Safari revealing hover styles on a first tap. The group
+     label is `<a href="#" class="ddbtn">` (rebuild_nav.py:268-277), and the
+     `#` is why the first tap is harmless: it "navigates" to the top of the
+     page the reader is already on, so the reveal is what they see. A real
+     destination there would navigate instead of revealing.
+
+     SO THIS WORKS BY A COINCIDENCE OF TWO RULES, NEITHER OF WHICH WAS AIMED AT
+     TOUCH. It is recorded rather than repaired because it works on the device;
+     but anyone who changes `.dd:hover`, or moves it inside this block, or gives
+     a group label a real href, breaks five nav groups on every iPhone, and
+     nothing in this tree will say so - tests/test_chrome.js cannot, because a
+     synthetic tap leaves hover applied and would pass for the same accidental
+     reason the device does. Verified on device only. */
   .ddmenu {
     position: static;
     display: none;
