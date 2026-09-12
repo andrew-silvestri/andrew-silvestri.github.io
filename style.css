@@ -1010,7 +1010,22 @@ body.home main { padding-bottom: clamp(30px, 22.9px + 1.9vw, 40px); }
 /* The height is set by hero.js, to the viewport less the navband: the brief
    asked for the whole system on arrival and a min(58vh, 460px) cap was 43% of
    a 1080-tall screen. It is measured rather than a calc() because the
-   navband's height changes when the nav wraps, which it does at 390. */
+   navband's height is not a constant - it depends on the nav's layout at the
+   width being rendered. THAT RELATIONSHIP IS THE RULE; the width at which the
+   band changes is not part of it and is no longer 390. This said "which it
+   does at 390" until 2026-09-12, when the bar stopped wrapping and started
+   collapsing below 620.
+
+   Verified rather than asserted, 2026-09-12, Chromium at deviceScaleFactor 1,
+   reading the inline height hero.js writes against window.innerHeight and the
+   navband's own box:
+
+     1440x900  innerHeight 900, navband  77.5  ->  822.5px, unchanged
+     390x844   innerHeight 844, navband 347.5  ->  496.5px, before the collapse
+     390x844   innerHeight 844, navband  51    ->  793px,   after it
+
+   So the collapse gave the phone hero 296.5px it did not have, by measurement
+   and not by intent - which is the rule working. */
 body.home.hero-live .heroband {
   max-width: min(100%, 782px);
   margin: 0 auto;
