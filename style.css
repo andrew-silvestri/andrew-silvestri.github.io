@@ -839,8 +839,7 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
   .dd { display: block; margin: 2px 0; width: 100%; }
   /* One item per row. The bar is a wrapping flex row, so the groups — which
      are block-level — took a line each while the plain links flowed
-     together and shared one: "Pipeline liquid holdup  Climate cost
-     calculator" sat side by side looking like a single stuck item. A column
+     together and shared one: two top-level links sat side by side looking like a single stuck item. A column
      gives every item the same shape. */
   /* THE BAR COLLAPSES. Closed it is Home and one control; opened, the column
      it used to be always.
