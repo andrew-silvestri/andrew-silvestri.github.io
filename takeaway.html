@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>When the pipe is full — Andrew Silvestri</title>
+<meta name="description" content="Permian gas production against the pipeline capacity that carries it out of the basin, from public data, and what venting and flaring did as the gap closed and reopened.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/takeaway.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="When the pipe is full — Andrew Silvestri">
+<meta property="og:description" content="Permian gas production against the pipeline capacity that carries it out of the basin, from public data, and what venting and flaring did as the gap closed and reopened.">
+<meta property="og:url" content="https://andrewsilvestri.com/takeaway.html">
+<script>try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=ca8f66cd">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="meter.html">What a meter's error is worth</a><a href="takeaway.html" class="on">When the pipe is full</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Wildlife <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="beauty.html">Endangered, and studied</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="skyline.html">Skylines, played</a><a href="continents.html">Where the ground goes</a></span></span><a href="code.html">Code</a><a href="about.html">About</a></nav>
+<main class="notes">
+<h1>When the pipe is full</h1>
+<p class="dim">Permian gas production set against the pipeline capacity that carries it out of the basin, from public data, and what venting and flaring did as the gap closed and reopened.</p>
+
+<aside class="marginalia" style="grid-row: span 29" aria-label="On this page">
+<p class="lab">On this page</p>
+<ul>
+<li><b>Production, Sep 2026</b><span class="v">30.21 Bcf/d</span></li>
+<li><b>Pipe added since Aug 2024</b><span class="v">3.16 Bcf/d</span></li>
+<li><b>Gas to move since Aug 2024</b><span class="v">3.64 Bcf/d</span></li>
+<li><b>Headroom since Aug 2024</b><span class="v">&minus;0.48 Bcf/d</span></li>
+</ul>
+</aside>
+<aside class="marginalia right" style="grid-row: span 29">
+<ul>
+<li><b>k, default</b><span class="v">0.815</span></li>
+<li><b>Expected by 2030</b><span class="v">15.73 Bcf/d</span></li>
+<li><b>Permian vented or flared, Jan 2026</b><span class="v">1.39%</span></li>
+<li><b>Gas from oil wells, 2025</b><span class="v">69%</span></li>
+</ul>
+</aside>
+
+<p>Most of the gas in the Permian Basin comes up with oil. In 2025, 69 per cent of the gas the Texas Railroad Commission recorded in the basin's three districts<sup class="cite" id="cr1"><a href="#ref1">1</a></sup> came from oil wells, and an oil well does not stop producing gas because the gas has nowhere to go. When the pipelines out of the basin are full, the price at the Waha hub can fall below zero<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>, and gas that cannot be moved is burned or released at the lease. The Commission's own account of flaring says as much: in existing fields, flaring "may be necessary because existing pipelines may have reached capacity<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>".</p>
+
+<p>This page asks how close production runs to the capacity that carries it out, and what happens to venting and flaring as that gap closes and reopens around each new pipe. It uses only public data: EIA's estimate of the region's production, a dated list of pipeline capacity built from EIA's project tracker<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> and dated reports of when lines started, and the venting and flaring operators in the basin's three Texas districts report to the Commission.</p>
+
+<div class="card">
+<div class="tag">Try it</div>
+<h3 style="margin-top:4px">Grow production and see when the headroom runs out</h3>
+<p>Set a growth rate for production, delay the pipelines that are only expected, change how much of each new unit of gas has to leave by pipe, and move the month the pipes are assumed full. It is a scenario, not a forecast: the model on this page, run forward in the browser.</p>
+<p><a class="btn" href="takeaway-app.html" target="_blank" rel="noopener">Open the headroom scenario</a>
+<a class="btn ghost" href="downloads/takeaway-code.zip">Download code</a></p>
+</div>
+
+<h2>What it finds</h2>
+
+<p>Pipe has been added in steps, and most of what is still to come is only expected. EIA, quoting PointLogic<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>, put the basin's takeaway capacity at 17.5 to 18 Bcf/d in May 2022. Since then 6 additions are in service, 4.27 Bcf/d between them, the largest Matterhorn Express at 2.5 Bcf/d. Another 15.73 Bcf/d is expected by February 2030, 4.93 Bcf/d of it by the end of 2027. None of the expected lines is counted as in service until an opened source says it is.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/takeaway_capacity-phone.png?v=147925b7" width="700" height="736">
+<img class="fig wide" src="assets/takeaway_capacity.png?v=16d95b7f" loading="lazy" width="1428" height="803" alt="Pipeline capacity out of the Permian Basin from May 2022, as a band 0.5 Bcf/d wide for the uncertainty in the starting estimate. Lines in service step up from 17.5 to 18 Bcf/d to 21.77 to 22.27 Bcf/d; with the expected lines the band reaches 37.50 to 38.00 Bcf/d by February 2030.">
+</picture>
+
+<p>Production and capacity cannot be drawn on one axis. EIA's production figure is marketed gas, measured before the natural gas liquids are taken out and before gas is burned in the field and at processing plants, and it already exceeded the capacity estimate in May 2022 (19.80 against 17.5 to 18 Bcf/d). What can be compared is the change. From a month when the pipes are taken to be full, the pipe added since, less the share of the production added since that has to leave by pipe, is the headroom gained or lost.</p>
+
+<p>Taking August 2024 as that month, 3.16 Bcf/d of pipe confirmed in service has been added since, and production has risen 4.46 Bcf/d, of which 3.64 has to leave by pipe at the default share, k = 0.815. That puts September 2026 at &minus;0.48 Bcf/d: on this accounting, less headroom than in August 2024. The path between was not steady. After Matterhorn the headroom stood at +2.06 Bcf/d and reached +2.40 in January 2025; production growth then ate it, and at the default k it was below zero in 4 months (December 2025 and July to September 2026), and at the top of k's range in 8. Hugh Brinson's first phase, 1.5 Bcf/d, entered commercial service in August and was expected to reach that capacity by September 1. No source in hand says it did, so it is not counted; counted in full from September, it would put September 2026 at +1.02 Bcf/d.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/takeaway_headroom-phone.png?v=7bbee07d" width="700" height="736">
+<img class="fig wide" src="assets/takeaway_headroom.png?v=1ef7e9cd" loading="lazy" width="1428" height="803" alt="Headroom gained or lost since August 2024, monthly to September 2026. It jumps to +2.06 Bcf/d when Matterhorn enters service, peaks at +2.40 Bcf/d in January 2025, falls through 2025 as production grows, sits near zero from February to May 2026, drops to &minus;0.62 Bcf/d in July 2026 and is &minus;0.48 Bcf/d in September 2026. The shaded band is the range of k, at most 0.30 Bcf/d wide.">
+</picture>
+
+<p>Whether August 2024 really was a full month decides how to read that line, and two things outside the model were set down beforehand as the test of it. If the pipes were full, production should have been held back before Matterhorn and released after it. It was not: production grew 1.45 Bcf/d over the three months to August 2024 and 0.83 Bcf/d over the three after Matterhorn opened. If the pipes were full, operators in the three districts should have vented or flared more before than after. They did, by 0.18 of a point: 1.50 per cent of gross withdrawals over June to September 2024 against 1.32 per cent over November and December 2024 and January and February 2025. One test for and one against, so the reference month is not established. The line is best read as the pipe added less the gas added since August 2024, not as spare capacity.</p>
+
+<p>Venting and flaring fell after each of the three pipes, or groups of pipes, the data can test. In the three Permian districts, the share of gross withdrawals vented or flared averaged 4.57 per cent in the twelve months before Gulf Coast Express started in September 2019 and 2.54 per cent in the twelve after; around Permian Highway and Whistler in 2021 it went from 2.10 to 1.28 per cent; and around the group that runs from the Whistler expansion in September 2023 to Matterhorn in October 2024, from 1.52 to 1.36 per cent. Set against the 104 before-and-after differences at months clear of the starts listed here, the 2019 fall is larger than every one; 9 of them fell further than the 2021 group did and 19 further than the Matterhorn group, so only the first stands out. Those months all fall between 2009 and 2017, a span over which the share rose, which leans towards making a fall look unusual; but the placebo falls that exceed the 2021 group all come from 2016, a year in which the share fell, as do 16 of the 19 that exceed the Matterhorn group. The list does not date lines before 2019, so those months are not shown to be clear of every new pipe. None of this is evidence that a pipe caused a fall: the 2019 window runs into the price collapse and shut-ins of 2020<sup class="cite" id="cr6"><a href="#ref6">6</a></sup>, and the 2021 window opens on that year and takes in the February 2021 winter storm<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/takeaway_flaring-phone.png?v=9c96ac8f" width="700" height="666">
+<img class="fig wide" src="assets/takeaway_flaring.png?v=313385d1" loading="lazy" width="1428" height="803" alt="Gas vented or flared in the three Permian districts as a share of gross withdrawals, monthly from January 2008 to January 2026, with a dashed line at each start listed. It peaks at 5.46 per cent in January 2019, before Gulf Coast Express, and is 1.39 per cent in January 2026.">
+</picture>
+
+<p>Prices are not drawn here, because no free daily series for Waha exists. The counts that are published measure different things and are left apart. EIA, from Natural Gas Intelligence data, put Waha "below zero for 42% of trading days in 2024". Reuters counted daily averages below zero 49 times in 2024, 39 times in 2025 and 87 times in 2026 by May 28, and put a record run of 78 days in a row down to "pipeline constraints from spring maintenance<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>", which a capacity list like this one does not contain.</p>
+
+<h2>Method</h2>
+
+<p><b>Production.</b> EIA's Short-Term Energy Outlook, October 2026 release, Table 5a, series NGMPPM<sup class="cite" id="cr9"><a href="#ref9">9</a></sup>: marketed natural gas, Permian region, monthly, history to September 2026. The region is drawn by county<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>, 51 in Texas and 4 in New Mexico. Its forecast months are not used. The Railroad Commission's figures for the Permian, which it defines as districts 7C, 08 and 8A, are Texas only and measured at the lease before any gas is taken out; they were checked against EIA month by month over 49 months (January 2022 to January 2026), and the ratio of the two held between 0.68 and 0.77 (mean 0.71). The two are different measures with a stable relation, so EIA's is used for every comparison with capacity, because the pipes carry New Mexico gas too.</p>
+
+<p><b>Capacity.</b> A line is counted when it starts in the basin and a cited source describes it as carrying gas out of the Permian. Lines inside the basin, lines that start downstream of it, and laterals are not. Capacity and dates are read from EIA's pipeline projects tracker; where a newer report gives a date<sup class="cite" id="cr11"><a href="#ref11">11</a></sup>, it is used and the source named. Where sources disagree on the month a line started, the later month is used. A line is "in service" only where an opened source says it is; every other date is an expectation and is shown as one.</p>
+
+<table>
+<thead><tr><th>Line</th><th class="n">Bcf/d</th><th>Start</th><th>Status, per</th></tr></thead>
+<tbody>
+<tr><td>Oasis Pipeline Modernization Project</td><td class="n">0.06</td><td>Dec 2022</td><td>In service, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Whistler Pipeline Expansion</td><td class="n">0.50</td><td>Sep 2023</td><td>In service, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Permian Highway Pipeline Expansion</td><td class="n">0.55</td><td>Dec 2023</td><td>In service, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Matterhorn Express Pipeline</td><td class="n">2.50</td><td>Oct 2024</td><td>In service (tracker Completed Date 2024-09-15), per EIA Today in Energy 64445, 2025-02-03</td></tr>
+<tr><td>Tarzan Compressor Station Project</td><td class="n">0.09</td><td>Nov 2025</td><td>In service (tracker note: target in-service 2026), per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Gulf Coast Express Expansion</td><td class="n">0.57</td><td>Jun 2026</td><td>In service, per Pipeline &amp; Gas Journal, 2026-07-23 (Kinder Morgan Q2 2026 results)</td></tr>
+<tr><td>Hugh Brinson Pipeline Phase I</td><td class="n">1.50</td><td>Sep 2026</td><td>Expected, per BIC Magazine, 2026-08-05</td></tr>
+<tr><td>Blackcomb Pipeline</td><td class="n">2.50</td><td>Nov 2026</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Hugh Brinson Pipeline Phase II</td><td class="n">0.70</td><td>Jan 2027</td><td>Expected, per EIA Today in Energy 67707, 2026-05-26</td></tr>
+<tr><td>Permian West Expansion</td><td class="n">0.08</td><td>Jan 2027</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Waha to Mexico (Wahalajara System Expansion) Phase 1</td><td class="n">0.15</td><td>Jan 2027</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Eiger Express Pipeline</td><td class="n">3.70</td><td>Jul 2028</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>DeLa Express Project</td><td class="n">2.00</td><td>Jul 2028</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Desert Southwest expansion project</td><td class="n">2.30</td><td>Oct 2029</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+<tr><td>Saguaro Connector Pipeline</td><td class="n">2.80</td><td>Feb 2030</td><td>Expected, per EIA natural gas pipeline projects tracker, Aug 2026</td></tr>
+</tbody>
+</table>
+
+<p><b>The share k.</b> Not every unit of marketed gas leaves by pipe: the liquids are taken out, and some gas is burned in the field and at the plants. EIA gives both by state<sup class="cite" id="cr12"><a href="#ref12">12</a></sup>. For 2024, dry gas less lease and plant fuel was 0.815 of marketed production across Texas and New Mexico; Texas alone 0.792, and dry gas alone 0.857. The default is the first, and the band in the headroom figure runs between the other two. These are statewide ratios standing in for the Permian, and both known errors push the true value lower: associated gas is wetter than the states' average, and gas burned in the basin by power plants and industry is not removed. A k that is too high makes the headroom look smaller, so the default leans towards finding the pipes full.</p>
+
+<p><b>The reference month.</b> EIA reported on 10 September 2024 that Waha was below zero "every day since July 26<sup class="cite" id="cr13"><a href="#ref13">13</a></sup>", so August 2024 falls wholly inside that run; September does not, because Matterhorn was expected to begin service that month. The app moves it a month either way.</p>
+
+<p><b>Venting and flaring.</b> The Railroad Commission's Production Data Query dump<sup class="cite" id="cr14"><a href="#ref14">14</a></sup>, extracted 18 September 2026: gas reported vented or flared (disposition code 4, which does not separate the two) over gas-well and casinghead production, districts 7C, 08 and 8A, January 2008 to January 2026. The six most recent months in the dump are left out, because late reports still change them. Every disposition row with gas vented or flared joins a production row for the same lease and month, and the production side equals the Commission's Permian workbook month by month. Before-and-after windows are twelve months each, so each pair covers the same calendar months; starts less than twelve months apart are taken together, and a group is tested only if both its windows are complete and hold no other start. The starts are the tracker's completion months for lines that leave the basin. Double E, which EIA counted as takeaway in 2021, runs from New Mexico to Waha, inside the basin, and is not one of them; the tracker completes it in November 2021, inside the 2021 group's after-window.</p>
+
+<h2>Limits</h2>
+
+<p>The production figure is an estimate, and EIA revises its latest months. The capacity anchor is a third-party estimate whose definition is not published, and the additions follow a narrower rule than it does; the anchor cancels out of the headroom, the rule does not. Capacity is nameplate and enters as a full step, while lines ramp up over months and maintenance takes capacity out. The reference month is an inference from prices, and one of the two tests set for it went against it. Venting and flaring are what operators report, and the code they report it under does not separate the two. Several in-service dates rest on trade press reporting what the pipelines' owners said, because no primary filing could be opened. The page forecasts nothing, and it names no company as the cause of anything.</p>
+
+<h2>The code</h2>
+
+<p>Python: the fetch scripts, each recording where and when its file came from; the readers, the capacity list with every source and quote, the model, the payload builder, the figures and the page generator; the scenario's JavaScript engine and its parity test; and the checks, each shown failing before it is trusted. The archive holds no raw data; the fetch scripts download it. 167 KB.</p>
+
+<p><a class="btn" href="downloads/takeaway-code.zip">Download source</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+<h2>Sources</h2>
+<ol class="refs"><li id="ref1"><span class="src">Railroad Commission of Texas, <i>Permian Basin Information</i> and its workbook <i>Permian Basin 2008 To Current</i> (production by month, from the Production Data Query).</span><span class="what">The Permian as districts 7C, 08 and 8A; gas from oil wells (casinghead) and from gas wells, by month.</span></li><li id="ref2"><span class="src">U.S. Energy Information Administration, <i>Today in Energy</i>, 3 February 2025, "Natural gas spot prices fell across key regional trading hubs in 2024".</span><span class="what">Waha below zero on 42% of trading days in 2024 (Natural Gas Intelligence data), and Matterhorn Express entering service in October 2024.</span></li><li id="ref3"><span class="src">Railroad Commission of Texas, <i>Flaring Regulation</i> (Oil and Gas FAQ).</span><span class="what">Statewide Rule 32, and that flaring may be needed where existing pipelines have reached capacity.</span></li><li id="ref4"><span class="src">U.S. Energy Information Administration, <i>Natural Gas Pipeline Projects</i> tracker, August 2026 edition.</span><span class="what">Each line's capacity, status and, where it gives one, completion date or expected year.</span></li><li id="ref5"><span class="src">U.S. Energy Information Administration, <i>Natural Gas Weekly Update</i>, released 26 May 2022; and <i>Today in Energy</i>, 2 June 2022, "Natural gas production in the Permian Basin reached an annual high in 2021".</span><span class="what">PointLogic's estimate of Permian takeaway capacity: 17.5 Bcf/d in the first, 18 Bcf/d as of May 2022 in the second.</span></li><li id="ref6"><span class="src">U.S. Energy Information Administration, <i>Today in Energy</i>, 9 March 2021 (republished 22 December 2021), "U.S. crude oil production fell by 8% in 2020".</span><span class="what">Operators shut in wells as crude prices fell from March 2020.</span></li><li id="ref7"><span class="src">U.S. Energy Information Administration, <i>Today in Energy</i>, 10 May 2021, "February 2021 weather triggers largest monthly decline in U.S. natural gas production".</span><span class="what">Texas gas production fell by a record 4.3 Bcf/d in February 2021, mostly from freeze-offs.</span></li><li id="ref8"><span class="src">Reuters, in Pipeline &amp; Gas Journal, 28 May 2026, "Waha gas prices hit 16-week high as Permian pipeline constraints ease".</span><span class="what">Waha daily prices below zero 49 times in 2024, 39 in 2025 and 87 in 2026 to date, and a record 78-day run below zero attributed to spring maintenance.</span></li><li id="ref9"><span class="src">U.S. Energy Information Administration, <i>Short-Term Energy Outlook</i>, October 2026, data tables (STEO_m.xlsx).</span><span class="what">Marketed natural gas production, Permian region, monthly.</span></li><li id="ref10"><span class="src">U.S. Energy Information Administration, <i>Drilling Productivity Report</i>, its methodology (August 2014) and data workbook (May 2024, RegionCounties sheet).</span><span class="what">The Permian region's counties, and that the regions follow county lines rather than geology.</span></li><li id="ref11"><span class="src">Pipeline &amp; Gas Journal, 23 July 2026 (Kinder Morgan second-quarter results); BIC Magazine, 5 August 2026 (Hugh Brinson Pipeline); Enbridge, 6 August 2026 (Blackcomb Pipeline commissioning); U.S. Energy Information Administration, <i>Today in Energy</i>, 26 May 2026 (planned capacity additions in 2026 and 2027).</span><span class="what">The in-service and expected dates the table attributes to each; Enbridge for Blackcomb's commissioning, which the page does not count as service.</span></li><li id="ref12"><span class="src">U.S. Energy Information Administration, natural gas gross withdrawals and production, and consumption by end use, Texas and New Mexico, annual; and the definitions for those tables.</span><span class="what">Marketed and dry production, lease and plant fuel; marketed production includes gas used in field and plant operations; plant liquids are reported by state of origin.</span></li><li id="ref13"><span class="src">U.S. Energy Information Administration, <i>Today in Energy</i>, 10 September 2024, "Natural gas pipeline capacity from the Permian Basin is set to increase".</span><span class="what">Waha below zero every day since 26 July 2024, and Matterhorn Express expected to begin service in September 2024.</span></li><li id="ref14"><span class="src">Railroad Commission of Texas, <i>Production Data Query</i> dump (PDQ_DSV.zip, extract of 18 September 2026) and its user manual; and Form PR, <i>Monthly Production Report, Disposition Codes</i> (OG-2014-001A).</span><span class="what">Gas vented or flared (casinghead and gas-well disposition code 4, "Vented or flared") and production, by lease, district and month.</span></li></ol>
+
+<footer>
+<p><a href="about.html">Andrew Silvestri</a></p>
+<p><a href="code.html">Built with Python, Julia, JavaScript and public data.</a></p>
+</footer>
+</main>
+<script src="assets/motion.js?v=67bafc62"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
+<script src="assets/nav.js?v=17d2b89b"></script>
+</body></html>

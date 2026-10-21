@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Headroom scenario — When the pipe is full</title>
+<link rel="canonical" href="https://andrewsilvestri.com/takeaway-app.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Headroom scenario — When the pipe is full">
+<meta property="og:description" content="Grow Permian gas production at a rate you choose, delay the pipelines that are only expected, and see when the headroom since the pipes were last full runs out. A scenario, not a forecast.">
+<meta property="og:url" content="https://andrewsilvestri.com/takeaway-app.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Grow Permian gas production at a rate you choose, delay the pipelines that are only expected, and see when the headroom since the pipes were last full runs out. A scenario, not a forecast.">
+<meta name="theme-color" content="#F2F0EF">
+<style>
+/* The site's tokens (site/style.css :root, "Yacht club"), copied by name and
+   value: this app must work alone from a folder, so nothing is imported. */
+:root{
+  --bg:#F2F0EF; --card:#FAF9F8; --ink:#241E1A; --dim:#625C57;
+  --faint:#D9D8D6; --rule:#BBBDBC; --acc:#245F73; --cool:#4A8AA0;
+  --moss:#733E24; --rose:#A9724F;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --fs-2:12px; --fs-1:14.5px; --fs0:17.5px; --fs1:21px;
+  /* 12 px is the floor and nothing here goes under it */
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs-1)/1.5 var(--sans)}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 20px 64px}
+h1{font-size:var(--fs1);margin:0 0 2px;font-weight:600}
+.sub{color:var(--dim);font-size:var(--fs-2);margin:0 0 18px}
+.sub a{color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+fieldset{border:1px solid var(--faint);background:var(--card);margin:0;padding:12px 14px 6px;min-width:0}
+legend{font-family:var(--mono);font-size:var(--fs-2);color:var(--dim);padding:0 4px}
+label{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;margin:0 0 10px}
+label span.v{font-family:var(--mono);font-size:var(--fs-2);color:var(--ink);min-width:72px;text-align:right}
+label input[type=range]{grid-column:1 / span 2;width:100%;accent-color:var(--acc);min-height:24px}
+select{font:inherit;font-size:var(--fs-1);padding:3px 6px;background:var(--bg);color:var(--ink);border:1px solid var(--rule)}
+.pipe{display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:var(--fs-2)}
+.pipe input{margin-top:3px;accent-color:var(--acc);min-width:18px;min-height:18px}
+.pipe .m{font-family:var(--mono);color:var(--dim)}
+.out{margin-top:18px;border:1px solid var(--faint);background:var(--card);padding:14px}
+.big{font-size:var(--fs0);font-weight:600;margin:0}
+svg{display:block;margin-top:10px;max-width:100%}
+svg text{font-family:var(--sans);font-size:12px;fill:var(--dim)}
+.note{font-size:var(--fs-2);color:var(--dim);margin:12px 0 0}
+</style>
+</head><body>
+<div class="wrap">
+<h1>Headroom scenario</h1>
+<p class="sub">A scenario, not a forecast. Pipe added less gas added since the month the pipes are assumed full, run forward at a growth rate you set.
+<a href="takeaway.html">The page that explains it</a></p>
+
+<div class="grid">
+<fieldset><legend>Production</legend>
+<label><span>Growth after <span id="last_lab"></span>, per year</span> <span class="v" id="r_v"></span><input type="range" id="r" min="0" max="15" step="0.5" value="0"></label>
+<label>Share of new gas that leaves by pipe, k <span class="v" id="k_v"></span><input type="range" id="k" min="0.60" max="0.90" step="any"></label>
+<label>Month the pipes are assumed full <span class="v"><select id="t0"></select></span></label>
+</fieldset>
+
+<fieldset><legend>Expected pipelines</legend>
+<label>Delay every expected line by <span class="v" id="d_v"></span><input type="range" id="d" min="0" max="24" step="1" value="0"></label>
+<div id="pipes"></div>
+</fieldset>
+</div>
+
+<div class="out">
+<p class="big" id="result" aria-live="polite"></p>
+<svg id="chart" viewBox="0 0 720 300" width="720" height="300" role="img" aria-label="Headroom by month: the record to the latest month, then the scenario."></svg>
+<p class="note">Solid: the record, from EIA's production estimate and the pipelines in service. Dashed: the scenario. Below the line, the pipe added since the reference month is less than the gas to move. Capacity is nameplate; lines in fact ramp up, and maintenance takes capacity out. Production after <span id="last_lab2"></span> grows at the rate set here and at no other; EIA's own forecast is not used. An expected line dated on or before <span id="last_lab3"></span> counts from the month after it, since the record holds lines confirmed in service only.</p>
+</div>
+</div>
+
+<script>/* The takeaway scenario engine: a line-for-line port of takeaway/model.py's
+   scenario path (add_months, capacity_added, headroom, grow, scenario).
+
+   Months are [year, month] pairs, as model.py's tuples are; compared through
+   idx() = year * 12 + (month - 1), so ordering is the tuples' ordering.
+   tests/test_parity_takeaway.py holds this file to model.py at 1e-12; change
+   one, change both. Loads in a browser (window.TakeawayEngine) and in node
+   (module.exports). */
+(function (root) {
+  'use strict';
+
+  function idx(m) { return m[0] * 12 + (m[1] - 1); }
+  function fromIdx(k) { return [Math.floor(k / 12), (k % 12) + 1]; }
+  function addMonths(m, n) { return fromIdx(idx(m) + n); }
+  function monthsBetween(a, b) { return idx(b) - idx(a); }
+  function key(m) { return m[0] + '-' + (m[1] < 10 ? '0' : '') + m[1]; }
+  function parse(s) { const p = s.split('-'); return [+p[0], +p[1]]; }
+
+  function monthRange(a, b) {
+    const out = [];
+    for (let k = idx(a); k <= idx(b); k++) out.push(fromIdx(k));
+    return out;
+  }
+
+  // Capacity that entered service in months (t0, t]; additions: [[month, bcfd]].
+  // Summed in list order, as Python's sum() over the same list is.
+  function capacityAdded(additions, t0, t) {
+    let s = 0;
+    if (idx(t) >= idx(t0)) {
+      for (const [m, b] of additions) if (idx(t0) < idx(m) && idx(m) <= idx(t)) s += b;
+      return s;
+    }
+    for (const [m, b] of additions) if (idx(t) < idx(m) && idx(m) <= idx(t0)) s += b;
+    return -s;
+  }
+
+  // H(t) = [C(t) - C(t0)] - k [P(t) - P(t0)]; P: {key: Bcf/d}. Returns {key: H}.
+  function headroom(P, additions, k, t0, months) {
+    const p0 = P[key(t0)], out = {};
+    for (const t of months) {
+      const kt = key(t);
+      if (kt in P) out[kt] = capacityAdded(additions, t0, t) - k * (P[kt] - p0);
+    }
+    return out;
+  }
+
+  // P(T + n) = P(T) * (1 + r) ** (n / 12). A scenario, not a forecast.
+  function grow(P, last, r, until) {
+    const out = Object.assign({}, P), pT = P[key(last)];
+    for (const t of monthRange(addMonths(last, 1), until)) {
+      out[key(t)] = pT * Math.pow(1.0 + r, monthsBetween(last, t) / 12.0);
+    }
+    return out;
+  }
+
+  // entries: [{month, bcfd, status, key}]; include: Set of keys, or null for all.
+  function scenario(P, last, entries, k, t0, r, delay, until, include) {
+    const adds = [];
+    for (const e of entries) {
+      let m = e.month;
+      if (e.status === 'expected') {
+        if (include && !include.has(e.key)) continue;
+        m = addMonths(m, delay);
+        if (idx(m) <= idx(last)) m = addMonths(last, 1);   // the record holds confirmed lines only
+      }
+      adds.push([m, e.bcfd]);
+    }
+    const Pg = grow(P, last, r, until);
+    const H = headroom(Pg, adds, k, t0, monthRange(t0, until));
+    let first = null;
+    for (const kt of Object.keys(H).sort()) {
+      if (idx(parse(kt)) > idx(last) && H[kt] < 0) { first = kt; break; }
+    }
+    return { H: H, first: first };
+  }
+
+  const api = { idx, fromIdx, addMonths, monthsBetween, monthRange, key, parse,
+                capacityAdded, headroom, grow, scenario };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.TakeawayEngine = api;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>
+const DATA = {"P":{"2022-01":17.90544906,"2022-02":18.601578267,"2022-03":19.601055428,"2022-04":20.11496013,"2022-05":19.801865674,"2022-06":19.699675307,"2022-07":20.108214214,"2022-08":20.599765356,"2022-09":21.280304127,"2022-10":21.090700322,"2022-11":21.060951008,"2022-12":21.008722275,"2023-01":21.308843544,"2023-02":21.268378478,"2023-03":22.30759617,"2023-04":22.511019602,"2023-05":22.605663267,"2023-06":22.402587512,"2023-07":22.699773417,"2023-08":23.262735373,"2023-09":23.35192144,"2023-10":23.388020509,"2023-11":23.927121755,"2023-12":24.480932642,"2024-01":22.60070695,"2024-02":23.6885298,"2024-03":24.05583491,"2024-04":24.10951118,"2024-05":24.29318,"2024-06":24.97049957,"2024-07":25.29604376,"2024-08":25.74603458,"2024-09":25.70119624,"2024-10":26.28651631,"2024-11":26.12051318,"2024-12":26.52891686,"2025-01":25.8628571,"2025-02":26.24216551,"2025-03":26.90011915,"2025-04":26.86271651,"2025-05":26.87354047,"2025-06":27.44288166,"2025-07":28.10213521,"2025-08":28.369864,"2025-09":28.56749256,"2025-10":27.71589029,"2025-11":28.67203573,"2025-12":28.95910602,"2026-01":27.5530688,"2026-02":28.88916257,"2026-03":28.82263279,"2026-04":28.8747526,"2026-05":28.8487544,"2026-06":29.35056375,"2026-07":30.38478184,"2026-08":30.07051295,"2026-09":30.20514606},"entries":[{"bcfd":0.06,"key":"e0","label":"Oasis Pipeline Modernization Project","month":"2022-12","status":"confirmed","when":"Dec 2022"},{"bcfd":0.5,"key":"e1","label":"Whistler Pipeline Expansion","month":"2023-09","status":"confirmed","when":"Sep 2023"},{"bcfd":0.55,"key":"e2","label":"Permian Highway Pipeline Expansion","month":"2023-12","status":"confirmed","when":"Dec 2023"},{"bcfd":2.5,"key":"e3","label":"Matterhorn Express Pipeline","month":"2024-10","status":"confirmed","when":"Oct 2024"},{"bcfd":0.087,"key":"e4","label":"Tarzan Compressor Station Project","month":"2025-11","status":"confirmed","when":"Nov 2025"},{"bcfd":0.57,"key":"e5","label":"Gulf Coast Express Expansion","month":"2026-06","status":"confirmed","when":"Jun 2026"},{"bcfd":1.5,"key":"e6","label":"Hugh Brinson Pipeline Phase I","month":"2026-09","status":"expected","when":"Sep 2026"},{"bcfd":2.5,"key":"e7","label":"Blackcomb Pipeline","month":"2026-11","status":"expected","when":"Nov 2026"},{"bcfd":0.7,"key":"e8","label":"Hugh Brinson Pipeline Phase II","month":"2027-01","status":"expected","when":"Jan 2027"},{"bcfd":0.082,"key":"e9","label":"Permian West Expansion","month":"2027-01","status":"expected","when":"Jan 2027"},{"bcfd":0.15,"key":"e10","label":"Waha to Mexico (Wahalajara System Expansion) Phase 1","month":"2027-01","status":"expected","when":"Jan 2027"},{"bcfd":3.7,"key":"e11","label":"Eiger Express Pipeline","month":"2028-07","status":"expected","when":"Jul 2028"},{"bcfd":2.0,"key":"e12","label":"DeLa Express Project","month":"2028-07","status":"expected","when":"Jul 2028"},{"bcfd":2.3,"key":"e13","label":"Desert Southwest expansion project","month":"2029-10","status":"expected","when":"Oct 2029"},{"bcfd":2.8,"key":"e14","label":"Saguaro Connector Pipeline","month":"2030-02","status":"expected","when":"Feb 2030"}],"k_default":0.8152905051152778,"last":"2026-09","t0":"2024-08","t0_options":["2024-07","2024-08","2024-09"],"until":"2031-12"};
+const E = window.TakeawayEngine;
+const $ = id => document.getElementById(id);
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const name = k => { const [y, m] = E.parse(k); return MONTHS[m - 1] + ' ' + y; };
+const last = E.parse(DATA.last), until = E.parse(DATA.until);
+const entries = DATA.entries.map(e => Object.assign({}, e, { month: E.parse(e.month) }));
+
+$('last_lab').textContent = name(DATA.last);
+$('last_lab2').textContent = name(DATA.last);
+$('last_lab3').textContent = name(DATA.last);
+$('k').value = DATA.k_default;
+for (const t of DATA.t0_options) {
+  const o = document.createElement('option');
+  o.value = t; o.textContent = name(t) + (t === DATA.t0 ? ' (default)' : '');
+  if (t === DATA.t0) o.selected = true;
+  $('t0').appendChild(o);
+}
+for (const e of entries.filter(e => e.status === 'expected')) {
+  const l = document.createElement('label');
+  l.className = 'pipe';
+  l.innerHTML = '<input type="checkbox" checked data-key="' + e.key + '"><span>' + e.label +
+    ' <span class="m">' + e.bcfd.toFixed(2) + ' Bcf/d, ' + e.when + '</span></span>';
+  $('pipes').appendChild(l);
+}
+
+function draw(H, t0) {
+  const keys = Object.keys(H).sort();
+  // Drawn at the container's own width in CSS px, so the 12px labels stay
+  // 12px: a fixed 720-wide viewBox scaled to a phone put them near 5px.
+  const W = Math.max(280, Math.floor($('chart').parentNode.clientWidth - 28)), Ht = 300, L = 46, R = 12, T = 30, B = 34;
+  $('chart').setAttribute('viewBox', '0 0 ' + W + ' ' + Ht);
+  $('chart').setAttribute('width', W); $('chart').setAttribute('height', Ht);
+  const every = W < 520 ? 2 : 1;   // year labels every other year when narrow
+  const xs = keys.map(k => E.idx(E.parse(k)));
+  const x0 = xs[0], x1 = xs[xs.length - 1];
+  const vals = keys.map(k => H[k]);
+  let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+  const pad = Math.max(0.5, (hi - lo) * 0.08); lo -= pad; hi += pad;
+  const X = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const Y = v => T + (hi - v) / (hi - lo) * (Ht - T - B);
+  let s = '';
+  const step = (hi - lo) > 12 ? 4 : (hi - lo) > 6 ? 2 : 1;
+  for (let g = Math.ceil(lo / step) * step; g <= hi; g += step) {
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(g) + '" y2="' + Y(g) +
+      '" stroke="var(--faint)"/><text x="' + (L - 6) + '" y="' + (Y(g) + 4) + '" text-anchor="end">' + g + '</text>';
+  }
+  for (let y = E.parse(keys[0])[0] + 1; y <= E.parse(keys[keys.length - 1])[0]; y += every) {
+    const xv = X(y * 12);
+    s += '<line x1="' + xv + '" x2="' + xv + '" y1="' + (Ht - B) + '" y2="' + (Ht - B + 4) + '" stroke="var(--rule)"/>' +
+      '<text x="' + xv + '" y="' + (Ht - B + 18) + '" text-anchor="middle">' + y + '</text>';
+  }
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(0) + '" y2="' + Y(0) + '" stroke="var(--ink)"/>';
+  s += '<text x="' + (L - 6) + '" y="14" text-anchor="end">Bcf/d</text>';
+  const lastI = E.idx(last);
+  const hist = keys.filter(k => E.idx(E.parse(k)) <= lastI), fut = keys.filter(k => E.idx(E.parse(k)) >= lastI);
+  const path = ks => ks.map((k, i) => (i ? 'L' : 'M') + X(E.idx(E.parse(k))).toFixed(1) + ' ' + Y(H[k]).toFixed(1)).join('');
+  s += '<path d="' + path(fut) + '" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 4"/>';
+  s += '<path d="' + path(hist) + '" fill="none" stroke="var(--acc)" stroke-width="2.2"/>';
+  $('chart').innerHTML = s;
+}
+
+function run() {
+  const r = +$('r').value / 100, k = +$('k').value, d = +$('d').value, t0 = E.parse($('t0').value);
+  $('r_v').textContent = (+$('r').value).toFixed(1) + '%';
+  $('k_v').textContent = k.toFixed(3);
+  $('d_v').textContent = d + (d === 1 ? ' month' : ' months');
+  const include = new Set([...document.querySelectorAll('#pipes input:checked')].map(i => i.dataset.key));
+  const out = E.scenario(DATA.P, last, entries, k, t0, r, d, until, include);
+  const end = E.key(until);
+  if (r === 0) $('result').textContent = 'With no growth, headroom only rises: set a growth rate.';
+  else if (out.first) $('result').textContent = 'In this scenario headroom first falls below zero in ' + name(out.first) + '.';
+  else $('result').textContent = 'In this scenario headroom stays above zero to ' + name(end) + '.';
+  draw(out.H, t0);
+}
+for (const id of ['r', 'k', 'd', 't0']) $(id).addEventListener('input', run);
+$('pipes').addEventListener('change', run);
+window.addEventListener('resize', run);
+run();
+</script>
+</body></html>
