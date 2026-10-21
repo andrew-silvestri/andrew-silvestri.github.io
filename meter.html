@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What a meter's error is worth — Andrew Silvestri</title>
+<meta name="description" content="An orifice gas meter carries a standard uncertainty of about a quarter of a per cent. Across a system of them, what that is worth depends less on how good each meter is than on which of their errors they share.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/meter.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What a meter's error is worth — Andrew Silvestri">
+<meta property="og:description" content="An orifice gas meter carries a standard uncertainty of about a quarter of a per cent. Across a system of them, what that is worth depends less on how good each meter is than on which of their errors they share.">
+<meta property="og:url" content="https://andrewsilvestri.com/meter.html">
+<script>try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=ca8f66cd">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Energy <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a><a href="meter.html" class="on">What a meter's error is worth</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Wildlife <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="beauty.html">Endangered, and studied</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Misc <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="skyline.html">Skylines, played</a><a href="continents.html">Where the ground goes</a></span></span><a href="code.html">Code</a><a href="about.html">About</a></nav>
+<main class="notes">
+<h1>What a meter's error is worth</h1>
+<p class="dim">An orifice gas meter carries a standard uncertainty of about a quarter of a per cent. Across a system of them, what that is worth depends less on how good each meter is than on which of their errors they share, and that is the one thing no open source settles.</p>
+
+<aside class="marginalia" style="grid-row: span 33" aria-label="On this page">
+<p class="lab">On this page</p>
+<ul>
+<li><b>One meter</b><span class="v">0.27%</span></li>
+<li><b>C alone</b><span class="v">0.25%</span></li>
+<li><b>System</b><span class="v">12 in, 3 out</span></li>
+<li><b>Throughput</b><span class="v">101 MMcf/d</span></li>
+</ul>
+</aside>
+<aside class="marginalia right" style="grid-row: span 33">
+<ul>
+<li><b>Imbalance, C independent</b><span class="v">0.18%</span></li>
+<li><b>C shared, ends alike</b><span class="v">0.055%</span></li>
+<li><b>C shared, ends apart</b><span class="v">0.36%</span></li>
+<li><b>Price used</b><span class="v">$3.10/MMBtu</span></li>
+</ul>
+</aside>
+
+<p>An orifice meter measures gas by the strength of a pressure drop. The plate is a disc with a hole in it, clamped across a pipe; the gas speeds up through the hole, its pressure falls, and the fall says how fast it is going. Every term in that inference carries an error: the coefficient that turns a pressure drop into a flow, the transmitters that read the pressures and the temperature, the bore of the hole, the inside of the pipe, the analysis of the gas and the equation that says how far it is from ideal. Add them up for one well-kept meter and the answer is a fraction of a per cent.</p>
+
+<p>A pipeline system is many such meters. Gas comes in through some and goes out through others, and the difference between the two totals is the system's imbalance. Part of any imbalance is real loss. Part of it is measurement, and this page asks how big that part is and what it costs. It answers with a model of a synthetic system in which no gas is lost at all, so that every unit of imbalance it finds is a measurement error.</p>
+
+<div class="card">
+<div class="tag">Try it</div>
+<h3 style="margin-top:4px">Build a system and see what it does not balance by</h3>
+<p>Set the number and size of the receipt and delivery meters, choose which of their errors are shared and which are their own, and run it. The model is the one on this page, in the browser, propagated by Monte Carlo until the stopping rule of the international guide to it is met. It opens on this page's default system and the first row of the table below, with every meter's discharge-coefficient error its own.</p>
+<p><a class="btn" href="meter-app.html" target="_blank" rel="noopener">Open the imbalance simulator</a>
+<a class="btn ghost" href="downloads/meter-code.zip">Download code</a></p>
+</div>
+
+<h2>What it finds</h2>
+
+<p>For one meter, the discharge coefficient is the whole story. On a 102.3&nbsp;mm run at a beta ratio of 0.50 the meter's flow carries a standard uncertainty of 0.27%, and the discharge coefficient on its own gives 0.25% (the inputs combine as the square root of the sum of their squares, so the parts do not add up to the whole). The next largest input, the bore diameter, contributes 0.062%; differential pressure 0.044%, temperature 0.054%. A single meter's uncertainty lives in the equation, not in the instruments.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/meter_budget-phone.png?v=b230bff7" width="700" height="680">
+<img class="fig wide" src="assets/meter_budget.png?v=10515362" loading="lazy" width="1428" height="608" alt="One meter's standard uncertainty by input. The discharge coefficient's bar, 0.25 per cent, is longer than every other input's put together; all inputs together give 0.27 per cent.">
+</picture>
+<p class="small">One receipt meter of the default system, each input alone and then all together, as standard uncertainty (one standard deviation) of its flow. Doubled, the combined figure is 0.54%, beside 0.55% at 95% confidence for the example station in a published uncertainty handbook<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>; that was computed for another meter and is a scale, not a check.</p>
+
+<p>In the meters modelled here that coefficient is not measured. It comes from an equation, Reader-Harris/Gallagher, fitted to laboratory data<sup class="cite" id="cr2"><a href="#ref2">2</a></sup> and written into ISO 5167-2<sup class="cite" id="cr3"><a href="#ref3">3</a></sup>, and its stated uncertainty comes from the data behind that fit and the manufacturing variation the standard permits. Whether one meter's error in it is the same as another's is the question that decides everything below, and no public source settles it for meters at different sites. A handbook on metering-station uncertainty<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> treats the coefficient as uncorrelated between two runs side by side, because their inlet pipework is never the same; the equation's own bias, which every meter that uses it shares, points the other way. So the model runs three cases and does not choose between them.</p>
+
+<p>The default system has 12 receipt meters on 102.3&nbsp;mm runs feeding 3 delivery meters on larger ones, 101 million cubic feet a day in all. Its measured imbalance, receipts minus deliveries as a share of throughput, has a standard uncertainty of:</p>
+
+<table>
+<tr><th>The discharge coefficient's error is</th><th>Imbalance, standard uncertainty</th><th>95% of outcomes</th><th>Worth, a year</th></tr>
+<tr><td>independent at every meter</td><td class="n">0.18%</td><td class="n">-0.35% to 0.35%</td><td class="n">$210,000</td></tr>
+<tr><td>shared, receipts and deliveries alike</td><td class="n">0.055%</td><td class="n">-0.107% to 0.107%</td><td class="n">$65,000</td></tr>
+<tr><td>shared within each end, the ends apart</td><td class="n">0.36%</td><td class="n">-0.70% to 0.70%</td><td class="n">$420,000</td></tr>
+</table>
+
+<p>The middle row is the counter-intuitive one. An error every meter shares is the worst kind for the total a single meter or a group of them reports, because nothing averages it away. It is the best kind for a balance, because it inflates receipts and deliveries by the same factor and the difference does not move. Here receipts and deliveries run at beta ratios of 0.50 and 0.55, which this model puts in one class sharing the equation's error (an assumption), and the imbalance left is 0.055%, all of it from the rest of the budget. Make the ends' errors shared within each end but independent between them, and the same coefficient stops cancelling and roughly doubles in effect: in the bottom row it alone accounts for 0.35%, against 0.17% when every meter's error is its own.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/meter_imbalance-phone.png?v=f0416ca9" width="700" height="823">
+<img class="fig wide" src="assets/meter_imbalance.png?v=7b5bd286" loading="lazy" width="1428" height="714" alt="Three distributions of the default system's measured imbalance in energy. The shared-and-alike case is a narrow spike around zero; the independent case is wider; the ends-apart case is widest.">
+</picture>
+<p class="small">The default system's measured imbalance in energy, as a share of throughput, over one year in which every transmitter is recalibrated four times. Each curve is 200,000 simulated years; the true imbalance is zero in all of them. The axis stops at plus and minus 1%, which leaves out 0.5% of the ends-apart years.</p>
+
+<p>In money, one standard uncertainty of imbalance on this system is between $65,000 and $420,000 a year at $3.10 per million British thermal units, the median Henry Hub spot price<sup class="cite" id="cr5"><a href="#ref5">5</a></sup> from 2025-10 to 2026-09. The mean over the same months is $3.59, pulled up by one month at $7.72, which is why the median is used.</p>
+
+<h2>What averages away</h2>
+
+<p>The intuition that more meters means a better total is right for errors that are each meter's own and wrong for errors they share. With the discharge coefficient independent, the total of the receipt meters' readings goes from 0.26% uncertain with one meter to 0.030% with a hundred. With it shared, a hundred meters are barely better than one: 0.26% to 0.25%. The imbalance follows neither rule on its own, because it is a difference, and whether a shared error survives a difference depends on whether both sides share it.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/meter_floor-phone.png?v=42ec852f" width="700" height="1206">
+<img class="fig wide" src="assets/meter_floor.png?v=351f224e" loading="lazy" width="1428" height="1241" alt="Two panels against the number of receipt meters, one to one hundred. Top: total measured throughput, whose uncertainty falls steadily when errors are independent and stays flat when they are shared. Bottom: the imbalance, lowest when a shared error cancels and, from two meters up, largest when the two ends carry different shared errors.">
+</picture>
+<p class="small">N receipt meters into one delivery meter sized to take them, in the same three cases. Panel A is what a seller's total is good to; panel B is what the balance between seller and buyer is good to.</p>
+
+<p>For scale, the U.S. Energy Information Administration's national figure for natural gas "lost and unaccounted for<sup class="cite" id="cr6"><a href="#ref6">6</a></sup>" in 2024 was 1.6% of consumption. That number is not a measurement error and should not be read as one. Of it, 0.5 points are losses the companies know of, from leaks, damage and blowdown; the other 1.1 are "unaccounted for", the residual between what companies report as supply and what they report as disposition, which the agency's note says may come from quantities lost or from "differences in company accounting systems in terms of scope and definition." Distribution utilities report a percentage of their own to the Pipeline and Hazardous Materials Safety Administration<sup class="cite" id="cr7"><a href="#ref7">7</a></sup> each year; across 1,368 natural gas reports for 2025 the median was 1.00%, and 234 of them were negative, more gas out than in.</p>
+
+<h2>Method</h2>
+
+<p>Each meter's mass flow follows ISO 5167-2: the Reader-Harris/Gallagher discharge coefficient<sup class="cite" id="cr8"><a href="#ref8">8</a></sup>, iterated with the Reynolds number it depends on, and the standard's expansibility factor. The open implementation used<sup class="cite" id="cr9"><a href="#ref9">9</a></sup> is the Python library <code>fluids</code>, checked against an independent transcription of the equation. Compressibility, the isentropic exponent and the heating value come from NIST's reference implementation of AGA Report No. 8<sup class="cite" id="cr10"><a href="#ref10">10</a></sup>, the GERG-2008 equation of state, compiled from its published source and checked against NIST's own test points. Volume is reported at 14.73 psia and 60&nbsp;°F, and energy from the gas's ideal gross heating value, so a composition error moves the molar mass, the compressibility and the heating value together.</p>
+
+<p>Every input's error is drawn in the unit its source states it in: transmitter errors as a fraction of span<sup class="cite" id="cr11"><a href="#ref11">11</a></sup>, which becomes a larger fraction of reading the lower a meter runs in its range; temperature in kelvin<sup class="cite" id="cr12"><a href="#ref12">12</a></sup>, for the sensor, its transmitter<sup class="cite" id="cr13"><a href="#ref13">13</a></sup> and its installation<sup class="cite" id="cr14"><a href="#ref14">14</a></sup>; the compressibility equation's error in proportion to how far the gas is from ideal<sup class="cite" id="cr15"><a href="#ref15">15</a></sup> at each meter's pressure. Each error has a shared fraction between zero and one, the correlation between any two meters' errors in that input. By default the transmitters are independent from meter to meter, as the handbook classifies them for runs at one station; the diameters and the gas analysis, which it classes as correlated within a station, are also independent here, because these meters are taken to sit at different sites (an assumption the simulator lets a reader change). The compressibility equation is shared by construction, since every meter uses the same one. Transmitter errors are redrawn at each of four calibrations a year; the plate, the pipe, the coefficient and the equation keep theirs for the year. In the model the true gas is one composition and balances exactly in moles.</p>
+
+<p>Uncertainty is propagated by Monte Carlo after JCGM 101:2008<sup class="cite" id="cr16"><a href="#ref16">16</a></sup>, the supplement to the international guide on expressing measurement uncertainty, with its adaptive stopping rule: batches of 10,000 trials until every reported figure has stabilised to the precision it is printed with. A test suite checks the model against cases with known answers: zero input uncertainty gives zero imbalance, independent errors average as one over the square root of the number of meters, and each shared error cancels or survives exactly as the algebra says. Each check has been run against a deliberately broken model and seen to fail.</p>
+
+<h2>Limits</h2>
+
+<p>This is an explainer. It gives no engineering advice and states no uncertainty for any real installation. The system is synthetic, sized and set by assumption. The discharge coefficient's uncertainty is the ISO 5167-2 figure as quoted by a manufacturer's technical note, because the standard's text is not openly published; the pipe diameter's 0.25% is an assumption; the bore's 0.05% is the standard's roundness limit<sup class="cite" id="cr17"><a href="#ref17">17</a></sup> used as a bound; and the gas analysis uncertainties come from one published example budget for one chromatograph<sup class="cite" id="cr18"><a href="#ref18">18</a></sup>. Scatter about each transmitter's offset within a calibration interval is taken to average out; the uncertainty of the expansibility factor is left out because its formula is not openly published; and nothing here models a damaged plate, a liquid-laden stream, a pulsating flow or any of the faults that move a real meter further than its stated uncertainty.</p>
+
+<hr>
+
+<h2>The code</h2>
+<p><code>model.py</code> holds the meter equation, the error model and the Monte Carlo; <code>build_meter.py</code> runs every case on this page and writes the payload; <code>fig_meter.py</code> draws the three figures; <code>test_meter.py</code> holds the known-answer tests and their deliberate breaks, and <code>checks/</code> the checks of <code>fluids</code> and of the compiled NIST code against their published answers. <code>aga8/</code> is NIST's source, public domain, which <code>build_aga8.py</code> compiles; <code>engine.js</code> is the browser port the simulator runs, held to the Python by a parity test. The fetchers download and hash-check the public data; the archive carries none of it.</p>
+<p><a class="btn" href="downloads/meter-code.zip">Download source</a>
+<a class="btn ghost" href="code.html">All code</a></p>
+
+
+<h2>Sources</h2>
+<ol class="refs"><li id="ref1"><span class="src">NFOGM, <i>Handbook of Uncertainty Calculations: Fiscal Metering Stations</i>, 2003.</span><span class="what">An example orifice station at 0.55% expanded uncertainty against a 1.0% requirement.</span></li><li id="ref2"><span class="src">Reader-Harris, <i>ISO 5167: Past and Present</i>, Global Flow Measurement Workshop, 2022.</span><span class="what">That the standard's uncertainties are expanded uncertainties at k = 2, and that the coefficient's was derived from the data behind the equation and the manufacturing variation the standard permits.</span></li><li id="ref3"><span class="src">Emerson, <i>Conditioning Orifice Technology and Orifice Standards</i>, technical note, Table 6, quoting ISO 5167-2:2003, section 5.3.3.1.</span><span class="what">The discharge coefficient's stated uncertainty, 0.5% for beta 0.2 to 0.6 at Reynolds numbers above 10,000. A manufacturer quoting the standard: the standard's text is not openly published.</span></li><li id="ref4"><span class="src">NORCE, <i>Handbook for Uncertainty Calculations for Gas Flow Metering Stations</i>, 2020, section 4.4.1.</span><span class="what">Which input uncertainties are correlated between two orifice runs in parallel at one station, and why: the coefficient, pressures and temperature not; the diameters and the gas analysis yes.</span></li><li id="ref5"><span class="src">U.S. Energy Information Administration, <i>Henry Hub Natural Gas Spot Price</i>, monthly, series RNGWHHD.</span><span class="what">The price the imbalance is valued at.</span></li><li id="ref6"><span class="src">U.S. Energy Information Administration, <i>Natural Gas Annual</i>, Table A1, losses and unaccounted for volumes by state.</span><span class="what">The national figure and what it measures, from the table's own notes.</span></li><li id="ref7"><span class="src">Pipeline and Hazardous Materials Safety Administration, gas distribution annual report data, 2010 to present, Form PHMSA F 7100.1-1, Part G.</span><span class="what">The distribution operators' reported unaccounted-for gas percentages.</span></li><li id="ref8"><span class="src">American Gas Association, American Petroleum Institute and Gas Processors Association, <i>Orifice Metering of Natural Gas and Other Related Hydrocarbon Fluids</i>, AGA Report No. 3, Part 1, third edition, October 1990, section 1.7.2, as incorporated by reference and hosted by law.resource.org.</span><span class="what">The gas industry's adoption of a Reader-Harris/Gallagher equation for flange-tapped orifice meters. It is the 1990 form of the equation; its coefficients differ from the ISO 5167-2:2003 form this page uses.</span></li><li id="ref9"><span class="src">Bell, <i>fluids</i>, Python library, MIT licence, version 1.3.1.</span><span class="what">The Reader-Harris/Gallagher coefficient and the expansibility factor.</span></li><li id="ref10"><span class="src">National Institute of Standards and Technology, <i>AGA8</i> reference code (GERG-2008, DETAIL and GROSS), github.com/usnistgov/AGA8, public domain.</span><span class="what">Compressibility, the isentropic exponent and the ideal gross heating value, and the test values the compiled code is checked against.</span></li><li id="ref11"><span class="src">Yokogawa, <i>EJX110A Differential Pressure Transmitter</i> and <i>EJX510A and EJX530A Absolute and Gauge Pressure Transmitters</i>, general specifications.</span><span class="what">Reference accuracy of 0.04% of span, the ambient-temperature and static-pressure effects, for the differential and static pressure transmitters.</span></li><li id="ref12"><span class="src">GHI GmbH, <i>Pt100 and Pt1000 tolerance classes to IEC 60751</i>.</span><span class="what">The class A sensor tolerance, plus or minus (0.15 + 0.002 |t|) degrees Celsius.</span></li><li id="ref13"><span class="src">Emerson, <i>Rosemount 3144P Temperature Transmitter</i>, product data sheet.</span><span class="what">A temperature transmitter's total error of plus or minus 0.12 degrees Celsius.</span></li><li id="ref14"><span class="src">Ingram (DNV GL), <i>Experimental Research into the Measurement of Temperature in Natural Gas Transmission Metering Systems</i>, North Sea Flow Measurement Workshop, 2014.</span><span class="what">Thermowell installations measuring gas temperature to within plus or minus 0.5 degrees Celsius above 1 m/s.</span></li><li id="ref15"><span class="src">Ruhr-Universit&auml;t Bochum, Thermodynamics, <i>The GERG-2008 Wide-Range Equation of State for Natural Gases</i>.</span><span class="what">A 0.1% uncertainty in density in the gas region, used for the compressibility equation's error (its coverage factor taken as 2: an assumption).</span></li><li id="ref16"><span class="src">Joint Committee for Guides in Metrology, <i>JCGM 101:2008, Evaluation of measurement data, Supplement 1 to the GUM: propagation of distributions using a Monte Carlo method</i>.</span><span class="what">The propagation, the treatment of a stated bound as a rectangular distribution, and the adaptive stopping rule of its section 7.9.4.</span></li><li id="ref17"><span class="src">ISO 5167-2:2003, section 5.1.8.3, in the official preview published by the Swedish Institute for Standards.</span><span class="what">No diameter of the bore may differ from the mean by more than 0.05%.</span></li><li id="ref18"><span class="src">Sutan, <i>Gas Chromatography Conditional Based Monitoring and Live Uncertainty Calculation</i>, North Sea Flow Measurement Workshop, 2012, Table 9.</span><span class="what">The relative uncertainty of each measured mole fraction.</span></li></ol>
+
+<footer>
+<p><a href="about.html">Andrew Silvestri</a></p>
+<p><a href="code.html">Built with Python, Julia, JavaScript and public data.</a></p>
+</footer>
+</main>
+<script src="assets/motion.js?v=67bafc62"></script>
+<script src="assets/lightbox.js?v=0bce1245"></script>
+<script src="assets/nav.js?v=17d2b89b"></script>
+</body></html>
