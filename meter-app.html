@@ -598,7 +598,11 @@ $("go").addEventListener("click", () => {
       window.__meterLast = { u: res.u, delta: res.delta, low: res.low, high: res.high, mmcfd };   // test hook: tests/test_parity_meter.py check 4
       let all = []; for (const a of pooled) all = all.concat(Array.from(a));
       draw(all, res.low, res.high);
-    } catch (e) { $("err").textContent = e.message; }
+    } catch (e) {
+      // a rejected system must not leave the last run's figures beside its error: they read as this system's
+      // answer (QA 2026-10-22; tests/test_parity_meter.py "a failed run", --break stale)
+      $("out").hidden = true; $("err").textContent = e.message;
+    }
     $("go").disabled = false; $("prog").textContent = "";
   }, 30);
 });
