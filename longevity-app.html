@@ -572,9 +572,15 @@ function groups(){
      change - grade, taxon, search - produced a key identical to the previous
      one, hit this cache, and returned the previous groups. The bug was quiet
      because it needs two renders in one session to show: a fresh load always
-     misses the cache and is always right. */
+     misses the cache and is always right.
+
+     S.base is in the key for the same reason (QA 2026-10-22): every quotient
+     divides by predOf(), which reads S.base, so without it switching the
+     baseline in the groups view kept showing the previous baseline's
+     quotients. test_perf.js "the groups view after a press = a fresh load",
+     --break stale. Anything else lqOf() or lifeOf() reads belongs here too. */
   const pool=speciesPool();
-  const gkey=_poolKey+'|'+S.rank+'|'+S.met+'|'+S.minn;
+  const gkey=_poolKey+'|'+S.rank+'|'+S.met+'|'+S.minn+'|'+S.base;
   if(gkey===_grpKey) return _grp;
   const rk=S.rank, buckets=new Map();
   pool.forEach(d=>{
