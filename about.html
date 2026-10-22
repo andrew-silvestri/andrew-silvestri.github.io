@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://andrewsilvestri.com/about.html">
 <script>/* the motion contract — set before first paint, from the system preference alone */
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
-<link rel="stylesheet" href="style.css?v=ca8f66cd">
+<link rel="stylesheet" href="style.css?v=b15a41da">
 </head><body>
 <nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Gas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="meter.html">What a meter's error is worth</a><a href="takeaway.html">When the pipe is full</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Power <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Industrial heat break-even</a><a href="storage.html">Battery revenue simulator</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">The true climate cost</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Other <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="beauty.html">Endangered, and studied</a><a href="skyline.html">Skylines, played</a><a href="continents.html">Where the ground goes</a></span></span><a href="code.html">Code</a><a href="about.html" class="on">About</a></nav>
 <main class="prose">
@@ -28,8 +28,25 @@ them.</p>
 <p>The models here are built from public data with their workings shown. Work
 done for an employer stays with the employer.</p>
 <p>ProMax, Python, Julia, MATLAB, JMP, Excel and VBA, LaTeX<br>
-<a href="mailto:dasilvestri@utexas.edu">dasilvestri@utexas.edu</a><br>
 <a href="Silvestri_Andrew_Resume.pdf">CV (PDF)</a></p>
+<!-- contact:begin (build_about.py writes this block; D-43) -->
+<h2 id="contact">Contact</h2>
+<form class="contact" id="contact-form" action="https://api.web3forms.com/submit" method="POST" hidden>
+<input type="hidden" name="access_key" value="742e5d8e-1041-4deb-b767-3eb7e740bf55">
+<input type="hidden" name="from_name" value="andrewsilvestri.com contact form">
+<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<label for="cf-name">Name</label>
+<input id="cf-name" type="text" name="name" required maxlength="100" autocomplete="name">
+<label for="cf-subject">Subject</label>
+<input id="cf-subject" type="text" name="subject" required maxlength="150">
+<label for="cf-message">Message</label>
+<textarea id="cf-message" name="message" required rows="6" maxlength="5000"></textarea>
+<button type="submit" class="btn">Send</button>
+<p class="small" id="cf-status" role="status" aria-live="polite"></p>
+</form>
+<noscript><p>The contact form needs JavaScript. Without it, write to me on <a href="https://www.linkedin.com/in/andrewsilvestri/">LinkedIn</a>.</p></noscript>
+<p>Also on <a href="https://www.linkedin.com/in/andrewsilvestri/">LinkedIn</a>.</p>
+<!-- contact:end -->
 
 <footer>
 <p><a href="about.html">Andrew Silvestri</a></p>
@@ -39,4 +56,5 @@ done for an employer stays with the employer.</p>
 <script src="assets/motion.js?v=67bafc62"></script>
 <script src="assets/lightbox.js?v=0bce1245"></script>
 <script src="assets/nav.js?v=17d2b89b"></script>
+<script src="assets/contact.js?v=2040e27b"></script>
 </body></html>

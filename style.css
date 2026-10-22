@@ -550,6 +550,29 @@ img.fig:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
   border-color: var(--rule);
 }
 .btn.ghost:hover { color: var(--ink); border-color: var(--dim); }
+.btn:disabled { opacity: .6; cursor: progress; }
+
+/* ------------------------------------------------------------ contact --- */
+/* About's form (D-43; build_about.py writes it, assets/contact.js shows it).
+   .hp is the Web3Forms honeypot: display:none so no reader, sighted or not,
+   meets it, while a bot filling every field ticks it. */
+form.contact { display: grid; gap: 6px; max-width: 100%; margin-top: 8px; }
+/* display:grid above beats the UA's [hidden] rule, so without this the form
+   showed with JS off and posted away from the page (caught by
+   03 RESEARCH/oct-2026/scripts/r0_form_check.js, "no JS -> form hidden"). */
+form.contact[hidden] { display: none; }
+form.contact label { font: 600 var(--fs-1) var(--sans); color: var(--ink); margin-top: 8px; }
+form.contact input[type=text], form.contact textarea {
+  font: inherit; color: var(--ink); background: var(--card);
+  border: 1px solid var(--rule); padding: 8px 10px; width: 100%; box-sizing: border-box;
+}
+form.contact input[type=text]:focus, form.contact textarea:focus {
+  outline: 2px solid var(--acc); outline-offset: 1px; border-color: var(--acc);
+}
+form.contact textarea { resize: vertical; min-height: 8em; }
+form.contact button { justify-self: start; cursor: pointer; }
+form.contact .hp { display: none; }
+form.contact #cf-status { margin: 4px 0 0; min-height: 1.6em; }
 
 /* --------------------------------------------------------------- hero --- */
 /* .plain is a figure with no frame and no card ground - an object on the page
