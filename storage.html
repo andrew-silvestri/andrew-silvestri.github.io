@@ -58,16 +58,16 @@ over about a third as many equivalent cycles as the two-hour case.</p>
 <img class="fig wide" src="assets/storage_fig3_duration_value.png?v=ecb60bc7" loading="lazy" width="1428" height="892" alt="Arbitrage revenue for two, four and eight hours of duration, with the gain from each step marked: nine dollars per kilowatt-year going from two hours to four, then under four dollars going from four to eight. A second panel puts the best case against an annualised capital cost.">
 </picture>
 <p class="small">The same three durations, read as increments: the second four
-hours add well under half what the first two did. The panel on the right sets
+hours add under half what the first two did. The panel on the right sets
 the best of them against an annualised capital cost<sup class="cite" id="cr3"><a href="#ref3">3</a></sup> &mdash; a
 scale to read the revenue against, not a verdict, since arbitrage is only one
 of the things a battery is paid for.</p>
 
 <picture>
 <source media="(max-width:760px)" srcset="assets/storage_fig2_dispatch_week-phone.png?v=fde264d8" width="700" height="482">
-<img class="fig wide" src="assets/storage_fig2_dispatch_week.png?v=fa4fd528" loading="lazy" width="1428" height="984" alt="A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.">
+<img class="fig wide" src="assets/storage_fig2_dispatch_week.png?v=fa4fd528" loading="lazy" width="1428" height="984" alt="A summer week of dispatch: when the battery charges and discharges against the hourly price.">
 </picture>
-<p class="small">A summer week of dispatch. Charging fills the solar belly of the day; discharge meets the evening peak.</p>
+<p class="small">A summer week of dispatch: when the battery charges and discharges against the hourly price.</p>
 
 <picture>
 <source media="(max-width:760px)" srcset="assets/storage_fig5_monthly-phone.png?v=5fcc7b15" width="700" height="393">
@@ -100,7 +100,7 @@ symmetrically as the square root per leg.</p>
 
 <p>The price year is synthetic. It is 8,760 hours generated from a fixed seed
 and calibrated to the shape of ERCOT's day-ahead prices &mdash; the daily and
-seasonal swing, and the scarcity spikes that carry most of the revenue. It is
+seasonal swing, and the scarcity spikes that carry a large share of the revenue. It is
 not a record of any real year, and every number and figure here is a figure of
 that series.</p>
 
@@ -131,7 +131,7 @@ data. Each model runs from its own <code>README.md</code>.</p>
 
 
 <h2>Sources</h2>
-<ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Denholm <i>et al.</i>, <i>The Four-Hour Challenge</i>, National Renewable Energy Laboratory, 2019.</span><span class="what">Why duration value flattens past four hours.</span></li><li id="ref3"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024, utility-scale battery storage, 4-hour duration, Moderate scenario, Market case.</span><span class="what">The capital cost the right-hand panel compares against: $1,938/kW capex (overnight cost, grid connection and construction finance) plus $44/kW-yr fixed operations, annualised over the dataset's own twenty-year capital recovery period at an eight per cent real discount rate, for about $242/kW-yr. A representative figure for scale, not a quote for any particular project.</span></li><li id="ref4"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, <i>Energy Economics</i>, 2009 - estimating the value of electricity storage under perfect foresight.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref5"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Degradation cost per megawatt hour of throughput, and round-trip efficiency.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">ERCOT, <i>Day-Ahead Market Settlement Point Prices</i>, historical archive.</span><span class="what">The price shape the synthetic year is calibrated to reproduce.</span></li><li id="ref2"><span class="src">Denholm <i>et al.</i>, <i>Moving Beyond 4-Hour Li-Ion Batteries</i>, National Renewable Energy Laboratory, NREL/TP-6A40-85878, 2023.</span><span class="what">Why duration value flattens past four hours.</span></li><li id="ref3"><span class="src">NREL, <i>Annual Technology Baseline</i> 2024 (2022 dollars), utility-scale battery storage, 4-hour duration, Moderate scenario, Market case.</span><span class="what">The capital cost the right-hand panel compares against: $1,938/kW capex (overnight cost, grid connection and construction finance) plus $44/kW-yr fixed operations, annualised over twenty years at an assumed eight per cent, for about $242/kW-yr. A representative figure for scale, not a quote for any particular project.</span></li><li id="ref4"><span class="src">Sioshansi, Denholm, Jenkin &amp; Weiss, &ldquo;Estimating the value of electricity storage in PJM: Arbitrage and some welfare effects&rdquo;, <i>Energy Economics</i> 31(2):269&ndash;277, 2009.</span><span class="what">The perfect-foresight dispatch formulation and its upper-bound character.</span></li><li id="ref5"><span class="src">Mongird <i>et al.</i>, <i>Grid Energy Storage Technology Cost and Performance Assessment</i>, Pacific Northwest National Laboratory, 2020.</span><span class="what">Round-trip efficiency (86%). It gives no degradation cost; the model's $2/MWh of throughput is an assumption.</span></li></ol>
 
 <footer>
 <p><a href="about.html">Andrew Silvestri</a></p>
