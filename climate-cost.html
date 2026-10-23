@@ -27,8 +27,9 @@ each step is made of.</p>
 <aside class="marginalia right long" style="grid-row: span 27"><ul><li>chicken, Brazil to Texas</li><li>t-shirt, poly, China to TX</li><li>rice, India to California</li><li>shoes, leather, IT to NY</li><li>coffee, Colombia to Texas</li><li>tomato, heated, NL to NY</li><li>almonds, CA to New York</li><li>banana, Peru to New York</li><li>tomato, field, Spain to TX</li><li>train, France to France</li></ul></aside>
 
 <p>A tomato has a number attached to it. Somewhere on the internet you can find
-out that it is 0.4 kilograms of carbon dioxide equivalent, or 2.1, or 1.4, and
-none of those sources will tell you why they disagree. They disagree because a
+out how many kilograms of carbon dioxide equivalent it is, several times over
+with a different answer each time, and none of those sources will tell you
+why they disagree. They disagree because a
 footprint is not a measurement. It is the end of a long argument about what to
 count and who to charge, and publishing only the answer hides the argument.</p>
 
@@ -107,10 +108,13 @@ judgement is the whole answer, because the herd stages are 93% of the kilogram.
 Every published way of making it is in the figure below, from Flysjö<sup class="cite" id="cr4"><a href="#ref4">4</a></sup> and
 colleagues' comparison of the methods: the same kilogram of French cheese is
 10.0 kg CO<sub>2</sub>e if the cow's meat is credited by system expansion, 13.2
-under the International Dairy Federation<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>'s physical split, which is the model's
-default, and 15.4 if milk carries the whole cow. The spread across the published
-bases, highest total over lowest, is &times;1.54, and nothing a farmer does in
-this model produces a swing that size. The <b>leather shoe</b> is the same
+under the physical split Flysjö's team computed for Swedish milk, which is the
+model's default (the International Dairy Federation<sup class="cite" id="cr5"><a href="#ref5">5</a></sup>'s 2015 formula gives a
+typical herd 88%, and 13.6), and 15.4 if milk carries the whole cow, which is
+the no-allocation reference case rather than an allocation basis. The spread
+across the bars, highest total over lowest, is &times;1.54, or &times;1.51
+without the no-allocation case, and nothing a farmer does in this model
+produces a swing that size. The <b>leather shoe</b> is the same
 argument where it barely applies. A hide is a co-product of a beef animal too,
 but the hide stage is 9% of a pair, so moving the hide's share from the economic
 mean to the physical mean measured by Lunesu<sup class="cite" id="cr6"><a href="#ref6">6</a></sup> and colleagues lifts the pair from
@@ -119,11 +123,13 @@ shared stage <i>is</i> the answer, and nowhere else.</p>
 
 <picture>
 <source media="(max-width:760px)" srcset="assets/climate_allocation_bases-phone.png?v=12c3edd5" width="700" height="1984">
-<img class="fig wide" src="assets/climate_allocation_bases.png?v=bfc45f2f" loading="lazy" width="1428" height="1552" alt="Two horizontal bar panels on one axis from 0 to 16 kg CO2e. Above, a kilogram of hard cheese from France to New York under eight published milk-to-meat allocation bases: 10.0 kg at 63% by system expansion rising to 15.4 kg at 100% with no allocation, the model's default of 13.2 kg at the 85% physical split highlighted; spread times 1.54, contested stage 93% of the total. Below, a pair of leather shoes from Italy to New York under four hide shares: 3.7 kg at 2.2% and 2.7% economic, 4.2 kg at 5.9% physical, 4.4 kg at 6.9%; spread times 1.17, contested stage 9% of the total.">
+<img class="fig wide" src="assets/climate_allocation_bases.png?v=bfc45f2f" loading="lazy" width="1428" height="1552" alt="Two horizontal bar panels on one axis from 0 to 16 kg CO2e. Above, a kilogram of hard cheese from France to New York under seven published milk-to-meat allocation bases and the no-allocation case: 10.0 kg at 63% by system expansion rising to 15.4 kg at 100% with no allocation, the model's default of 13.2 kg at the 85% physical split highlighted; spread times 1.54, contested stage 93% of the total. Below, a pair of leather shoes from Italy to New York under four hide shares: 3.7 kg at 2.2% and 2.7% economic, 4.2 kg at 5.9% physical, 4.4 kg at 6.9%; spread times 1.17, contested stage 9% of the total.">
 </picture>
 <p class="small">Two panels, one axis, one definition. Spread is the highest
 total divided by the lowest across the published bases shown: cheese
-&times;1.54, shoes &times;1.17. Every bar is one run of the calculator's own
+&times;1.54, shoes &times;1.17. For cheese that includes the 100% no-allocation
+reference case, which is not an allocation basis; without it the spread is
+&times;1.51. Every bar is one run of the calculator's own
 engine with a single number changed on the contested edge. Drawn by
 <code>climate-cost/build_allocation_figure.py</code> from
 <code>lca.py</code>, with each factor written beside the publication it comes
@@ -145,18 +151,20 @@ from.</p>
      adder over a smaller denominator. -->
 <p>The two tomatoes are the point of the whole exercise. Heating adds about
 2.4 kg CO2e to a kilogram of tomatoes on every route this model runs, against
-a field tomato's entire footprint of well under one, and what separates them
+a field tomato's entire footprint of about one or less when it goes by sea,
+and what separates them
 is the growing rather than the journey. Food miles are the thing people reach for and they are
 usually the wrong lever: a banana crosses eight thousand kilometers by sea and
 still comes in at under a kilogram, because sea freight costs almost nothing per
-tonne-kilometer<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>. Switch that banana to air and it goes up more than tenfold.
+tonne-kilometer<sup class="cite" id="cr7"><a href="#ref7">7</a></sup>. Switch that banana to air and it goes up nearly tenfold.
 Distance matters enormously when it goes by air and barely at all when it does
 not.</p>
 
-<p>Beef is unmoved by anything downstream. Enteric fermentation and land use
+<p>Beef is barely moved by anything downstream. Enteric fermentation and land use
 happen before the animal leaves the farm, so the route is noise against them.
-No packaging decision and no shipping choice touches a number that is
-three-quarters methane and cleared forest.</p>
+No packaging decision touches a number that is three-quarters methane and
+cleared forest, and of the shipping choices only air freight moves it, by
+about a ninth.</p>
 
 <h2>Allocation, which is where the disagreement lives</h2>
 
@@ -168,11 +176,14 @@ every published footprint it is an invisible one.</p>
 
 <p>Two careful studies of the same cheese can differ by half again without
 either being wrong, because one credited the cow's meat by system expansion and
-the other charged the milk with the whole herd; the published bases run from
-63% to 100% of the cow. The <b>allocation</b> factor is a
+the other charged nearly all of the herd to the milk; the published bases run
+from 63% to 98% of the cow. The <b>allocation</b> factor is a
 judgement, it changes the answer, and it should be visible. Here it sits on
-every edge, and it compounds down the chain, so a process four levels deep may
-contribute only a third of what it emits.</p>
+every edge. The engine multiplies the factors down a chain, so a process deep in
+a branch could reach the product as a fraction of a fraction, but in this
+model's data the only shares other than one sit on the stages where the
+products separate, and everything beneath such a stage carries its share
+unchanged.</p>
 
 <h2>Lifetime, which is allocation wearing a different hat</h2>
 
@@ -185,7 +196,7 @@ and the one most often buried in a constant.</p>
 
 <p>So for the vehicles it is a control. Move it and the manufacturing share
 moves inversely: a petrol car retired at a hundred thousand kilometers carries
-roughly twice the factory per kilometer as the same car driven to four
+four times the factory per kilometer as the same car driven to four
 hundred thousand. The effect is larger for an electric car, which carries more
 of its burden in manufacture and less in fuel, which is exactly why the
 lifetime question matters more there. For a flight the same control is the
@@ -197,20 +208,27 @@ assumption can be argued with rather than inherited.</p>
 
 <h2>How it is checked</h2>
 
-<p>Every total is compared against the ranges in the published literature<sup class="cite" id="cr8"><a href="#ref8">8</a></sup> rather
+<p>Every food total is compared against the ranges in the published literature<sup class="cite" id="cr8"><a href="#ref8">8</a></sup> rather
 than against a single figure, because these are distributions across thousands
-of farms and a point estimate would be false precision. All twenty items land
-inside their bands. The tree is checked to sum at every node, allocation is
-checked to compound correctly down each chain, and the levers are checked to
-move the answer in the direction physics says they should.</p>
+of farms and a point estimate would be false precision. The vehicles and
+garments are compared against bands set in <code>test_lca.py</code>, each with
+the figure it was drawn from written beside it: several from the UK conversion
+factors, and two from studies that are not in the list below, Levi Strauss's
+assessment of its own jeans and an MIT study of a running shoe. All twenty
+items land inside their bands. The bands are wide, and landing inside one is a
+weaker test than matching the study it was drawn from, which the jeans and the
+trainers do not. The tree is checked to sum at every node, the cheese's milk
+share is checked to reach the processes beneath its stage, and the levers are
+checked to move the answer in the direction physics says they should.</p>
 
 <p>One test exists because of a bug that hid well. Production-side electricity
 was being charged at the <i>consuming</i> region's grid intensity, so a French
 dairy looked dirty when someone in India ate the cheese. It is invisible in any
 single run the number just looks slightly high, and only shows up
 when you change the destination and something moves that has no business moving.
-There is now a test that walks every production stage and fails if any of them
-draws power from the wrong grid.</p>
+There is now a test that walks a fixed list of seventeen food production stages
+and fails if any of their direct inputs draws power from the wrong grid; the
+clothing and vehicle stages, and coffee roasting, are not on the list.</p>
 
 
 <h2>Sources</h2>
