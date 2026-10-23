@@ -1,0 +1,129 @@
+/* scrolly.css - the insight kit (R1, 2026-10-23): the scroll scaffold, the
+ * charts drawn into it, the clip component, the takeaways and the stamp.
+ *
+ * A page that uses the kit links this after style.css. Every colour and size
+ * is a token from style.css :root; nothing here introduces a colour, and
+ * there are no gradients (HANDOFF section 4).
+ *
+ * THE OLD RAIL IS NOT IN THE KIT. aside.marginalia stays in style.css only
+ * for the pages that still carry it; a page that links this file uses
+ * .takeaways instead, and tests/test_kit.js fails a page that has both.
+ */
+
+/* ------------------------------------------------------------- scrolly --- */
+/* Without JS, or with reduced motion, a .scrolly is a column of steps, each
+   with its own static figure (built from the same chart code at build time).
+   scrolly.js adds .is-live only when it can animate; then the stage shows,
+   sticks, and the per-step figures hide. Nothing on the page depends on the
+   live state to be read. */
+/* The section spans main's wide track and inherits main's tracks as a
+   subgrid, so the steps sit on the text track itself. max-width: var(--text)
+   centred is NOT the same thing: below about 1100px main squeezes the text
+   track narrower than --text, and steps held to --text had a second left edge
+   (tests/test_layout.js, 34px off at 1024 and 960, 2026-10-23). */
+.scrolly { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.scrolly > .scrolly-steps { grid-column: text; min-width: 0; }
+.scrolly > .scrolly-stage { grid-column: wide; min-width: 0; }
+.scrolly-stage { display: none; }
+.scrolly .step { margin: 0 0 30px; }
+.scrolly .step > p:first-child { margin-top: 0; }
+.step-fig { margin: 14px 0 0; container-type: inline-size; }
+/* Two static widths ship (charts.js WIDE and PHONE); the wider one shows only
+   when its container is at least that wide, so a figure is never scaled up
+   and its text stays at the size it was drawn at. */
+.step-fig .snap-wide { display: none; }
+@container (min-width: 720px) {
+  .step-fig .snap-wide { display: block; }
+  .step-fig .snap-phone { display: none; }
+}
+.step-fig svg { display: block; max-width: 100%; height: auto; }
+
+.scrolly.is-live .step-fig { display: none; }
+.scrolly.is-live .scrolly-stage {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+  padding: 14px 0 12px;
+  border-bottom: 1px solid var(--faint);
+}
+.scrolly.is-live .scrolly-stage svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+/* Steps scroll up beneath the stage. Each sits on a card so its text never
+   lies over the chart's lines, and the gap between them is what gives the
+   chart room to move. */
+.scrolly.is-live .scrolly-steps { position: relative; z-index: 1; padding: 24vh 0 30vh; }
+.scrolly.is-live .step {
+  margin-bottom: 55vh;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  padding: 16px 20px;
+}
+.scrolly.is-live .step:last-child { margin-bottom: 0; }
+
+/* -------------------------------------------------------------- charts --- */
+/* charts.js lays text out with these sizes (FS 12, FS_BIG 14.5, Plex Mono)
+   and test_kit.js measures the rendered widths against them. Change one and
+   change the other, or labels collide. */
+.chart text { font-family: var(--mono); font-size: var(--fs-2); fill: var(--ink); }
+.chart .ch-tick { fill: var(--dim); }
+.chart .ch-now { font-size: var(--fs-1); fill: var(--ink); font-weight: 600; }
+.chart .ch-grid { stroke: var(--faint); stroke-width: 1; }
+.chart .ch-axis { stroke: var(--rule); stroke-width: 1; }
+.chart .ch-line { fill: none; stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.chart .ch-band { stroke: none; opacity: .28; }
+.chart .ch-ann line { stroke: var(--dim); stroke-width: 1; stroke-dasharray: 2 3; }
+.chart .ch-ann, .chart .ch-plab, .chart [data-k="tot"] { transition: opacity .35s; }
+.chart .ch-plab line { stroke: var(--rule); stroke-width: 1; }
+.chart .ch-plab .ch-v { fill: var(--dim); }
+.chart .c-acc  { stroke: var(--acc); }
+.chart .c-moss { stroke: var(--moss); }
+.chart .c-ink  { stroke: var(--ink); }
+.chart .f-acc  { fill: var(--acc); }
+.chart .f-moss { fill: var(--moss); }
+.chart .f-ink  { fill: var(--ink); }
+.chart .f-rule { fill: var(--rule); }
+.chart rect.ch-band.f-acc, .chart rect.ch-band.f-moss { opacity: .28; }
+:root[data-motion="off"] .chart * { transition: none !important; }
+
+/* ------------------------------------------------------------- counter --- */
+/* A number that is a link to its source. scrolly.js counts it up once when
+   it first scrolls into view; the markup already holds the final value, so
+   without JS or with reduced motion it simply reads correctly. */
+a.counter { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------------------------------------------------------- takeaways --- */
+/* At most three, each a full sentence (insight.py refuses anything else).
+   In the flow, under the standfirst, in the text column: one left edge. */
+.takeaways { margin: 22px 0 8px; }
+.takeaways ol { list-style: none; margin: 0; padding: 0; }
+.takeaways li {
+  margin: 0 0 12px;
+  padding: 2px 0 2px 16px;
+  border-left: 2px solid var(--acc);
+  font-size: var(--fs0);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------- stamp --- */
+p.stamp { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); margin: 6px 0 0; letter-spacing: .02em; }
+
+/* ---------------------------------------------------------------- clip --- */
+/* A Manim clip: poster first, nothing downloads until asked (preload=none).
+   Without JS the native controls show. With JS a play button sits on the
+   poster; a loop of ten seconds or less plays muted while in view, unless the
+   reader has asked for less motion, in which case it waits for a click like
+   any other clip. */
+figure.clip { margin: 22px 0; }
+.clip-frame { position: relative; border: 1px solid var(--rule); background: var(--card); line-height: 0; }
+.clip-frame video { display: block; width: 100%; height: auto; }
+.clip-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font: 600 var(--fs-1) var(--mono);
+  color: var(--acc-ink); background: var(--acc-fill); border: 1px solid var(--acc-fill);
+  padding: 10px 16px; cursor: pointer; line-height: 1;
+}
+.clip-play:hover { background: var(--acc-fill-hover); }
+.clip-play:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
+.clip-play[hidden] { display: none; }
+figure.clip figcaption { font: var(--fs-1)/1.5 var(--sans); color: var(--dim); margin-top: 8px; }
