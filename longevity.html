@@ -23,7 +23,7 @@ try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion:
 <h1>Longevity quotient</h1>
 <p class="dim">How long an animal lives, against how long an animal of its
 size should live.</p>
-<aside class="marginalia long" style="grid-row: span 50" aria-label="Species in the margin"><p class="lab">Species in the margin</p><ul><li><img src="assets/openmoji/1F987.svg" alt=""><b>Brandt's bat</b>11.87&times; prediction (41 years at 7 grams)</li><li><img src="assets/openmoji/1F41D.svg" alt=""><b>honey bee queen</b>1.98&times; prediction (5 years)</li><li><img src="assets/openmoji/1F99C.svg" alt=""><b>pink cockatoo</b>4.51&times; prediction (83 years)</li><li><img src="assets/openmoji/1F426.svg" alt=""><b>Laysan albatross</b>2.57&times; prediction (74 years)</li><li><img src="assets/openmoji/1F41C.svg" alt=""><b>black garden ant queen</b>28.72&times; prediction (29 years)</li><li><img src="assets/openmoji/1F577.svg" alt=""><b>Mexican redknee tarantula</b>3.55&times; prediction (30 years)</li><li><b>Labord's chameleon</b>0.13&times; prediction (one year, size predicts eight)</li><li><img src="assets/openmoji/1F418.svg" alt=""><b>African bush elephant</b>1.34&times; prediction (80 years)</li><li><img src="assets/openmoji/1F992.svg" alt=""><b>giraffe</b>0.84&times; prediction (39 years)</li><li><img src="assets/openmoji/1F400.svg" alt=""><b>naked mole-rat</b>6.35&times; prediction (31 years at 35 grams)</li><li><img src="assets/openmoji/1F422.svg" alt=""><b>Galapagos tortoise</b>3.19&times; prediction (177 years)</li><li><img src="assets/openmoji/1F40C.svg" alt=""><b>Roman snail</b>3.91&times; prediction (35 years)</li></ul></aside>
+<aside class="marginalia long" style="grid-row: span 50" aria-label="Species in the margin"><p class="lab">Species in the margin</p><ul><li><img src="assets/openmoji/1F987.svg" alt=""><b>Brandt's bat</b>11.87&times; prediction (41 years at 7 grams)</li><li><img src="assets/openmoji/1F41D.svg" alt=""><b>honey bee queen</b>1.98&times; prediction (5 years)</li><li><img src="assets/openmoji/1F99C.svg" alt=""><b>pink cockatoo</b>4.51&times; prediction (83 years in captivity; demoted to grade C, so outside the fits)</li><li><img src="assets/openmoji/1F426.svg" alt=""><b>Laysan albatross</b>2.57&times; prediction (74 years)</li><li><img src="assets/openmoji/1F41C.svg" alt=""><b>black garden ant queen</b>28.72&times; prediction (29 years)</li><li><img src="assets/openmoji/1F577.svg" alt=""><b>Mexican redknee tarantula</b>3.55&times; prediction (30 years)</li><li><b>Labord's chameleon</b>0.13&times; prediction (one year; its size predicts six to eight, by source)</li><li><img src="assets/openmoji/1F418.svg" alt=""><b>African bush elephant</b>1.34&times; prediction (80 years)</li><li><img src="assets/openmoji/1F992.svg" alt=""><b>giraffe</b>0.84&times; prediction (39 years)</li><li><img src="assets/openmoji/1F400.svg" alt=""><b>naked mole-rat</b>6.35&times; prediction (31 years at 35 grams)</li><li><img src="assets/openmoji/1F422.svg" alt=""><b>Galapagos tortoise</b>3.19&times; prediction (177 years)</li><li><img src="assets/openmoji/1F40C.svg" alt=""><b>Roman snail</b>3.91&times; prediction (35 years)</li></ul></aside>
 <aside class="marginalia right long" style="grid-row: span 50"><ul><li><img src="assets/openmoji/1F427.svg" alt=""><b>African penguin</b>1.39&times; prediction (40 years)</li><li><img src="assets/openmoji/1F9AD.svg" alt=""><b>Baikal seal</b>2.12&times; prediction (56 years)</li><li><img src="assets/openmoji/1F40B.svg" alt=""><b>bowhead whale</b>1.85&times; prediction (211 years)</li><li><img src="assets/openmoji/1F988.svg" alt=""><b>Greenland shark</b>6.49&times; prediction (392 years)</li><li><img src="assets/openmoji/1F41F.svg" alt=""><b>rougheye rockfish</b>13.11&times; prediction (205 years)</li><li><img src="assets/openmoji/1FABC.svg" alt=""><b>moon jellyfish</b>0.07&times; prediction (one year)</li><li><b>cold-seep tubeworm</b>23.41&times; prediction (250 years)</li><li><img src="assets/openmoji/1F99E.svg" alt=""><b>American lobster</b>3.04&times; prediction (70 years)</li><li><img src="assets/openmoji/1F9AA.svg" alt=""><b>freshwater pearl mussel</b>15.78&times; prediction (190 years)</li><li><img src="assets/openmoji/1F41A.svg" alt=""><b>ocean quahog</b>47.48&times; prediction (a real 507-year lifespan)</li><li><img src="assets/openmoji/1F419.svg" alt=""><b>common octopus</b>0.07&times; prediction (two years)</li><li><img src="assets/openmoji/1FAB8.svg" alt=""><b>black coral</b>122.84&times; prediction (4,265 years)</li></ul></aside>
 
 <p>Body mass predicts lifespan. The 7,873 species in this model run from a
@@ -42,7 +42,8 @@ lifespan predicted from body mass</code></p>
 <p class="small">Mass rises left to right and so does the prediction, because the fit can only go up. What the animals do is not monotonic, and the quotient is what is left once size has been divided out. This figure scores each animal against the fit across all animals; the rankings below and the visualiser score each against its own group, which for the human gives 5.0 rather than 4.0.</p>
 
 <p>It is built by analogy with the encephalisation quotient<sup class="cite" id="cr1"><a href="#ref1">1</a></sup>, which does the
-same thing to brain size. A quotient of one means an animal lives exactly as
+same thing to brain size, and it is not new: Austad and Fischer introduced it
+for lifespan in 1991<sup class="cite" id="cr2"><a href="#ref2">2</a></sup>. A quotient of one means an animal lives exactly as
 long as its size predicts. The interesting animals are the ones far from one.</p>
 
 <div class="card">
@@ -71,9 +72,10 @@ member or species count. Click a group to drop into the species inside it.</p>
  alt="Maximum lifespan against adult body mass on logarithmic axes, coloured by
  class, with the fitted global relationship and labeled outliers">
 </picture>
-<p class="small">Lifespan against body mass. The dashed line is the fit across
-every animal in the table. Distance above or below that line, measured within a
-species' own class, is the quotient.</p>
+<p class="small">Lifespan against body mass. The dashed line is the global
+fit, over the grade-A and B records of every group, colonies excluded. Distance
+above or below it is the quotient against all animals; the rankings below
+measure each species against its own group&rsquo;s fit instead.</p>
 
 <picture>
 <source media="(max-width:760px)" srcset="assets/lq_ranked-phone.png?v=ba825371" width="700" height="1620">
@@ -96,7 +98,7 @@ faint line spanning its lowest to its highest. The geometric mean is the correct
 average for ratios: a species at four times prediction and one at a quarter of
 it should average to one, not to 2.1.</p>
 
-<p>Of the 81 orders holding four or more grade-A or B species, the egg-laying <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Monotremata" target="_blank" rel="noopener">Monotremata</a> top the list at 2.66 and the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> follow at 2.53 &mdash; but one rests on a handful of species, 4, and a geometric mean over four animals is a claim about four animals. The large groups near the top are the ones worth the weight: the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> at 2.53 across 261 species and the <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Primates" target="_blank" rel="noopener">Primates</a> at 2.06 across 346 species. At the bottom sit the tinamous of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Tinamiformes" target="_blank" rel="noopener">Tinamiformes</a> at 0.32, the pangolins of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Pholidota" target="_blank" rel="noopener">Pholidota</a> at 0.40, the tenrecs and golden moles of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Afrosoricida" target="_blank" rel="noopener">Afrosoricida</a> at 0.47; the ground birds of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Galliformes" target="_blank" rel="noopener">Galliformes</a> come in at 0.52 and the shrews, moles and hedgehogs of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Eulipotyphla" target="_blank" rel="noopener">Eulipotyphla</a> at 0.66. At family rank, among families with ten or more species, the evening bats of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Vespertilionidae" target="_blank" rel="noopener">Vespertilionidae</a> reach 3.25 over 122 species, the scorpionfishes of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Scorpaenidae" target="_blank" rel="noopener">Scorpaenidae</a> 3.16, the gibbons of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Hylobatidae" target="_blank" rel="noopener">Hylobatidae</a> 3.01. Flight, burrowing, venom, armour and simply being difficult to swallow all register as raised quotients. Being a ground bird or a small terrestrial insectivore registers as the reverse.</p>
+<p>Of the 81 orders holding four or more grade-A or B species, the egg-laying <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Monotremata" target="_blank" rel="noopener">Monotremata</a> top the list at 2.66 and the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> follow at 2.53 &mdash; but one rests on a handful of species, 4, and a geometric mean over four animals is a claim about four animals. The large groups near the top are the ones worth the weight: the bats of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Chiroptera" target="_blank" rel="noopener">Chiroptera</a> at 2.53 across 261 species and the <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Primates" target="_blank" rel="noopener">Primates</a> at 2.06 across 346 species. At the bottom sit the tinamous of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Tinamiformes" target="_blank" rel="noopener">Tinamiformes</a> at 0.32, the pangolins of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Pholidota" target="_blank" rel="noopener">Pholidota</a> at 0.40, the tenrecs and golden moles of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Afrosoricida" target="_blank" rel="noopener">Afrosoricida</a> at 0.47, the opossums of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Didelphimorphia" target="_blank" rel="noopener">Didelphimorphia</a> at 0.49; the ground birds of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Galliformes" target="_blank" rel="noopener">Galliformes</a> come in at 0.52 and the shrews, moles and hedgehogs of <a href="longevity-app.html#view=gr&amp;rank=or&amp;fRank=or&amp;fVal=Eulipotyphla" target="_blank" rel="noopener">Eulipotyphla</a> at 0.66. At family rank, among families with ten or more species, the evening bats of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Vespertilionidae" target="_blank" rel="noopener">Vespertilionidae</a> reach 3.25 over 122 species, the scorpionfishes of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Scorpaenidae" target="_blank" rel="noopener">Scorpaenidae</a> 3.16, the gibbons of <a href="longevity-app.html#view=gr&amp;rank=fa&amp;fRank=fa&amp;fVal=Hylobatidae" target="_blank" rel="noopener">Hylobatidae</a> 3.01. The scorpionfish figure is mostly rockfishes: 43 of its 47 species are <i>Sebastes</i>, a genus the sources file partly under Sebastidae and partly under Scorpaenidae, and without them the family comes to 1.98. Flight, burrowing, venom, armour and simply being difficult to swallow all register as raised quotients. Being a ground bird or a small terrestrial insectivore registers as the reverse.</p>
 
 <picture>
 <source media="(max-width:760px)" srcset="assets/lq_orders-phone.png?v=4515f412" width="700" height="1617">
@@ -121,17 +123,18 @@ the data actually shows.</p>
 
 <h2>What comes out</h2>
 
-<p>The highest quotients against their own group, among the grade-A and B records, belong to an ocean quahog at 47&times;, a black garden ant queen at 29&times;, a cold-seep tubeworm at 23&times;, a freshwater pearl mussel at 16&times;, an olm at 15&times; and a rougheye rockfish at 13&times; its predicted lifespan. The lowest belong to a silkmoth at 0.04&times;, a common wasp at 0.05&times;, a common octopus at 0.07&times;, a longfin inshore squid at 0.07&times; and a toolache wallaby at 0.07&times;.</p>
+<p>The highest quotients against their own group, among the grade-A and B records, belong to an ocean quahog at 47&times;, a black garden ant queen at 29&times;, a cold-seep tubeworm at 23&times;, a freshwater pearl mussel at 16&times;, an olm at 15&times; and a rougheye rockfish at 13&times; its predicted lifespan. The lowest belong to a silkmoth at 0.04&times;, a common wasp at 0.05&times;, a common octopus at 0.07&times;, a longfin inshore squid at 0.07&times; and a toolache wallaby at 0.07&times;. The olm&rsquo;s 100 years is a projection, not an observed age: Voituron <i>et al.</i> (<i>Biology Letters</i> 7:105, 2011) estimated a maximum of about 102 years from a laboratory population, and the 68 years the table carries as its wild maximum is that population&rsquo;s mean adult lifespan. The toolache wallaby&rsquo;s figure is the Amniote compilation&rsquo;s 13 months for a 10&nbsp;kg animal, very likely an error of the kind the outlier rule removes, which the rule&rsquo;s three-standard-deviation cut misses by a hair.</p>
 
-<p>Three of those are worth a closer look. The honey bee worker and the honey
+<p>Some animals outside those lists are worth a closer look. The honey bee worker and the honey
 bee queen carry the same genome and sit an order of magnitude apart in lifespan,
 because caste and diet decide the outcome rather than genetics. The giant
 Pacific octopus is large, capable, and dead in five years, because it breeds
 once and then stops eating. The chambered nautilus, a cephalopod that does not
 breed once and die, lives twenty. Labord's chameleon spends most of its
 existence inside an egg and then lives four or five months as an adult, the
-shortest life of any four-limbed vertebrate, in a body whose size predicts eight
-years. None of this is visible in a table of lifespans sorted by years. All of
+shortest life of any four-limbed vertebrate, in a body whose size predicts six
+to eight years (eight at the 25 grams the hand-checked table records, six at
+the 8.73 grams Amniote gives). None of this is visible in a table of lifespans sorted by years. All of
 it appears the moment body mass is divided out.</p>
 
 
@@ -177,6 +180,12 @@ only one.</p>
 32 classes, 199 orders, 764 families and
 2,921 genera. Every record carries full taxonomy, an adult body
 mass, at least one maximum lifespan, a quality grade and its provenance.
+Species are matched on the binomial alone, with no synonym resolution, so a
+species the sources name two ways is in the table twice: matching common names
+finds 62 such pairs, the African spurred tortoise as both <i>Centrochelys</i>
+and <i>Geochelone sulcata</i> among them, and in 48 both copies are grade A or
+B and enter the fits. The pink cockatoo and Major Mitchell&rsquo;s cockatoo,
+one bird under two common names, are a further pair that check misses.
 2,905 have a maximum their source labeled wild, 1,795 one it
 labeled captive, and 309 have both &mdash; the comparison this
 project was built around, and the reason the merge keeps the hand-checked table
@@ -213,12 +222,14 @@ record against a careless one produces a number that belongs to neither.</p>
 <tr><td>FishBase v25.04</td><td>2,088</td><td>1,250</td><td>Fish. Maximum age taken as the largest of three fields that disagree: the curated wild longevity, the per-population maximum, and the tmax used to fit growth curves. Only the first is kept as a wild maximum; the others are carried as origin not recorded. Graded C throughout.</td></tr>
 </table>
 
-<p>Body-mass databases are a separate matter and they are much larger. AVONET
-alone has measured masses for 14,673 species, mostly
-birds. None of them create a record: a species with a mass and no lifespan is
-not an observation of anything this model can use. They only rescue a species
-that has been aged and never weighed, which they did
-524 times.</p>
+<p>Body-mass databases are a separate matter and they are much larger. AVONET,
+which covers birds only, PanTHERIA and Amniote between them hold a mass for
+14,673 species. None of them creates a record: a species
+with a mass and no lifespan is not an observation of anything this model can
+use. A record that has a lifespan and no mass takes one from elsewhere, which
+happened 524 times:
+509 from another lifespan record of the
+same species, and 15 from AVONET.</p>
 
 <p>8,583 distinct species carried a lifespan
 after the merge. 710 of them were dropped for
@@ -229,14 +240,18 @@ from maximum length through FishBase's own length&ndash;weight relationship;
 those are modeled, not measured, and are marked and graded accordingly. What
 survives is <strong>7,873 species</strong>, graded A 149 &middot; B 6,250 &middot; C 1,474 as they
 arrive from their sources. The outlier rule described under the arithmetic
-then demotes 57 grade-B records to C, so the model runs on
-A 149 &middot; B 6,192 &middot; C 1,528 (the four colonies are counted separately).</p>
+then demotes 57 grade-B records to C, and the
+four colonies (one grade B, three grade C) are set aside, so the model runs
+on A 149 &middot; B 6,192 &middot; C 1,528.</p>
 
 <p class="small">This is the ceiling, and it is worth being clear about why.
-About 2.24 million species have been described. Fewer than nine thousand have
-ever been both aged and weighed, because a maximum lifespan requires somebody
-to have watched an animal until it died. The limit here is not access to data.
-It is that the observations were never made. Wikidata, which is the aggregate
+About 2.24 million species have been described. The six databases merged here
+hold fewer than nine thousand that have been both aged and weighed. Sources not
+merged add some more (<code>DATA_SOURCES.md</code>, in the download, lists
+Add-my-Pet, SeaLifeBase and a compilation of bivalve ages among them), but a
+maximum lifespan requires somebody to have watched an animal until it died, and
+for most species nobody has. The limit is less access to data than that the
+observations were never made. Wikidata, which is the aggregate
 of individual species pages rather than a compiled table, holds 1,147 taxa with
 a recorded maximum lifespan and 259 with a lifespan and a mass together
 &mdash; less than a twentieth of what the compiled databases give, which is the
@@ -268,13 +283,17 @@ LQ                  =  observed maximum lifespan / predicted</code></pre>
 <p>One rule runs before the final fit. A preliminary fit per group flags any
 grade-B record more than 3 residual standard deviations from it,
 in either direction, and demotes it to grade C: 57 records here
-(31 mammals, 10 birds, 8 fish, 8 reptiles). The Amniote compilation grades as B by construction and carried
-twenty-eight mammals, birds and reptiles with maximum lifespans of one to three
-months at body masses up to five kilograms &mdash; a 2.2&nbsp;kg hare at one
+(31 mammals, 10 birds, 8 fish, 8 reptiles). The Amniote compilation grades as B by construction, and among
+the records the rule demotes are twenty-seven of its mammals and reptiles
+(twenty-five and two) with maximum lifespans of one to three months at body
+masses up to five and a half kilograms &mdash; a 2.2&nbsp;kg hare at one
 month &mdash; which are unit or field errors, not observations, and which sat
 at the bottom of every ranking on this page. The rule is symmetric so that it
 cannot be accused of only removing what hurts, it never touches a grade-A
-record (each of those was checked by hand against a citation), and it deletes
+record (88 of those are rows of the hand-checked table,
+each checked against a citation; the other
+61 are AnAge records that AnAge itself
+grades high), and it deletes
 nothing: a demoted record keeps its row, its note says why, and the visualiser
 shows it under <b>Include C</b>.</p>
 
@@ -298,7 +317,7 @@ observation; the observation, and the case for taking it seriously, are his.
 It is worth reading whether or not you care about the arithmetic.</p>
 
 <h2>Sources</h2>
-<ol class="refs"><li id="ref1"><span class="src">Jerison, <i>Evolution of the Brain and Intelligence</i>, Academic Press, 1973.</span><span class="what">The quotient construction this model borrows.</span></li><li id="ref2"><span class="src">Wilkinson &amp; Adams, <i>Biology Letters</i>, 2019 - recent advances in the biology of bat ageing.</span><span class="what">Why flight and longevity travel together.</span></li><li id="ref3"><span class="src">Nielsen <i>et al.</i>, <i>Science</i> 353:702, 2016 (Greenland shark, eye-lens radiocarbon); Cailliet <i>et al.</i>, <i>Experimental Gerontology</i> 36:739, 2001 (rockfish otolith ageing).</span><span class="what">The extreme fish lifespans, and the dating methods behind them.</span></li><li id="ref4"><span class="src">Butler <i>et al.</i>, <i>Palaeogeography, Palaeoclimatology, Palaeoecology</i>, 2013 - the 507-year <i>Arctica islandica</i>.</span><span class="what">The longest-lived non-colonial animal recorded.</span></li><li id="ref5"><span class="src">Tacutu <i>et al.</i>, <i>Nucleic Acids Research</i> 46:D1083, 2018 - the AnAge database of animal ageing and longevity.</span><span class="what">Maximum lifespan and adult body mass for most species in the table.</span></li><li id="ref6"><span class="src">Myhrvold <i>et al.</i>, <i>Ecology</i> 96:3109, 2015 - an amniote life-history database for comparative analyses with birds, mammals and reptiles.</span><span class="what">Lifespan and body mass for most birds, mammals and reptiles here.</span></li><li id="ref7"><span class="src">Jones <i>et al.</i>, <i>Ecology</i> 90:2648, 2009 - PanTHERIA, a species-level database of life history, ecology and geography of extant and recently extinct mammals.</span><span class="what">Mammalian maximum longevity and adult body mass.</span></li><li id="ref8"><span class="src">Oliveira <i>et al.</i>, <i>Scientific Data</i> 4:170123, 2017 - AmphiBIO, a global database for amphibian ecological traits.</span><span class="what">Amphibian longevity and body mass.</span></li><li id="ref9"><span class="src">Froese &amp; Pauly (eds.), <i>FishBase</i>, v25.04 snapshot, distributed as parquet by rOpenSci. CC BY-NC.</span><span class="what">Maximum age and weight for fish, graded C throughout.</span></li><li id="ref10"><span class="src">Tobias <i>et al.</i>, <i>Ecology Letters</i> 25:581, 2022 - AVONET, morphological, ecological and geographical data for all birds.</span><span class="what">Body mass used only to fill gaps for birds already aged.</span></li></ol>
+<ol class="refs"><li id="ref1"><span class="src">Jerison, <i>Evolution of the Brain and Intelligence</i>, Academic Press, 1973.</span><span class="what">The quotient construction this model borrows.</span></li><li id="ref2"><span class="src">Austad &amp; Fischer, <i>Journal of Gerontology</i> 46:B47, 1991 - mammalian aging, metabolism, and ecology: evidence from the bats and marsupials.</span><span class="what">The longevity quotient itself.</span></li><li id="ref3"><span class="src">Wilkinson &amp; Adams, <i>Biology Letters</i>, 2019 - recurrent evolution of extreme longevity in bats.</span><span class="what">Why flight and longevity travel together.</span></li><li id="ref4"><span class="src">Nielsen <i>et al.</i>, <i>Science</i> 353:702, 2016 (Greenland shark, eye-lens radiocarbon); Cailliet <i>et al.</i>, <i>Experimental Gerontology</i> 36:739, 2001 (rockfish otolith ageing).</span><span class="what">The extreme fish lifespans, and the dating methods behind them.</span></li><li id="ref5"><span class="src">Butler <i>et al.</i>, <i>Palaeogeography, Palaeoclimatology, Palaeoecology</i>, 2013 - the 507-year <i>Arctica islandica</i>.</span><span class="what">The longest-lived non-colonial animal recorded.</span></li><li id="ref6"><span class="src">de Magalh&atilde;es <i>et al.</i>, <i>Nucleic Acids Research</i> 52:D900, 2024 - Human Ageing Genomic Resources: updates on key databases in ageing research (AnAge build 15, CC BY 3.0); earlier description in Tacutu <i>et al.</i>, <i>Nucleic Acids Research</i> 46:D1083, 2018.</span><span class="what">Maximum lifespan and adult body mass for most species in the table.</span></li><li id="ref7"><span class="src">Myhrvold <i>et al.</i>, <i>Ecology</i> 96:3109, 2015 - an amniote life-history database for comparative analyses with birds, mammals and reptiles.</span><span class="what">Lifespan and body mass for most birds, mammals and reptiles here.</span></li><li id="ref8"><span class="src">Jones <i>et al.</i>, <i>Ecology</i> 90:2648, 2009 - PanTHERIA, a species-level database of life history, ecology and geography of extant and recently extinct mammals.</span><span class="what">Mammalian maximum longevity and adult body mass.</span></li><li id="ref9"><span class="src">Oliveira <i>et al.</i>, <i>Scientific Data</i> 4:170123, 2017 - AmphiBIO, a global database for amphibian ecological traits.</span><span class="what">Amphibian longevity and body mass.</span></li><li id="ref10"><span class="src">Froese &amp; Pauly (eds.), <i>FishBase</i>, v25.04 snapshot, distributed as parquet by rOpenSci. CC BY-NC 4.0; the 1,250 FishBase-derived rows in the download carry the same terms.</span><span class="what">Maximum age and weight for fish, graded C throughout.</span></li><li id="ref11"><span class="src">Tobias <i>et al.</i>, <i>Ecology Letters</i> 25:581, 2022 - AVONET, morphological, ecological and geographical data for all birds.</span><span class="what">Body mass used only to fill gaps for birds already aged.</span></li></ol>
 <p class="small">Animal icons in the margin scene: <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a>, licensed <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>, recoloured to this page&rsquo;s own palette. The chameleon and the tubeworm have no emoji and are drawn by hand to match. Every quotient beside a creature is that species&rsquo; own figure from the table above.</p>
 
 <footer>
