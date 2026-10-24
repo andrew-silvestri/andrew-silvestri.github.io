@@ -127,3 +127,22 @@ figure.clip { margin: 22px 0; }
 .clip-play:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
 .clip-play[hidden] { display: none; }
 figure.clip figcaption { font: var(--fs-1)/1.5 var(--sans); color: var(--dim); margin-top: 8px; }
+
+/* --------------------------------------------------------------- strip --- */
+/* charts.js "strip" (R3): the unlit bars, and the range's label. */
+.chart .f-dim  { fill: var(--dim); }
+.chart rect.ch-bar.f-dim { opacity: .45; }
+.chart .ch-light, .chart .ch-rl { transition: opacity .35s; }
+.chart .ch-rl { fill: var(--ink); }
+
+/* ---------------------------------------------------------------- pick --- */
+/* The one control a page may carry (pick.js). Without JS the buttons stay
+   hidden and every block shows. */
+.pick-ctl { font: var(--fs-1)/1.4 var(--mono); }
+.pick-ctl button {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--rule);
+  padding: 6px 12px; margin: 0 4px 4px 0; cursor: pointer;
+}
+.pick-ctl button[aria-pressed="true"] { color: var(--acc-ink); background: var(--acc-fill); border-color: var(--acc-fill); }
+.pick-ctl button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.pick-ctl[hidden], .pick [data-when][hidden] { display: none; }

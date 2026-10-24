@@ -1,6 +1,6 @@
 /* charts.js - the insight kit's chart primitives (R1, 2026-10-23).
  *
- * Two charts and a number formatter, enough for the reworked pages:
+ * Three charts and a number formatter, enough for the reworked pages:
  *   series  a time series that draws as the reader scrolls; annotations
  *           appear when the line reaches their date; an optional band fills
  *           the gap between two series, in one colour where the first is
@@ -8,6 +8,8 @@
  *           panels below the plot on the same x scale (bars by year, or a
  *           second line on its own y), revealed with the lines.
  *   split   one bar, the total, that opens into its parts ("where it goes").
+ *   strip   a cross-section as a histogram, with lit overlays, a shaded
+ *           range and marks (R3, lostgas.html).
  *
  * ONE IMPLEMENTATION, TWO CONSUMERS. render(spec, state, opt) returns an SVG
  * string and touches no DOM, so the build runs it in node (kit_render.js) to
@@ -416,10 +418,135 @@
     return s.join('');
   }
 
+  /* ------------------------------------------------------------- strip --- */
+  /* A cross-section as a histogram (R3, 2026-10-23): every report in one
+     year, binned by its value. spec.bins = [{a, b, n, <key>: count, ...}],
+     right-inclusive (a, b]; a null a or b is an end bin that gathers a tail,
+     drawn apart from the rest and labelled with its count. Overlays light the
+     part of each bin a step is about (spec.lights: [{key, color, state}]), a
+     shaded range (spec.range: {lo, hi, label, state}) sits behind the bars,
+     and marks (spec.marks: [{at, label, state}]) are rules with a label in a
+     lane above the plot. Every state key runs 0..1; t grows the bars. */
+
+  function stripLayout(spec, w, strict) {
+    var bins = spec.bins, n = bins.length;
+    if (!n) throw new Error('charts: strip ' + spec.id + ' has no bins');
+    var mx = Math.max.apply(null, bins.map(function (b) { return b.n; }));
+    var step = niceStep(mx, 4), top = Math.ceil(mx / step - 1e-9) * step;
+    var yt = []; for (var v = 0; v <= top + 1e-9; v += step) yt.push(v);
+    var ylab = yt.map(function (v) { return fmt(v, 0); });
+    var pl = Math.max.apply(null, ylab.map(function (s) { return s.length; })) * CW + 8, pr = 8;
+    var GAP = 6, inner = bins.filter(function (b) { return b.a != null && b.b != null; });
+    var a0 = inner[0].a, b1 = inner[inner.length - 1].b;
+    var ends = (bins[0].a == null ? 1 : 0) + (bins[n - 1].b == null ? 1 : 0);
+    var bw = (w - pl - pr - ends * GAP) / n;
+    if (strict && bw < 2) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: bins under 2px');
+    var xIn0 = pl + (bins[0].a == null ? bw + GAP : 0);
+    function X(v) { return xIn0 + (v - a0) / (b1 - a0) * inner.length * bw; }
+    var bx = bins.map(function (b, i) {
+      if (b.a == null) return pl;
+      if (b.b == null) return X(b1) + GAP;
+      return X(b.a);
+    });
+    // label lanes above the plot: one per mark and one for the range, in
+    // order, each label clamped to the canvas and refused if wider than it
+    var labs = [];
+    if (spec.range) labs.push({ k: 'rl', x: (X(spec.range.lo) + X(spec.range.hi)) / 2, text: spec.range.label, mid: true });
+    (spec.marks || []).forEach(function (m, i) { labs.push({ k: 'ml' + i, x: X(m.at), text: m.label }); });
+    labs.forEach(function (l, i) {
+      var tw = l.text.length * CW;
+      if (tw > w && strict) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: label wider than the chart: ' + l.text);
+      var L = l.mid ? l.x - tw / 2 : l.x + 3;
+      if (!l.mid && L + tw > w) L = l.x - 3 - tw;
+      l.L = clamp(L, 0, Math.max(w - tw, 0)); l.lane = i; l.y = i * LANE + 12;
+    });
+    var ptop = labs.length * LANE + 26;
+    var pb = Math.round(ptop + (spec.plotH || Math.min(Math.max(w * 0.4, 180), 300)));
+    function Y(c) { return pb - c / top * (pb - ptop); }
+    // x ticks at whole values inside the inner range, at a step that keeps them apart
+    var span = b1 - a0, pxu = inner.length * bw / span;
+    var xs = [1, 2, 5, 10, 20].filter(function (k) { return k * pxu >= 5 * CW + 10; })[0] || 50, xt = [];
+    for (var t = Math.ceil(a0 / xs) * xs; t <= b1 + 1e-9; t += xs) xt.push(t);
+    var h = pb + 22 + (spec.x && spec.x.label ? LANE : 0);
+    if (strict && spec.x && spec.x.label && spec.x.label.length * CW > w) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: x label wider than the chart');
+    return { w: w, h: h, pl: pl, pr: pr, pb: pb, ptop: ptop, X: X, Y: Y, bx: bx, bw: bw, top: top, yt: yt, ylab: ylab,
+             xt: xt, labs: labs, b1: b1, GAP: GAP };
+  }
+
+  function stripDyn(spec, L, st) {
+    var t = clamp(st.t == null ? 1 : st.t, 0, 1), o = {};
+    function sv(k) { return clamp(st[k] == null ? 0 : st[k], 0, 1); }
+    spec.bins.forEach(function (b, i) {
+      var y = L.Y(b.n * t);
+      o['b' + i] = { y: r2(y), height: r2(L.pb - y) };
+      (spec.lights || []).forEach(function (lt, j) {
+        var yy = L.Y((b[lt.key] || 0) * t);
+        o['l' + j + '_' + i] = { y: r2(yy), height: r2(L.pb - yy) };
+      });
+    });
+    (spec.lights || []).forEach(function (lt, j) { o['lg' + j] = { opacity: r2(sv(lt.state)) }; });
+    if (spec.range) {
+      var p = sv(spec.range.state), c = (L.X(spec.range.lo) + L.X(spec.range.hi)) / 2, hw = (L.X(spec.range.hi) - L.X(spec.range.lo)) / 2 * p;
+      o.range = { x: r2(c - hw), width: r2(2 * hw) };
+      o.rl = { opacity: r2(p) };
+    }
+    (spec.marks || []).forEach(function (m, i) { o['m' + i] = { opacity: r2(sv(m.state)) }; });
+    return o;
+  }
+
+  function renderStrip(spec, st, w, opt) {
+    var L = stripLayout(spec, w, opt.strict), D = stripDyn(spec, L, st), s = [];
+    function A(k) { var a = D[k], out = ''; for (var n in a) out += ' ' + n + '="' + esc(a[n]) + '"'; return ' data-k="' + k + '"' + out; }
+    s.push('<svg class="chart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + L.w + ' ' + L.h + '" width="' + L.w + '" height="' + L.h + '" role="img" aria-label="' + esc(spec.title) + '">');
+    if (spec.range) s.push('<rect class="ch-band f-moss" y="' + L.ptop + '" height="' + (L.pb - L.ptop) + '"' + A('range') + '/>');
+    L.yt.forEach(function (v, i) {
+      var y = r2(L.Y(v));
+      s.push('<line class="ch-grid" x1="' + L.pl + '" x2="' + (L.w - L.pr) + '" y1="' + y + '" y2="' + y + '"/>');
+      s.push('<text class="ch-tick" x="' + (L.pl - 8) + '" y="' + r2(y + 4) + '" text-anchor="end">' + esc(L.ylab[i]) + '</text>');
+    });
+    if (spec.y && spec.y.label) s.push('<text class="ch-tick ch-unit" x="' + L.pl + '" y="' + (L.ptop - 8) + '">' + esc(spec.y.label) + '</text>');
+    spec.bins.forEach(function (b, i) {
+      s.push('<rect class="ch-bar f-dim" x="' + r2(L.bx[i] + 0.5) + '" width="' + r2(Math.max(L.bw - 1, 1)) + '"' + A('b' + i) + '/>');
+    });
+    (spec.lights || []).forEach(function (lt, j) {
+      s.push('<g class="ch-light"' + A('lg' + j) + '>');
+      spec.bins.forEach(function (b, i) {
+        s.push('<rect class="ch-bar f-' + lt.color + '" x="' + r2(L.bx[i] + 0.5) + '" width="' + r2(Math.max(L.bw - 1, 1)) + '"' + A('l' + j + '_' + i) + '/>');
+      });
+      s.push('</g>');
+    });
+    s.push('<line class="ch-axis" x1="' + L.pl + '" x2="' + (L.w - L.pr) + '" y1="' + L.pb + '" y2="' + L.pb + '"/>');
+    L.xt.forEach(function (v) {
+      var x = r2(L.X(v));
+      s.push('<line class="ch-axis" x1="' + x + '" x2="' + x + '" y1="' + L.pb + '" y2="' + (L.pb + 4) + '"/>');
+      s.push('<text class="ch-tick" x="' + x + '" y="' + (L.pb + 17) + '" text-anchor="middle">' + esc(fmt(v, 0)) + '</text>');
+    });
+    // the end bins carry their counts, since their height is a tail, not a
+    // bin; anchored inward so a count never runs off the canvas
+    spec.bins.forEach(function (b, i) {
+      if (b.a != null && b.b != null) return;
+      var x = b.a == null ? r2(L.bx[i]) : r2(L.bx[i] + L.bw);
+      s.push('<text class="ch-tick" x="' + x + '" y="' + r2(L.Y(b.n) - 4) + '" text-anchor="' + (b.a == null ? 'start' : 'end') + '">' + fmt(b.n, 0) + '</text>');
+    });
+    if (spec.x && spec.x.label) s.push('<text class="ch-tick" x="' + L.pl + '" y="' + (L.pb + 17 + LANE) + '">' + esc(spec.x.label) + '</text>');
+    (spec.marks || []).forEach(function (m, i) {
+      var x = r2(L.X(m.at)), lb = L.labs.filter(function (l) { return l.k === 'ml' + i; })[0];
+      s.push('<g class="ch-ann"' + A('m' + i) + '><line x1="' + x + '" x2="' + x + '" y1="' + (lb.y + 4) + '" y2="' + L.pb + '"/>' +
+        '<text x="' + r2(lb.L) + '" y="' + lb.y + '">' + esc(m.label) + '</text></g>');
+    });
+    if (spec.range) {
+      var rl = L.labs[0];
+      s.push('<text class="ch-rl"' + A('rl') + ' x="' + r2(rl.L) + '" y="' + rl.y + '">' + esc(spec.range.label) + '</text>');
+    }
+    s.push('</svg>');
+    return s.join('');
+  }
+
   /* ------------------------------------------------------------ public --- */
 
   var KINDS = { series: { render: renderSeries, layout: seriesLayout, dyn: seriesDyn },
-                split: { render: renderSplit, layout: splitLayout, dyn: splitDyn } };
+                split: { render: renderSplit, layout: splitLayout, dyn: splitDyn },
+                strip: { render: renderStrip, layout: stripLayout, dyn: stripDyn } };
 
   function kind(spec) {
     var k = KINDS[spec.type];

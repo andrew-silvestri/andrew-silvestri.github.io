@@ -1,0 +1,29 @@
+{
+ "name": "lostgas-meter",
+ "title": "How a gas meter can report gas as lost that was delivered",
+ "duration_s": 31.7,
+ "width": 1280,
+ "height": 720,
+ "fps": 30,
+ "poster_t": 30.5,
+ "scene": "clips/scenes/lost_gas.py",
+ "class": "LostGas",
+ "files": {
+  "webm": {
+   "bytes": 428421,
+   "sha1": "ae6fb28c4a30d77f68835b1cbf274d772f4bd6d0"
+  },
+  "mp4": {
+   "bytes": 367464,
+   "sha1": "3f775a31fb5a7cc6cd5a0ec39baf19a90f05a119"
+  },
+  "png": {
+   "bytes": 133090,
+   "sha1": "65c9cc2f006ceb92856a7e967f67b320aeab547a"
+  },
+  "vtt": {
+   "bytes": 856,
+   "sha1": "f7b51d1a3a28fba652042f78bdc4c5f4801913c7"
+  }
+ }
+}

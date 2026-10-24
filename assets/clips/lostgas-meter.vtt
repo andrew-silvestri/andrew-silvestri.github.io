@@ -1,0 +1,30 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.000
+An orifice meter: gas squeezes through a hole in a plate.
+
+2
+00:00:04.000 --> 00:00:08.500
+The pressure falls across the plate, and the fall says how fast the gas is moving.
+
+3
+00:00:08.500 --> 00:00:12.000
+The coefficient that turns that fall into a flow comes from an equation, not from this meter.
+
+4
+00:00:12.000 --> 00:00:16.500
+A utility has thousands of customer meters. Each meter's own error averages away.
+
+5
+00:00:16.500 --> 00:00:21.000
+An error they all share does not: it stays the same size however many meters there are.
+
+6
+00:00:21.000 --> 00:00:26.000
+One such error: a meter that does not correct for temperature reads cold gas as less gas.
+
+7
+00:00:26.000 --> 00:00:31.500
+Gas in minus gas billed is reported as unaccounted for, though customers got it; its cost returns through the gas charge.
+
