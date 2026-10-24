@@ -1,6 +1,6 @@
 /* charts.js - the insight kit's chart primitives (R1, 2026-10-23).
  *
- * Three charts and a number formatter, enough for the reworked pages:
+ * Four charts and a number formatter, enough for the reworked pages:
  *   series  a time series that draws as the reader scrolls; annotations
  *           appear when the line reaches their date; an optional band fills
  *           the gap between two series, in one colour where the first is
@@ -10,6 +10,8 @@
  *   split   one bar, the total, that opens into its parts ("where it goes").
  *   strip   a cross-section as a histogram, with lit overlays, a shaded
  *           range and marks (R3, lostgas.html).
+ *   days    one bar per day of a year, two years blended, a running
+ *           counter and a lit subset of days (R4, storage.html).
  *
  * ONE IMPLEMENTATION, TWO CONSUMERS. render(spec, state, opt) returns an SVG
  * string and touches no DOM, so the build runs it in node (kit_render.js) to
@@ -542,11 +544,112 @@
     return s.join('');
   }
 
+  /* -------------------------------------------------------------- days --- */
+  /* One bar per day of a year (R4, storage.html): what a battery made that
+     day. Two years in one spec, spec.a and spec.b, each {label, start
+     'YYYY-MM-DD', values: [per day], half: [day indices]}; the state blends
+     the bar heights from a to b (mix), reveals the days left to right (t),
+     and dims every day outside the year's "half" set (lit). Both years share
+     one y scale, so a quiet year looks quiet beside a loud one. A counter in
+     the header sums the days revealed so far; its text, the year label and
+     the half label are the only text that changes. Every state key is 0..1. */
+
+  function daysLayout(spec, w, strict) {
+    var A = spec.a, B = spec.b || spec.a, n = Math.max(A.values.length, B.values.length);
+    if (!n) throw new Error('charts: days ' + spec.id + ' has no days');
+    var all = A.values.concat(B.values), hi = Math.max.apply(null, all), lo = Math.min(0, Math.min.apply(null, all));
+    var step = niceStep(hi - lo, 4);
+    hi = Math.ceil(hi / step - 1e-9) * step; lo = Math.floor(lo / step + 1e-9) * step;
+    var dec = decimalsOf(step), yt = [];
+    for (var v = lo; v <= hi + step * 1e-6; v += step) yt.push(r2(v * 1e6) / 1e6);
+    var ylab = yt.map(function (v) { return fmt(v, dec); });
+    var pl = Math.max.apply(null, ylab.map(function (s) { return s.length; })) * CW + 8, pr = 8;
+    // header: year label and counter on one row (left), the half label on the next
+    // the counter's widest text is the larger year's sum of its positive days
+    function posSum(vs) { return vs.reduce(function (a, v) { return a + (v > 0 ? v : 0); }, 0); }
+    var c = spec.counter || {}, cmax = Math.max(posSum(A.values), posSum(B.values));
+    var cntW = ((c.prefix || '') + fmt(cmax, c.decimals || 0)).length * CW_BIG +
+      Math.max(String(c.unit || '').length, String(c.unitDone || '').length) * CW_BIG;
+    var yrW = Math.max(String(A.label).length, String(B.label).length) * CW_BIG + 12;
+    if (strict && yrW + cntW > w) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: year and counter do not fit one row');
+    var hw = Math.max(String(A.halfText || '').length, String(B.halfText || '').length) * CW;
+    if (strict && hw > w) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: half label wider than the chart');
+    var row1 = 16, row2 = row1 + LANE + 4, unitY = row2 + LANE;
+    var ptop = unitY + 10;
+    var pb = Math.round(ptop + (spec.plotH || Math.min(Math.max(w * 0.38, 170), 300)));
+    var pw = w - pl - pr, bw = pw / n;
+    function X(i) { return pl + i * bw; }
+    function Y(v) { return pb - (v - lo) / (hi - lo) * (pb - ptop); }
+    // month ticks from the first year's calendar; labels thinned to fit
+    var m0 = /^(\d{4})-(\d{2})-(\d{2})$/.exec(A.start);
+    if (!m0) throw new Error('charts: days start not YYYY-MM-DD: ' + A.start);
+    var mt = [], day = 0, yy = +m0[1];
+    for (var m = 0; m < 12; m++) {
+      mt.push({ i: day, label: MONTHS[m] });
+      day += [31, (yy % 4 === 0 && (yy % 100 !== 0 || yy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
+    }
+    var every = [1, 2, 3, 6].filter(function (k) { return k * 30 * bw >= 3 * CW + 8; })[0] || 12;
+    mt = mt.filter(function (t, k) { return k % every === 0; });
+    var h = pb + 22;
+    return { w: w, h: h, n: n, pl: pl, pr: pr, pw: pw, bw: bw, ptop: ptop, pb: pb, X: X, Y: Y, yt: yt, ylab: ylab,
+             mt: mt, row1: row1, row2: row2, unitY: unitY, lo: lo, hi: hi };
+  }
+
+  function daysDyn(spec, L, st) {
+    var t = clamp(st.t == null ? 1 : st.t, 0, 1), mix = clamp(st.mix == null ? 0 : st.mix, 0, 1);
+    var lit = clamp(st.lit == null ? 0 : st.lit, 0, 1), A = spec.a, B = spec.b || spec.a;
+    var cur = mix < 0.5 ? A : B, half = {}, o = {}, sum = 0, shown = Math.round(t * L.n);
+    (cur.half || []).forEach(function (i) { half[i] = 1; });
+    for (var i = 0; i < L.n; i++) {
+      var a = A.values[i] || 0, b = B.values[i] || 0, v = a + (b - a) * mix;
+      var y0 = L.Y(0), y1 = L.Y(v);
+      o['d' + i] = { y: r2(Math.min(y0, y1)), height: r2(Math.abs(y0 - y1)),
+                     opacity: r2(half[i] ? 1 : 1 - 0.75 * lit) };
+      if (i < shown) sum += v;
+    }
+    var c = spec.counter || {};
+    o.clip = { width: r2(t * L.pw + 1) };
+    // the counter says "so far" while days remain to draw, and its unitDone once they are all drawn
+    o.cnt = { _text: (c.prefix || '') + fmt(sum, c.decimals || 0) + ((shown >= L.n && c.unitDone != null) ? c.unitDone : (c.unit || '')) };
+    o.yr = { _text: String(cur.label) };
+    o.hl = { opacity: r2(lit), _text: (cur.halfText || '') };
+    return o;
+  }
+
+  function renderDays(spec, st, w, opt) {
+    var L = daysLayout(spec, w, opt.strict), D = daysDyn(spec, L, st), s = [], id = esc(spec.id + (opt.suffix || ''));
+    function A(k) { var a = D[k], out = ''; for (var n in a) if (n !== '_text') out += ' ' + n + '="' + esc(a[n]) + '"'; return ' data-k="' + k + '"' + out; }
+    s.push('<svg class="chart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + L.w + ' ' + L.h + '" width="' + L.w + '" height="' + L.h + '" role="img" aria-label="' + esc(spec.title) + '">');
+    s.push('<defs><clipPath id="' + id + '-clip"><rect data-k="clip" x="' + L.pl + '" y="0" width="' + D.clip.width + '" height="' + L.h + '"/></clipPath></defs>');
+    s.push('<text class="ch-now" x="0" y="' + L.row1 + '"' + A('yr') + '>' + esc(D.yr._text) + '</text>');
+    s.push('<text class="ch-now ch-cnt" x="' + L.w + '" y="' + L.row1 + '" text-anchor="end"' + A('cnt') + '>' + esc(D.cnt._text) + '</text>');
+    s.push('<text class="ch-rl" x="0" y="' + L.row2 + '"' + A('hl') + '>' + esc(D.hl._text) + '</text>');
+    L.yt.forEach(function (v, i) {
+      var y = r2(L.Y(v));
+      s.push('<line class="ch-grid" x1="' + L.pl + '" x2="' + (L.w - L.pr) + '" y1="' + y + '" y2="' + y + '"/>');
+      s.push('<text class="ch-tick" x="' + (L.pl - 8) + '" y="' + r2(y + 4) + '" text-anchor="end">' + esc(L.ylab[i]) + '</text>');
+    });
+    if (spec.y && spec.y.label) s.push('<text class="ch-tick ch-unit" x="' + L.pl + '" y="' + L.unitY + '">' + esc(spec.y.label) + '</text>');
+    s.push('<g clip-path="url(#' + id + '-clip)">');
+    var bw = r2(Math.max(L.bw - (L.bw > 2 ? 0.5 : 0), 0.6));
+    for (var i = 0; i < L.n; i++) s.push('<rect class="ch-bar f-acc" x="' + r2(L.X(i)) + '" width="' + bw + '"' + A('d' + i) + '/>');
+    s.push('</g>');
+    s.push('<line class="ch-axis" x1="' + L.pl + '" x2="' + (L.w - L.pr) + '" y1="' + r2(L.Y(0)) + '" y2="' + r2(L.Y(0)) + '"/>');
+    L.mt.forEach(function (m) {
+      var x = r2(L.X(m.i));
+      s.push('<line class="ch-axis" x1="' + x + '" x2="' + x + '" y1="' + L.pb + '" y2="' + (L.pb + 4) + '"/>');
+      s.push('<text class="ch-tick" x="' + x + '" y="' + (L.pb + 17) + '">' + m.label + '</text>');
+    });
+    s.push('</svg>');
+    return s.join('');
+  }
+
   /* ------------------------------------------------------------ public --- */
 
   var KINDS = { series: { render: renderSeries, layout: seriesLayout, dyn: seriesDyn },
                 split: { render: renderSplit, layout: splitLayout, dyn: splitDyn },
-                strip: { render: renderStrip, layout: stripLayout, dyn: stripDyn } };
+                strip: { render: renderStrip, layout: stripLayout, dyn: stripDyn },
+                days: { render: renderDays, layout: daysLayout, dyn: daysDyn } };
 
   function kind(spec) {
     var k = KINDS[spec.type];
@@ -564,8 +667,17 @@
   function update(svg, spec, state) {
     var k = kind(spec), w = +svg.getAttribute('width');
     var D = k.dyn(spec, k.layout(spec, w, false), state || {});
+    // One lookup table per drawn svg, built on its first update: a days
+    // chart carries 365 keyed bars, and a querySelector per key per frame made
+    // every scroll frame scan the whole svg 365 times (R4, 2026-10-23).
+    var map = svg.__keyed;
+    if (!map) {
+      map = svg.__keyed = {};
+      var all = svg.querySelectorAll('[data-k]');
+      for (var j = 0; j < all.length; j++) map[all[j].getAttribute('data-k')] = all[j];
+    }
     for (var key in D) {
-      var el = svg.querySelector('[data-k="' + key + '"]');
+      var el = map[key];
       if (!el) continue;
       for (var n in D[key]) {
         if (n === '_text') { if (el.textContent !== D[key][n]) el.textContent = D[key][n]; }
