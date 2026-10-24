@@ -2,42 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://andrewsilvestri.com/</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/about.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/code.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/continents.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/heat.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/lostgas.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/skyline.html</loc>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/storage.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/takeaway.html</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>
