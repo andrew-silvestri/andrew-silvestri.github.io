@@ -10,16 +10,16 @@
  "class": "LostGas",
  "files": {
   "webm": {
-   "bytes": 428421,
-   "sha1": "ae6fb28c4a30d77f68835b1cbf274d772f4bd6d0"
+   "bytes": 417027,
+   "sha1": "90f4c7df65ab8b0d08e9a5fae8ef55c483877064"
   },
   "mp4": {
-   "bytes": 367464,
-   "sha1": "3f775a31fb5a7cc6cd5a0ec39baf19a90f05a119"
+   "bytes": 352633,
+   "sha1": "7e8d96a3c147f224db9fb501c0f798a425a4b527"
   },
   "png": {
-   "bytes": 133090,
-   "sha1": "65c9cc2f006ceb92856a7e967f67b320aeab547a"
+   "bytes": 130450,
+   "sha1": "a6388f67a508bd79c646a74861c5f9f2d7a396c2"
   },
   "vtt": {
    "bytes": 856,
