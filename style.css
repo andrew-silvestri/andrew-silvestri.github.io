@@ -267,6 +267,24 @@ nav.top .ddmenu a {
    fine, so nothing pointed at it. It is --acc now, 5.71:1 measured, and the hover
    actually changes the text colour the way the file has always claimed. */
 nav.top .ddmenu a:hover { color: var(--acc); background: var(--bg-lift); }
+/* ON HOLD (rebuild_nav.HOLD, 2026-10-28): an article being rewritten keeps
+   its title in the menu and on the home page, struck through, as plain text
+   rather than a link. Same box as a menu link so the menu does not jump. */
+nav.top .ddmenu span.off {
+  display: block;
+  margin: 0;
+  padding: 8px 16px;
+  color: var(--dim);
+  font-size: var(--fs-1);
+  white-space: nowrap;
+  text-decoration: line-through;
+  cursor: default;
+}
+.entry.off, .entry.off h3, .entry.off .tag, .entry.off p, h2.off {
+  color: var(--dim);
+  text-decoration: line-through;
+}
+.holdnote { color: var(--dim); font-size: var(--fs-1); }
 
 /* --------------------------------------------------------------- text --- */
 /* A content grid with three named tracks. Children default to the text
@@ -859,6 +877,7 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
      the column layout, so there is no button text to align under; 18px is
      just enough to read as nested under its group. */
   nav.top .ddmenu a { padding: 9px 0 9px 18px; font-size: var(--fs-1); }
+  nav.top .ddmenu span.off { padding: 9px 0 9px 18px; }
   .dd { display: block; margin: 2px 0; width: 100%; }
   /* One item per row. The bar is a wrapping flex row, so the groups — which
      are block-level — took a line each while the plain links flowed
