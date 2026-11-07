@@ -1740,6 +1740,43 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   }
   var dtLast = 0.016;
 
+  function aim(goal) {
+    S.fling = 0;
+    S.azGoal = goal;
+    touch();
+  }
+
+  /* Motion blur, while the view swings: the last frame is laid over the
+     new one at an opacity that grows with the turning speed, so a fast
+     turn smears as a camera's pan would. Nothing when still or with
+     reduced motion. Only the painting (above the street) is blurred; the
+     meter and its labels stay sharp. */
+  var ghost = null;
+  function blur() {
+    if (!SC) return;
+    var splitY = SC.L.groundY;
+    var v = Math.abs(S.vel || 0);
+    if (!ghost || ghost.cv.width !== W || ghost.cv.height !== splitY) {
+      ghost = offscreen(W, splitY);
+      if (!ghost) return;
+    }
+    var a = motionOff ? 0 : clamp((v - 15) / 180, 0, 0.45);
+    // on a slow frame the old image is too far back to read as blur: skip
+    if (dtLast > 0.03) a = 0;
+    if (a > 0.01) {
+      // the old frame, shifted half a step back along the swing, then the
+      // copy for next time is taken from the blended result
+      var shift = -(S.vel || 0) * dtLast * (W - PAD * 2) / view() * 0.5;
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.drawImage(ghost.cv, -shift, 0);
+      ctx.restore();
+      minimap(SC, SC.P);         // the map stays crisp
+    }
+    ghost.g.clearRect(0, 0, W, splitY);
+    ghost.g.drawImage(canvas, 0, 0, W, splitY, 0, 0, W, splitY);
+  }
+
   // repaint stale towers, the ones in view first, within a time budget
   function repaint(SCn, ms) {
     var t0 = (window.performance || Date).now(), T = SCn.T, pass, i;
@@ -2008,7 +2045,24 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     last = ts;
 
     dtLast = dt;
+    var az0 = S.az;
     if (S.spin) { S.az += S.spin * dt * 22; panelSoon(); }
+    /* Turning eases: the hand, the keys and the map set a goal and the view
+       closes on it fast (about 60 ms), so a mouse that reports 60 times a
+       second still turns the city smoothly on a 144 Hz screen. A release
+       mid-swing coasts. */
+    if (S.azGoal != null) {
+      var dg = delta(S.azGoal, S.az);
+      if (motionOff || Math.abs(dg) < 0.01) { S.az = S.azGoal; S.azGoal = null; }
+      else S.az += dg * Math.min(1, dt * 16);
+      panelSoon();
+    } else if (S.fling) {
+      S.az += S.fling * dt;
+      S.fling *= Math.exp(-dt * 4.5);
+      if (Math.abs(S.fling) < 2) S.fling = 0;
+      panelSoon();
+    }
+    S.vel = dt > 0 ? delta(S.az, az0) / dt : 0;
     /* The painting has things that move on their own - beacons, the
        searchlights, the blimp, windows - so it redraws while motion is
        allowed, at up to 30 frames a second when nothing else is changing.
@@ -2016,7 +2070,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     var ambient = false;
     if (!motionOff) {
       clock += dt;
-      if (ts - lastAmbient > 33) { ambient = true; lastAmbient = ts; }
+      // every frame: at 30 the beacons and the blimp stuttered
+      ambient = true; lastAmbient = ts;
     }
 
     var b = bars(), moved = false, k;
@@ -2042,9 +2097,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
       else { pkv[k] += 9 * dt; pk[k] -= pkv[k] * dt; moved = true; }
       if (pk[k] < 0) pk[k] = 0;
     }
-    if (!moved && !S.spin && !dirty && !ambient && !(SC && SC.stale)) return;
+    if (!moved && !S.spin && !dirty && !ambient && !(SC && SC.stale) &&
+        S.azGoal == null && !S.fling) return;
     dirty = false;
     draw();
+    blur();
     pushAudio();
     notesLine();
   }
@@ -2222,6 +2279,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   /* ------------------------------------------------------------ events -- */
   var drag = null;
   canvas.addEventListener('pointerdown', function (e) {
+    S.fling = 0;
     if (onMap(e)) {
       drag = { map: true };
       S.spin = 0; spinBtn.classList.remove('on');
@@ -2236,19 +2294,30 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     if (drag && drag.map) { onMap(e); return; }
     if (drag) {
       var r = canvas.getBoundingClientRect();
-      S.az = drag.az - (e.clientX - drag.x) / r.width * view();
+      var goal = drag.az - (e.clientX - drag.x) / r.width * view();
+      // remember how fast the hand is moving, for the fling on release
+      var nowT = performance.now();
+      if (drag.lt) drag.v = 0.7 * (drag.v || 0) +
+        0.3 * delta(goal, drag.lg) / Math.max(0.008, (nowT - drag.lt) / 1000);
+      drag.lt = nowT; drag.lg = goal;
+      aim(goal);
       touch(); panelSoon();
       return;
     }
     hover(e);
   });
-  canvas.addEventListener('pointerup', function () { drag = null; });
+  canvas.addEventListener('pointerup', function () {
+    // let go mid-swing and the view coasts to a stop
+    if (drag && drag.v && !motionOff && performance.now() - (drag.lt || 0) < 80)
+      S.fling = clamp(drag.v, -400, 400);
+    drag = null;
+  });
   canvas.addEventListener('pointerleave', function () {
     drag = null; tip.style.display = 'none';
   });
   canvas.addEventListener('wheel', function (e) {
     e.preventDefault();
-    S.az += Math.sign(e.deltaY) * 4;
+    aim((S.azGoal == null ? S.az : S.azGoal) + Math.sign(e.deltaY) * 4);
     touch(); panelSoon();
   }, { passive: false });
 
@@ -2299,7 +2368,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     if (dx * dx + dy * dy > MM.r * MM.r * 1.1) return false;
     if (dx * dx + dy * dy < 4 * dpr * dpr) return true;
     var b = wrap(Math.atan2(dx, -dy) * 180 / Math.PI);
-    S.az = slotOfBearing(b);
+    aim(slotOfBearing(b));
     touch(); panelSoon();
     return true;
   }
@@ -2308,8 +2377,9 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     var tag = e.target.tagName;
     if (tag === 'SELECT' || tag === 'INPUT' || tag === 'BUTTON') return;
     var step = e.shiftKey ? 15 : 3;
-    if (e.key === 'ArrowLeft') S.az -= step;
-    else if (e.key === 'ArrowRight') S.az += step;
+    var base = S.azGoal == null ? S.az : S.azGoal;
+    if (e.key === 'ArrowLeft') aim(base - step);
+    else if (e.key === 'ArrowRight') aim(base + step);
     else if (e.key === ' ') { if (!motionOff) spinBtn.click(); }
     else return;
     e.preventDefault();
