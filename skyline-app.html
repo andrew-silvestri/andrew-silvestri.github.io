@@ -984,7 +984,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
                      precip: cur.precipitation || 0, wind: cur.wind_speed_10m || 0,
                      wdir: cur.wind_direction_10m || 0,
                      vis: cur.visibility == null ? 20000 : cur.visibility };
-        SC = null; touch(); panelSoon();
+        startFade(900); SC = null; touch(); panelSoon();
       })
       .catch(function () {
         done = true; clearTimeout(to);
@@ -1072,6 +1072,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
          150 ms, which is a stall when the time slider is dragged; this way
          the sky moves at once and the towers follow within a few frames. */
       if (SC.lkey !== LT.key) {
+        startFade(420);           // the old light dissolves into the new
         SC.LT = LT; SC.P = pal(LT); SC.lkey = LT.key; SC_wN = LT.wN;
         for (var q = 0; q < SC.T.length; q++) SC.T[q].stale = true;
         SC.stale = SC.T.length;
@@ -1121,6 +1122,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     var order = T.slice().sort(function (a, b) {
       return b.r[2] - a.r[2] || a.i - b.i;
     });
+    if (SC) startFade(520);     // a new city, size or weather: dissolve
     SC = { key: key, lkey: LT.key, stale: 0, T: T, order: order, P: P, L: L,
            s0: s0, LT: LT, wf: wf, back: backdrop(T, s0, L),
            stars: stars(P), grain: grain() };
@@ -1740,6 +1742,30 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   }
   var dtLast = 0.016;
 
+  /* Cross-dissolve. Whenever the picture would change at once - a new
+     city, the weather arriving, the light moving on - the last frame is
+     kept and laid over the new ones, fading out, so nothing snaps. */
+  var fadeCv = null, fadeT0 = 0, fadeDur = 0, fading = false;
+  function startFade(ms) {
+    if (motionOff || !canvas.width) return;
+    if (!fadeCv || fadeCv.cv.width !== W || fadeCv.cv.height !== H) {
+      fadeCv = offscreen(W, H);
+      if (!fadeCv) return;
+    }
+    fadeCv.g.clearRect(0, 0, W, H);
+    fadeCv.g.drawImage(canvas, 0, 0);
+    fadeT0 = performance.now(); fadeDur = ms; fading = true;
+  }
+  function fadeOver() {
+    if (!fading || !fadeCv) return;
+    var t = (performance.now() - fadeT0) / fadeDur;
+    if (t >= 1) { fading = false; return; }
+    var a = 1 - t * t * (3 - 2 * t);           // smoothstep out
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.drawImage(fadeCv.cv, 0, 0);
+    ctx.restore();
+  }
+
   function aim(goal) {
     S.fling = 0;
     S.azGoal = goal;
@@ -2054,7 +2080,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     if (S.azGoal != null) {
       var dg = delta(S.azGoal, S.az);
       if (motionOff || Math.abs(dg) < 0.01) { S.az = S.azGoal; S.azGoal = null; }
-      else S.az += dg * Math.min(1, dt * 16);
+      else S.az += dg * Math.min(1, dt * 10);
       panelSoon();
     } else if (S.fling) {
       S.az += S.fling * dt;
@@ -2063,6 +2089,20 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
       panelSoon();
     }
     S.vel = dt > 0 ? delta(S.az, az0) / dt : 0;
+    /* The field of view and the clock glide too: a slider dragged or a
+       button pressed sets a goal, and the view and the sky close on it. */
+    if (S.fovGoal != null) {
+      var df = S.fovGoal - S.fov;
+      if (motionOff || Math.abs(df) < 0.05) { S.fov = S.fovGoal; S.fovGoal = null; }
+      else S.fov += df * Math.min(1, dt * 9);
+      panelSoon();
+    }
+    if (S.shiftGoal != null) {
+      var ds = S.shiftGoal - S.shift;
+      if (motionOff || Math.abs(ds) < 20000) { S.shift = S.shiftGoal; S.shiftGoal = null; }
+      else S.shift += ds * Math.min(1, dt * 6);
+      panelSoon();
+    }
     /* The painting has things that move on their own - beacons, the
        searchlights, the blimp, windows - so it redraws while motion is
        allowed, at up to 30 frames a second when nothing else is changing.
@@ -2098,10 +2138,12 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
       if (pk[k] < 0) pk[k] = 0;
     }
     if (!moved && !S.spin && !dirty && !ambient && !(SC && SC.stale) &&
-        S.azGoal == null && !S.fling) return;
+        S.azGoal == null && !S.fling && S.fovGoal == null &&
+        S.shiftGoal == null && !fading) return;
     dirty = false;
     draw();
     blur();
+    fadeOver();
     pushAudio();
     notesLine();
   }
@@ -2267,11 +2309,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   }
   if (timeEl) timeEl.addEventListener('input', function () {
     var cur = localParts(Date.now()).mins;
-    S.shift = (+this.value - cur) * 60000;
+    S.shiftGoal = (+this.value - cur) * 60000;
     touch(); panelSoon();
   });
   if (nowBtn) nowBtn.addEventListener('click', function () {
-    S.shift = 0; touch(); panel();
+    S.shiftGoal = 0; touch(); panel();
   });
   // the clock line moves with the clock
   setInterval(function () { if (!document.hidden) when(); }, 30000);
@@ -2387,6 +2429,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   });
 
   document.getElementById('city').addEventListener('change', function () {
+    startFade(520);
+    S.azGoal = null; S.fling = 0; S.fovGoal = null;
     S.i = +this.value;
     S.az = C[S.i].look;
     if (!S.fovSet) {
@@ -2399,7 +2443,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
     setKey(); touch(); panel();
   });
   document.getElementById('fov').addEventListener('input', function () {
-    S.fov = +this.value; S.fovSet = true; touch(); panelSoon();
+    S.fovGoal = +this.value; S.fovSet = true; touch(); panelSoon();
   });
   document.getElementById('vol').addEventListener('input', function () {
     S.vol = +this.value / 100; pushAudio();
