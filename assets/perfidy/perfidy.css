@@ -1,0 +1,53 @@
+/* perfidy.html only. The figures draw glyph outlines from perfidy-data.js; the specimen and the
+   feature table set live text in the Perfidy fonts below. Colours are the site's tokens. */
+@font-face { font-family: "Perfidy Text"; src: url("PerfidyText-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Text"; src: url("PerfidyText-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Perfidy Text"; src: url("PerfidyText-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Display"; src: url("PerfidyDisplay-Light.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Display"; src: url("PerfidyDisplay-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Mono"; src: url("PerfidyMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy SemiMono"; src: url("PerfidySemiMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+
+.pf-specimen { margin: 8px 0 4px; padding: 26px 0 22px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.pf-specimen .d { font: 700 clamp(44px, 9vw, 104px)/1 "Perfidy Display", var(--sans); margin: 0; color: var(--ink); }
+.pf-specimen .dl { font: 300 clamp(22px, 3.4vw, 36px)/1.15 "Perfidy Display", var(--sans); margin: 10px 0 18px; color: var(--ink); }
+.pf-specimen .t { font: 400 17px/1.55 "Perfidy Text", var(--sans); max-width: 62ch; margin: 0 0 12px; color: var(--ink); }
+.pf-specimen .m { font: 400 15px/1.5 "Perfidy Mono", var(--mono); margin: 0 0 6px; color: var(--ink); overflow-wrap: anywhere; }
+.pf-specimen .s { font: 400 15px/1.5 "Perfidy SemiMono", var(--mono); margin: 0; color: var(--ink); }
+.pf-specimen .lab { font: 12px/1.4 var(--sans); color: var(--dim); letter-spacing: .02em; display: block; margin-bottom: 2px; }
+.pf-inline { font-family: "Perfidy Text", var(--sans); }
+.pf-inline code { font: 400 1em "Perfidy Mono", var(--mono); background: none; padding: 0; color: var(--ink); }
+.pf-inline .sm { font-family: "Perfidy SemiMono", var(--mono); }
+
+figure.pf-fig { margin: 6px 0 4px; }
+.pf-fig svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pf-fig .glyph { fill: var(--ink); }
+.pf-fig .glyph.alt { fill: var(--acc); }
+.pf-fig .guide { stroke: var(--rule); stroke-width: 1; fill: none; }
+.pf-fig .guide.acc { stroke: var(--acc); stroke-width: 1.5; }
+.pf-fig .guide.moss { stroke: var(--moss); stroke-dasharray: 5 4; }
+.pf-fig .cell { fill: none; stroke: var(--rule); stroke-width: 1; }
+.pf-fig .tick { stroke: var(--acc); stroke-width: 2; }
+.pf-fig .axis { stroke: var(--ink); stroke-width: 2; }
+.pf-fig .axis.ext { stroke-dasharray: 4 4; stroke: var(--moss); }
+.pf-fig .stop { fill: var(--bg); stroke: var(--acc); stroke-width: 2; }
+.pf-fig .knob { fill: var(--acc); }
+
+.pf-ctl { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; justify-content: center; }
+.pf-ctl button {
+  font: 13px/1 var(--sans); color: var(--acc); background: var(--card); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 8px 12px; min-height: 34px;
+}
+.pf-ctl button:hover { border-color: var(--acc-dim); }
+.pf-ctl button[aria-pressed="true"] { background: var(--acc-fill); color: var(--acc-ink); border-color: var(--acc-fill); }
+.pf-ctl button:focus-visible, .pf-range:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.pf-read { font: 14px/1.5 var(--sans); color: var(--ink); text-align: center; margin: 10px 0 0; font-variant-numeric: tabular-nums; }
+.pf-read .k { color: var(--dim); }
+.pf-range { width: 96%; margin: 6px 2% 0; accent-color: var(--acc); display: block; }
+
+.pf-panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.pf-panel p { font: 13px/1.45 var(--sans); color: var(--dim); text-align: center; margin: 6px 0 0; font-variant-numeric: tabular-nums; }
+.pf-panel p b { color: var(--ink); font-weight: 600; }
+@media (max-width: 640px) { .pf-panels { gap: 6px; } .pf-panel p { font-size: 12px; } }
+
+table.pf-feat td.v { font-family: "Perfidy Text", var(--sans); font-size: 18px; }

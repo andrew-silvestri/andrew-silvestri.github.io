@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Perfidy, a type family — Andrew Silvestri</title>
+<meta name="description" content="Perfidy is 46 open-license fonts built from Merriweather Sans, iA Writer Quattro and IBM Plex Mono, each recalibrated in weight, size and spacing so the four families share one x-height, one weight scale and one set of line metrics.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="canonical" href="https://andrewsilvestri.com/perfidy.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Perfidy, a type family — Andrew Silvestri">
+<meta property="og:description" content="Perfidy is 46 open-license fonts built from Merriweather Sans, iA Writer Quattro and IBM Plex Mono, each recalibrated in weight, size and spacing so the four families share one x-height, one weight scale and one set of line metrics.">
+<meta property="og:url" content="https://andrewsilvestri.com/perfidy.html">
+<script>/* the motion contract — set before first paint, from the system preference alone */
+try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
+<link rel="stylesheet" href="style.css?v=f1c815e3">
+<link rel="stylesheet" href="assets/perfidy/perfidy.css?v=58cf6703">
+</head><body>
+<nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Gas <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">Lost gas</span><span class="off" aria-disabled="true">When the pipe is full</span><span class="off" aria-disabled="true">Uri's long gas bill</span><span class="off" aria-disabled="true">Ethane left in the gas</span></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Power <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">The electric boiler's break-even</span><span class="off" aria-disabled="true">Batteries and scarcity</span></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">Inside a footprint</span></span></span><span class="dd"><a href="#" class="ddbtn on" aria-haspopup="true">Other <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Outliving their size</a><span class="off" aria-disabled="true">Endangered, and studied</span><a href="skyline.html">Skylines, played</a><span class="off" aria-disabled="true">Where the ground goes</span><a href="safetynet.html">Who gets an unemployment check</a><a href="lead.html">Leaded gasoline and lost IQ</a><a href="oxygen.html">From smog rule to corn ethanol</a><a href="perfidy.html" class="on">Perfidy, a type family</a></span></span><a href="code.html">Code</a><a href="about.html">About</a></nav>
+<main class="notes">
+
+<h1>Three open-source typefaces, recalibrated into one family of 46 fonts</h1>
+<p class="dim">Perfidy is a type family for interfaces, documents and code. It has four parts. Perfidy Text and Perfidy Display come from Merriweather Sans. Perfidy SemiMono comes from iA Writer Quattro, and Perfidy Mono from IBM Plex Mono. All three sources are released under the SIL Open Font License, and so is Perfidy. The letter shapes are the sources' own. What changed is weight, size and spacing. Each style was set to a stroke thickness on one scale, each family was scaled to an x-height of 0.50 em, and each style was given its own letter spacing. The result is that a line can switch between text, code and figures without the letters changing height or color. The family has 46 fonts, LaTeX and web math setups, and a Windows installer.</p>
+
+<div class="card">
+<div class="tag">Fonts</div>
+<h3 style="margin-top:4px">Perfidy on GitHub</h3>
+<p>All 46 fonts as TTF and WOFF2, a LaTeX package with matching math, CSS for the web, a Windows installer, and the build script that makes every font from the original source files.</p>
+<a class="btn" href="https://github.com/andrew-silvestri/perfidy" target="_blank" rel="noopener">Get the fonts</a>
+</div>
+
+<figure class="wide pf-specimen" aria-label="Perfidy specimen">
+<span class="lab">Perfidy Display Bold</span>
+<p class="d">Perfidy</p>
+<span class="lab">Perfidy Display Light</span>
+<p class="dl">Metaphysical, standardizing, 1,250.00</p>
+<span class="lab">Perfidy Text, Mono and SemiMono in one paragraph</span>
+<p class="t pf-inline">A steady-state reactor with first-order kinetics converts 87% of its feed. Set <code>conv_target = 0.87</code> in the config, and the solver reports the outlet at <span class="sm">412.60 K</span>. The <em>italic</em> and the <strong>bold</strong> sit on the same line without changing its height.</p>
+<span class="lab">Perfidy Mono</span>
+<p class="m">if reactor.conversion &gt;= 0.85: ship(lot_id=0x2F)</p>
+<span class="lab">Perfidy SemiMono</span>
+<p class="s">Glamorized strategical packet loss — 42 ms / 1,024 KB</p>
+</figure>
+<p class="small">Set live in the fonts this page describes.</p>
+
+<h2>How the family is put together</h2>
+
+<p>None of the open typefaces compared has a text face, a display cut, a semi-monospace and a monospace drawn to one plan, so Perfidy assembles them from three.</p>
+
+<table>
+<tr><th>Family</th><th>Built from</th><th>Styles</th></tr>
+<tr><td>Perfidy Text</td><td>Merriweather Sans, upright and italic</td><td class="n">12</td></tr>
+<tr><td>Perfidy Display</td><td>Merriweather Sans, upright and italic</td><td class="n">12</td></tr>
+<tr><td>Perfidy SemiMono</td><td>iA Writer Quattro</td><td class="n">12</td></tr>
+<tr><td>Perfidy Mono</td><td>IBM Plex Mono</td><td class="n">10</td></tr>
+</table>
+
+<p>Merriweather Sans came closest to the target's letter shapes among the open fonts compared. Its variable weight axis lets any weight be taken from it, and its italic is a drawn italic with an axis of its own. Perfidy Display uses the same outlines with tighter spacing, for sizes from about 22 px up. iA Writer Quattro is drawn from IBM Plex Mono with its letters on four widths instead of one, which is what makes it a semi-monospace. IBM Plex Mono matched the target's code lines most closely of the monospaces compared, and because Quattro is drawn from it, the two code faces are related.</p>
+
+<p>Fira Math is included unmodified for equations. In LaTeX the Latin letters and digits inside equations are taken from Perfidy Text, so a variable in an equation matches the same letter in the sentence around it.</p>
+
+<h2>What was changed, letter by letter</h2>
+
+<p>Four operations were applied, and the figures below show each one on real outlines. Each figure animates once when it scrolls into view, and its buttons replay it. With reduced motion turned on in the system settings, the buttons change the figure at once instead.</p>
+
+<h3>Weight: one scale of stroke thickness</h3>
+
+<p>Weight is measured here as the thickness of the vertical stem of <i>n</i>, divided by the x-height. The six Perfidy weights are set to targets on that measure, from 0.110 for Light to 0.310 for ExtraBold, in near-equal steps. Merriweather Sans is a variable font with a weight axis from 300 to 800. Each Perfidy weight is the point on that axis where the stem reaches its target. The steps on the axis are uneven: Regular sits at 305, Medium at 370 and SemiBold at 500, because the source thickens its stems faster in some parts of the axis than in others.</p>
+
+<p>The Light target is thinner than anything Merriweather Sans draws: its lightest master, at 300, has a stem of 0.150. Perfidy Light was made by extending the line between the instances at 300 and 400 to 240, past the end of the axis. Every point of every letter moves along that same straight line, so the letters stay drawn in the source's proportions, but at 240 they are outside anything the source's designers drew.</p>
+
+<figure class="wide pf-fig" id="pf-weight">
+<input class="pf-range" type="range" aria-label="Weight axis of Merriweather Sans, 240 to 800">
+<div class="pf-ctl" aria-label="Perfidy weights"></div>
+<p class="pf-read" aria-live="polite"></p>
+</figure>
+<p class="small">The letters <i>a</i> and <i>n</i>, drawn from the Merriweather Sans outlines at the point on the weight axis that the slider selects, at Perfidy's scale. The solid axis is the source's design space (300 to 800). The dashed stretch below 300 is extrapolated. The circles are the six Perfidy weights. The stem ratio is measured on the <i>n</i> at each sampled point of the axis and interpolated between them.</p>
+
+<h3>Size: one x-height</h3>
+
+<p>Set at the same font size, the three sources have different x-heights: 0.557 em for Merriweather Sans and 0.516 em for Quattro and Plex Mono. Next to each other in one line, the code is visibly smaller than the text. Each source was scaled uniformly, by 0.900, 0.971 and 0.973, so that all three have an x-height of 0.50 em. Letter shapes and proportions are unchanged; only the size is.</p>
+
+<figure class="wide pf-fig" id="pf-size">
+<div class="pf-panels"></div>
+<div class="pf-ctl" aria-label="Size"></div>
+</figure>
+<p class="small">The letters <i>x</i>, <i>h</i> and <i>p</i> from each source, at one font size. The dashed brown line is the source's own x-height and the blue line is 0.50 em.</p>
+
+<h3>Spacing: Text and Display</h3>
+
+<p>Each of the 46 styles carries its own tracking: a fixed amount added to or taken from the width of every letter. The values were set so that words in each style have the width of the same words in the target. Perfidy Text Regular adds 0.0092 em per letter to the source's spacing. Perfidy Display Regular takes away 0.0305 em, because large type looks loose at the spacing that suits small type. Display is tighter than Text in every style, by 0.007 to 0.040 em per letter. The gap is widest at Regular and narrowest at ExtraBold. Kerning is the source's own and is unchanged.</p>
+
+<figure class="wide pf-fig" id="pf-spacing">
+<div class="pf-ctl" aria-label="Spacing"></div>
+<p class="pf-read" aria-live="polite"></p>
+</figure>
+<p class="small">One word in Perfidy Text Regular's outlines. The Text and Display positions are HarfBuzz's, from each font's widths and kerning; the source positions are the Text positions with Perfidy's tracking taken out. The blue ticks mark where each letter starts and the blue line marks where the word ends.</p>
+
+<h3>Italic: a drawn italic, not a slanted upright</h3>
+
+<p>An italic can be a slanted copy of the upright letters, or a separately drawn design. Perfidy's italics are Merriweather Sans' own drawn italic. Each is taken at the point on the italic's weight axis where its stems reach the same target as the upright's, so an italic word matches the weight of the upright words around it. The drawn italic changes forms that a slant leaves alone: the <i>a</i> loses its upper storey, and the <i>v</i> and <i>w</i> round off at the base.</p>
+
+<figure class="wide pf-fig" id="pf-italic">
+<div class="pf-ctl" aria-label="Italic"></div>
+<p class="pf-read" aria-live="polite"></p>
+</figure>
+<p class="small">The letters <i>a</i>, <i>v</i> and <i>w</i> from Perfidy Text Regular and Perfidy Text Italic. The middle state slants the upright outlines by the italic's own angle, 7.5°.</p>
+
+<h3>Code: a narrower cell</h3>
+
+<p>In a monospace every character sits in a cell of one width. IBM Plex Mono's cell is 0.600 em. Scaling Plex Mono to the 0.50 em x-height narrows the cell to 0.584 em. Perfidy Mono's tracking then narrows it to 0.560 em, the width that matches the target's code lines. The cell stays the same for every character, so columns still align.</p>
+
+<figure class="wide pf-fig" id="pf-mono">
+<div class="pf-ctl" aria-label="Mono"></div>
+<p class="pf-read" aria-live="polite"></p>
+</figure>
+<p class="small">The letters <i>m</i>, <i>i</i> and <i>l</i> in their cells. Dashed brown: the font's x-height. Blue: 0.50 em.</p>
+
+<h2>What it is for</h2>
+
+<p><strong>Interfaces.</strong> Labels, numbers and code in one view can share a baseline, an x-height and a line height. All four families use the same vertical metrics, so a line set in CSS with <code>line-height: normal</code> is 1.25 em tall whichever family it is in, and a change of family inside a paragraph does not move the line.</p>
+
+<p><strong>Numbers.</strong> Perfidy Text and Display carry tabular figures for columns that must align, oldstyle figures for running text, built fractions, superiors and inferiors for units and formulas, ordinals, small capitals and a slashed zero.</p>
+
+<table class="pf-feat">
+<tr><th>Feature</th><th>Off</th><th>On</th></tr>
+<tr><td>Tabular figures</td><td class="v">1,111.11<br>8,999.90</td><td class="v" style="font-feature-settings:'tnum'">1,111.11<br>8,999.90</td></tr>
+<tr><td>Fractions</td><td class="v">1/2 3/4 22/7</td><td class="v" style="font-feature-settings:'frac'">1/2 3/4 22/7</td></tr>
+<tr><td>Inferiors</td><td class="v">H2O C4H10</td><td class="v" style="font-feature-settings:'sinf'">H2O C4H10</td></tr>
+<tr><td>Small capitals</td><td class="v">Small Caps</td><td class="v" style="font-feature-settings:'smcp'">Small Caps</td></tr>
+<tr><td>Slashed zero</td><td class="v">0O 1000</td><td class="v" style="font-feature-settings:'zero'">0O 1000</td></tr>
+</table>
+
+<p><strong>Technical documents.</strong> With LuaLaTeX or XeLaTeX, <code>\usepackage{perfidy}</code> sets the text, headings, code and math. The math is Fira Math, an open math font with the layout tables TeX needs, with Latin letters and digits taken from Perfidy Text. For web pages, the repository includes CSS that does the same for KaTeX, and a setting for MathML.</p>
+
+<picture>
+<source media="(max-width:760px)" srcset="assets/perfidy_latex-phone.png?v=d7e0675d">
+<img class="fig wide" src="assets/perfidy_latex.png?v=f0f2f73b" loading="lazy" alt="A page set with the perfidy LaTeX package: a reactor mole balance, the Gibbs energy of mixing and the Peng–Robinson equation of state, with the variables in Perfidy Text Italic and the operators in Fira Math.">
+</picture>
+<p class="small">From the example document in the repository, compiled with XeLaTeX and the perfidy package.</p>
+
+<h2>How the targets were measured</h2>
+
+<p>The target proportions are those of Ghost, a commercial type family published by Sharp Type in 2026. They were measured from the specimen Sharp Type publishes, in which each weight of each cut sets one word across the full width of the page. Each line was rendered at 600 dpi and measured three ways: the x-height as a fraction of the point size, the thickness of the vertical stems as a fraction of the x-height, and the width of the word. Perfidy uses those numbers and nothing else from Ghost. No outline, spacing table or file from Ghost is in it.</p>
+
+<p>The sources were chosen with the same specimen. About 90 open-license fonts were rendered with its letters and words and compared by the overlap of their letter shapes with the specimen's, after scaling to the same x-height and word width. Among the finalists, Merriweather Sans scored 0.625 for the upright letters, ahead of Mukta at 0.620 and Open Sans at 0.617, so the margin was small. For the italic, Fira Sans scored 0.662 and Merriweather Sans 0.648. Merriweather Sans' italic was used anyway: it comes on the same weight axis as the upright, so each italic matches its upright's weight, where Fira Sans has only fixed weights.</p>
+
+<p>After the build, the fonts were measured on the same words as the targets. Across 34 weight-and-style samples, the median difference in stem thickness is 0.002 of the x-height, and the median difference in word width is 0.9% (mean 2.5%). The x-height of every family is 0.50 em; the specimen's measures 0.503.</p>
+
+<h2>Limits</h2>
+
+<p>The letter shapes are the sources', and only weight, size and spacing were calibrated. Where Ghost's letters differ from Merriweather Sans', Perfidy follows Merriweather Sans: its <i>g</i> has one storey where Ghost's has two, and its italic slants 7.5° where Ghost's measures about 10°.</p>
+
+<p>Perfidy Display is Perfidy Text with tighter tracking. A real display cut redraws details for large sizes, and this one does not.</p>
+
+<p>Four styles lie past the end of a source's weight axis, and Perfidy Mono's weights are Plex Mono's own, the nearest to each target, since Plex Mono has no weight axis. Text Light and Display Light are extrapolated to 240 on a 300–800 axis. SemiMono Light and SemiMono ExtraBold are extrapolated from iA Writer Quattro's 400–700 axis to 255 and 760. They were checked by eye at the sizes used here, and no type designer has reviewed them. Plex Mono has no ExtraBold, so Perfidy Mono stops at Bold.</p>
+
+<p>The fonts are not hinted. On Windows, text below about 11 px depends on antialiasing and is softer than in a hinted font. Perfidy Text covers Latin, including Vietnamese, but not Cyrillic, and has only the Greek letters used as symbols (Δ, Ω, δ, μ, π, ω). The mono and semi-mono fonts add Cyrillic. There is no variable-font build: every weight is a separate file.</p>
+
+<h2>The code</h2>
+
+<p>The fonts, the LaTeX package, the CSS, the installers and the build are at <a href="https://github.com/andrew-silvestri/perfidy">github.com/andrew-silvestri/perfidy</a>. The build downloads the source fonts from their published repositories and makes all 46 fonts. Every axis value, scale and tracking value is in one file, <code>build/plan.json</code>. Rebuilding gives fonts whose outline, spacing, layout and character-map tables are identical to the published ones. The measurement scripts and their output are in <code>build/calibration/</code>; the specimen they read is Sharp Type's and is not included.</p>
+
+<h2>Sources</h2>
+<ol class="refs">
+<li id="ref1">Sorkin Type, Merriweather Sans, variable roman and italic (github.com/SorkinType/Merriweather-Sans), through the Google Fonts repository. SIL Open Font License 1.1, Reserved Font Name Merriweather.</li>
+<li id="ref2">Information Architects, iA Writer Quattro, variable roman and italic (github.com/iaolo/iA-Fonts). SIL Open Font License 1.1, Reserved Font Name iA Writer; based on IBM Plex.</li>
+<li id="ref3">IBM, IBM Plex Mono (github.com/IBM/plex), through the Google Fonts repository. SIL Open Font License 1.1, Reserved Font Name Plex.</li>
+<li id="ref4">Xiangdong Zeng, Fira Math 0.3.4 (github.com/firamath/firamath). SIL Open Font License 1.1.</li>
+<li id="ref5">Sharp Type, Ghost type specimen, version 1.0, 2026 (sharptype.co/typefaces/Ghost). The source of the target measurements only.</li>
+<li id="ref6">SIL International, SIL Open Font License 1.1 (openfontlicense.org).</li>
+<li id="ref7">fontTools (github.com/fonttools/fonttools): instancing, scaling, renaming and WOFF2 compression; HarfBuzz through uharfbuzz (github.com/harfbuzz/uharfbuzz): letter positions in the spacing figure.</li>
+<li id="ref8">Will Robertson, unicode-math, for the LaTeX math setup (ctan.org/pkg/unicode-math).</li>
+</ol>
+
+<footer>
+<p><a href="about.html">Andrew Silvestri</a></p>
+<p><a href="code.html">Built with Python, Julia, JavaScript and public data.</a></p>
+</footer>
+</main>
+<script src="assets/motion.js?v=67bafc62"></script>
+<script src="assets/nav.js?v=17d2b89b"></script>
+<script src="assets/perfidy/perfidy-data.js?v=5d2d1968"></script>
+<script src="assets/perfidy/perfidy.js?v=1c72d3fd"></script>
+</body></html>

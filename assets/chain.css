@@ -1,0 +1,59 @@
+/* chain.css - the causal tree on oxygen.html (2026-11-07).
+ *
+ * Without JS, or with reduced motion, .chain is the whole tree followed by
+ * its steps as cards: every node shows and nothing depends on the live state.
+ * chain.js adds .is-live only when motion is on; then the tree sticks under
+ * the nav and grows one order at a time as each step card reaches the middle
+ * of the screen. Colours and sizes are style.css tokens; no gradients.
+ *
+ * Two drawings ship: the full tree (900px, every node with its words and its
+ * evidence tag) and a compact map (320px, one word a node) for containers
+ * narrower than 900px. Each is shown at the size it was drawn, never scaled
+ * up, so its text stays at 12px or more.
+ */
+.chain { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.chain > .chain-fig { grid-column: wide; min-width: 0; }
+.chain > .chain-steps { grid-column: text; min-width: 0; }
+
+.chain-fig { margin: 0 0 18px; container-type: inline-size; }
+.chain-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.chain-fig .tree-wide { display: none; }
+@container (min-width: 900px) {
+  .chain-fig .tree-wide { display: block; }
+  .chain-fig .tree-phone { display: none; }
+}
+.chain-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+
+.chain .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.chain .step > p:first-child { margin-top: 0; }
+.chain .step > p:last-child { margin-bottom: 0; }
+.chain .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.chain.is-live .chain-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.chain.is-live .chain-steps { position: relative; z-index: 1; padding: 18vh 0 26vh; }
+.chain.is-live .step { margin-bottom: 48vh; }
+.chain.is-live .step:last-child { margin-bottom: 0; }
+
+/* the drawing */
+.tree text { font-family: var(--sans); font-size: 13px; fill: var(--ink); }
+.tree .tag, .tree .col, .tree .lab { font-family: var(--mono); font-size: 12px; }
+.tree .tag, .tree .col { fill: var(--dim); }
+.tree .n rect { fill: var(--card); stroke: var(--acc); stroke-width: 1.75; }
+.tree .n.ev-moderate rect { stroke-dasharray: 8 5; }
+.tree .n.ev-contested rect { stroke: var(--moss); stroke-dasharray: 2.5 3.5; }
+.tree .n.ev-policy rect { fill: var(--acc-fill); stroke: var(--acc-fill); }
+.tree .n.ev-policy text { fill: var(--acc-ink); }
+.tree .e { fill: none; stroke: var(--dim); stroke-width: 1.5; }
+.tree .e.ev-contested { stroke: var(--moss); stroke-dasharray: 2 3; }
+.tree .ah { fill: var(--dim); }
+
+.chain.is-live .tree [data-o] { transition: opacity .45s ease, transform .45s ease; }
+.chain.is-live .tree .off { opacity: 0; }
+.chain.is-live .tree .n.off { transform: translateX(-8px); }
+/* the step being read: a shaded fill, not a heavier border, so it cannot read as stronger evidence */
+.chain.is-live .tree .n.now:not(.ev-policy) rect { fill: var(--bg-lift); }
+:root[data-motion="off"] .tree * { transition: none !important; }

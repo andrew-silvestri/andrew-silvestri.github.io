@@ -521,7 +521,9 @@
     L.xt.forEach(function (v) {
       var x = r2(L.X(v));
       s.push('<line class="ch-axis" x1="' + x + '" x2="' + x + '" y1="' + L.pb + '" y2="' + (L.pb + 4) + '"/>');
-      s.push('<text class="ch-tick" x="' + x + '" y="' + (L.pb + 17) + '" text-anchor="middle">' + esc(fmt(v, 0)) + '</text>');
+      // spec.x.years (lead.html, 2026-11-07): the x values are calendar years, printed without
+      // a thousands separator ("1970", not "1,970"). Off by default, so lostgas.html is unchanged.
+      s.push('<text class="ch-tick" x="' + x + '" y="' + (L.pb + 17) + '" text-anchor="middle">' + esc(spec.x && spec.x.years ? String(v) : fmt(v, 0)) + '</text>');
     });
     // the end bins carry their counts, since their height is a tail, not a
     // bin; anchored inward so a count never runs off the canvas

@@ -41,12 +41,27 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://andrewsilvestri.com/lead.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://andrewsilvestri.com/longevity.html</loc>
     <lastmod>2026-11-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://andrewsilvestri.com/lostgas.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/oxygen.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://andrewsilvestri.com/perfidy.html</loc>
     <lastmod>2026-11-07</lastmod>
     <priority>0.7</priority>
   </url>
