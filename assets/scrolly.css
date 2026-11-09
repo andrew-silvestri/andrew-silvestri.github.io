@@ -62,7 +62,7 @@
 .scrolly.is-live .step:last-child { margin-bottom: 0; }
 
 /* -------------------------------------------------------------- charts --- */
-/* charts.js lays text out with these sizes (FS 12, FS_BIG 14.5, Plex Mono)
+/* charts.js lays text out with these sizes (FS 12, FS_BIG 14.5, Perfidy Mono at 0.56 em)
    and test_kit.js measures the rendered widths against them. Change one and
    change the other, or labels collide. */
 .chart text { font-family: var(--mono); font-size: var(--fs-2); fill: var(--ink); }

@@ -25,8 +25,10 @@
  * the same function render() writes them from, and tests/test_kit.js asserts
  * that update() from any state lands byte-equal to render() of the target.
  *
- * Text is drawn at the size it is served. All chart text is IBM Plex Mono,
- * whose advance is 0.6 em, so a label's width is known here without a DOM
+ * Text is drawn at the size it is served. All chart text is Perfidy Mono,
+ * whose advance is 0.56 em (0.6 under IBM Plex Mono until 2026-11-08; the
+ * Perfidy page gives the 0.560 and fontTools reads 1120/2000 for every
+ * glyph), so a label's width is known here without a DOM
  * (FS and CW below). scrolly.css sets the same sizes on .chart text, and
  * test_kit.js measures rendered labels against these widths, so a stylesheet
  * that stops applying fails a test rather than overlapping labels (trap 31).
@@ -45,8 +47,8 @@
 
   var FS = 12;            // chart text, px. scrolly.css: .chart text { font-size: 12px }
   var FS_BIG = 14.5;      // the date readout. scrolly.css: .chart .ch-now
-  var CW = 0.6 * FS;      // Plex Mono advance at FS
-  var CW_BIG = 0.6 * FS_BIG;
+  var CW = 0.56 * FS;     // Perfidy Mono advance at FS
+  var CW_BIG = 0.56 * FS_BIG;
   var LANE = 18;          // height of one annotation lane
   var MAXLANE = 4;        // annotation lanes before a layout fails
   var WIDE = 720, PHONE = 320;   // the two widths the static figures ship at

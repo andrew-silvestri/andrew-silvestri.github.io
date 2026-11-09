@@ -1,8 +1,8 @@
 /* andrewsilvestri.com
  *
- * Light ground, one instrument voice. IBM Plex Sans for everything a reader
- * reads, Plex Mono for every number; the figures are the picture and the page
- * is the frame. One accent (deep blue) for anything that can be acted on, a
+ * Light ground, one instrument voice. Perfidy Text for everything a reader
+ * reads, Perfidy Display for h1 and h2, Perfidy Mono for every number; the
+ * figures are the picture and the page is the frame. One accent (deep blue) for anything that can be acted on, a
  * second hue (brown) for the second data series, and an ink imported because
  * the palette had none. No washes, no tiles, no gradients: a surface is a flat
  * token, and if it needs separating from the ground it gets a hairline or
@@ -25,7 +25,9 @@
  *                        footer, references
  *    0    --fs0    17.5  body
  *    1    --fs1    21    h3; the standfirst (regular weight, muted), the lightbox close
- *    2    --fs2    25    h2 (semibold, one rule above)
+ *                        (Perfidy Text: the Perfidy page gives Display "sizes from about
+ *                        22 px up", so h3 at 21 stays in Text)
+ *    2    --fs2    25    h2 (semibold, one rule above; Perfidy Display from here up)
  *    3    --fs3    30    h1 on a phone
  *    4    --fs4    36    h1
  *
@@ -62,8 +64,16 @@
   --gutter:  calc((var(--wide) - var(--text)) / 2);
   --wide:    min(1140px, 100%);
   --shell:   1440px;
-  --sans:    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:    "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  /* Perfidy (site/assets/perfidy/, OFL; perfidy.html). The "Fallback" faces are
+     local Arial and Consolas scaled to Perfidy's average advance and vertical
+     metrics, so the swap from fallback to webfont moves lines as little as it
+     can (font-display: swap below). Measured with fontTools on 2026-11-08 over
+     one English sentence: Perfidy Text Regular is 95.97% of Arial's width,
+     SemiBold 87.98% of Arial Bold's, Display SemiBold 83.21%, Mono 101.85% of
+     Consolas's; ascent 0.960 em, descent 0.290 em in every cut. */
+  --sans:    "Perfidy Text", "Perfidy Text Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Perfidy Display", "Perfidy Display Fallback", var(--sans);
+  --mono:    "Perfidy Mono", "Perfidy Mono Fallback", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --serif:   var(--sans);   /* kept as a name so nothing that asks for it breaks */
   /* ---- the type scale: see the table in the header --------------------- */
   --fs-2: 12px; --fs-1: 14.5px; --fs0: 17.5px; --fs1: 21px; --fs2: 25px; --fs3: 30px; --fs4: 36px;
@@ -80,10 +90,20 @@
    --rule: #5C4E4E; --acc: #4E9EBC; --moss: #B87A50; ... } with the figures'
    -dark siblings swapped in by the same attribute. Not built; not foreclosed. */
 
-@font-face { font-family: "IBM Plex Sans"; src: url("assets/fonts/IBMPlexSans-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "IBM Plex Sans"; src: url("assets/fonts/IBMPlexSans-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: "IBM Plex Sans"; src: url("assets/fonts/IBMPlexSans-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+/* The site's weights are 400 and 600, so the 600 cuts are SemiBold; Bold (700)
+   is declared too because perfidy.css asks for it on the Perfidy page. Every
+   page preloads PerfidyText-Regular.woff2 and nothing else (the body face). */
+@font-face { font-family: "Perfidy Text"; src: url("assets/perfidy/PerfidyText-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Text"; src: url("assets/perfidy/PerfidyText-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Perfidy Text"; src: url("assets/perfidy/PerfidyText-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Text"; src: url("assets/perfidy/PerfidyText-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Display"; src: url("assets/perfidy/PerfidyDisplay-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Mono"; src: url("assets/perfidy/PerfidyMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Perfidy Text Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"); font-weight: 400; font-style: normal; size-adjust: 95.97%; ascent-override: 100.03%; descent-override: 30.22%; line-gap-override: 0%; }
+@font-face { font-family: "Perfidy Text Fallback"; src: local("Arial Italic"), local("Arial-ItalicMT"), local("Liberation Sans Italic"); font-weight: 400; font-style: italic; size-adjust: 96.38%; ascent-override: 99.60%; descent-override: 30.09%; line-gap-override: 0%; }
+@font-face { font-family: "Perfidy Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"); font-weight: 600 700; font-style: normal; size-adjust: 87.98%; ascent-override: 109.11%; descent-override: 32.96%; line-gap-override: 0%; }
+@font-face { font-family: "Perfidy Display Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"); font-weight: 600; font-style: normal; size-adjust: 83.21%; ascent-override: 115.37%; descent-override: 34.85%; line-gap-override: 0%; }
+@font-face { font-family: "Perfidy Mono Fallback"; src: local("Consolas"), local("Liberation Mono"), local("Menlo"); font-weight: 400; font-style: normal; size-adjust: 101.85%; ascent-override: 94.25%; descent-override: 28.47%; line-gap-override: 0%; }
 
 
 * { box-sizing: border-box; }
@@ -348,15 +368,16 @@ main > .full { grid-column: full; }
 main > .flush { grid-column: wide; max-width: var(--text); }
 
 h1 {
-  font: 600 var(--fs4)/1.12 var(--sans);
-  letter-spacing: -.02em;
+  /* Display carries its own tighter tracking (perfidy.html: "large type looks
+     loose at the spacing that suits small type"), so the -.02em this rule set
+     on Plex is gone rather than applied twice. */
+  font: 600 var(--fs4)/1.12 var(--display);
   margin: 0 0 10px;
 }
 h2 {
   /* a sentence-case heading with one rule above it; the old uppercase
      tracked kicker was the most template-looking rule in the file */
-  font: 600 var(--fs2)/1.25 var(--sans);
-  letter-spacing: -.012em;
+  font: 600 var(--fs2)/1.25 var(--display);
   color: var(--ink);
   margin: 52px 0 14px;
   padding: 14px 0 0;
