@@ -331,7 +331,7 @@ canvas, #gl, #view, #stage { touch-action: none; }
 <div id="stage">
   <canvas id="gl" role="img" aria-label="The life cycle of the selected item
     drawn in three dimensions, one ball per process, sized by emissions. The
-    same numbers are in the List tab, which is the button in the panel."></canvas>
+    same numbers are under the Every step tab."></canvas>
   <div id="labels"></div>
   <div id="hover"></div>
   <div id="hint">drag to orbit &middot; scroll to zoom &middot; click a node
@@ -352,8 +352,8 @@ canvas, #gl, #view, #stage { touch-action: none; }
   <div id="noscene">The shape is drawn with three.js, which is still on its
     way from a content network. Every number is already on this page.</div>
   <div id="nogl">This scene draws the life cycle in three dimensions and needs
-    WebGL, which this browser has not offered. The same numbers are in the
-    list, which is the button in the panel.</div>
+    WebGL, which this browser has not offered. The same numbers are under
+    the Every step tab.</div>
 </div>
 </div>
 
@@ -1608,7 +1608,7 @@ function model(item, origin, dest, mode, life){
       ' km' + (road ? ' on a short-haul flight' : ' in an average car') +
       '. Grid: ' + D.regions[o].grid.toFixed(2) +
       ' kg/kWh where it is made, ' + D.regions[d].grid.toFixed(2) +
-      ' where it is eaten.' +
+      ' where it is used.' +
       (r.cut ? ' ' + fmt(r.cut) + ' kg dropped below the ' +
         (CUT * 100).toFixed(2) + '% cutoff.' : '');
 

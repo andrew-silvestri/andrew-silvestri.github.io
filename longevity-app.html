@@ -205,7 +205,8 @@ should live.</p>
 <p>Body mass predicts lifespan. Across the species below — from a rotifer at
 half a microgram to a blue whale at 150 tonnes, fourteen and a half orders of
 magnitude — each tenfold increase in mass buys roughly a 1.5-fold increase in
-maximum lifespan, and the relationship holds across the whole animal kingdom.
+maximum lifespan. The trend runs across the animal kingdom, though each group
+sits at its own level, which is why the baseline below is fitted group by group.
 The longevity quotient is what is left once that relationship is divided out:
 observed maximum lifespan over the lifespan predicted for that mass. A quotient
 of one is exactly as long as expected. The interesting animals, and the
@@ -682,7 +683,7 @@ function render(){
      '<span><i class="sw" style="background:repeating-linear-gradient(90deg,var(--unk) 0 3px,transparent 3px 5px)"></i>maximum, origin not recorded</span>'+
      '<span><i class="sw" style="background:var(--avg);width:2px;height:12px">'+
      '</i>average of the recorded maxima</span>'+
-     '<span>'+(barMode()==='lq'?'bar length: quotient, from parity':'bar length: years')+'</span>'
+     '<span>'+(barMode()==='lq'?'bar length: quotient, measured from 1':'bar length: years')+'</span>'
    : '<span><i class="sw" style="background:var(--grp)"></i>group value</span>'+
      '<span><i class="sw" style="background:var(--grp);opacity:.32;height:2px">'+
      '</i>range across the group</span>'+

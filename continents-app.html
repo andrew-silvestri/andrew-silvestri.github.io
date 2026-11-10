@@ -2,10 +2,10 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preload" href="assets/perfidy/PerfidyText-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<title>Reconstruction viewer — Where the ground goes</title>
+<title>Reconstruction viewer — Plate motion</title>
 <link rel="canonical" href="https://andrewsilvestri.com/continents-app.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Reconstruction viewer — Where the ground goes">
+<meta property="og:title" content="Reconstruction viewer — Plate motion">
 <meta property="og:description" content="Pick a place, drag back through 500 million years, and watch eight published plate models disagree about where the ground under it was.">
 <meta property="og:url" content="https://andrewsilvestri.com/continents-app.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -192,6 +192,8 @@ const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim
 
 let placeIdx=0, ageIdx=0, hi=null, landModel=null;
 const AGES=DATA.ages, MODELS=DATA.models;
+/* Ages in sentences; the axis and slider keep "Ma". */
+const ago=a=>a?a+" million years ago":"today";
 
 /* Rings arrive delta-encoded on a quarter-degree grid: the first pair is
    absolute and every pair after it is a step. Decoding is cheap but there is
@@ -317,11 +319,11 @@ function drawGlobe(){
   const inRange=MODELS.filter(m=>state(m)!=="out").length;
   if(shown.length===0 && inRange>0){
     emp.style.display="flex";
-    emp.textContent="No model places any crust here at "+AGES[ageIdx]+
-      " Ma. The ground you picked did not exist yet.";
+    emp.textContent="No model places any crust here "+ago(AGES[ageIdx])+
+      ". The ground you picked did not exist yet.";
   } else if(inRange===0){
     emp.style.display="flex";
-    emp.textContent="No model reaches "+AGES[ageIdx]+" Ma.";
+    emp.textContent="No model reaches back to "+ago(AGES[ageIdx])+".";
   } else emp.style.display="none";
   return {shown:shown.length,widest:best>0?best:null};
 }
@@ -417,7 +419,7 @@ function drawLegend(info){
     v.textContent = st==="here"
       ? posAt(m,ageIdx)[1].toFixed(1)+"°, "+posAt(m,ageIdx)[0].toFixed(1)+"°"
       : (st==="nocrust" ? "no crust in this model"
-                        : "does not reach "+AGES[ageIdx]+" Ma");
+                        : "does not reach back that far");
     li.append(sw,nm,v);
     li.onmouseenter=()=>{hi=m.name;render();};
     li.onmouseleave=()=>{hi=null;render();};
@@ -426,7 +428,8 @@ function drawLegend(info){
   const inRange=MODELS.filter(m=>state(m)!=="out").length;
   const nc=MODELS.filter(m=>state(m)==="nocrust").length;
   const r=document.getElementById("readout");
-  let s="At "+AGES[ageIdx]+" Ma, "+inRange+" of the "+MODELS.length+
+  const when=ago(AGES[ageIdx]);
+  let s=when[0].toUpperCase()+when.slice(1)+", "+inRange+" of the "+MODELS.length+
         " models reach this age.";
   if(nc) s+=" "+nc+" of them place no crust at "+DATA.tracks[placeIdx].place+".";
   if(info.widest) s+=" The two furthest apart are "+

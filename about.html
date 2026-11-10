@@ -17,7 +17,7 @@
 try{document.documentElement.dataset.motion=matchMedia('(prefers-reduced-motion: reduce)').matches?'off':'on';}catch(e){document.documentElement.dataset.motion='on';}</script>
 <link rel="stylesheet" href="style.css?v=4283f9ce">
 </head><body>
-<nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Gas <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">Lost gas</span><span class="off" aria-disabled="true">When the pipe is full</span><span class="off" aria-disabled="true">Uri's long gas bill</span><span class="off" aria-disabled="true">Ethane left in the gas</span></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Power <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">The electric boiler's break-even</span><span class="off" aria-disabled="true">Batteries and scarcity</span></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><span class="off" aria-disabled="true">Inside a footprint</span></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Other <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Outliving their size</a><span class="off" aria-disabled="true">Endangered, and studied</span><a href="skyline.html">Skylines, played</a><span class="off" aria-disabled="true">Where the ground goes</span><a href="safetynet.html">Who gets an unemployment check</a><a href="lead.html">Leaded gasoline and lost IQ</a><a href="oxygen.html">From smog rule to corn ethanol</a><a href="perfidy.html">Perfidy, a type family</a></span></span><a href="code.html">Code</a><a href="about.html" class="on">About</a></nav>
+<nav class="top"><a href="index.html">Home</a><details class="navmore"><summary>Menu</summary></details><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Gas <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="lostgas.html">Lost gas</a><a href="takeaway.html">Pipeline capacity</a><a href="uri.html">Storm-cost bonds</a><a href="ethane.html">Ethane rejection</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Power <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="heat.html">Electric boiler break-even</a><a href="storage.html">Battery revenue</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Climate <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="climate-cost.html">Food footprints</a></span></span><span class="dd"><a href="#" class="ddbtn" aria-haspopup="true">Other <span class="caret">&#9662;</span></a><span class="ddmenu"><a href="longevity.html">Longevity quotient</a><a href="beauty.html">Endangered-bird research</a><a href="skyline.html">Skyline sonification</a><a href="continents.html">Plate motion</a><a href="safetynet.html">Unemployment insurance</a><a href="lead.html">Leaded gasoline</a><a href="oxygen.html">Oxygenated gasoline</a><a href="perfidy.html">Perfidy</a></span></span><a href="code.html">Code</a><a href="about.html" class="on">About</a></nav>
 <main class="prose">
 
 <h1>About</h1>
@@ -26,8 +26,21 @@ studies, graduating May 2028.<br>
 Summer 2026: pipeline engineering intern, Targa Resources, Tulsa.<br>
 Gas measurement, process simulation (ProMax), and the data tooling between
 them.</p>
-<p>The models here are built from public data with their workings shown. Work
-done for an employer stays with the employer.</p>
+<p>Most numbers in public argument are estimates that travel as if they were
+measurements. <a href="lead.html">Lead in gasoline</a> is a clean case. The lead
+in American children's blood was measured, by a national survey, from 1976 on;
+the IQ points it cost them come from a model. A 2022 estimate by McFarland, Hauer
+and Reuben puts the loss at 824 million points among Americans alive in 2015, and
+other published dose-response curves, applied to the same blood lead, give 370
+million to 1.95 billion. The choice of curve alone moves the answer by a factor of
+five. The measurement is firm; the loss is only as firm as the curve.</p>
+<p>This site rebuilds numbers like that one from their public sources and shows
+where they bend. Most pages give the finding, how it is known, and the choice
+that moves it most, and the code that produced it is a download on the
+<a href="code.html">Code</a> page, so you can change the choice and run it again.
+Everything here comes from public data, public standards and published
+correlations, each cited on its page. Work done for an employer stays with the
+employer.</p>
 <p>ProMax, Python, Julia, MATLAB, JMP, Excel and VBA, LaTeX<br>
 <a href="Silvestri_Andrew_Resume.pdf">CV (PDF)</a></p>
 <!-- contact:begin (build_about.py writes this block; D-43) -->
