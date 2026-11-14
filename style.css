@@ -1221,3 +1221,14 @@ body.home main { --gutter: 0px; max-width: none; }
 @media (max-width: 960px) {
   body.home .paper { max-width: none; border-left: 0; border-right: 0; }
 }
+
+/* THE BAR BETWEEN THE COLLAPSE AND 780px, 2026-11-14 (DECISIONS D-95 b). Splitting
+   Other into Science, Society & Health and Other made the bar nine items; from
+   621px to 779px it wrapped onto two rows (nav.top 85px tall, measured in
+   Chromium) and About fell to the second row on its own. Tighter item padding and
+   gap and narrower side padding in that band only keep it one row (51px); above
+   780px and below the 620px collapse nothing changes. */
+@media (min-width: 621px) and (max-width: 779px) {
+  nav.top { gap: 2px; padding-left: 14px; padding-right: 16px; }
+  nav.top > a, nav.top .ddbtn { padding-left: 6px; padding-right: 6px; }
+}

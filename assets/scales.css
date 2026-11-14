@@ -1,0 +1,63 @@
+/* scales.css - the mass / power-per-kilogram chart on scales.html (2026-11-13).
+ *
+ * Without JS, or with reduced motion, .ladder is the whole chart followed by
+ * its steps as cards: every layer shows and nothing depends on the live state.
+ * scales.js adds .is-live only when motion is on; then the chart sticks under
+ * the nav and gains one layer as each step card reaches the middle of the
+ * screen. Colours are style.css tokens; no gradients. The layout is chain.css's
+ * (oxygen.html).
+ *
+ * Two drawings ship: the full chart (900px) and a compact one (320px) for
+ * containers narrower than 900px. Each is shown at the size it was drawn,
+ * never scaled up, so its text stays at 12px or more.
+ */
+.ladder { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.ladder > .ladder-fig { grid-column: wide; min-width: 0; }
+.ladder > .ladder-steps { grid-column: text; min-width: 0; }
+
+.ladder-fig { margin: 0 0 18px; container-type: inline-size; }
+.ladder-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.ladder-fig .plot-wide { display: none; }
+@container (min-width: 900px) {
+  .ladder-fig .plot-wide { display: block; }
+  .ladder-fig .plot-phone { display: none; }
+}
+.ladder-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+
+.ladder .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.ladder .step > p:first-child { margin-top: 0; }
+.ladder .step > p:last-child { margin-bottom: 0; }
+.ladder .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.ladder.is-live .ladder-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.ladder.is-live .ladder-steps { position: relative; z-index: 1; padding: 18vh 0 26vh; }
+.ladder.is-live .step { margin-bottom: 48vh; }
+.ladder.is-live .step:last-child { margin-bottom: 0; }
+
+/* the drawings (hero and the static city chart) */
+.plot text { font-family: var(--sans); font-size: 13px; fill: var(--ink); }
+.plot .tick, .plot .axt { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.plot .ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.plot .grid { stroke: var(--faint); stroke-width: 1; fill: none; }
+.plot .life { fill: var(--acc); fill-opacity: .55; }
+.plot .life.bact { fill: var(--dim); }
+.plot .band { fill: var(--acc); fill-opacity: .10; stroke: var(--acc); stroke-width: 1; stroke-dasharray: 3 3; }
+.plot .law { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 7 5; fill: none; }
+.plot .fit { stroke: var(--ink); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+.plot .star { fill: var(--moss); fill-opacity: .6; }
+.plot .sun { fill: var(--bg); stroke: var(--moss); stroke-width: 2; }
+.plot .sfit { stroke: var(--moss); stroke-width: 2; fill: none; }
+.plot .me { fill: var(--ink); }
+.plot .stem { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.plot .lab-moss { fill: var(--moss); }
+.plot .lab-dim { fill: var(--dim); }
+.plot .pt { fill: var(--acc); fill-opacity: .5; }
+.plot .flat { stroke: var(--dim); stroke-width: 1.5; stroke-dasharray: 6 5; fill: none; }
+
+.ladder.is-live .plot [data-o] { transition: opacity .45s ease; }
+.ladder.is-live .plot .off { opacity: 0; }
+:root[data-motion="off"] .plot * { transition: none !important; }

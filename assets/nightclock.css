@@ -1,0 +1,79 @@
+/* nightclock.css - the 24-hour clock on nightshift.html (2026-11-13).
+ *
+ * Without JS, or with reduced motion, the figure is the whole clock followed
+ * by its steps as cards: every layer shows. nightclock.js adds .is-live only
+ * when motion is on; then the clock sticks under the nav and gains one layer
+ * as each step card reaches the middle of the screen. Colours are style.css
+ * tokens; no gradients. Same structure as chain.css (oxygen.html).
+ *
+ * Rings, inside out: everyone 15+, day workers, night workers.
+ *
+ * Two drawings ship: 680 x 600 and 350 x 350, each shown at the size it was
+ * drawn, never scaled up, so their text stays at 12px. Live, on a screen
+ * 1100px or wider, the clock sticks on the left and the step cards scroll on
+ * the right, because a 600px clock above the cards would cover the middle
+ * of the screen where the step changes; narrower, the phone drawing sticks
+ * above the cards.
+ */
+.nclock-fig { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.nclock-fig > .nc-fig { grid-column: wide; min-width: 0; }
+.nclock-fig > .nc-steps { grid-column: text; min-width: 0; }
+
+.nc-fig { margin: 0 0 18px; container-type: inline-size; }
+.nc-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.nc-fig .nclock-wide { display: none; }
+@container (min-width: 680px) {
+  .nc-fig .nclock-wide { display: block; }
+  .nc-fig .nclock-phone { display: none; }
+}
+.nc-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px auto 0; max-width: 560px; }
+
+.nc-key .sw { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 8px; vertical-align: -1px; }
+.nc-key .sw-sl { background: var(--ink); }
+.nc-key .sw-wk { background: var(--acc); }
+.nc-key .sw-mel { background: var(--moss); }
+.nclock-fig .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.nclock-fig .step > p:first-child { margin-top: 0; }
+.nclock-fig .step > p:last-child { margin-bottom: 0; }
+.nclock-fig .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.nclock-fig.is-live .nc-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.nclock-fig.is-live .nc-steps { position: relative; z-index: 1; padding: 18vh 0 26vh; }
+.nclock-fig.is-live .step { margin-bottom: 48vh; }
+.nclock-fig.is-live .step:last-child { margin-bottom: 0; }
+@media (max-width: 1099px) {
+  .nclock-fig.is-live .nclock-wide { display: none; }
+  .nclock-fig.is-live .nclock-phone { display: block; }
+}
+@media (min-width: 1100px) {
+  .nclock-fig.is-live { grid-template-columns: minmax(0, 1fr) 360px; column-gap: 40px; }
+  .nclock-fig.is-live > .nc-fig { grid-column: 1; align-self: start; top: 24px; border-bottom: 0; }
+  .nclock-fig.is-live > .nc-steps { grid-column: 2; padding: 40vh 0 40vh; }
+}
+
+/* the drawing */
+.nclock text { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.nclock .mid { fill: var(--dim); }
+.nclock .rim { fill: none; stroke: var(--faint); stroke-width: 1; }
+.nclock .sl { fill: var(--ink); }
+.nclock .wk { fill: var(--acc); }
+.nclock .ticks line { stroke: var(--dim); stroke-width: 1.2; }
+.nclock .mel { fill: none; stroke: var(--moss); stroke-width: 6; stroke-linecap: round; }
+.nclock .cbt { fill: var(--bg); stroke: var(--moss); stroke-width: 2.5; }
+.nclock .eve path { fill: none; stroke: var(--moss); stroke-width: 1.8; stroke-dasharray: 5 4; }
+
+.nclock-fig.is-live .nclock [data-o] { transition: opacity .45s ease; }
+.nclock-fig.is-live .nclock .off { opacity: 0; }
+/* while a ring is the step being read, the earlier rings dim; on the body-clock and evening steps all stay full */
+.nclock-fig.is-live .nclock:has(.band.now) .band:not(.now):not(.off) { opacity: .55; }
+:root[data-motion="off"] .nclock * { transition: none !important; }
+
+/* the page's two tables: five columns of numbers in mono; on a phone the site's 12px side padding would push
+   them 20px past the measure (tests/test_invariants.js rule 4), so the padding narrows instead */
+@media (max-width: 480px) {
+  .nc-table th, .nc-table td { padding-left: 5px; padding-right: 5px; }
+}

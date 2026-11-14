@@ -1,0 +1,44 @@
+/* armchair.css - the handbook's crowd and the idea-to-event timeline on armchair.html (2026-11-13).
+ *
+ * The crowd uses chain.css for its layout and live state (figure.chain, .chain-fig, .step, .off/.now):
+ * chain.js reveals squares by data-o as the step cards scroll. This file only colours the drawing.
+ * Grades: strong = --acc, partial = --acc-dim, loose = --rule, wrong = --moss. The six famous answers
+ * carry an --ink outline. No gradients; colours are style.css tokens.
+ *
+ * Both drawings ship at the size they were drawn (880px and 314px for the crowd, 900px and 340px for the
+ * timeline), never scaled up, so text stays at 12px or more.
+ */
+.crowd rect.g-strong, .crowd-key .g-strong, .tl .g-strong .tl-idea, .tl .g-strong .tl-end { fill: var(--acc); background: var(--acc); }
+/* partial is a hollow square in the crowd, so strong (filled) stands out from it */
+.crowd rect.g-partial { fill: var(--card); stroke: var(--acc); stroke-width: 1.5; }
+.crowd-key .g-partial { background: var(--card); box-shadow: inset 0 0 0 1.5px var(--acc); }
+.tl .g-partial .tl-idea, .tl .g-partial .tl-end { fill: var(--acc-dim); }
+.tl-fig .crowd-key .g-partial { background: var(--acc-dim); box-shadow: none; }
+.crowd rect.g-loose, .crowd-key .g-loose, .tl .g-loose .tl-idea, .tl .g-loose .tl-end { fill: var(--rule); background: var(--rule); }
+.crowd rect.g-wrong, .crowd-key .g-wrong, .tl .g-wrong .tl-idea, .tl .g-wrong .tl-end { fill: var(--moss); background: var(--moss); }
+.crowd rect.fam { stroke: var(--ink); stroke-width: 2.5; }
+.crowd-key .sw { display: inline-block; width: 11px; height: 11px; margin: 0 5px -1px 0; }
+
+.tl-fig { margin: 28px 0; container-type: inline-size; }
+.tl-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.tl-fig .tl-wide { display: none; }
+@container (min-width: 900px) {
+  .tl-fig .tl-wide { display: block; }
+  .tl-fig .tl-phone { display: none; }
+}
+.tl text { font-family: var(--sans); fill: var(--ink); }
+.tl-wide text { font-size: 13px; }
+.tl-phone text { font-size: 12px; }
+.tl .tl-ax { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.tl .tl-grid { stroke: var(--faint); stroke-width: 1; }
+.tl .tl-line { stroke-width: 2.5; }
+.tl .g-strong .tl-line { stroke: var(--acc); }
+.tl .g-partial .tl-line { stroke: var(--acc-dim); }
+.tl .g-loose .tl-line { stroke: var(--rule); }
+.tl .g-wrong .tl-line { stroke: var(--moss); }
+.tl-fig figcaption { font-size: var(--fs-1); color: var(--dim); max-width: var(--text); margin: 10px auto 0; }
+
+figure.cases { margin: 24px 0; }
+figure.cases figcaption { font-weight: 600; margin: 0 0 4px; }
+figure.cases table { font-size: var(--fs-1); }
+:root[data-motion="off"] .crowd * { transition: none !important; }

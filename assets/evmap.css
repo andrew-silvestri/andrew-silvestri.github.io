@@ -1,0 +1,77 @@
+/* evmap.css - the evidence map on space-depression.html (2026-11-13).
+ *
+ * Without JS, or with reduced motion, .evmap is the whole map followed by its
+ * steps as cards: every dot, note and mark shows. evmap.js adds .is-live only
+ * when motion is on, and sets data-step on the figure as each step card
+ * reaches the lower quarter of the screen (the map sticks over the top half); the rules below then dim, light and
+ * reveal by step. Elements carry data-o, the step that introduces them.
+ * Colours and sizes are style.css tokens; no gradients.
+ *
+ * Two drawings ship, each shown at the size it was drawn so its text stays at
+ * 12px or more: the full map (900px) and a phone map (340px) for containers
+ * narrower than 900px.
+ */
+.evmap { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.evmap > .evmap-fig { grid-column: wide; min-width: 0; }
+.evmap > .evmap-steps { grid-column: text; min-width: 0; }
+
+.evmap-fig { margin: 0 0 18px; container-type: inline-size; }
+.evmap-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.evmap-fig .evmap-wide { display: none; }
+@container (min-width: 900px) {
+  .evmap-fig .evmap-wide { display: block; }
+  .evmap-fig .evmap-phone { display: none; }
+}
+.evmap-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+
+.evmap .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.evmap .step > p:first-child { margin-top: 0; }
+.evmap .step > p:last-child { margin-bottom: 0; }
+.evmap .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.evmap.is-live .evmap-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.evmap.is-live .evmap-steps { position: relative; z-index: 1; padding: 40vh 0 30vh; }
+.evmap.is-live .step { margin-bottom: 40vh; }
+.evmap.is-live .step:last-child { margin-bottom: 0; }
+
+/* the drawing */
+.evmap-svg text { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.evmap-svg .rname { font-family: var(--sans); font-size: 14px; fill: var(--ink); }
+.evmap-svg .rname-p { fill: var(--ink); }
+.evmap-svg .note, .evmap-svg .alab, .evmap-svg .mlab { fill: var(--ink); }
+.evmap-svg .band { fill: none; stroke: var(--faint); stroke-width: 1; }
+.evmap-svg .band-mars { stroke: var(--rule); stroke-dasharray: 3 3; }
+.evmap-svg .grid { stroke: var(--faint); stroke-width: 1; }
+.evmap-svg .yr { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
+.evmap-svg .dots { fill: none; stroke-linecap: round; stroke-width: 4.5; }
+.evmap-phone .dots { stroke-width: 3.5; }
+.evmap-svg .d-short { stroke: var(--dim); stroke-opacity: .45; }
+.evmap-svg .d-long { stroke: var(--acc); stroke-opacity: .8; }
+.evmap-svg .d-moon { stroke: var(--moss); stroke-opacity: .9; }
+.evmap-svg .analog .mark { fill: var(--acc); }
+.evmap-svg .analog .span { stroke: var(--acc); stroke-width: 2.5; }
+.evmap-svg .marsbox rect { fill: var(--bg-lift); stroke: var(--moss); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.evmap-svg .note-m { fill: var(--ink); }
+/* labels sit on a halo of the page background so the dotted one-year rule, drawn first, does not run
+   through them (w3-05 critic: "Mars-500", "NASA plans", "1.2 to 1.4 s away"). */
+.evmap-svg .rname-p, .evmap-svg .rsub, .evmap-svg .note, .evmap-svg .alab, .evmap-svg .mlab {
+  paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round;
+}
+
+/* live: data-o later than the current step is hidden; the step's own lights up, the rest recede */
+.evmap.is-live .evmap-svg [data-o] { transition: opacity .45s ease, stroke-opacity .45s ease; }
+.evmap.is-live .evmap-svg .off { opacity: 0; }
+.evmap.is-live[data-step="1"] .d-short,
+.evmap.is-live[data-step="1"] .d-moon { stroke-opacity: .15; }
+.evmap.is-live[data-step="2"] .dots { stroke-opacity: .12; }
+.evmap.is-live[data-step="3"] .d-short,
+.evmap.is-live[data-step="3"] .d-long { stroke-opacity: .12; }
+.evmap.is-live[data-step="4"] .dots,
+.evmap.is-live[data-step="5"] .dots { stroke-opacity: .12; }
+.evmap.is-live[data-step="5"] .analog { opacity: .35; }
+.evmap.is-live .evmap-svg .note.off { opacity: 0; }
+:root[data-motion="off"] .evmap-svg * { transition: none !important; }

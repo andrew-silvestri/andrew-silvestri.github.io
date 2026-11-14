@@ -1,0 +1,77 @@
+/* algae.css - the carbon funnel and the depth chart on algae.html.
+ *
+ * Without JS, or with reduced motion, the funnel is the whole drawing (every bar, the final
+ * net value on each row, the cost lines) followed by its steps as cards. algae.js adds
+ * .is-live only when motion is on; then the drawing sticks under the nav and each stage
+ * appears as its step card reaches the middle of the screen.
+ *
+ * Two drawings ship for each figure, each shown at its drawn size, never scaled up, so SVG
+ * text stays at 12px or more: the funnel at 900px and 320px, the depth chart at 600px and
+ * 320px. Colours are style.css tokens; no gradients.
+ */
+.funnelfig { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.funnelfig > .funnel-fig { grid-column: wide; min-width: 0; }
+.funnelfig > .funnel-steps { grid-column: text; min-width: 0; }
+
+.funnel-fig { margin: 0 0 18px; container-type: inline-size; }
+.funnel-fig svg, .depthfig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.funnel-fig .f-wide { display: none; }
+@container (min-width: 900px) {
+  .funnel-fig .f-wide { display: block; }
+  .funnel-fig .f-phone { display: none; }
+}
+.funnel-key { font: var(--fs-2)/1.6 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+.funnel-key span { display: inline-block; width: 14px; height: 10px; margin: 0 5px 0 12px; vertical-align: baseline; }
+.funnel-key .ki { font-style: normal; white-space: nowrap; }
+.funnel-key .k0 { background: var(--faint); }
+.funnel-key .k1 { background: var(--rule); }
+.funnel-key .k2 { background: var(--acc); }
+.funnel-key .k3 { background: none; border: 1.5px dashed var(--dim); box-sizing: border-box; }
+.funnel-key .k4 { background: var(--moss); }
+
+.funnelfig .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.funnelfig .step > p { margin: 0; }
+
+.funnelfig.is-live .funnel-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.funnelfig.is-live .funnel-steps { position: relative; z-index: 1; padding: 30vh 0 10vh; }
+.funnelfig.is-live .step { margin-bottom: 60vh; }
+.funnelfig.is-live .step:last-child { margin-bottom: 0; }
+
+/* the funnel drawing */
+.funnel text { font-family: var(--sans); font-size: 13px; fill: var(--ink); }
+.funnel .val, .funnel .cost, .funnel .ax { font-family: var(--mono); font-size: 12px; }
+.funnel .cost, .funnel .ax { fill: var(--dim); }
+.funnel .b0 { fill: var(--faint); }
+.funnel .b1 { fill: var(--rule); }
+.funnel .b2 { fill: var(--acc); }
+.funnel .b2.neg { fill: var(--moss); }
+.funnel .bg { fill: none; stroke: var(--dim); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.funnel .wh { fill: none; stroke: var(--ink); stroke-width: 1.25; }
+.funnel .zero { stroke: var(--dim); stroke-width: 1; }
+.funnel .tick { stroke: var(--dim); stroke-width: 1; }
+/* per-stage values: only the final one shows, unless the figure is live */
+.funnel [data-only] { display: none; }
+.funnelfig.is-live .funnel .v2 { display: none; }
+.funnelfig.is-live .funnel .v2.on, .funnelfig.is-live .funnel [data-only].on { display: inline; }
+
+.funnelfig.is-live .funnel [data-o] { transition: opacity .45s ease; }
+.funnelfig.is-live .funnel .off { opacity: 0; }
+:root[data-motion="off"] .funnel * { transition: none !important; }
+
+/* the depth chart */
+.depthfig { margin: 24px 0 8px; container-type: inline-size; }
+.depthfig .d-wide { display: none; }
+@container (min-width: 600px) {
+  .depthfig .d-wide { display: block; }
+  .depthfig .d-phone { display: none; }
+}
+.depth text { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.depth .lab { fill: var(--ink); }
+.depth .band { fill: var(--faint); }
+.depth .mean { fill: none; stroke: var(--acc); stroke-width: 2.5; }
+.depth .grid { stroke: var(--faint); stroke-width: 1; }
+.depth .pt { fill: var(--acc); }

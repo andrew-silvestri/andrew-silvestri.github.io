@@ -1,0 +1,48 @@
+/* greatfilter.css - the timeline hero and the two figures on greatfilter.html.
+ *
+ * The hero is figure.chain markup, so the shared chain.css lays it out (sticky
+ * figure, cards in the text column) and the shared chain.js reveals its rows on
+ * scroll; nothing here changes either. This file only draws the SVGs: two
+ * drawings ship for each (900px and 320px), each shown at the size it was
+ * drawn, never scaled up, so its text stays at 12px or more. Colours are
+ * style.css tokens; no gradients.
+ */
+.gf text { font-family: var(--mono); font-size: 12px; fill: var(--ink); }
+.gf text.nm { font-family: var(--sans); font-size: 13px; }
+.gf text.dim { fill: var(--dim); }
+.gf text.acc { fill: var(--acc); font-weight: 600; }
+.gf .tick, .gf .grid { stroke: var(--faint); stroke-width: 1; }
+.gf .now-line { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+
+/* timeline rows */
+.gf-time .win { fill: var(--bg-lift); }
+.gf-time .win-band { fill: none; stroke: var(--rule); stroke-dasharray: 2 2; }
+.gf-time .band { fill: var(--acc); fill-opacity: .22; }
+.gf-time .wait { stroke: var(--acc); stroke-width: 2.5; }
+.gf-time .dot { fill: var(--acc); }
+.gf-time .left-bar { stroke: var(--moss); stroke-width: 2.5; stroke-dasharray: 5 4; }
+.chain.is-live .gf-time .row { transition: opacity .45s ease; }
+.chain.is-live .gf-time .now .dot { stroke: var(--ink); stroke-width: 1.5; }
+
+/* origins */
+.gf-orig .stem-on { stroke: var(--acc); stroke-width: 2; }
+.gf-orig .stem-off { stroke: var(--rule); stroke-width: 2; }
+.gf-orig .range { stroke: var(--moss); stroke-width: 4; stroke-linecap: round; }
+.gf-orig .pt-on { fill: var(--acc); }
+.gf-orig .pt-off { fill: var(--moss); }
+
+/* hard steps */
+.gf-hard .bar { fill: var(--acc); }
+.gf-hard .bar-left { fill: var(--moss); }
+.gf-hard .flat { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 4 3; }
+
+/* the figures: wide drawing in a container of 900px or more, the compact one below */
+.gf-fig { margin: 28px 0; }
+.gf-figbox { container-type: inline-size; }
+.gf-figbox svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.gf-figbox svg:first-child { display: none; }
+@container (min-width: 900px) {
+  .gf-figbox svg:first-child { display: block; }
+  .gf-figbox svg:last-child { display: none; }
+}
+.gf-fig figcaption { margin-top: 10px; }

@@ -1,0 +1,83 @@
+/* messaging.css - the field-trial dot chart and the two static charts on messaging.html (2026-11-13).
+ *
+ * Without JS, or with reduced motion, .msg is the whole chart followed by its
+ * steps as cards: every row shows and nothing depends on the live state.
+ * messaging.js adds .is-live only when motion is on; then the chart sticks
+ * under the nav and shows one group of trials at a time as each step card
+ * reaches the middle of the screen. Colours and sizes are style.css tokens;
+ * no gradients.
+ *
+ * Two drawings ship for each chart: a wide one and a 320px one. Each is shown
+ * at the size it was drawn, never scaled up, so its text stays at 12px or more.
+ */
+.msg { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.msg > .msg-fig { grid-column: wide; min-width: 0; }
+.msg > .msg-steps { grid-column: text; min-width: 0; }
+
+.msg-fig { margin: 0 0 18px; container-type: inline-size; }
+.msg-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.msg-fig .msg-wide { display: none; }
+@container (min-width: 900px) {
+  .msg-fig .msg-wide { display: block; }
+  .msg-fig .msg-phone { display: none; }
+}
+.msg-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+
+.msg .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.msg .step > p:first-child { margin-top: 0; }
+.msg .step > p:last-child { margin-bottom: 0; }
+.msg .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.msg.is-live .msg-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.msg.is-live .msg-steps { position: relative; z-index: 1; padding: 18vh 0 26vh; }
+.msg.is-live .step { margin-bottom: 48vh; }
+.msg.is-live .step:last-child { margin-bottom: 0; }
+
+/* the drawings */
+.dots text, .bars text, .ci text { font-family: var(--sans); font-size: 13px; fill: var(--ink); }
+.dots.msg-phone text, .bars text, .ci text { font-size: 12px; }
+.dots .ax, .bars .ax, .ci .ax, .dots .eff, .bars .eff, .dots .gh { font-family: var(--mono); font-size: 12px; fill: var(--dim); }
+.dots .gh { fill: var(--ink); }
+.dots .grid, .bars .grid, .ci .grid { stroke: var(--faint); stroke-width: 1; }
+.ci .zero { stroke: var(--dim); stroke-width: 1.25; }
+.dots .link { stroke-width: 2.5; }
+.dots .w .link { stroke: var(--moss); }
+.dots .d .link { stroke: var(--acc); }
+.dots .b { fill: var(--bg); stroke-width: 1.75; }
+.dots .w .b { stroke: var(--moss); }
+.dots .d .b { stroke: var(--acc); }
+.dots .w .t { fill: var(--moss); }
+.dots .d .t { fill: var(--acc); }
+.dots .w .eff { fill: var(--moss); }
+.dots .d .eff { fill: var(--acc); }
+.bars .sub { fill: var(--dim); }
+.bars .full { fill: var(--bg-lift); stroke: var(--rule); stroke-width: 1; }
+.bars .kept { fill: var(--acc); }
+.bars .eff { fill: var(--acc); }
+.ci .whisk { stroke: var(--dim); stroke-width: 2; }
+.ci .pt { fill: var(--bg); stroke: var(--dim); stroke-width: 1.5; }
+.ci .whisk.dn { stroke: var(--ink); }
+.ci .pt.dn { fill: var(--ink); stroke: var(--ink); }
+
+.msg.is-live .dots [data-o] { transition: opacity .45s ease, transform .45s ease; }
+.msg.is-live .dots .off { opacity: 0; }
+.msg.is-live .dots .row.off { transform: translateX(-8px); }
+:root[data-motion="off"] .dots * { transition: none !important; }
+
+/* the kit: a table of text, read across; on a phone each row is a card, read down,
+   so no column hides off the right edge */
+table.kit td { vertical-align: top; text-align: left; font-variant-numeric: normal; }
+table.kit td:first-child { min-width: 16ch; }
+@media (max-width: 700px) {
+  table.kit { display: block; overflow: visible; }
+  table.kit thead { display: none; }
+  table.kit tbody, table.kit tr, table.kit td { display: block; width: auto; }
+  table.kit tr { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  table.kit td { padding: 2px 0; border: 0; min-width: 0; }
+  table.kit td::before { content: attr(data-label); display: block; font: var(--fs-2)/1.4 var(--mono); color: var(--dim); }
+  table.kit td:first-child::before { content: none; }
+}

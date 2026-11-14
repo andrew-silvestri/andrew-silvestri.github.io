@@ -1,0 +1,64 @@
+/* origins.css - the membrane hero on origins.html (2026-11-13).
+ *
+ * Without JS, or with reduced motion, .grad is the five-panel drawing followed
+ * by its steps as cards: every state shows and nothing depends on the live
+ * state. origins.js adds .is-live only when motion is on; then the drawing
+ * sticks under the nav, the state whose card is in the middle of the screen is
+ * lit (.now), later states fade (.off), and the lit state's ions cross its
+ * wall. Colours and sizes are style.css tokens. Two drawings ship, 900px and
+ * 340px, each shown at the size it was drawn so its text stays at 12px or more.
+ */
+.grad { position: relative; margin: 28px 0; display: grid; grid-template-columns: subgrid; }
+.grad > .grad-fig { grid-column: wide; min-width: 0; }
+.grad > .grad-steps { grid-column: text; min-width: 0; }
+
+.grad-fig { margin: 0 0 18px; container-type: inline-size; }
+.grad-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.grad-fig .hero-wide { display: none; }
+@container (min-width: 900px) {
+  .grad-fig .hero-wide { display: block; }
+  .grad-fig .hero-phone { display: none; }
+}
+.grad-key { font: var(--fs-2)/1.5 var(--mono); color: var(--dim); text-align: center; margin: 8px 0 0; }
+
+.grad .step { margin: 0 0 18px; background: var(--card); border: 1px solid var(--rule); padding: 14px 18px; }
+.grad .step > p:first-child { margin-top: 0; }
+.grad .step > p:last-child { margin-bottom: 0; }
+.grad .step .ev { font: var(--fs-2)/1.4 var(--mono); color: var(--dim); letter-spacing: .02em; }
+
+.grad.is-live .grad-fig {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--bg); padding: 10px 0 8px; margin: 0;
+  border-bottom: 1px solid var(--faint);
+}
+.grad.is-live .grad-steps { position: relative; z-index: 1; padding: 18vh 0 26vh; }
+.grad.is-live .step { margin-bottom: 48vh; }
+.grad.is-live .step:last-child { margin-bottom: 0; }
+
+/* the drawing */
+.og text { font-family: var(--mono); font-size: 12px; fill: var(--ink); }
+.og .st-t { font-family: var(--sans); font-size: 13px; }
+.og .st-side { fill: var(--dim); }
+.og .st-v { font-size: 13px; font-weight: 600; }
+.og .st-frame { fill: none; stroke: none; }
+.og .st-wall { fill: var(--ink); }
+.og .st-in { fill: var(--acc); opacity: .30; }
+.og .st-out { fill: var(--acc); opacity: .55; }
+.og .st-gate { fill: var(--card); stroke: var(--moss); stroke-width: 2; }
+.og .st-gap { fill: var(--bg); stroke: var(--moss); stroke-width: 2; }
+.og .ion { fill: var(--moss); opacity: 0; }
+
+.grad.is-live .og .st { transition: opacity .45s ease; }
+.grad.is-live .og .st.off { opacity: .22; }
+.grad.is-live .og .st.now .st-frame { fill: var(--bg-lift); }
+.grad.is-live .og .st-in, .grad.is-live .og .st-out { transition: height .6s ease, y .6s ease; }
+.grad.is-live .og .st.now .ion { opacity: 1; animation: og-in 1.8s linear infinite; }
+.grad.is-live .og .st.now .ion-out { animation-name: og-out; }
+.grad.is-live .og .st.now .ion-1 { animation-delay: .6s; }
+.grad.is-live .og .st.now .ion-2 { animation-delay: 1.2s; }
+@keyframes og-in  { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(-28px); opacity: 0; } }
+@keyframes og-out { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(28px); opacity: 0; } }
+:root[data-motion="off"] .og * { transition: none !important; animation: none !important; }
+
+/* the static charts on this page are drawn at 720 and 320; centre them on the wide track */
+main .step-fig .chart { margin: 0 auto; }

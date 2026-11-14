@@ -648,12 +648,83 @@
     return s.join('');
   }
 
+  /* -------------------------------------------------------------- rank --- */
+  /* One list of items measured two ways (dissonance.html, 2026-11-13):
+     spec.items = [{label, a, b, color}], spec.a and spec.b = {label, unit,
+     decimals}. State m runs 0..1: at 0 every bar is its a value and the rows
+     are sorted by a; at 1 the bars are b and the rows sorted by b. Each
+     measure has its own scale (its largest value fills the plot), so a bar
+     compares items within one measure, never a with b. The header names the
+     measure shown; the value labels switch at m = 0.5. State f runs 0..1 and
+     fades the rows whose color is "dim", so a step can point at the others.
+     Opt-in: only a spec with type "rank" reaches this code. */
+
+  var RROW = 32;          // one row: label line, then the bar
+
+  function rankOrder(items, key) {
+    var idx = items.map(function (_, i) { return i; });
+    idx.sort(function (p, q) { return (items[q][key] - items[p][key]) || (p - q); });
+    var pos = []; idx.forEach(function (it, r) { pos[it] = r; });
+    return pos;
+  }
+
+  function rankLayout(spec, w, strict) {
+    var items = spec.items;
+    if (!items || !items.length) throw new Error('charts: rank ' + spec.id + ' has no items');
+    function vlab(m, v) { return fmt(v, m.decimals || 0) + (m.unit || ''); }
+    var vw = 0;
+    items.forEach(function (it) {
+      vw = Math.max(vw, vlab(spec.a, it.a).length, vlab(spec.b, it.b).length);
+      if (strict && it.label.length * CW > w) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: label wider than the chart: ' + it.label);
+    });
+    [spec.a.label, spec.b.label].forEach(function (t) {
+      if (strict && t.length * CW_BIG > w) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: header wider than the chart: ' + t);
+    });
+    var pw = w - (vw * CW + 8);
+    if (strict && pw < 120) throw new Error('charts: ' + spec.id + ' at ' + w + 'px: plot under 120px');
+    var amax = Math.max.apply(null, items.map(function (it) { return it.a; }));
+    var bmax = Math.max.apply(null, items.map(function (it) { return it.b; }));
+    var top = 30;
+    return { w: w, h: top + items.length * RROW + 2, pw: pw, top: top, amax: amax || 1, bmax: bmax || 1,
+             pa: rankOrder(items, 'a'), pb: rankOrder(items, 'b'), vlab: vlab };
+  }
+
+  function rankDyn(spec, L, st) {
+    var m = clamp(st.m == null ? 0 : st.m, 0, 1), e = m * m * (3 - 2 * m), o = {};
+    var f = clamp(st.f == null ? 0 : st.f, 0, 1);
+    spec.items.forEach(function (it, i) {
+      var f = (1 - m) * it.a / L.amax + m * it.b / L.bmax, bw = Math.max(f * L.pw, 0.5);
+      var y = L.top + ((1 - e) * L.pa[i] + e * L.pb[i]) * RROW;
+      o['r' + i] = { transform: 'translate(0,' + r2(y) + ')', opacity: it.color === 'dim' ? r2(1 - 0.7 * f) : 1 };
+      o['b' + i] = { width: r2(bw) };
+      o['v' + i] = { x: r2(bw + 5), _text: m < 0.5 ? L.vlab(spec.a, it.a) : L.vlab(spec.b, it.b) };
+    });
+    o.hd = { _text: m < 0.5 ? spec.a.label : spec.b.label };
+    return o;
+  }
+
+  function renderRank(spec, st, w, opt) {
+    var L = rankLayout(spec, w, opt.strict), D = rankDyn(spec, L, st), s = [];
+    function A(k) { var a = D[k], out = ''; for (var n in a) if (n !== '_text') out += ' ' + n + '="' + esc(a[n]) + '"'; return ' data-k="' + k + '"' + out; }
+    s.push('<svg class="chart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + L.w + ' ' + L.h + '" width="' + L.w + '" height="' + L.h + '" role="img" aria-label="' + esc(spec.title) + '">');
+    s.push('<text class="ch-now" x="0" y="16"' + A('hd') + '>' + esc(D.hd._text) + '</text>');
+    spec.items.forEach(function (it, i) {
+      s.push('<g class="ch-row"' + A('r' + i) + '>' +
+        '<text x="0" y="11">' + esc(it.label) + '</text>' +
+        '<rect class="ch-bar f-' + (it.color || 'acc') + '" x="0" y="16" height="10"' + A('b' + i) + '/>' +
+        '<text class="ch-tick" y="25"' + A('v' + i) + '>' + esc(D['v' + i]._text) + '</text></g>');
+    });
+    s.push('</svg>');
+    return s.join('');
+  }
+
   /* ------------------------------------------------------------ public --- */
 
   var KINDS = { series: { render: renderSeries, layout: seriesLayout, dyn: seriesDyn },
                 split: { render: renderSplit, layout: splitLayout, dyn: splitDyn },
                 strip: { render: renderStrip, layout: stripLayout, dyn: stripDyn },
-                days: { render: renderDays, layout: daysLayout, dyn: daysDyn } };
+                days: { render: renderDays, layout: daysLayout, dyn: daysDyn },
+                rank: { render: renderRank, layout: rankLayout, dyn: rankDyn } };
 
   function kind(spec) {
     var k = KINDS[spec.type];
