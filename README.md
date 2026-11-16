@@ -13,7 +13,7 @@ hand: run `./publish.sh` from that folder, which rebuilds this repository from
 
 | Path | What it is |
 |---|---|
-| `index.html` | Front page: a live canvas integrating a named nonlinear system from its published equations, and an index of the projects. |
+| `index.html` | Front page: a muted, looped 30-second clip of a piano-studio render (`assets/hero-video.js`), and an index of the projects. `assets/hero.js`, the live nonlinear-system canvas it replaced, is kept but not loaded. |
 | `*-app.html` | A full-screen viewer, opened in a new tab from the page it belongs to. |
 | `assets/` | Figures, and the data the interactive pages carry. |
 | `downloads/` | Source archives for every model on the site. |

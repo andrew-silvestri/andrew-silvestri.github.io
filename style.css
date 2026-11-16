@@ -1068,6 +1068,21 @@ aside.marginalia img { width: 18px; height: 18px; vertical-align: -4px; margin-r
 }
 body.home.hero-idle #hero { opacity: 0; }
 #hero .hero-layer { position: absolute; inset: 0; }
+/* The video hero (assets/hero-video.js, 2026-11-15). The script sets top to
+   the navband's height and height to the band's, so the film fills the band
+   and nothing else; cover only crops where the band is not 16:9, which is the
+   tall-viewport case the band rule caps. The background is the render's own
+   ground, so the box is never paper-white before the first frame. Hidden until
+   the script has run: with JS off the page is the page minus the figure, as it
+   was for the canvas (the .heroband comment below). */
+#hero video {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  object-fit: cover;
+  background: #1f1b1a;   /* median of the poster's corners: #111012 to #2f2a28 */
+}
+body.home:not(.hero-live) #hero video { display: none; }
 
 /* The nav is a band, not a strip. nav.top is max-width:var(--shell) and
    centred, so making IT sticky sticks a floating centred block over a moving
